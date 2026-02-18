@@ -26,5 +26,22 @@ Thumbs.db
 .claude/
 .codex/
 
+# Large binary data files
+*.mat
+*.dta
+
+# LyX backup/temp files
+*.lyx~
+*.lyx#
+*.emergency
+
+# MATLAB intermediates
+*.asv
+
+# Fortran build artifacts
+*.obj
+*.exe
+*.mod
+
 # Nested repo (kept separate)
 daaf/
