@@ -1,24 +1,40 @@
-# Economics Training Folder
+# Economics Research Workspace
 
-This is a personal training/sandbox folder for learning Codex, Claude Code, and econ/AI workflows.
+Personal research workspace for economics paper projects, AI-assisted workflows, and shared tooling.
 
-## What each folder is for
-- `daaf/`: separate training project (kept separate).
-- `files/`: personal/reference files.
-- `skills/`: training skill files; source inspiration includes Antonio Mele's resources:
-  https://meleantonio.github.io/awesome-econ-ai-stuff/
-- `demos/`: throwaway mini-trials and test outputs.
+## Structure
 
-## Demo convention
-- For quick tests, use filenames ending in `_demo` (example: `regression_demo.do`).
-- Keep demo files inside `demos/`.
-- To wipe all demos quickly, run:
-  `bash scripts/clean-demos.sh`
+```
+Economics/
+  projects/          ← research paper projects (self-contained)
+  _shared/           ← reusable assets across all projects
+    memory/          ← persistent preferences and style notes
+    agents/          ← specialist agent definitions
+    skills/          ← knowledge packs (SKILL.md files)
+    templates/       ← document templates (referee response, etc.)
+    standards/       ← conventions and checklists
+    prompts/         ← reusable prompt fragments
+  _playground/       ← scratch work, learning material, backups
+  AGENTS.md          ← how AI assistants should behave (read first)
+  CLAUDE.md          ← tool-specific instructions (Stata paths, etc.)
+```
 
-## `README.md` vs `CLAUDE.md`
-- `README.md`: human-facing overview of the project and folder organization.
-- `CLAUDE.md`: agent/tool instructions (for Codex/Claude behavior), not general project documentation.
+## Projects
+
+| # | Project | Status |
+|---|---------|--------|
+| 01 | Necessity Entrepreneurs | Draft in progress |
+| 02 | NIMBYism and the Housing Supply | Published (JME 2025) |
+| 03 | Fertility and Housing Supply | Early stage |
+
+## Quick start for AI sessions
+
+1. Read `AGENTS.md` (steering rules)
+2. Read `_shared/memory/RESEARCH_STYLE.md` (style preferences)
+3. Read `projects/<name>/README.md` and `projects/<name>/memory.md` (project state)
 
 ## Notes
+
 - This repository is local and synced via OneDrive.
 - Rebuildable/temp artifacts are excluded by `.gitignore`.
+- Referee responses use the template in `_shared/templates/referee_response_template.tex`.

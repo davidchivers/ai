@@ -1,0 +1,11 @@
+﻿concept,paper_reference,code_reference,status,why_it_matters,recommended_action
+State coding i_w,lyx:1373|1378|1382,cfv_red_final.cpp:618|482|486,INCONSISTENT,Can invert interpretation of transitions and labels,Define one canonical state map and enforce in comments/docs
+Worker budget equation,lyx:1259|1299,cfv_red_final.cpp:470|472,ALIGNED,Core household budget appears consistent,Keep as baseline reference check
+Firm FOC object,lyx:1136|1147,cfv_red_final.cpp:2789|2791,PARTIAL,Firm block broadly aligned but depends on matching term definition,Confirm denominator object and document
+Profit function form,lyx:1175,cfv_red_final.cpp:2834,PARTIAL,Code includes explicit costs but uses average rho in key term,Decide if rho should be education-specific
+Matching p(theta),lyx:8973|9211,cfv_red_final.cpp:887,ALIGNED,Job finding probability update appears consistent,Use this as canonical p(theta)
+Matching q(theta),lyx:833,cfv_red_final.cpp:2785|2834,INCONSISTENT,Vacancy/search cost may use wrong denominator object,Implement q(theta)=m*(v/u)^(-mu) or rewrite paper to match code
+Entrepreneur output in simulation,notationally implied by production block,cfv_red_final.cpp:972|2189,BUG,Output collapses to zero in entrepreneur branch,Replace multiplier with explicit entrepreneur indicator or direct formula
+Education index usage,n/a,cfv_red_final.cpp:1184|1188|2341|2345|1289|2439,BUG,Wrong interpolation state can corrupt moments and welfare,Assign ppl_edu before all policy interpolation calls
+Convergence criterion,n/a,cfv_red_final.cpp:2964,BUG,GE loop termination can be wrong,Compare theta distance to tol_agg explicitly
+Tax object mapping (tau/tau_y/tau_pi),lyx:1223|1259,cfv_red_final.cpp:550|470|2785,NEEDS_DOC,Risk of parameter misuse across blocks,Add one-page variable map for tax objects

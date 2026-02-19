@@ -1,0 +1,3581 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+%
+\usepackage{amsfonts}\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{lem}{Lemma}
+
+\setcounter{MaxMatrixCols}{30}
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{assumption}{Assumption}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\usepackage{lscape}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "" "default"
+\font_sans "" "default"
+\font_typewriter "" "default"
+\font_math "" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\paperfontsize 11
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.1in
+\topmargin 1.1in
+\rightmargin 1.1in
+\bottommargin 1.1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+NIMBYism and the Housing Supply
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We thank Stephane Bonhomme, Fatih Guve
+\color black
+nen, Serdar Ozkan and Roman Sustek for help for their comments as well as
+ with data and calibration issues.
+ We also thank participants in seminars at Durham University, Monash University,
+ University of Sydney, CEMAP, WAMS, OzMac, SCE a
+\color inherit
+nd SEHO.
+ All errors remaining are our own.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Isaac Gross
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+isaac.gross@monash.edu
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+Monash University
+\size default
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+and
+\end_layout
+
+\end_inset
+
+ David Chivers
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+david.chivers@durham.ac.uk
+\series bold
+ 
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+Durham University
+\size default
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+\begin_inset space \space{}
+\end_inset
+
+We develop a political economy model of the housing market where new housing
+ supply is determined by a democratic vote.
+ Support for additional supply depends on its impact on households’ utility
+ via house prices and is strongest among younger, low-income, or renting
+ households.
+ Simulations show that a temporary baby boom raises homeownership and wealth
+ for the boom generation but leads to higher house prices, lower homeownership,
+ and reduced wealth for subsequent generations.
+ Demographic changes and this political economy mechanism account for a
+ 15% increase in house prices since 1950.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+
+\series bold
+JEL Classification
+\series default
+: E24, J10, R31.
+ 
+\end_layout
+
+\begin_layout Abstract
+
+\series bold
+Keywords
+\series default
+: Housing supply, inequality, political economy
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+Not In My Backyard
+\begin_inset Quotes erd
+\end_inset
+
+ (NIMBY) effect describes the phenomenon of local residents opposing new
+ housing developments in their neighborhood.
+ As the regulation of housing supply is often decentralized to local governments
+, residents can exert significant political power over any new developments
+ within their area.
+ The aggregate effect of NIMBYism can thus negatively impact the housing
+ supply within an economy.
+ In the US, for example, land is divided into 
+\begin_inset Quotes eld
+\end_inset
+
+zones
+\begin_inset Quotes erd
+\end_inset
+
+ which determine the size and use of new developments.
+ 
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Zoning laws were originally developed in the 1900s in order to improve 
+\begin_inset Quotes eld
+\end_inset
+
+light and air
+\begin_inset Quotes erd
+\end_inset
+
+ in residential areas - see Fischer (2002) for a historical overview.
+ Land use regulation has also been used by white residents within the US
+ to maintain and increase racial segregation (Sahn 2021, Trounstine 2020).
+\end_layout
+
+\end_inset
+
+ Only detached, single-family homes are allowed to be built in 
+\begin_inset Quotes eld
+\end_inset
+
+R1
+\begin_inset Quotes erd
+\end_inset
+
+ residential zones, even if high demand for multi-home housing (such as
+ apartments) exists.
+ Those who own homes within R1 residential areas have strong incentives
+ to maintain the status quo at the expense of non-homeowners, who would
+ benefit from multi-home housing in order to get on the housing ladder (Manville
+ et al.
+ 2020).
+ 
+\end_layout
+
+\begin_layout Standard
+We develop a political economy model of the housing market in order to estimate
+ the impact of NIMBYism and show how changing demographic trends can explain
+ the recent rise in the house prices.
+ Specifically, we allow housing supply in a standard life cycle model to
+ be determined by a democratic process: households vote according to their
+ personal preferences and the final outcome is determined by the median
+ voter.
+ We then use this model to show that an aging society exacerbates the effects
+ of NIMBYism, and has led to a 15 percent increase in the house prices since
+ 1950.
+ Using demographic projections we forecast population aging will continue
+ to increase house prices in the 21st century.
+ Finally we examine the dynamics of a temporary baby boom and analyze how
+ it affects the level and distribution of wealth in the economy.
+ We find that the generation born during the baby boom will collectively
+ use their increased voting power to expand their ownership of housing and
+ increase their total net worth.
+ However this comes at the cost of decreased home-ownership rates and networth
+ for subsequent generations.
+ 
+\end_layout
+
+\begin_layout Standard
+Our theoretical model follows the standard life cycle housing model as described
+ by Icaviello (2005).
+ Over the life-cycle, an individual household typically rents housing until
+ they have saved enough to meet their borrowing constraint and be able to
+ put a deposit down on a house.
+ Households also participate in the housing market by either upsizing (as
+ their wealth grows or positive income shocks occur) or selling (if they
+ receive a negative income shock or die).
+ Instead of fixing the housing supply (as in Icaviello 2005) or having it
+ produced inelastically by a construction sector (as in Kaplan et al.
+ 2020), we allow the supply of housing to be determined by a democratic
+ vote of local households.
+ 
+\end_layout
+
+\begin_layout Standard
+Household preferences over the supply of housing are formed according to
+ the impact that a small change in price will have on their expected discounted
+ utility.
+ Households who gain from marginally higher prices will vote against new
+ developments, whereas those who marginally lose out from higher house prices
+ will vote in favor of new developments.
+ NIMBYist views are thus largely determined by households' ownership of
+ housing and their expected probability of being a net-buyer in future periods.
+ NIMBYist households are disproportionately older, wealthier, have higher
+ incomes and are more likely to be homeowners, which is in line with the
+ empirical literature surrounding NIMBYism (see Whittemore & BenDor (2018),
+ Scally and Tighe (2015), and Hankinson (2018) for a range of surveys on
+ the subject).
+\end_layout
+
+\begin_layout Standard
+Our model primarily focuses on the financial incentives of NIMBYism, as
+ households' own homes are the primary asset for most households.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Excluding the top 1% of the wealth distribution, home equity makes up 28.9%
+ of total US household wealth and is comparable only to retirement accounts
+ 32.8%.
+ The next largest asset, stocks and mutual funds, makes up only 10.2% of
+ total household wealth (see Eggleston et al.
+ 2020).
+\end_layout
+
+\end_inset
+
+ However there are several non-financial motivations that may lead a household
+ to oppose new developments - ranging from infrastructure capacity concerns
+ to simply disliking the proposed style of architecture or neighborhood
+ characteristics (Ahlfeldt 2011, Bosetti and Sims 2016)
+\shape italic
+.
+
+\shape default
+ We allow for these non-financial preferences to affect households' votes
+ but assume these preferences are stable over the life cycle
+\shape italic
+.
+
+\shape default
+ The financial inventive for NIMBYism, however, does vary over the life
+ cycle and is analogous to an insider-outsider problem: outsiders (renters)
+ would prefer more houses to be built until they become an insider (homeowner),
+ and then seek to restrict supply.
+ 
+\end_layout
+
+\begin_layout Standard
+As homeownership rates and thus support for new developments changes over
+ the life cycle, the demographic make-up of an economy will play an important
+ role in the aggregate effect of NIMBYism.
+ During the mid 1940s, a baby boom occurred in a number of OECD countries
+ including the US, UK, New Zealand, Australia, France and Canada (Greenwood
+ et al.
+ 2005).
+ This baby boom lasted until the subsequent baby bust of the mid 1960s when
+ birth rates returned to trend.
+ The effect of the spike in the birth rate led to a generation known as
+ the Baby Boomers which has taken up a significant share of the population
+ over time.
+ As those who are close in age will have similar preferences over housing
+ on average (as a result of being at a similar stage of the life-cycle),
+ those born during the baby boom will have outsized political power and
+ thus have a greater influence over the aggregate housing stock.
+ This is perhaps one reason why rents are increasing relative to median
+ income over time as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\emph on
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\shape italic
+\emph on
+Rent to median income ratio over time
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename Figures/1. Rent to Median Income.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\size tiny
+Data Source: CPS (2022)
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\emph default
+It is also why the US homeownership rate has been falling for younger people
+ over time as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+
+\emph on
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Home ownership rate for different age cohorts
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename Figures/2. Home Ownership Rate.png
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\size tiny
+Data Source: CPS (2022)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In this paper, we estimate how the changing demographic shares across aging
+ economies have changed the political-economic equilibrium in the housing
+ market.
+ As economies age, the balance of political power shifts in favor of NIMBYist
+ households resulting in lower housing supply and higher house prices.
+ We find that house prices increased by around 15 per cent due to these
+ political economic effects since the 1950s.
+ Using demographic projections, as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 3"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ we find that the aging economy is expected to keep the house price at or
+ above it's current level untill 2100.
+\end_layout
+
+\begin_layout Standard
+Finally, we use our political economic model of the housing market to examine
+ the distributional consequences of recent demographic shocks.
+ We find that a temporary boom in the birthrate will initially decrease
+ inter and intra-generational wealth inequality as the boom generation initially
+ supports lower house prices when they are disproportionately young renters.
+ As the cohort ages, this effect reverses and this cohort greater political
+ pressure against the supply of new housing.
+ This decrease in the support for housing supply, and thus higher house
+ price, leads to a permanent scarring effect on future generations who are
+ unable to achieve home ownership at the same rate as previous generations,
+ even after the initial baby boom generation has completely died off.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+
+\shape italic
+\emph on
+Age share of population over time
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/3. Projections by age group, median immigration.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\size tiny
+Data Source: UN (2019).
+ Dashed line indicates population forecasts for year 2020 onward assuming
+ mid level immigration
+\size default
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 3"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Section
+Related Literature 
+\end_layout
+
+\begin_layout Standard
+This paper is related to the following strands of the literature.
+ Firstly, there is growing literature surrounding the impact of regulation
+ on the housing supply.
+ The concept of NIMBYism is often attributed to Frieden (1979), who noted
+ a rise in environmental regulations to impede new housing developments
+ after the 1970s.
+ Gyourko et al.
+ (2013) support this view and argue that before the 1970s, housing construction
+ tended to follow areas of high price growth.
+ However, establishing a direct link between regulation and the housing
+ supply is difficult due to the idiosyncratic forms that regulations can
+ take in different localities (Gyourko and Malloy 2015).
+ To get round this, Glaeser et al.
+ (2006) offer indirect evidence of excess regulation by noting the existence
+ of a relatively large wedge between prices and marginal constructions costs.
+ The difficulty in providing direct evidence stems from the endogeneity
+ between land use regulation and the housing market.
+ Recent papers have used boundary discontinuity design to address this issue
+ (Kahn et al.
+ 2010, Turner et al.
+ 2014, Kulka, 2019).
+ For example, Anagol et al.
+ (2021) exploit a zoning reform in Sao Paulo and show that housing developers
+ apply for more permits in blocks with higher maximum densities.
+ In their equilibrium model of housing supply this leads to a 2.2% increase
+ in the total housing stock and 0.5% average price reduction.
+ Similarly, Song (2021) constructs a nationwide data set of minimum lot
+ area estimates and finds that a doubling the US minimum lot area size would
+ increase house prices by 14% and rents by 6%.
+\end_layout
+
+\begin_layout Standard
+This paper is also related to an older strand of literature on political
+ redistribution such as: Alesina and Rodrik (1994), Persson and Tabellini
+ (1994), Krussel and Rios-Rull (1999), Acemoglu and Robinson (2001).
+ The main idea of these papers is that when income and resources are distributed
+ heterogeneously, the majority may vote for redistribute policies.
+ These papers rely on a voting mechanism, the median-voter theorem, to determine
+ what policy will be pursued.
+ The theorem shows that when voting takes place over a single issue, and
+ preferences are singled peaked, then the policy chosen under a democracy
+ will be the one chosen by the median-voter.
+ 
+\end_layout
+
+\begin_layout Standard
+Housing politics is a good candidate for the median-voter theorem as voting
+ take place at local level and usually on specific propositions related
+ to relaxing zoning regulations.
+ The idea of homeowners as specific voting class in local government decisions
+ as a result of financial interests is related to the 
+\begin_inset Quotes eld
+\end_inset
+
+homevoter hypothesis
+\begin_inset Quotes erd
+\end_inset
+
+ (Fischel 1999, 2001).
+ Einstein et al.
+ (2019) examine planning meetings in Massachusetts and find that homeowners
+ and older residents are overly representative in planning meetings.
+ This is in line with voter turnout in local elections which in general
+ tend to be from these two groups (Kogan et al.
+ 2018, Oliver and Ha 2007).
+ Similarly, Jiang (2018) finds that voter turnout increase for mayoral elections
+, relative to presidential elections, when home-ownership rates increase.
+ In addition, Cheung and Meltzer (2013) find that the prevalence of Homeowners
+ Associations is positively associated with an increase in land use regulations.
+ Similarly, Hilber and Robert-Nicoud (2013) find a positive correlation
+ between the degree of physical development in an area and land use regulation.
+ Both Ahlfeldt and Maennig (2015) as well as Dehring and Ward (2008) use
+ public referendums to directly test the homevoter hypothesis.
+ Ahlfeldt and Maennig (2015) use a referendum on the expansion of an airport
+ in Berlin as a natural experiment and find greater support among homeowners
+ as opposed to leaseholders.
+ The support for the proposal comes from two effects: a consumption effects
+ (though use of the amenity) as well as a wealth effect (via house price
+ increases).
+ Dehring and Ward (2008) use pre-vote changes in residential property values
+ to test the probability of support for the new stadium for the Dallas Cowboys
+ and find between a 0.9% and 1.2% increase in support for every $1000 dollar
+ increase in house prices.
+\end_layout
+
+\begin_layout Standard
+Numerous surveys of voters have attempted to describe the demographics of
+ voters who oppose new housing supply.
+ Whittemore and BenDor (2019) find that older, less educated were more likely
+ to oppose new developments, though they found no significant relationship
+ between home ownership and NIMBYist views.
+ By contrast Hankinson (2018) and Scally and Tighe (2015) found that home
+ owners were significantly more likely to oppose new housing supply - particular
+ly in their locality.
+\end_layout
+
+\begin_layout Standard
+Finally, this paper is related to the literature surrounding life-cycle
+ models with housing markets.
+ Generally, life-cycle models assume exogenous house prices due to computational
+ complexity (Fernandez-Villaverde and Krueger (2011), Iacoviello and Pavan
+ (2013), Yang (2009)).
+ There are, however, relatively few papers where aggregate shocks affect
+ house prices (Justiniano et al.
+ 2015).
+ Our paper is most closely related to Ortalo-Magné and Prat (2014), who
+ use a median-voter theorem in an overlapping–generations economy to show
+ that increasing homeownership rates decrease housing affordability.
+ Similarly, Mankiw and Weil (1989) predict the growth rate of housing demand
+ via changes in the age distribution alone and more recently Mumtaz and
+ Šustek (2023) find similar results except housing demand peaks in the 2000s.
+
+\color red
+ 
+\end_layout
+
+\begin_layout Section
+The Model
+\end_layout
+
+\begin_layout Standard
+In this section we outline a life-cycle model with housing and debt choices.
+ The model features heterogeneous, life-cycle households that optimize their
+ consumption of non-durable consumption, housing and saving in liquid assets.
+ A number of factors influence households preferences on house prices and
+ thus their political support for additional housing supply.
+ These include household income and wealth as well as portfolio allocation
+ and age over the life cycle.
+ We use the model to study the housing market response to an exogenous change
+ in demographics.
+ Following the shock, the behavior of owner-occupiers and renters determines
+ equilibrium house prices.
+\end_layout
+
+\begin_layout Standard
+A consumer lives for 
+\begin_inset Formula $T$
+\end_inset
+
+ periods and in each period for, 
+\begin_inset Formula $t\leq T$
+\end_inset
+
+ maximizes lifetime expected utility which consists of consumption 
+\begin_inset Formula $c_{t}$
+\end_inset
+
+ and housing services, 
+\begin_inset Formula $h_{t}$
+\end_inset
+
+.
+ Housing services depends on whether they own or rent the property.
+ Individuals also have access to a liquid asset that pays an interest 
+\begin_inset Formula $r_{t+1}$
+\end_inset
+
+.
+ The household's lifetime utility function is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+U=\sum_{j=0}^{J}\beta^{j-1}u(c_{j},h_{j})+\beta^{J}v\left(w_{J+1}\right)
+\end{equation}
+
+\end_inset
+
+where households optimize over consumption, 
+\begin_inset Formula $c_{t}$
+\end_inset
+
+, liquid assets, 
+\begin_inset Formula $a_{t}$
+\end_inset
+
+, and housing, 
+\begin_inset Formula $h_{t}$
+\end_inset
+
+ at each age 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ The flow utility is increasing and strictly concave in 
+\begin_inset Formula $c$
+\end_inset
+
+ and 
+\begin_inset Formula $h$
+\end_inset
+
+.
+ Household receive utility from wealth they bequest 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $w_{J+1}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+.
+ We assume the functional form 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+u(c_{t},h_{t})=\frac{\left(c_{t}^{1-\zeta}h_{t}^{\zeta}\right)^{1-\gamma}}{1-\gamma}
+\end{equation}
+
+\end_inset
+
+where the consumption of housing stock consists of either the amount of
+ housing owned or rented
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{t}=\begin{cases}
+\theta^{rent}h_{t}^{rent} & \mbox{if }h_{t}^{own}=0\\
+h_{t}^{own} & \mbox{if }h_{t}^{own}>0.
+\end{cases}
+\end{equation}
+
+\end_inset
+
+The curvature parameter 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ determines households' risk aversion and inter-temporal elasticity of substitut
+ion and 
+\begin_inset Formula $\zeta$
+\end_inset
+
+ denotes housing's share of total consumption.
+ Finally there is a warm glow bequest function when households die that
+ provides utility
+\begin_inset Formula 
+\begin{equation}
+v(w)=\theta\frac{\left(w+\overline{w}\right)^{1-\gamma}}{1-\gamma}
+\end{equation}
+
+\end_inset
+
+which generates a bequest function with decreasing marginal utility with
+ respect to wealth governed by the parameters 
+\begin_inset Formula $\overline{w}$
+\end_inset
+
+ and 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ Households supply their labor inelastically and are paid a wage 
+\begin_inset Formula $y_{t,j}$
+\end_inset
+
+.
+ The wage they receive varies according to their productivity which is driven
+ by the exogenous process
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\text{ln}y_{t,j} & = & g_{j}+z_{t}
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ is a Markov process calibrated to yield realistic inequality (as per Kindermann
+ and Krueger (2022)) and 
+\begin_inset Formula $g_{j}$
+\end_inset
+
+ is a deterministic age profile.
+ The stochastic process comprises of an AR(1) process for lowest income
+ states, with two additional top-income states which incorporate 
+\begin_inset Quotes eld
+\end_inset
+
+superstar
+\begin_inset Quotes erd
+\end_inset
+
+ incomes.
+ Once workers reach retirement age 
+\begin_inset Formula $J_{ret}$
+\end_inset
+
+ income falls to a fixed level based on their wage upon retirement.
+ The income process is normalized to have a mean of 1, such that the price
+ of housing 
+\begin_inset Formula $p_{t}^{h}$
+\end_inset
+
+ reflects the house price to income ratio.
+\end_layout
+
+\begin_layout Standard
+Households may save or borrow liquid assets subject to a borrowing constraint
+ where each household can borrow against a proportion, 
+\begin_inset Formula $m$
+\end_inset
+
+, of the total value of the stock of housing they own
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+a_{t}\geq-mh_{t}^{own}p_{t}^{h}.
+\end{equation}
+
+\end_inset
+
+Households may buy or sell housing at price, 
+\begin_inset Formula $p_{t}^{h},$
+\end_inset
+
+ subject to a minimum block size 
+\begin_inset Formula $\bar{h}$
+\end_inset
+
+.
+ All property sales, including those that are sold as part of a bequest
+ are subject to a transaction cost 
+\begin_inset Formula $F_{s}$
+\end_inset
+
+ proportional to the total value of property sold.
+ If they do not own any housing they must rent it from real estate firms
+ at price 
+\begin_inset Formula $p_{t}^{rent}$
+\end_inset
+
+.
+ The household's utility function is thus maximized subject to the budget
+ constraint 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+a_{t+1}=\left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}-p_{t}^{rent}h_{t}^{rent}+I^{sell}\left(1-F_{s}\right)p_{t}^{h}\varDelta h_{t}^{own}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $I^{sell}$
+\end_inset
+
+ is an indicator variable for households that choose to sell part or all
+ of their current stock of housing.
+\end_layout
+
+\begin_layout Subsection
+Household's Problem
+\end_layout
+
+\begin_layout Standard
+Each household's state vector is 
+\begin_inset Formula $\left\{ a_{t},h_{t-1},z_{t}\right\} $
+\end_inset
+
+, where 
+\begin_inset Formula $a_{t}$
+\end_inset
+
+ is the stock of liquid assets, 
+\begin_inset Formula $h_{t-1}$
+\end_inset
+
+ is the amount of housing they started the period with and 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ is the persistent component of their income.
+ The value function for the household is given by the maximum of the three
+ possible housing tenure options: rent, adjust their stock of housing or
+ maintain their current level of housing.
+ The value function for renters is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{rent}\left(c_{t},h_{t}^{own},z_{t}\right) & = & \underset{c_{t},a_{t},h_{t}^{rent}}{\mbox{max}}u\left(c_{t},h_{t}^{rent}\right)+\beta EV_{j+1}\left(c_{t+1},h_{t+1}^{own},z_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}-p_{t}^{rent}h_{t}^{rent}+\left(1-F_{s}\right)p_{t}^{h}h_{t}\nonumber \\
+a_{t+1} & \geq & 0\nonumber \\
+h_{t+1} & = & 0\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+The value function for households who choose not to adjust is 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{non-adjusters}\left(a_{t},h_{t}^{own},z_{t}\right) & = & \underset{c_{t},a_{t}}{\mbox{max}}u\left(c_{t},h_{t}\right)+\beta EV_{j+1}\left(a_{t+1},h_{t+1}^{own},z_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}\nonumber \\
+a_{t+1} & \geq & -mp_{t}h_{t}^{own}\nonumber \\
+h_{t}^{own} & = & h_{t+1}^{own}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+The value function for households who choose to buy or sell housing is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{adjust}\left(a_{t},h_{t}^{own},z_{t}\right) & = & \underset{c_{t},a_{t},h_{t}^{r}}{\mbox{max}}u\left(c_{t},h_{t}^{own}\right)+\beta EV_{j+1}\left(a_{t+1},h_{t+1}^{own},z_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}+I^{sell}\left(1-F_{s}\right)p_{t}^{h}\varDelta h_{t}^{own}-I^{buy}\left(1-F_{b}\right)p_{t}^{h}\varDelta h_{t}^{own}\nonumber \\
+a_{t} & \geq & -mp_{t}h_{t}^{own}\nonumber \\
+h_{t+1}^{own} & = & h_{t}^{own}+\varDelta h_{t}^{own}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+The final value function is the maximum of each of the three choices over
+ housing tenure
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{j}\left(a_{t},h_{t}^{own},z_{t}\right)=\underset{}{\mbox{max}\left\{ V_{j}^{rent},V_{j}^{adjusters},V_{j}^{non-adjusters}\right\} .}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Real Estate Firms
+\end_layout
+
+\begin_layout Standard
+Real estate firms borrow from households to fund the purchase of housing,
+ which is rented out to households that do not own their own home.
+ Real estate firms operate in a perfectly competitive market, and thus the
+ rental price is pinned down by the cost of borrowing, a fixed cost of providing
+ rental services, the price of purchasing house stock and any expected capital
+ appreciation driven by the drift in the price of housing.
+ We assume that real estate firms are able to borrow against the full value
+ of their housing stock.
+ The zero profit condition pins down the price of rental stock as the function
+ of the cost of housing, capital gains from housing and the interest rate
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p_{t}^{rent}=\phi^{rent}+\left(r_{t}\right)p_{t}^{a}-\Delta p_{t}^{a},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\phi^{rent}$
+\end_inset
+
+ is the fixed cost of providing rental services.
+\end_layout
+
+\begin_layout Subsection
+Housing Supply
+\end_layout
+
+\begin_layout Standard
+The aggregate economy consists of unit measure of neighborhoods across which
+ all types of households are equally distributed.
+ The neighborhood's housing supply in period 
+\begin_inset Formula $t+1$
+\end_inset
+
+ is determined in each neighborhood by a simple majoritarian voting mechanism
+ in which households vote over the amount of permitted housing in an area.
+ Only households who currently reside in that neighborhood can vote to determine
+ the next periods level of new housing.
+ An increase in the housing supply will reduce the price of housing in the
+ locality and households can vote assuming, correctly, that an increase
+ in housing supply will lead to a small persistent decrease in the cost
+ of housing.
+ An increase in the housing supply will also affect the price of rental
+ properties by lowering the input price for the real estate firms.
+ Each household in a neighborhood will vote to increase (or decrease) the
+ availability of housing in their locality based on how a small, but permanent,
+ change in house prices will effect their expected welfare.
+ Specifically, households will vote to increase or decrease the supply of
+ housing if a change in house prices increases their expected lifetime utility
+ such that
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\frac{\partial V_{j}(a_{t},h_{t}^{own},z_{t})}{\partial p_{t}}+\sigma\geq0
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ represents the impact of a non-financial preferences over additional housing
+ supply.
+ These non-financial preference over the optimal house price include both
+ ideological preferences over the desired supply of housing as well as the
+ value (or cost) of any change in amenity caused by additional supply of
+ housing.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We do not take a strong stance on the sign of these non-financial preferences,
+ but given they include both potential costs of additional density (i.e.
+ from congestion) and benefits (from agglomeration) it is plausible they
+ could be positive or negative.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+Applying the median voter theorem, equilibrium in the housing market will
+ occur when the median voter is indifferent to a change in the price of
+ housing.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+While these preferences are in general well defined, it is important to
+ note that preferences over house prices are not monotonic.
+ For example, a household with a moderate amount of housing might prefer
+ a small increase in house prices as this will increase their expected bequest,
+ but would be better off if house prices fall substantially as they would
+ be able to consume more housing.
+\end_layout
+
+\end_inset
+
+ A positive (negative) 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ indicates an ideological preference for higher housing supply and lower
+ house prices (lower housing supply and higher house prices).
+ 
+\end_layout
+
+\begin_layout Standard
+The partial derivative of expected lifetime utility with respect to the
+ price housing is determined by the households current portfolio of assets
+ and expected life-time income.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 4"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows how different household characteristics correlate with the decision
+ to vote for lower supply and thus higher house prices.
+ Households who currently rent or expect to have a high likelihood of purchasing
+ new housing in the near term will vote for housing supply to increase thus
+ decreasing the price of housing and relaxing their budget constraint.
+ These households tend to be younger, have low incomes and low wealth.
+ Looking at the distribution of voters according to the expected probability
+ that a given household will make a purchase of housing at some point in
+ their life, we can see that households that do not have a high expected
+ probability of purchasing housing over the rest of their life-time will
+ generally prefer a higher price of housing in order to increase the size
+ of their bequest and the resale value of their stock of housing.
+ By contrast the coalition of support for lower house prices consists of
+ two distinct groups of households: households that anticipate buying additional
+ housing (particularly in the near term) and thus want to loosen their budget
+ constraint.
+ as well as households that are currently renters because an increase in
+ the supply of housing also lowers the price of rental units.
+\end_layout
+
+\begin_layout Standard
+The equilibrium price of housing will thus vary according to the relative
+ size of these groups of households.
+ An exogenous increase in young households, who disproportionately rent
+ and thus prefer lower house prices, will lead to an increase in the supply
+ of housing.
+ The price of housing will thus fall until a sufficient number of renters
+ become homeowners, and accordingly switch their political support towards
+ higher house prices, thus making the median household indifferent to a
+ change in house prices.
+\end_layout
+
+\begin_layout Standard
+In order to abstract from strategic voting across dynasties, we assume different
+ children and parents live in different neighborhoods.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+According to Fu (2019) 61.5% adults live more than 10 miles away from their
+ mother.
+\end_layout
+
+\end_inset
+
+ Consequently even if an individual may gain a larger inheritance if the
+ price of their parents home increases, it will not effect their vote on
+ the optimal level of housing supply in their local neighborhood.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This assumption also makes our model robust to other forms of altruistic
+ giving.
+ For example, in addition to receiving a warm glow from giving to their
+ descendants at death, households may care about their descendant's welfare
+ directly and thus may wish to sell housing in order to give their children
+ funds to purchase housing earlier.
+ As families live in different neighbourhoods, however, this would still
+ not change their voting behaviour.
+ This is because parents with housing would still wish to restrict housing
+ supply in their neighbourhood in order to receive the highest return on
+ their house so they can maximise their child's welfare.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We assume that households are unable to forecast future changes in political
+ support for additional housing supply and instead assume that the house
+ prices follow a random walk.
+ This ensures the dynamics of the model are solvable as it does not require
+ the households to consider the possibility of strategic voting (i.e.
+ voting to lower the house price today to ensure wider support for higher
+ house prices in future periods).
+ We also assume that households are unable to form coalitions when voting,
+ nor bargain political support across time periods and vote solely based
+ on their individual interest at time 
+\begin_inset Formula $t$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/4.1 VoteByYQ.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/4.2 VoteByhQ.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/4.3 VoteByAge.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/4.4 DensityVote.jpeg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Household Support for Higher House Prices
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Calibration
+\end_layout
+
+\begin_layout Standard
+We calibrate the model to capture salient features of the US housing market
+ in the early 2000s prior to the housing boom and bust.
+ The model period is one year, households work for 41 periods (age 25 to
+ 65) and die after 56 periods (age 80).
+ The risk aversion parameter is set to 2, as is standard in the macroeconomics
+ literature.
+ The income process consists of the parameters for the deterministic age-profile
+, the persistent AR(1) component, and the transitory i.i.d.
+ component of income.
+ We estimate the parameters of the deterministic and stochastic 20 income
+ processes using data from the Panel Study of Income Dynamics.
+ 
+\end_layout
+
+\begin_layout Standard
+The retirement income replacement rate is set at 50% of the final period's
+ non-transitory income, based on Díaz et al.
+ (2008).
+ The risk-free interest rate is set at 2%, while the mortgage interest rate
+ is 5%.
+ The maximum loan-to-value (LTV) is set at 0.9 and 0.4 in line with Greenwald
+ (2018).
+\end_layout
+
+\begin_layout Standard
+
+\size scriptsize
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Parameter Values
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\size scriptsize
+\begin_inset Tabular
+<lyxtabular version="3" rows="13" columns="4">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="0pt">
+<column alignment="center" valignment="top" width="3cm">
+<column alignment="center" valignment="top" width="3cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Value
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Interpretation
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Source
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $r^{spread}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $3\%$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Spread between mortgage and saving rate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+30 year average
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $J$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+56
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Periods of life
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $J_{ret}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+41
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Period of working life
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $r^{a}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0.02
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Risk free rate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+30 year average
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\beta$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $0.978$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Discount rate
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Internally Calibrated
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\gamma$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+2
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Risk aversion
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Mean IES of 0.75
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\zeta$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0.75
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Non-durable share 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+PSID data
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $k_{a}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0.07
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Cost of selling house
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+KMV (2017)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $M$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0.9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Maximum LTV
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Guerrieri and Iacoviello (2017)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\theta$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Bequest scaling
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Internally Calibrated
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\overline{w}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $150$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Bequest parameter
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Internally Calibrated
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+\begin_inset Formula $\theta^{rent}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+0.9
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Rental discount
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\size scriptsize
+Mian et al (2017)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We set the house price, rental discount, discount rate, utility housing
+ weight and real estate markup 
+\begin_inset Formula $\left\{ p^{h},\sigma^{v},\overline{w},\theta,\beta\right\} $
+\end_inset
+
+ using simulated method moments to match the following moments.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Calibration
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features booktabs="true" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top" width="2cm">
+<column alignment="center" valignment="top" width="2cm">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Model
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Data
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Share of owners with a mortgage
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.55
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.57
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Share of renters
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.38
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Home-ownership rate 25-35
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.40
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Home-ownership rate 45-55
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.72
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.70
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Home-ownership rate 65-75
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.71
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.75
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The identity of the median voter will be defined by 
+\begin_inset Formula $\sigma$
+\end_inset
+
+, the households ideological preference over the supply of housing, this
+ allows households to have non-financial preferences over the supply of
+ housing.
+ We calibrate 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ such that the housing market is in equilibrium in 2000.
+ Our calibration requires a non-financial preference in favor of approving
+ more homes as homeowners almost always make up a large majority of the
+ voting population.
+\end_layout
+
+\begin_layout Section
+Quantitative Analysis
+\end_layout
+
+\begin_layout Subsection
+Steady State
+\end_layout
+
+\begin_layout Standard
+First we analyze how demographic changes affect the housing market in the
+ model's steady state.
+ We calculate the political-economic equilibrium using demographic data
+ from the US over the period 1950-2020.
+ During this time there was substantial variation in the demographic structure
+ - driven by the generation born in the post-war spike and how it reverberated
+ over time - as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 3"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at the beginning of the paper.
+ For example, the mean age starts at 30 in 1950 and eventually falls as
+ those born during the baby boom increases the share of young people in
+ the labor and housing market.
+ The mean age in the labor market troughs at 28 in 1970 as the baby boom
+ subsides.
+ The mean age then continues to steadily rise to 39 in 2020 as the those
+ born during the baby boom ages.
+\end_layout
+
+\begin_layout Standard
+To estimate the effect of the changing demographic composition for each
+ year in this period, we solve for the equilibrium price which would result
+ in the median voter being indifferent over an increase or decrease in housing
+ supply.
+ All other parameters are kept constant with the only change coming via
+ variation in demographic structure.
+\end_layout
+
+\begin_layout Standard
+Since homeownership rates increases with age, we find that when the median
+ population age increases the aggregate homeownership rate rises.
+ This increases political support for a reduction in the housing supply
+ which increases house prices.
+ House prices rise until their is enough political support for additional
+ housing supply (via an increase in households who rent) such that the median
+ voter is again indifferent to a small change in house prices.
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 5"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ shows the political-economic equilibrium house price over the post war
+ period.
+ This equilibrium price represents the effects of demographic shocks on
+ the coalition of voters only on the housing market, and thus ignores other
+ factors such as changes in the business cycle, technology and financial
+ crises.
+ Accordingly one should not expect it to closely track the actual house
+ price that is affected by these non-demographic factors.
+ The post war spike in the birth rate leads to a significant fall in the
+ equilibrium house price starting in the 1970s as these households, who
+ are mostly young renters, enter the housing market.
+ As these households age and become homeowners they shift towards opposing
+ the construction of new housing to protect the value of their stock of
+ housing.
+\emph on
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/5. Price Income Ratio.jpg
+	lyxscale 20
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Steady State Equilibrium House Price
+\emph on
+ 
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 5"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using demographic projections out to 2100 we can estimate the impact the
+ on-going aging of the US economy will have on the political economy of
+ the US housing market as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 6"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The IMF calculate demographic projections for the US population subject
+ to three different assumptions about the level of immigration, of primarily
+ young households, over the next 80 years.
+ We find that for low to medium assumptions about immigration the aging
+ of the US population will continue to increase the relative size of the
+ electorate who support higher house prices - at least at the initial level
+ of house prices.
+ As a result, the equilibrium level of house prices increases over the next
+ 80 years.
+ For high level assumptions about immigration we find results similar to
+ that of a spike in the birth rate, this is because immigrants tend to be
+ younger and would change the demographic structure towards a lower median-age
+ which would initially result in more political support for increase in
+ the housing supply.
+ The high immigration projection includes some long run cyclical dynamics
+ as young immigrants eventually age and swing between the NIMBY and anti-NIMBY
+ coalitions.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/6. Price Income Ratio Scenario.jpg
+	lyxscale 20
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Steady State Equilibrium House Price Projections
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 6"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Impulse Response Functions
+\end_layout
+
+\begin_layout Standard
+In this next section we calculate the dynamics of a demographic shock to
+ the housing market in the form of a temporary baby boom.
+ We start the model in its equilibrium and then increase the birthrate of
+ new households by 10 per cent for 10 years as shown in 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 7"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ After 25 years, when those who were born during the boom enter the labor
+ and housing market, the effect of the spike in the birthrate starts to
+ affect the demographic structure of households in the model.
+ We then calculate the equilibrium response of the economy across the subsequent
+ 80 years to see the effect of the baby boom through time.
+ 
+\end_layout
+
+\begin_layout Standard
+In order to solve the model's dynamics we must take a stance on how households
+ expectations of the future path of house prices are formed as expectations
+ about the future capital gains or losses affect households demand for housing.
+ To keep the model tractable we assume that households expect that house
+ prices follow a random walk and thus in expectation will remain at their
+ current level - at least with respect to the demographic changes in the
+ model.
+\end_layout
+
+\begin_layout Standard
+Initially, the generation that was born during the boom, decreases the median
+ age of households within the economy as the number of young household increases.
+ After 10 years the population boom ends and the birth rate returns to normal.
+ After the birthrate returns to its steady state level, the generation born
+ during the boom continues to age, pushing the average age above it's steady
+ state level until they all die out 65 years later.
+ This generation, being larger than the generations that come before or
+ after them, have disproportionately more voting power.
+ The impact of this electorally powerful cohort will vary depending on how
+ the preferences of those born during the boom differ from the rest of the
+ population.
+ 
+\end_layout
+
+\begin_layout Standard
+When young, those born during the boom are disproportionately renters, with
+ lower incomes and lower net wealth.
+ As a result they use their outsized voting power to increase the supply
+ of new houses and push down the price of housing.
+ The lower price of housing increases the homeownership rate across all
+ ages, although the impact on the overall home ownership rate is small.
+ In general equilibrium this downward pressure on the price of housing is
+ partially offset by the creation of new home owners who on average prefer
+ higher prices once they purchase a home.
+ 
+\end_layout
+
+\begin_layout Standard
+The impact of this initial change in the housing market is to decrease both
+ the level of across-generation inequality (as older and wealthier households
+ relative net worth falls with house prices) and within generational inequality
+ (as renters of all ages are able to either gain access to the housing market
+ for the first time or alternatively pay a lower rate of rent).
+ 
+\end_layout
+
+\begin_layout Standard
+However this impact is short lived.
+ Greater political support for lower house prices ends after 20 years and
+ prices then rise to above their steady state level.
+ This reversal is driven by the increase in homeownership as the boom generation
+ ages.
+ The higher rate of homeownership and increases the number of households
+ who expect to be net-sellers of housing and thus would prefer a higher
+ price.
+ This rise in home ownership is driven by two effects.
+ The first is purely mechanical: homeownership rates increase with age as
+ households build up their wealth and the generation born during the boom
+ is comparatively large.
+ Hence, we would expect an increase in the aggregate homeownership rate
+ of the entire population as this outsized generation ages.
+ The second effect is the endogenous impact of the vote to lower house prices
+ in the first 20 years.
+ This increased support for higher housing supply in the first two decades
+ makes it easier for households to buy housing across 
+\emph on
+all
+\emph default
+ generations.
+ Not only do those born during the boom have disproportionate voting power,
+ but by initially supporting lower house prices they (unintentionally) increased
+ the size of their voting coalition across generations by creating more
+ homeowners among the households who are older.
+ 
+\end_layout
+
+\begin_layout Standard
+For example, consider an older, low income household that was born 25 years
+ before the baby boom.
+ As a low income household they might optimally choose to rent for the entirety
+ of their life.
+ However, when those born during the boom starts to vote for lower house
+ prices, their optimal decision may change allowing them to purchase housing
+ for the first time.
+ This change in their status from being a renter to a homeowner (who is
+ unlikely to make additional purchases of housing) will lead them to switch
+ their political support from lower to higher prices for the rest of their
+ life.
+\end_layout
+
+\begin_layout Standard
+This rise in house prices, however, leads to falls in the homeownership
+ rates across all age levels.
+ It also more then unwinds the decrease in generational inequality as the
+ wealth ratio of 55-65 year olds to 25-35 year olds increases.
+ The generation that is born after the baby boom face a housing market in
+ which house prices are significantly higher.
+ This leads them to have a lower rate of home ownership compared with the
+ model's steady state.
+ These high house prices persist for several decades those born during the
+ boom start to die.
+\emph on
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/7.1 Bith.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/7.2 Average Age.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/7.3 Smoothed House Price.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/7.4 Home30.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Impulse Response Functions for a Temporary Birthrate Increase
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 7"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The impacts of the generation born during the baby boom can also be broken
+ down by their effect on different cohorts as shown in figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 8"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ We analyze the effects of those born during the boom on their own 10 year
+ long generation, their parents generation (who are 25 years older) and
+ their children's generation (who are 25 years younger).
+ Those born during the boom are generally able to use their outsized political
+ power to increase their relative net-worth across the entire life cycle.
+ 
+\end_layout
+
+\begin_layout Standard
+This demographic shock also affects the generations that come before and
+ after the boom.
+ The generation of parents that gave birth to those during the boom are
+ initially worse off when house prices fall.
+ However, they benefit towards the end of their life when their off-spring
+ transition into homeownership and lift the equilibrium house price.
+ The generation of children that came after are rendered permanently poorer
+ due to the higher cost of housing, this leads them to have a permanently
+ lower level of net worth across their entire life.
+ 
+\end_layout
+
+\begin_layout Standard
+This mechanism outlines how the political economy mechanism of housing supply
+ means that changes in the size of demographic structure can have significant
+ effects on the housing market and economic outcomes for different generations.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/8.1 Generations 1.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/8.2 Generations 3.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/8.3 NW2.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/8.4 NW1.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Impulse Response Functions for a Temporary Birthrate Increase
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 8"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Permanent Demographic Shock
+\end_layout
+
+\begin_layout Standard
+We next consider the impact of a permanent demographic shock as an alternative
+ to a transitory shock.
+ In this case the formation rate of new households falls 10 per cent forever.
+ While the fall in the birth rate is permanent the effect on the model is
+ temporary as the once new formation rate has time to filter through the
+ demographic structure of the economy, the relative sizes of the different
+ generations will return to the original steady state of the model.
+ We find that this permanent reduction in the formation of new households
+ thus causes a transitory increase in the average age that lasts 56 years.
+ This increase in the average age increases the relative size of the older
+ generations.
+ Since these older generations are predominantly home owners and more likely
+ to prefer a lower level of housing supply.
+ Thus we see an increase in the equilibrium house price and a corresponding
+ reduction in the homeownership rate and the consumption of housing.
+ 
+\emph on
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/9.1 Average Age with Negative Permanent Shock.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/9.2 Smoothed House Prices with Negative Permanent Shock.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/10.1 Generations1.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/10.2 Generations2.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Impulse Response Function for Permanent Birthrate Fall
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 9"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\SpecialChar ligaturebreak
+
+\end_layout
+
+\begin_layout Section
+Robustness
+\end_layout
+
+\begin_layout Standard
+We first consider how these results are affected by choice of calibration
+ of the model.
+ Varying the size of non-financial preferences over housing supply largely
+ does not affect the dynamics of the model.
+ While a stronger (weaker) non-financial preference for housing supply does
+ lower (increase) the steady state house price to income ratio the impacts
+ on the dynamics of the model are small.
+ Regardless of whether the non-financial preferences are increased or decreased
+ the impact of a temporary baby boom on house prices is broadly unchanged.
+ This is because while the mean level of support changes under the alternative
+ calibration differs the marginal impact of a boom generation is mostly
+ unchanged.
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/11. Smoothed House Price Params.jpg
+	lyxscale 20
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Steady State Equilibrium House Price
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 11"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Alternative Voting Mechanisms
+\end_layout
+
+\begin_layout Standard
+Finally we consider how variations in the voting mechanism may affect the
+ results for the equilibrium house prices.
+ We consider two alternatives: weighting household voting power by turnout
+ rates and weighting households political power by the log of their net
+ worth.
+ 
+\end_layout
+
+\begin_layout Standard
+Weighting households vote by their turnout rate (in US elections) by age
+ does not materially change the results.
+ Younger households tend to have a lower voting rates, a result which has
+ been constant across time.
+ However, the overall estimated path of house prices does not change.
+\end_layout
+
+\begin_layout Standard
+Alternatively, weighting by household's political power by using the log
+ of their net worth, does materially change the path of projected house
+ prices.
+ The fall in house prices that is otherwise estimated to have occurred in
+ the 1970s, when the baby boom generation are mostly renters, does not occur.
+ Although they are more numerous than previous generations, their relatively
+ low level of net worth means they a smaller degree of political leverage
+ compared with the base case.
+ As the economy ages, the increase in the price to income ratio is even
+ larger as the aging population transition towards both home ownership and
+ greater political power as their net worth increases.
+ This alternative voting mechanism does not qualitatively change the overall
+ results, but it does make it quantitatively larger in the 21st century.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/12. PriceIncome Ratio Alternatives.jpg
+	lyxscale 20
+	scale 10
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Steady State Equilibrium House Price
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 12"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Conclusion
+\end_layout
+
+\begin_layout Standard
+Local planning regulations and the political-economic constraints that bind
+ them have long been defining features of housing markets across high-income
+ countries.
+ Given the importance of housing in homeowner's financial portfolios, it
+ is natural that some households might seek to protect this value by voting
+ in favor of regulations that restrict the supply of new housing.
+ In this paper, we show how post-war demographic changes led to a shift
+ in relative generation sizes and, consequently, changes in political support
+ for additional housing supply.
+ Our political-economic model of the housing market estimates that these
+ demographic changes resulted in a peak-to-trough increase of house prices
+ by 15 percent.
+ Furthermore, future demographic projections indicate further increases
+ in the house prices over the coming decades.
+\end_layout
+
+\begin_layout Standard
+Unpacking the distributional impacts of this generational shift, we find
+ that a one-off increase in the birth rate generally increases the relative
+ consumption of the boom generation as they use their disproportionate voting
+ power to improve their financial position throughout their life cycle.
+ However, this comes at the cost of other generations: the consumption of
+ the parent's generation initially falls during the boom, and the net worth
+ of the baby boomers children is lower over their entire life cycle.
+ This highlights how demographic shocks can have long-lasting effects, even
+ after the baby boom generation has completely died off.
+ Eventually, the housing market returns to equilibrium, but the effects
+ of a baby boom can distort the housing market for both themselves and future
+ generations.
+\end_layout
+
+\begin_layout Section*
+References
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+Acemoglu, D., & Robinson, J.
+ A.
+ (2001).
+ A theory of political transitions.
+ American Economic Review, 91(4), 938-963.
+\end_layout
+
+\begin_layout Standard
+Ahlfeldt, G.
+ M.
+ (2011).
+ Blessing or curse? Appreciation, amenities and resistance to urban renewal.
+ Regional Science and Urban Economics, 41(1):32–45.
+\end_layout
+
+\begin_layout Standard
+Ahlfeldt, G.
+ M.
+ and Maennig, W.
+ (2015).
+ Homevoters vs.
+ leasevoters: A spatial analysis of airport effects.
+ Journal of Urban Economics, 87:85–99
+\end_layout
+
+\begin_layout Standard
+Anagol, S., Ferreira, F.
+ V., & Rexer, J.
+ M.
+ (2021).
+ Estimating the economic value of zoning reform (No.
+ w29440).
+ National Bureau of Economic Research.
+\end_layout
+
+\begin_layout Standard
+Attanasio, O.
+ P., Bottazzi, R., Low, H.
+ W., Nesheim, L., & Wakefield, M.
+ (2012).
+ Modelling the demand for housing over the life cycle.
+ Review of Economic Dynamics, 15(1), 1-18.
+\end_layout
+
+\begin_layout Standard
+Alesina, A., & Rodrik, D.
+ (1994).
+ Distributive politics and economic growth.
+ The quarterly journal of economics, 109(2), 465-490.
+\end_layout
+
+\begin_layout Standard
+Bosetti, N., and Sims, S.
+ (2016).
+ "Stopped: Why people oppose development in their back yard" Centre for
+ London 
+\end_layout
+
+\begin_layout Standard
+Cheung, R.
+ and Meltzer, R.
+ (2013).
+ Homeowners associations and the demand for local land use regulation.
+ Journal of Regional Science, 53(3):511–534.
+\end_layout
+
+\begin_layout Standard
+Dehring, C.
+ A., Depken II, C.
+ A., and Ward, M.
+ R.
+ (2008).
+ A direct test of the homevoter hypothesis.
+ Journal of Urban Economics, 64(1):155–170.
+\end_layout
+
+\begin_layout Standard
+Eggleston, J., Hays, D., Munk, R., & Sullivan, B.
+ (2020).
+ The Wealth of Households, 2017.
+ Washington, DC, USA: US Department of Commerce, US Census Bureau.
+\end_layout
+
+\begin_layout Standard
+Einstein, K.
+ L., Palmer, M., & Glick, D.
+ M.
+ (2019).
+ Who participates in local government? Evidence from meeting minutes.
+ Perspectives on politics, 17(1), 28-46.
+\end_layout
+
+\begin_layout Standard
+Fernandez-Villaverde, J., & Krueger, D.
+ (2011).
+ Consumption and saving over the life cycle: How important are consumer
+ durables?.
+ Macroeconomic dynamics, 15(5), 725-770.
+\end_layout
+
+\begin_layout Standard
+Fischel, W.
+ A.
+ (1999).
+ Does the American way of zoning cause the suburbs of metropolitan areas
+ to be too spread out?.
+ Governance and opportunity in metropolitan America, 15, 1-19.
+\end_layout
+
+\begin_layout Standard
+Fischel, W.
+ A.
+ (2002).
+ The homevoter hypothesis: How home values influence local government taxation,
+ school finance, and land-use policies.
+ Cambridge, MA: Harvard University Press.
+\end_layout
+
+\begin_layout Standard
+Frieden, B.
+ J.
+ (1979).
+ Environmental protection hustle.
+ United States.
+\end_layout
+
+\begin_layout Standard
+Fu, C.
+ H.
+ (2019).
+ Living arrangement and caregiving expectation: The effect of residential
+ proximity on inter vivos transfer.
+ Journal of Population Economics, 32(1), 247-275..
+\end_layout
+
+\begin_layout Standard
+Glaeser, E.
+ L., Gyourko, J., & Saks, R.
+ E.
+ (2006).
+ Urban growth and housing supply.
+ Journal of economic geography, 6(1), 71-89.
+\end_layout
+
+\begin_layout Standard
+Greenwald, D.
+ (2018).
+ The mortgage credit channel of macroeconomic transmission.
+ Research Paper no.
+ 5184-16, Sloan School Management, Massachusetts Inst.
+ Technology.
+\end_layout
+
+\begin_layout Standard
+Greenwood, J., Seshadri, A., & Vandenbroucke, G.
+ (2005).
+ The baby boom and baby bust.
+ American Economic Review, 95(1), 183-207.
+\end_layout
+
+\begin_layout Standard
+Gyourko, J., Mayer, C., & Sinai, T.
+ (2013).
+ Superstar cities.
+ American Economic Journal: Economic Policy, 5(4), 167-199.
+\end_layout
+
+\begin_layout Standard
+Hankinson, M.
+ (2018).
+ When do renters behave like homeowners? High rent, price anxiety, and NIMBYism.
+ American political science review, 112(3), 473-493.
+\end_layout
+
+\begin_layout Standard
+Hilber, C.
+ A.
+ and Robert-Nicoud, F.
+ (2013).
+ On the origins of land use regulations: Theory and evidence from us metro
+ areas.
+ Journal of Urban Economics, 75:29–43.
+\end_layout
+
+\begin_layout Standard
+Iacoviello, M.
+ (2005).
+ House prices, borrowing constraints, and monetary policy in the business
+ cycle.
+ American economic review, 95(3), 739-764.
+\end_layout
+
+\begin_layout Standard
+Iacoviello, M., & Pavan, M.
+ (2013).
+ Housing and debt over the life cycle and over the business cycle.
+ Journal of Monetary Economics, 60(2), 221-238.
+\end_layout
+
+\begin_layout Standard
+Jiang, B.
+ (2018).
+ Homeownership and voter turnout in us local elections.
+ Journal of Housing Economics, 41, 168-183.
+\end_layout
+
+\begin_layout Standard
+Justiniano, A., Primiceri, G.
+ E., & Tambalotti, A.
+ (2015).
+ Household leveraging and deleveraging.
+ Review of Economic Dynamics, 18(1), 3-20.
+\end_layout
+
+\begin_layout Standard
+Kaplan, G., Mitman, K., & Violante, G.
+ L.
+ (2020).
+ The housing boom and bust: Model meets evidence.
+ Journal of Political Economy, 128(9), 3285-3345.
+\end_layout
+
+\begin_layout Standard
+Kahn, M.
+ E., Vaughn, R., & Zasloff, J.
+ (2010).
+ The housing market effects of discrete land use regulations: Evidence from
+ the California coastal boundary zone.
+ Journal of Housing Economics, 19(4), 269-279.
+\end_layout
+
+\begin_layout Standard
+Kindermann, F., & Krueger, D.
+ (2022).
+ High marginal tax rates on the top 1 percent? Lessons from a life-cycle
+ model with idiosyncratic income risk.
+ American Economic Journal: Macroeconomics, 14(2), 319-366.
+\end_layout
+
+\begin_layout Standard
+Krusell, P., & Rios-Rull, J.
+ V.
+ (1999).
+ On the size of US government: political economy in the neoclassical growth
+ model.
+ American Economic Review, 89(5), 1156-1181.
+\end_layout
+
+\begin_layout Standard
+Kulka, A., Sood, A., & Chiumenti, N.
+ (2022).
+ How to increase housing affordability: Understanding local deterrents to
+ building multifamily housing (No.
+ 22-10).
+ Working Papers.
+\end_layout
+
+\begin_layout Standard
+Mankiw, N.
+ G., & Weil, D.
+ N.
+ (1989).
+ The baby boom, the baby bust, and the housing market.
+ Regional science and urban economics, 19(2), 235-258.
+\end_layout
+
+\begin_layout Standard
+Manville, M., Monkkonen, P., & Lens, M.
+ (2020).
+ It’s time to end single-family zoning.
+ Journal of the American Planning Association, 86(1), 106-112.
+\end_layout
+
+\begin_layout Standard
+Mumtaz, H.
+ and Šustek, R., 2023.
+ Global house prices since 1950.
+ Working Paper.
+\end_layout
+
+\begin_layout Standard
+Oliver, J.
+ E., & Ha, S.
+ E.
+ (2007).
+ Vote choice in suburban elections.
+ American Political Science Review, 101(3), 393-408.
+\end_layout
+
+\begin_layout Standard
+Ortalo-Magné, F., & Prat, A.
+ (2014).
+ On the political economy of urban growth: Homeownership versus affordability.
+ American Economic Journal: Microeconomics, 6(1), 154-181
+\end_layout
+
+\begin_layout Standard
+Persson, T., & Tabellini, G.
+ (1994).
+ Does centralization increase the size of government?.
+ European Economic Review, 38(3-4), 765-773.
+\end_layout
+
+\begin_layout Standard
+Sahn, A.
+ (2024).
+ Racial diversity and exclusionary zoning: Evidence from the great migration.
+ Journal of Politics.
+ 
+\end_layout
+
+\begin_layout Standard
+Scally, C.
+ P., & Tighe, J.
+ R.
+ (2015).
+ Democracy in action?: NIMBY as impediment to equitable affordable housing
+ siting.
+ Housing Studies, 30(5), 749-769.
+\end_layout
+
+\begin_layout Standard
+Song, J.
+ (2021).
+ The effects of residential zoning in US housing markets.
+ Available at SSRN 3996483.
+\end_layout
+
+\begin_layout Standard
+Trounstine, J.
+ (2020).
+ The geography of inequality: How land use regulation produces segregation.
+ American Political Science Review, 114(2), 443-455.
+\end_layout
+
+\begin_layout Standard
+Turner, M.
+ A., Haughwout, A., & Van Der Klaauw, W.
+ (2014).
+ Land use regulation and welfare.
+ Econometrica, 82(4), 1341-1403.
+\end_layout
+
+\begin_layout Standard
+Whittemore, A.
+ H., & BenDor, T.
+ K.
+ (2018).
+ Talking about density: An empirical investigation of framing.
+ Land use policy, 72, 181-191.
+\end_layout
+
+\begin_layout Standard
+Yang, F.
+ (2009).
+ Consumption over the life cycle: How different is housing?.
+ Review of Economic Dynamics, 12(3), 423-443.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

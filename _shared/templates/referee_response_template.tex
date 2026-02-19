@@ -1,0 +1,125 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+%% ============================================================
+%% Status macros — use these in every subsection to signal action taken
+%% ============================================================
+\newcommand{\fixed}{\textcolor{teal}{\textbf{[FIXED]}}}
+\newcommand{\added}{\textcolor{blue}{\textbf{[ADDED]}}}
+\newcommand{\noted}{\textcolor{orange}{\textbf{[NOTE]}}}
+
+\title{Response to Referee Report\\[6pt]
+\large [AUTHORS] ``[PAPER TITLE]''}
+\author{}
+\date{[MONTH YEAR]}
+
+\begin{document}
+\maketitle
+
+\noindent This document summarises all changes made to the manuscript in response
+to the referee report dated [DATE OF REPORT]. Issue numbers refer to
+the referee report.
+
+%% Optional: flag any cross-cutting caveat before the point-by-point response.
+%% Example: "All equation changes should be verified against the code before resubmission."
+
+%% ============================================================
+\section*{Critical Issues ([N1]--[N2])}
+%% ============================================================
+
+\subsection*{Issue [N]: [Short description of the issue]}
+
+%% Choose the appropriate macro: \fixed, \added, or \noted
+\fixed{} [Describe what was changed. State the corrected result explicitly.
+If the change involves an equation, display the corrected equation below.]
+\[
+  % Corrected equation here
+\]
+
+\subsection*{Issue [N]: [Short description of the issue]}
+
+\added{} [Describe what was added to the manuscript. Quote the new text
+or point to the location (e.g., "A new paragraph after Eq.~(X) now reads…").]
+
+%% ============================================================
+\section*{High Priority Issues ([N1]--[N2])}
+%% ============================================================
+
+\subsection*{Issue [N]: [Short description]}
+
+\fixed{} [Explanation.]
+
+\subsection*{Issue [N]: [Short description]}
+
+\noted{} [If the issue is not addressed this round, explain why and when
+it will be resolved (e.g., "Requires coordination with co-author; flagged for next revision.").]
+
+%% ============================================================
+\section*{Medium Priority Issues ([N1]--[N2])}
+%% ============================================================
+
+\subsection*{Issue [N]: [Short description]}
+
+\fixed{} [Explanation.]
+
+%% ============================================================
+\section*{Low Priority Issues ([N1]--[N2])}
+%% ============================================================
+
+\subsection*{Issue [N]: [Short description]}
+
+\fixed{} [Explanation, e.g., typo table:]
+
+\begin{center}
+\begin{tabular}{ll}
+\hline\hline
+\textbf{Was} & \textbf{Now} \\
+\hline
+[old text 1] & [corrected text 1] \\
+[old text 2] & [corrected text 2] \\
+\hline\hline
+\end{tabular}
+\end{center}
+
+%% ============================================================
+\section*{Additional Corrections (not in referee report)}
+%% ============================================================
+
+\begin{itemize}
+    \item \textbf{[Location/equation]}: [Description of self-initiated correction.]
+    \item \textbf{[Location/equation]}: [Description.]
+\end{itemize}
+
+%% ============================================================
+%% Optional section: Code--Paper Crosswalk
+%% Include this section when a code audit has been conducted alongside
+%% the referee response.
+%% ============================================================
+% \section*{Code Comparison: \texttt{[filename]} vs Paper}
+%
+% \subsection*{Confirmed matches}
+% \begin{itemize}
+%   \item [Item that matches between paper and code]
+% \end{itemize}
+%
+% \subsection*{Discrepancies requiring decisions}
+% \subsubsection*{D[N]: [Short description] --- [STATUS]}
+% \begin{itemize}
+%   \item \textbf{Paper}: [what the paper says]
+%   \item \textbf{Code}: [what the code does]
+% \end{itemize}
+
+%% ============================================================
+\section*{Outstanding Items}
+%% ============================================================
+
+\begin{enumerate}
+    \item \textbf{[Issue reference]}: [What remains to be done, and who is responsible.]
+    \item \textbf{[Issue reference]}: [Description.]
+\end{enumerate}
+
+\end{document}
