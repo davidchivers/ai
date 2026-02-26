@@ -1,0 +1,7 @@
+﻿{
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.wordWrap": "on",
+  "editor.formatOnSave": false,
+  "terminal.integrated.defaultProfile.windows": "PowerShell"
+}
