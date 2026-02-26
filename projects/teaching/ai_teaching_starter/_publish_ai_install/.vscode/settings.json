@@ -3,5 +3,6 @@
   "files.insertFinalNewline": true,
   "editor.wordWrap": "on",
   "editor.formatOnSave": false,
-  "terminal.integrated.defaultProfile.windows": "PowerShell"
+  "terminal.integrated.defaultProfile.windows": "PowerShell",
+  "workbench.activityBar.location": "top"
 }

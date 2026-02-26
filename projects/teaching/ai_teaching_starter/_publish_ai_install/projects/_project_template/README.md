@@ -1,15 +1,11 @@
-﻿# Project template (basic)
+﻿# Project template (advanced)
 
 ## Goal
 
-Describe the project goal in 2-3 sentences.
+State the research goal in plain language.
 
-## Current status
+## Workflow
 
-Not started.
-
-## Next 3 tasks
-
-1. Define research question.
-2. List candidate data.
-3. Draft first analysis plan.
+1. Brainstorm in `notes/01` to `notes/04`.
+2. Commit final choices in `notes/05_research_plan.md`.
+3. Keep updates concise and decision-complete.

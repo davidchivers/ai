@@ -1,8 +1,3 @@
 ﻿# Project memory
 
-Use this file for:
-
-- key decisions
-- assumptions
-- unresolved questions
-- important paths
+Track stable decisions, constraints, unresolved questions, and key file paths.

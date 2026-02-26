@@ -1,19 +1,13 @@
-﻿# AI teaching starter (basic)
+﻿# AI teaching starter (advanced)
 
-This is a minimal starter for mixed empirical/theory teaching use.
+This pack includes full agents/skills plus workflow preferences for idea development, notes structure, and file ordering.
 
-## 5-minute quickstart
+## Quickstart
 
 1. Open this folder in VS Code or Cursor.
-2. Read `memory/README.md`.
-3. Create a new project from `projects/_project_template/`.
-4. Start brainstorming in `notes/brainstorm.md`.
-5. Move selected decisions into `notes/research_plan.md`.
+2. Read `memory/global_notes.md` first.
+3. Start new work from `projects/_project_template/`.
+4. Use numbered files in `notes/` during brainstorming.
+5. Keep `05_research_plan.md` as decision-lock output.
 
-## Included
-
-- Core agents: empirical ideas, literature review, status updates
-- Core skills: ideation, literature, Stata cleaning/regression, LaTeX model writing
-- Basic template: referee response skeleton
-
-This is a starter pack, not a locked system. You can use it as-is, copy only parts of it, or start a new folder anytime.
+This is a starter pack, not a locked system. You can adapt structure as needed.

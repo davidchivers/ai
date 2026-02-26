@@ -1,0 +1,323 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\newcommand{\fixed}{\textcolor{teal}{\textbf{[FIXED]}}}
+\newcommand{\added}{\textcolor{blue}{\textbf{[ADDED]}}}
+\newcommand{\noted}{\textcolor{orange}{\textbf{[NOTE]}}}
+
+\title{Response to Referee Report\\[6pt]\large Chivers, Feng, Keller \& Li (2025) ``Necessity Entrepreneurship''}
+\author{}
+\date{February 2026}
+
+\begin{document}
+\maketitle
+
+\noindent This document summarizes all changes made to the manuscript in response to the internal referee report dated 18 February 2026. Issue numbers refer to the referee report.
+
+\bigskip
+\noindent\noted{} \textit{All equation changes should be verified against the C++ calibration code (\texttt{cfv\_red\_final.cpp}) to confirm the code implements the corrected versions. This step is pending.}
+
+%% ============================================================
+\section*{Critical Issues (1--7)}
+%% ============================================================
+
+\subsection*{Issue 1: FOC contains stray $-rk$ term}
+
+\fixed{} The first-order condition (Eq.~4) with respect to $n$ previously included $-rk$, which does not depend on $n$. Removed. The corrected FOC is:
+\[
+\gamma x k^{\alpha}(zn)^{\gamma-1}z - w(1+\psi\tau)z - \frac{\rho\kappa z}{q(\theta)} = 0.
+\]
+
+\subsection*{Issue 2: Production function $z$ inconsistency}
+
+\added{} A new paragraph after Eq.~(3) now explains that firms do not observe individual workers' realisations of $z$. Because workers are randomly matched and each firm employs a representative cross-section, the effective labour productivity at the firm level is $z=1$. We retain $z$ in the formulation because the realised wage $\widetilde{w}$ depends on the worker's actual productivity $z$.
+
+The choice variable in Eq.~(3) was changed from $\max_{zn}$ to $\max_n$ to reflect that firms choose $n$, not $zn$.
+
+\subsection*{Issue 3: Optimal labour demand derivation}
+
+\fixed{} Three corrections to Eq.~(5):
+\begin{enumerate}[(a)]
+    \item Added missing $\alpha$ exponent: numerator is now $\gamma x k^{\alpha}$ (was $\gamma x k$).
+    \item Fixed unmatched bracket: removed stray opening parenthesis in denominator.
+    \item The $z$ factors cancel under $z=1$ (see Issue 2), so the expression is clean.
+\end{enumerate}
+Corrected equation:
+\[
+n^{*}(k,x,\widetilde{w})=\left[\frac{\gamma xk^{\alpha}}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right]^{\frac{1}{1-\gamma}}.
+\]
+
+\subsection*{Issue 4: Profit function derivation}
+
+\fixed{} Eq.~(6) has been replaced with the correct span-of-control profit function:
+\[
+\nu(k,x,\widetilde{w})=(1-\gamma)\left[\frac{\gamma}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right]^{\frac{\gamma}{1-\gamma}}\left(xk^{\alpha}\right)^{\frac{1}{1-\gamma}}-rk.
+\]
+Previously the leading term was $xk$ (missing $\alpha$) and the expression was not properly factorised.
+
+\subsection*{Issue 5: Budget constraint sign error}
+
+\fixed{} Eq.~(10) changed from $(1-\tilde{r}-\delta)a$ to $(1+r-\delta)a$. The same correction was applied to three appendix budget constraints (Eqs.~19--20 and the entrepreneur budget constraint).
+
+\subsection*{Issue 6: Double-counting of asset returns}
+
+\fixed{} Removed $ra$ from the income definition $inc$. Asset returns are now captured only through the $(1+r-\delta)a$ term in the budget constraint, consistent with the individual formulations in Eqs.~(7)--(9).
+
+\subsection*{Issue 7: $r$ vs $\tilde{r}$ inconsistency}
+
+\fixed{} All instances of $\tilde{r}$ have been replaced with $r$. There is no tax-adjusted interest rate in the model; the tilde was a notational error (likely confusion with $\widetilde{w}$).
+
+%% ============================================================
+\section*{High Priority Issues (8--12)}
+%% ============================================================
+
+\subsection*{Issue 8: Entrepreneur continuation state and $i_w$ coding}
+
+\fixed{} Two changes:
+\begin{enumerate}[(a)]
+    \item \textbf{Appendix $i_w$ coding}: The computation appendix previously stated ``$i_w=0$ indicating being entrepreneur''. This was reversed. Now reads: ``$i_w=0$ indicate being unemployed, $i_w=1$ being employed and $i_w=2$ being an entrepreneur.'' This matches the main text.
+    \item \textbf{Appendix value function}: Changed entrepreneur continuation from $i'_w=2$ to $i'_w=0$ in all three branches, consistent with the main text. Entrepreneurs who exit re-enter as unemployed.
+\end{enumerate}
+
+\subsection*{Issue 9: $p(\theta)$ listed as choice variable}
+
+\fixed{} The choice set in Eq.~(10) was $\{a', c, p(\theta), \mathcal{I}_e, \mathcal{I}_w\}$. Changed to $\{a', c, \mathcal{I}_e\}$. The job-finding probability $p(\theta)$ is an equilibrium object, not a household choice.
+
+\subsection*{Issue 10: State variables inconsistent}
+
+\fixed{} The main text value function now reads $\mathbf{V}(a,h,z,x,i_w)$, matching the appendix. Previously the main text omitted $z$ and $x$.
+
+\subsection*{Issue 11: No formal equilibrium definition}
+
+\noted{} Not addressed in this round. Drafting a full equilibrium definition (market clearing, law of motion, government budget balance) requires careful alignment with the code. Flagged for future revision.
+
+\subsection*{Issue 12: Cutoff on $x$ or $h$?}
+
+\added{} A sentence now links the two: ``Since $h$ determines managerial ability $x$, each cutoff $\hat{h}$ corresponds to a threshold value of managerial ability $x^*$; in the computational appendix we work with the equivalent cutoff $x^*$ directly.''
+
+%% ============================================================
+\section*{Medium Priority Issues (13--19)}
+%% ============================================================
+
+\subsection*{Issue 13: Appendix income equation typo}
+
+\fixed{} Eq.~(18) for $\widetilde{w}_u$ had a malformed expression. Changed \texttt{p($\theta$))b} to $+(1-p(\theta))b$.
+
+\subsection*{Issue 14: Appendix profit function differs from main text}
+
+\fixed{} The appendix profit function and cutoff equations now use $(zn)^\gamma$ and $zn$ in cost terms, consistent with the main text. Also added missing $\rho$ in search cost terms of the cutoff equations.
+
+\subsection*{Issue 15: Cutoff condition (static vs dynamic)}
+
+\noted{} The referee notes that the cutoff should equate \emph{values} (including continuation), not just current-period payoffs. This may be a simplification for the numerical algorithm. Requires verification against the code.
+
+\subsection*{Issue 16: Tax function inconsistency}
+
+\added{} Section 3.7 now explicitly distinguishes two tax instruments:
+\begin{itemize}
+    \item A \textbf{payroll tax} $\tau$ (shared employer/employee) financing unemployment insurance --- this appears in the budget constraints.
+    \item A \textbf{progressive income tax} $T(y) = y - \lambda_p y^{1-\tau_p}$ following Heathcote, Storesletten \& Violante (2017) --- financing general government expenditure.
+\end{itemize}
+
+\subsection*{Issue 17: Capital in the entrepreneur's problem}
+
+\added{} The capital subsection now states: ``entrepreneurs can borrow and lend at the market interest rate $r$, so the choice of capital $k$ is unrestricted by the entrepreneur's own wealth $a$. We relax this assumption in the credit friction experiment of Section 6.''
+
+\subsection*{Issue 18: Beveridge curve algebra error}
+
+\fixed{} The exponent was $(1-\mu)$ with a trailing $u$; corrected to $\frac{1}{1-\mu}$ with no trailing $u$. Also fixed $\bar{m}u$ (run together) to $\bar{m}u^{\mu}$ in the denominator. The corrected Beveridge curve:
+\[
+v = \left(\frac{\rho(1-u)}{\bar{m}u^{\mu}}\right)^{\frac{1}{1-\mu}}.
+\]
+
+\subsection*{Issue 19: JCC steady state}
+
+No change. The algebra is correct; the bracket placement in the rendered equation was verified.
+
+%% ============================================================
+\section*{Low Priority Issues (20--30)}
+%% ============================================================
+
+\subsection*{Issue 20--22, 25--26, 28--30: Empty sections / placeholders}
+
+Not addressed in this round (abstract, introduction completion, literature review, baseline results, conclusion, acknowledgements, incomplete tables, figure references). These require substantive content.
+
+\subsection*{Issue 23: Typos}
+
+\fixed{} All reported typos corrected:
+
+\begin{center}
+\begin{tabular}{ll}
+\hline\hline
+\textbf{Was} & \textbf{Now} \\
+\hline
+oppotunistic & opportunistic \\
+enterpreneur & entrepreneur \\
+entrepreneruship & entrepreneurship \\
+educaiton & education \\
+``calibrate are model'' & ``calibrate our model'' \\
+employees (meaning ``employs'') & employs \\
+accross & across \\
+averaege & average \\
+entreprenueurship & entrepreneurship \\
+entrepenuership & entrepreneurship \\
+ntreprenueurs & entrepreneurs \\
+equivilant & equivalent \\
+goverment & government \\
+effciency & efficiency \\
+tallent & talent \\
+entrepeneurs & entrepreneurs \\
+seperation (all instances) & separation \\
+foruma & formula \\
+\hline\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Issue 24: JEL codes}
+
+\fixed{} Changed from \texttt{E23, I10, O40} to \texttt{E24, J24, L26, O40}:
+\begin{itemize}
+    \item \textbf{E24}: Employment; Unemployment; Wages --- fits the unemployment/employment dynamics.
+    \item \textbf{J24}: Human Capital; Occupational Choice --- directly about the paper's core mechanism.
+    \item \textbf{L26}: Entrepreneurship --- obvious fit.
+    \item \textbf{O40}: Economic Growth (General) --- fits the development/misallocation angle.
+\end{itemize}
+I10 (Health: General) was removed as it does not apply.
+
+\subsection*{Issue 27: Notation table}
+
+\added{} A 25-row notation table has been added to the Appendix, listing all key symbols and their definitions. This is intended as a working reference and can be removed or relocated before submission.
+
+%% ============================================================
+\section*{Additional Corrections (not in referee report)}
+%% ============================================================
+
+\begin{itemize}
+    \item \textbf{Section 2 firm problem (Eq.~1)}: Fixed uppercase $X$ to lowercase $x$; changed $n^\gamma$ to $(zn)^\gamma$; fixed $\tau\psi$ ordering to $\psi\tau$; removed time subscript on $\theta$.
+    \item \textbf{Appendix profit function}: Changed to use $x$ (linear, not $x^{1-\alpha-\gamma}$), $(zn)^\gamma$, and replaced $\tilde{r}$ with $r$.
+    \item \textbf{Appendix cutoff equations}: Replaced $x^{1-\alpha-\gamma}$ with $x$ (linear); added $zn$ in cost terms and missing $\rho$ in search cost.
+\end{itemize}
+
+%% ============================================================
+\section*{Code Comparison: \texttt{cfv\_red\_final.cpp} vs Paper}
+%% ============================================================
+
+A thorough comparison of the C++ calibration code against the paper was conducted. Below are all findings.
+
+\subsection*{Confirmed matches}
+
+The following items match between paper and code:
+\begin{itemize}
+    \item Production function form: $y = xk^{\alpha}(zn)^{\gamma}$ (linear in $x$)
+    \item Budget constraint: $(1+r-\delta)a$ (plus sign, correct)
+    \item Wage determination: competitive/market-clearing (no Nash bargaining)
+    \item Matching function form: Cobb-Douglas $m = \bar{m}v^{1-\mu}u^{\mu}$
+    \item Separation rates by education: $\{0.0383, 0.0288, 0.0136\}$
+    \item Education wage premia $z$: $\{1.0, 1.31, 1.61\}$
+    \item Population shares: $\{0.109, 0.581, 0.310\}$
+    \item Utility: CRRA with $\sigma = 2.0$
+    \item $\beta = 0.94$, $\delta = 0.06$, $\psi = 0$
+    \item Cutoff condition: code compares \textbf{full value functions} (not static payoffs --- confirms Issue 15 is a paper typo)
+    \item Credit friction via interest rate wedge on borrowing
+\end{itemize}
+
+\subsection*{Discrepancies requiring decisions}
+
+\subsubsection*{D1: Appendix used $x^{1-\alpha-\gamma}$ --- FIXED}
+
+The appendix profit and cutoff equations used $x^{1-\alpha-\gamma}$ but the code uses $x$ (linear), matching the main text. \textbf{All appendix instances have been changed to $x$ (linear).}
+
+\subsubsection*{D2: Entrepreneur continuation state --- NEEDS DECISION}
+
+\begin{itemize}
+    \item \textbf{Paper}: Entrepreneurs enter next period as $i'_w = 0$ (unemployed). They must re-enter the labour market.
+    \item \textbf{Code}: Entrepreneurs stay as entrepreneurs (\texttt{i\_occp\_through[0] = 0, [1] = 0}, where 0 = entrepreneur in the code).
+\end{itemize}
+These are different model assumptions. Dave: which is intended?
+
+\subsubsection*{D3: $\bar{m}$ (matching efficiency)}
+
+\begin{itemize}
+    \item \textbf{Paper}: $\bar{m} = 0.8$
+    \item \textbf{Code}: \texttt{bar\_m = 0.9} (line 1636)
+\end{itemize}
+The calibration table should be updated to match whichever value produces the reported results.
+
+\subsubsection*{D4: $b$ (unemployment benefit)}
+
+\begin{itemize}
+    \item \textbf{Paper}: $b = 0.40 \times w$
+    \item \textbf{Code}: \texttt{lowerincome\_b = 0.3} (i.e.\ $b = 0.30 \times w$) in the first calibration; 0.25 in the second
+\end{itemize}
+The code appears to run two calibrations (a transition experiment between $b = 0.3w$ and $b = 0.25w$). Neither matches the paper's 0.40.
+
+\subsubsection*{D5: $\tau_y$ (tax rate)}
+
+\begin{itemize}
+    \item \textbf{Paper}: $\tau_y = 0.151$
+    \item \textbf{Code}: \texttt{tau\_y0 = 0.036874} (line 1639)
+\end{itemize}
+These are very different values. The code's \texttt{tau\_y0} acts as a flat payroll tax on worker income, not a progressive income tax. The paper should clarify what $\tau_y = 0.151$ represents.
+
+\subsubsection*{D6: HSV progressive income tax}
+
+\begin{itemize}
+    \item \textbf{Paper}: Describes $T(y) = y - \lambda_p y^{1-\tau_p}$ (Heathcote, Storesletten \& Violante 2017)
+    \item \textbf{Code}: \textbf{No HSV progressive tax implemented.} Only a flat proportional tax on worker income.
+\end{itemize}
+The variables $\lambda_p$ and $\tau_p$ do not exist in the code. If the HSV tax is aspirational (planned but not yet coded), the paper should note this. If the code is definitive, the paper's tax section needs rewriting.
+
+\subsubsection*{D7: $\alpha$ and $\gamma$ vary by education in code}
+
+\begin{itemize}
+    \item \textbf{Paper}: Single values $\alpha = 0.3207$, $\gamma = 0.4693$
+    \item \textbf{Code}: Education-varying via \texttt{x\_share\_dims = \{0.782, 0.802, 0.822\}} with \texttt{k\_share = 0.406}:
+    \begin{itemize}
+        \item Primary: $\alpha = 0.318$, $\gamma = 0.464$
+        \item Secondary: $\alpha = 0.326$, $\gamma = 0.476$
+        \item Tertiary: $\alpha = 0.334$, $\gamma = 0.488$
+    \end{itemize}
+\end{itemize}
+The paper's values are roughly the population-weighted average. Either present education-specific values or explain the averaging.
+
+\subsubsection*{D8: Government budget not balanced in code}
+
+The code computes the tax rate needed to balance the UI budget (\texttt{tau\_y1}), but \textbf{does not feed it back} into the equilibrium loop. Line 1510--1511:
+\begin{verbatim}
+//tau_y0 = ... * tau_y1 + ... * tau_y0;  // COMMENTED OUT
+tau_y0 = tau_y0;  // held fixed
+\end{verbatim}
+The paper states the government runs a balanced budget. This discrepancy may affect welfare comparisons.
+
+\subsubsection*{D9: $p(\theta)$ vs $q(\theta)$ in search costs}
+
+The firm's search cost term uses $\kappa\rho n / q(\theta)$ in the paper but the code variable \texttt{theta\_ut} is computed as $p(\theta) = \bar{m}(v/u)^{1-\mu}$ (the \emph{job-finding} rate), not $q(\theta)$ (the \emph{vacancy-filling} rate). These are generally different. If $p(\theta) = \bar{m}\theta^{1-\mu}$ then $q(\theta) = \bar{m}\theta^{-\mu}$, and the code would need to use $q(\theta) = \bar{m}(v/u)^{-\mu}$. \textbf{This needs verification from Bo.}
+
+\subsubsection*{D10: $i_w$ coding reversed between paper and code}
+
+\begin{itemize}
+    \item \textbf{Paper}: $i_w = 0$ unemployed, $i_w = 1$ employed, $i_w = 2$ entrepreneur
+    \item \textbf{Code}: \texttt{i\_occp = 0} entrepreneur, \texttt{= 1} employed, \texttt{= 2} unemployed
+\end{itemize}
+This is a labelling difference only --- it does not affect the model. But the computation appendix should note the different convention.
+
+%% ============================================================
+\section*{Outstanding Items}
+%% ============================================================
+
+\begin{enumerate}
+    \item \textbf{D2}: Decide entrepreneur continuation state (stay entrepreneur vs become unemployed). \textit{Ask Bo which is intended.}
+    \item \textbf{D3--D5}: Update calibration table to match the code's actual parameter values ($\bar{m}$, $b$, $\tau_y$), OR re-run the code with the paper's stated values.
+    \item \textbf{D6}: Decide whether the HSV progressive tax is part of the model. If not, remove it from the paper. If yes, it needs coding.
+    \item \textbf{D7}: Either present education-varying $\alpha$, $\gamma$ in the paper or explain the single-value approximation.
+    \item \textbf{D8}: Either balance the budget in the code or note the fixed-tax assumption in the paper.
+    \item \textbf{D9}: Verify $p(\theta)$ vs $q(\theta)$ with Bo.
+    \item \textbf{Formal equilibrium definition}: Market clearing, law of motion, government budget balance still need writing.
+    \item \textbf{Substantive content}: Abstract, introduction, literature review, baseline results, and conclusion remain incomplete.
+\end{enumerate}
+
+\end{document}
