@@ -13,9 +13,9 @@ Wizard flow:
    - choose editor (VS Code or Cursor)
    - run one install command for Git + Node + editor
    - optional "Not working?" manual install dropdown
-4. Verify and install AI agent:
-   - verify `git`, `node`, and `npm`
+4. Install AI agent:
    - run Codex/Claude install commands
+   - if a command fails, run `git`, `node`, and `npm` checks and paste the full error
 5. Basic starter folder setup (optional).
 6. Optional profile import.
 7. Pair with GitHub.

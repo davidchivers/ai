@@ -234,12 +234,15 @@ function installAgentStep() {
     id: 'install-agent',
     title: 'Install AI agent',
     html: `
-      <h2>Page 4: Verify and install ${toolLabel(state.tool)}</h2>
-      <p>Step 3 installed prerequisites (editor, Git, Node). This page installs your AI agent.</p>
-      <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and paste:</p>
-      <div class="code">git --version\nnode -v\nnpm -v</div>
-      <p>If all three commands print a version number, run these commands:</p>
+      <h2>Page 4: Install ${toolLabel(state.tool)}</h2>
+      <p>Step 3 installed prerequisites (editor, Git, Node). Now install your AI agent.</p>
+      <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and run:</p>
       <div class="code">${agentCommands}</div>
+      <details class="learn">
+        <summary>Command failed?</summary>
+        <p>Run these checks, then paste the full error into chat:</p>
+        <div class="code">git --version\nnode -v\nnpm -v</div>
+      </details>
     `
   };
 }
