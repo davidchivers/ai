@@ -9,20 +9,24 @@ Recommended:
 Wizard flow:
 1. Choose OS.
 2. Choose AI agent(s).
-3. Install everything (collapsed page):
+3. Install prerequisites:
    - choose editor (VS Code or Cursor)
    - run one install command for Git + Node + editor
-   - verify install and run AI CLI install commands
-4. Basic starter folder setup (optional).
-5. Optional profile import.
-6. Pair with GitHub.
-7. Glossary.
-8. Done.
+   - optional "Not working?" manual install dropdown
+4. Verify and install AI agent:
+   - verify `git`, `node`, and `npm`
+   - run Codex/Claude install commands
+5. Basic starter folder setup (optional).
+6. Optional profile import.
+7. Pair with GitHub.
+8. Glossary.
+9. Done.
 
 ## Session note (2026-02-27)
 
-- Pages 3-6 were collapsed into one combined install page.
-- Windows fast path now uses one `winget` command for editor + Git + Node.
+- Pages 3-6 were initially collapsed into one install page.
+- Then page 4 was restored as a separate "Verify and install AI agent" step for clarity.
+- Windows fast path uses one `winget` command for editor + Git + Node.
 - Mac fast path remains a short two-command path (`xcode-select` then `brew`).
 
 If commands fail, paste the full terminal error into ChatGPT/Claude first.

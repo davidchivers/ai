@@ -125,7 +125,7 @@ function chooseToolStep() {
         btn.addEventListener('click', () => {
           state.tool = btn.dataset.tool;
           buildSteps();
-          state.current = state.steps.findIndex(s => s.id === 'install-everything');
+          state.current = state.steps.findIndex(s => s.id === 'install-prereqs');
           render();
         });
       });
@@ -142,19 +142,8 @@ function installEverythingStep() {
   const editorBrew = state.editor === 'cursor' ? 'cursor' : 'visual-studio-code';
   const editorName = editorLabel(state.editor) || 'your editor';
 
-  // Build agent npm commands
-  let agentCommands = '';
-  if (state.tool === 'codex') {
-    agentCommands = 'npm install -g @openai/codex\ncodex --login\ncodex';
-  } else if (state.tool === 'claude') {
-    agentCommands = 'npm install -g @anthropic-ai/claude-code\nclaude';
-  } else {
-    agentCommands = 'npm install -g @openai/codex\nnpm install -g @anthropic-ai/claude-code\ncodex --login\nclaude';
-  }
-
   let fastBlock = '';
   let manualBlock = '';
-  let verifyBlock = '';
   let manualDropdown = '';
 
   if (isMac) {
@@ -202,27 +191,19 @@ function installEverythingStep() {
     </details>
   `;
 
-  verifyBlock = `
-    <h3>Required next step: verify and install ${toolLabel(state.tool)}</h3>
-    <p>The one-command install sets up prerequisites (editor, Git, Node). You still need to install your AI agent below.</p>
-    <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and paste:</p>
-    <div class="code">git --version\nnode -v\nnpm -v</div>
-    <p>If all three commands print a version number, run these commands:</p>
-    <div class="code">${agentCommands}</div>
-  `;
-
   return {
-    id: 'install-everything',
-    title: 'Install Everything',
+    id: 'install-prereqs',
+    title: 'Install prerequisites',
     html: `
-      <h2>Page 3: Install everything (${platformLabel})</h2>
+      <h2>Page 3: Install prerequisites (${platformLabel})</h2>
       <p>First, choose your editor:</p>
       <div class="choice-grid">
         <button class="btn choice ${state.editor === 'vscode' ? 'is-selected' : ''}" data-editor="vscode">VS Code</button>
         <button class="btn choice ${state.editor === 'cursor' ? 'is-selected' : ''}" data-editor="cursor">Cursor</button>
       </div>
       <p class="small">Current selection: <strong>${editorLabel(state.editor)}</strong></p>
-      ${state.editor ? fastBlock + manualDropdown + verifyBlock : '<p>Select an editor above to see the install command.</p>'}
+      ${state.editor ? fastBlock + manualDropdown : '<p>Select an editor above to see the install command.</p>'}
+      ${state.editor ? '<p><strong>Next page:</strong> verify versions and install your AI agent.</p>' : ''}
       ${learnBlock('Learn more',
         '<p>Git tracks file changes. Node and npm install the AI command-line tools. ' +
         (isMac
@@ -236,11 +217,37 @@ function installEverythingStep() {
         btn.addEventListener('click', () => {
           state.editor = btn.dataset.editor;
           buildSteps();
-          state.current = state.steps.findIndex(s => s.id === 'install-everything');
+          state.current = state.steps.findIndex(s => s.id === 'install-prereqs');
           render();
         });
       });
     }
+  };
+}
+
+function installAgentStep() {
+  const editorName = editorLabel(state.editor) || 'your editor';
+  let agentCommands = '';
+
+  if (state.tool === 'codex') {
+    agentCommands = 'npm install -g @openai/codex\ncodex --login\ncodex';
+  } else if (state.tool === 'claude') {
+    agentCommands = 'npm install -g @anthropic-ai/claude-code\nclaude';
+  } else {
+    agentCommands = 'npm install -g @openai/codex\nnpm install -g @anthropic-ai/claude-code\ncodex --login\nclaude';
+  }
+
+  return {
+    id: 'install-agent',
+    title: 'Install AI agent',
+    html: `
+      <h2>Page 4: Verify and install ${toolLabel(state.tool)}</h2>
+      <p>Step 3 installed prerequisites (editor, Git, Node). This page installs your AI agent.</p>
+      <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and paste:</p>
+      <div class="code">git --version\nnode -v\nnpm -v</div>
+      <p>If all three commands print a version number, run these commands:</p>
+      <div class="code">${agentCommands}</div>
+    `
   };
 }
 
@@ -268,7 +275,7 @@ function templateStep() {
     id: 'template',
     title: 'Basic Starter Folder Setup (Optional)',
     html: `
-      <h2>Page 4: Basic starter folder setup (optional)</h2>
+      <h2>Page 5: Basic starter folder setup (optional)</h2>
       <p>Start with Basic if you are new. You can try both.</p>
 
       <h3>Basic starter folder</h3>
@@ -316,7 +323,7 @@ function profileStep() {
     id: 'profile',
     title: 'Download Profile',
     html: `
-      <h2>Page 5: Download ${editorName} profile (optional)</h2>
+      <h2>Page 6: Download ${editorName} profile (optional)</h2>
       <p>This step is optional. Use it to quickly load the same settings as the workshop.</p>
       ${profileLink}
       <ol>
@@ -336,7 +343,7 @@ function githubStep() {
     id: 'github',
     title: 'Pair with GitHub',
     html: `
-      <h2>Page 6: Pair with GitHub (beginner backup)</h2>
+      <h2>Page 7: Pair with GitHub (beginner backup)</h2>
       <p>GitHub is a free backup for your project files and gives you version history.</p>
       <p>If you are new, ask Claude or Codex to guide you step-by-step.</p>
       <p><a href="https://github.com/" target="_blank">Create or sign in to GitHub</a></p>
@@ -354,7 +361,7 @@ function appendixStep() {
     id: 'appendix',
     title: 'Glossary',
     html: `
-      <h2>Page 7: Quick glossary</h2>
+      <h2>Page 8: Quick glossary</h2>
       <ul>
         <li><strong>IDE:</strong> The app where you edit code (for example VS Code or Cursor).</li>
         <li><strong>Terminal:</strong> Text window where you run commands.</li>
@@ -390,6 +397,7 @@ function buildSteps() {
     chooseOsStep(),
     chooseToolStep(),
     installEverythingStep(),
+    installAgentStep(),
     templateStep(),
     profileStep(),
     githubStep(),
@@ -450,7 +458,7 @@ nextBtn.addEventListener('click', () => {
     alert('Select Codex, Claude, or Both first.');
     return;
   }
-  if (step.id === 'install-everything' && !state.editor) {
+  if (step.id === 'install-prereqs' && !state.editor) {
     alert('Select VS Code or Cursor first.');
     return;
   }
