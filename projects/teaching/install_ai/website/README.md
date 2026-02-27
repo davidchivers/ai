@@ -9,12 +9,21 @@ Recommended:
 Wizard flow:
 1. Choose OS.
 2. Choose AI agent(s).
-3. Choose editor.
-4. Install Git + Node.
-5. Install AI CLI(s).
-6. Choose starter pack: `Basic` or `Advanced`.
-7. Download starter pack + optional teaching links.
-8. Optional profile import.
+3. Install everything (collapsed page):
+   - choose editor (VS Code or Cursor)
+   - run one install command for Git + Node + editor
+   - verify install and run AI CLI install commands
+4. Basic starter folder setup (optional).
+5. Optional profile import.
+6. Pair with GitHub.
+7. Glossary.
+8. Done.
+
+## Session note (2026-02-27)
+
+- Pages 3-6 were collapsed into one combined install page.
+- Windows fast path now uses one `winget` command for editor + Git + Node.
+- Mac fast path remains a short two-command path (`xcode-select` then `brew`).
 
 If commands fail, paste the full terminal error into ChatGPT/Claude first.
 
@@ -31,7 +40,6 @@ Set these in `app.js` under `distribution`:
 - `vscodeProfileUrl` (optional)
 - `cursorProfileUrl` (optional)
 - `teachingSlidesUrl` (optional)
-- `aiCodingOverviewUrl` (optional)
 
 Example ZIP outputs:
 
