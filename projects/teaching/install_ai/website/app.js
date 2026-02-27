@@ -27,6 +27,61 @@ const backBtn = document.getElementById('backBtn');
 const nextBtn = document.getElementById('nextBtn');
 const progressBar = document.getElementById('progressBar');
 
+function attachCopyButtons() {
+  content.querySelectorAll('.code').forEach(block => {
+    if (block.parentElement && block.parentElement.classList.contains('code-wrap')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-wrap';
+    block.parentNode.insertBefore(wrapper, block);
+    wrapper.appendChild(block);
+
+    const copyBtn = document.createElement('button');
+    copyBtn.type = 'button';
+    copyBtn.className = 'copy-btn';
+    copyBtn.textContent = 'Copy';
+
+    copyBtn.addEventListener('click', async () => {
+      const text = block.innerText.replace(/\u00a0/g, ' ').trim();
+      let copied = false;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        try {
+          await navigator.clipboard.writeText(text);
+          copied = true;
+        } catch (_) {
+          copied = false;
+        }
+      }
+
+      if (!copied) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          copied = document.execCommand('copy');
+        } catch (_) {
+          copied = false;
+        }
+        document.body.removeChild(ta);
+      }
+
+      copyBtn.textContent = copied ? 'Copied' : 'Copy failed';
+      copyBtn.disabled = true;
+      setTimeout(() => {
+        copyBtn.textContent = 'Copy';
+        copyBtn.disabled = false;
+      }, 1200);
+    });
+
+    wrapper.appendChild(copyBtn);
+  });
+}
+
 function osLabel(os) {
   return os === 'windows' ? 'Windows' : os === 'mac' ? 'Mac' : 'Not selected';
 }
@@ -219,7 +274,6 @@ function installEverythingStep() {
 
 function restartTerminalStep() {
   const editorName = editorLabel(state.editor) || 'your editor';
-  const isMac = state.os === 'mac';
 
   return {
     id: 'restart-terminal',
@@ -429,6 +483,7 @@ function renderNav() {
 function render() {
   const step = state.steps[state.current];
   content.innerHTML = step.html;
+  attachCopyButtons();
   if (typeof step.onRender === 'function') step.onRender();
 
   backBtn.disabled = state.current === 0;

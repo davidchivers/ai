@@ -214,6 +214,41 @@ a {
   color: #1b3b5a;
 }
 
+.code-wrap {
+  position: relative;
+  margin: 8px 0;
+}
+
+.code-wrap .code {
+  margin: 0;
+  padding-right: 72px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: 1px solid #b9cbdf;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #24415e;
+  font-family: "Source Sans 3", "Segoe UI", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+
+.copy-btn:hover {
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.copy-btn:disabled {
+  opacity: 0.8;
+  cursor: default;
+}
+
 details.learn {
   margin: 12px 0;
   padding: 9px 11px;
