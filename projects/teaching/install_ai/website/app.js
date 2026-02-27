@@ -226,15 +226,12 @@ function restartTerminalStep() {
     title: 'Restart terminal',
     html: `
       <h2>Page 4: Restart terminal</h2>
-      <p>Do this now before installing ${toolLabel(state.tool)}:</p>
+      <p>Before page 5, restart your terminal:</p>
       <ol>
         <li>Close the terminal window/tab you used in step 3.</li>
-        <li>Keep <strong>${editorName}</strong> open.</li>
         <li>Open a fresh terminal: <strong>Terminal → New Terminal</strong>.</li>
       </ol>
-      ${isMac
-        ? '<p class="small">Mac: close and reopen the Terminal tab/window you used for install.</p>'
-        : '<p class="small">Windows: close and reopen terminal only (not VS Code/Cursor).</p>'}
+      <p class="small">No need to restart ${editorName}.</p>
     `
   };
 }
