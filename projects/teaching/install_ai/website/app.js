@@ -125,7 +125,7 @@ function chooseToolStep() {
         btn.addEventListener('click', () => {
           state.tool = btn.dataset.tool;
           buildSteps();
-          state.current = state.steps.findIndex(s => s.id === 'choose-editor');
+          state.current = state.steps.findIndex(s => s.id === 'install-everything');
           render();
         });
       });
