@@ -203,10 +203,11 @@ function installEverythingStep() {
   `;
 
   verifyBlock = `
-    <h3>Verify & install ${toolLabel(state.tool)}</h3>
+    <h3>Required next step: verify and install ${toolLabel(state.tool)}</h3>
+    <p>The one-command install sets up prerequisites (editor, Git, Node). You still need to install your AI agent below.</p>
     <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and paste:</p>
     <div class="code">git --version\nnode -v\nnpm -v</div>
-    <p>If all three commands print a version number, paste these to install your AI agent:</p>
+    <p>If all three commands print a version number, run these commands:</p>
     <div class="code">${agentCommands}</div>
   `;
 
