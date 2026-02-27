@@ -155,6 +155,7 @@ function installEverythingStep() {
   let fastBlock = '';
   let manualBlock = '';
   let verifyBlock = '';
+  let manualDropdown = '';
 
   if (isMac) {
     fastBlock = `
@@ -166,7 +167,6 @@ function installEverythingStep() {
       <p class="small">Don't have Homebrew? Install it first: <a href="https://brew.sh/" target="_blank">brew.sh</a></p>
     `;
     manualBlock = `
-      <h3>Manual install (if the above doesn't work)</h3>
       <ol>
         <li>Git: run <code>xcode-select --install</code> or download from <a href="https://git-scm.com/download/mac" target="_blank">git-scm.com</a></li>
         <li>Node.js: <a href="https://nodejs.org/" target="_blank">nodejs.org</a> (choose <strong>LTS</strong>)</li>
@@ -177,11 +177,15 @@ function installEverythingStep() {
     fastBlock = `
       <h3>Fast install (one command)</h3>
       <p>Open <strong>PowerShell</strong> and paste this single command:</p>
+      <ol>
+        <li>Click the <strong>Start</strong> button (or press the Windows key).</li>
+        <li>Type <strong>PowerShell</strong> in the search bar.</li>
+        <li>Open <strong>Windows PowerShell</strong>.</li>
+      </ol>
       <div class="code">winget install ${editorWinget} Git.Git OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements</div>
       <p class="small">This installs ${editorName}, Git, and Node.js in one step. After it finishes, <strong>close and reopen</strong> your terminal.</p>
     `;
     manualBlock = `
-      <h3>Manual install (if the above doesn't work)</h3>
       <ol>
         <li>${editorName}: <a href="${state.editor === 'cursor' ? 'https://www.cursor.com/downloads' : 'https://code.visualstudio.com/Download'}" target="_blank">Download ${editorName}</a></li>
         <li>Git: <a href="https://git-scm.com/download/win" target="_blank">git-scm.com/download/win</a></li>
@@ -189,6 +193,14 @@ function installEverythingStep() {
       </ol>
     `;
   }
+
+  manualDropdown = `
+    <details class="learn">
+      <summary>Not working? Use manual install</summary>
+      <h3>Manual install</h3>
+      ${manualBlock}
+    </details>
+  `;
 
   verifyBlock = `
     <h3>Verify & install ${toolLabel(state.tool)}</h3>
@@ -209,7 +221,7 @@ function installEverythingStep() {
         <button class="btn choice ${state.editor === 'cursor' ? 'is-selected' : ''}" data-editor="cursor">Cursor</button>
       </div>
       <p class="small">Current selection: <strong>${editorLabel(state.editor)}</strong></p>
-      ${state.editor ? fastBlock + manualBlock + verifyBlock : '<p>Select an editor above to see the install command.</p>'}
+      ${state.editor ? fastBlock + manualDropdown + verifyBlock : '<p>Select an editor above to see the install command.</p>'}
       ${learnBlock('Learn more',
         '<p>Git tracks file changes. Node and npm install the AI command-line tools. ' +
         (isMac
