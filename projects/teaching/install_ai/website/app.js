@@ -309,7 +309,7 @@ function profileStep() {
   const hasProfileUrl = hasConfiguredUrl(selectedProfileUrl);
   const profileLink = hasProfileUrl
     ? `<p><a href="${selectedProfileUrl}">Download ${editorName} profile</a></p>`
-    : `<p><strong>Missing:</strong> ${editorName} profile link is not configured. Set <code>distribution.${isCursor ? 'cursorProfileUrl' : 'vscodeProfileUrl'}</code> in <code>app.js</code>.</p>`;
+    : `<p>No ${editorName} profile link is configured yet. This step is optional, so you can skip it and continue.</p>`;
 
   return {
     id: 'profile',
