@@ -172,7 +172,7 @@ function installEverythingStep() {
       </ol>
       <p><strong>Run this command:</strong></p>
       <div class="code">winget install ${editorWinget} Git.Git OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements</div>
-      <div class="callout callout--warn"><strong>Important:</strong> After it finishes, <strong>close and reopen your terminal</strong> before moving to page 4.</div>
+      <div class="callout callout--warn"><strong>Important:</strong> After it finishes, <strong>close and reopen your terminal only</strong> (not VS Code/Cursor) before moving to page 4.</div>
     `;
     manualBlock = `
       <ol>
