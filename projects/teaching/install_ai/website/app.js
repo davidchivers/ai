@@ -165,14 +165,14 @@ function installEverythingStep() {
   } else {
     fastBlock = `
       <h3>Fast install (one command)</h3>
-      <p>Open <strong>PowerShell</strong> and paste this single command:</p>
       <ol>
         <li>Click the <strong>Start</strong> button (or press the Windows key).</li>
         <li>Type <strong>PowerShell</strong> in the search bar.</li>
         <li>Open <strong>Windows PowerShell</strong>.</li>
       </ol>
+      <p><strong>Run this command:</strong></p>
       <div class="code">winget install ${editorWinget} Git.Git OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements</div>
-      <p class="small">This installs ${editorName}, Git, and Node.js in one step. After it finishes, <strong>close and reopen</strong> your terminal.</p>
+      <div class="callout callout--warn"><strong>Important:</strong> After it finishes, <strong>close and reopen your terminal</strong> before moving to page 4.</div>
     `;
     manualBlock = `
       <ol>
@@ -204,13 +204,6 @@ function installEverythingStep() {
       <p class="small">Current selection: <strong>${editorLabel(state.editor)}</strong></p>
       ${state.editor ? fastBlock + manualDropdown : '<p>Select an editor above to see the install command.</p>'}
       ${state.editor ? '<p><strong>Next page:</strong> verify versions and install your AI agent.</p>' : ''}
-      ${learnBlock('Learn more',
-        '<p>Git tracks file changes. Node and npm install the AI command-line tools. ' +
-        (isMac
-          ? 'Homebrew is a popular Mac package manager — <a href="https://brew.sh/" target="_blank">brew.sh</a>.'
-          : '<code>winget</code> is built into Windows and installs software from the command line.') +
-        ' Cursor is based on VS Code and adds built-in AI features. You can switch editors later.</p>'
-      )}
     `,
     onRender: () => {
       document.querySelectorAll('[data-editor]').forEach(btn => {
