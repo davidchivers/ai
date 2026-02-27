@@ -255,7 +255,7 @@ function templateStep() {
     id: 'template',
     title: 'Basic Starter Folder Setup (Optional)',
     html: `
-      <h2>Page 7: Basic starter folder setup (optional)</h2>
+      <h2>Page 4: Basic starter folder setup (optional)</h2>
       <p>Start with Basic if you are new. You can try both.</p>
 
       <h3>Basic starter folder</h3>
@@ -303,7 +303,7 @@ function profileStep() {
     id: 'profile',
     title: 'Download Profile',
     html: `
-      <h2>Page 8: Download ${editorName} profile (optional)</h2>
+      <h2>Page 5: Download ${editorName} profile (optional)</h2>
       <p>This step is optional. Use it to quickly load the same settings as the workshop.</p>
       ${profileLink}
       <ol>
@@ -323,7 +323,7 @@ function githubStep() {
     id: 'github',
     title: 'Pair with GitHub',
     html: `
-      <h2>Page 9: Pair with GitHub (beginner backup)</h2>
+      <h2>Page 6: Pair with GitHub (beginner backup)</h2>
       <p>GitHub is a free backup for your project files and gives you version history.</p>
       <p>If you are new, ask Claude or Codex to guide you step-by-step.</p>
       <p><a href="https://github.com/" target="_blank">Create or sign in to GitHub</a></p>
@@ -341,7 +341,7 @@ function appendixStep() {
     id: 'appendix',
     title: 'Glossary',
     html: `
-      <h2>Page 10: Quick glossary</h2>
+      <h2>Page 7: Quick glossary</h2>
       <ul>
         <li><strong>IDE:</strong> The app where you edit code (for example VS Code or Cursor).</li>
         <li><strong>Terminal:</strong> Text window where you run commands.</li>
