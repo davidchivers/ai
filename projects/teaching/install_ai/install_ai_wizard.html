@@ -1,0 +1,360 @@
+﻿<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Install AI Wizard (Windows)</title>
+  <style>
+    :root {
+      --bg1: #f4f7fb;
+      --bg2: #eef4ef;
+      --card: #ffffff;
+      --text: #1b2430;
+      --muted: #5f6b7a;
+      --accent: #1f6f8b;
+      --accent2: #2f855a;
+      --warn: #8a4b08;
+      --warnbg: #fff6e8;
+      --border: #d8e0ea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, sans-serif;
+      color: var(--text);
+      background: linear-gradient(160deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 16px;
+    }
+    .panel, .main {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    }
+    .panel { padding: 16px; }
+    .main { padding: 22px; min-height: 620px; display: flex; flex-direction: column; }
+    h1 { margin: 0 0 10px; font-size: 1.4rem; }
+    h2 { margin: 0 0 8px; font-size: 1.25rem; }
+    h3 { margin: 14px 0 8px; font-size: 1rem; }
+    p { margin: 8px 0; line-height: 1.45; }
+    .muted { color: var(--muted); }
+    .steps {
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+    .step-pill {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 0.92rem;
+      background: #f9fbfd;
+    }
+    .step-pill.active { border-color: var(--accent); background: #ecf6fa; }
+    .step-pill.done { border-color: var(--accent2); background: #edf8f1; }
+    .badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      margin-left: 6px;
+    }
+    .badge.optional { border-color: #c7d6ff; color: #2748a2; background: #eef3ff; }
+    .callout {
+      border: 1px solid #ffd8a8;
+      background: var(--warnbg);
+      color: var(--warn);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 12px 0;
+      font-size: 0.95rem;
+    }
+    .ok {
+      border: 1px solid #bee3cc;
+      background: #edf8f1;
+      color: #21603b;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 10px 0;
+      font-size: 0.95rem;
+    }
+    .checklist { margin: 8px 0; padding-left: 0; list-style: none; }
+    .checklist li { margin: 8px 0; }
+    .checklist input { margin-right: 8px; }
+    .code {
+      font-family: Consolas, "Courier New", monospace;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      background: #f8fafc;
+      display: inline-block;
+      margin: 6px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .links a { display: block; margin: 5px 0; color: var(--accent); }
+    .nav {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+    button {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      background: #fff;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .progress {
+      height: 8px;
+      border-radius: 999px;
+      background: #edf1f6;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+    .bar { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), #2f855a); }
+    @media (max-width: 900px) {
+      .wrap { grid-template-columns: 1fr; }
+      .main { min-height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="panel">
+      <h1>Install AI Wizard</h1>
+      <p class="muted">Windows 10/11 | for complete beginners</p>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+      <ul id="stepList" class="steps"></ul>
+      <div class="ok">
+        Tip: if anything fails, paste the exact error message into ChatGPT or Claude and ask, "What does this mean and what should I run next on Windows?"
+      </div>
+    </aside>
+
+    <main class="main">
+      <div id="content"></div>
+      <div class="nav">
+        <button id="backBtn">Back</button>
+        <div>
+          <button id="skipOptBtn">Skip optional extras</button>
+          <button id="nextBtn" class="primary">Next</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const steps = [
+      {
+        title: "Welcome",
+        optional: false,
+        html: `
+          <h2>Welcome</h2>
+          <p>This wizard gives you the shortest path to a working setup.</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox">I have 30-60 minutes</label></li>
+            <li><label><input type="checkbox">I can install software on this PC</label></li>
+            <li><label><input type="checkbox">I have Edge or Chrome</label></li>
+          </ul>
+          <div class="callout"><strong>Important:</strong> if a command errors, paste the whole error into ChatGPT/Claude first. Most setup blocks are quick to fix.</div>
+        `
+      },
+      {
+        title: "Step 1: Install VS Code",
+        optional: false,
+        html: `
+          <h2>Step 1: Install VS Code</h2>
+          <p>Download and install with default options.</p>
+          <div class="links">
+            <a href="https://code.visualstudio.com/Download" target="_blank">Open VS Code download page</a>
+          </div>
+          <ol>
+            <li>Click <strong>Windows</strong> download.</li>
+            <li>Run installer and keep defaults.</li>
+            <li>If prompted, tick <strong>Add to PATH</strong>.</li>
+            <li>Open VS Code.</li>
+          </ol>
+          <p class="muted">[Screenshot: VS Code installer options]</p>
+        `
+      },
+      {
+        title: "Step 2: Prerequisites",
+        optional: false,
+        html: `
+          <h2>Step 2: Install prerequisites</h2>
+          <h3>A) Git for Windows (includes Git Bash)</h3>
+          <div class="links">
+            <a href="https://git-scm.com/download/win" target="_blank">Open Git for Windows</a>
+          </div>
+          <p>Test in Git Bash:</p>
+          <div class="code">git --version</div>
+          <h3>B) Node.js LTS</h3>
+          <div class="links">
+            <a href="https://nodejs.org/" target="_blank">Open Node.js LTS page</a>
+          </div>
+          <p>Test in Git Bash:</p>
+          <div class="code">node -v\nnpm -v</div>
+          <p class="muted">[Screenshot: Git Bash showing version checks]</p>
+        `
+      },
+      {
+        title: "Step 3: Install AI tools",
+        optional: false,
+        html: `
+          <h2>Step 3: Install and run Codex and/or Claude</h2>
+          <h3>Codex (OpenAI)</h3>
+          <div class="code">npm install -g @openai/codex\ncodex --login\ncodex</div>
+          <h3>Claude Code (Anthropic)</h3>
+          <div class="code">npm install -g @anthropic-ai/claude-code\nclaude</div>
+          <p>Update commands:</p>
+          <div class="code">codex --upgrade\nclaude update</div>
+          <div class="ok">Basic setup complete after this step.</div>
+        `
+      },
+      {
+        title: "Optional 4: Starter folders",
+        optional: true,
+        html: `
+          <h2>Optional Step 4: Starter folder structure</h2>
+          <div class="code">/agents\n/skills\n/memory\n/projects\n/templates/latex\nREADME.md</div>
+          <p>Economist-friendly default: ask AI for <strong>LaTeX + PDF</strong> outputs.</p>
+          <div class="code">Read this folder and propose a 5-step plan to produce a LaTeX memo and compiled PDF.</div>
+        `
+      },
+      {
+        title: "Optional 5: Terminal shortcuts",
+        optional: true,
+        html: `
+          <h2>Optional Step 5: Terminal shortcuts</h2>
+          <p>Set VS Code default terminal to <strong>Git Bash</strong>.</p>
+          <div class="code">Ctrl+Shift+P -> Terminal: Select Default Profile -> Git Bash</div>
+          <p>Optional aliases in <span class="code">~/.bashrc</span>:</p>
+          <div class="code">dd() { command claude --dangerously-skip-permissions "$@"; }</div>
+          <div class="callout"><strong>Use DD mode carefully.</strong> Do not use in sensitive folders or when unsure what commands may run.</div>
+        `
+      },
+      {
+        title: "Optional 6: Import VS Code profile",
+        optional: true,
+        html: `
+          <h2>Optional Step 6: Import Dave's VS Code profile</h2>
+          <ol>
+            <li>Open command palette: <span class="code">Ctrl+Shift+P</span></li>
+            <li>Run <span class="code">Profiles: Import Profile</span></li>
+            <li>Use link: <span class="code">PROFILE_LINK_HERE</span> or file: <span class="code">PROFILE_FILE_NAME_HERE</span></li>
+          </ol>
+        `
+      },
+      {
+        title: "Optional 7: Pair with GitHub",
+        optional: true,
+        html: `
+          <h2>Optional Step 7: Pair with GitHub</h2>
+          <div class="links">
+            <a href="https://github.com/" target="_blank">Create GitHub account</a>
+          </div>
+          <ol>
+            <li>Sign up and verify email.</li>
+            <li>In VS Code, sign in with GitHub.</li>
+            <li>Set Git identity:</li>
+          </ol>
+          <div class="code">git config --global user.name "YOUR_NAME"\ngit config --global user.email "YOUR_EMAIL"</div>
+        `
+      },
+      {
+        title: "Advanced appendix",
+        optional: true,
+        html: `
+          <h2>Advanced appendix (optional)</h2>
+          <p><strong>What is an IDE?</strong> A full workspace for editing, terminal commands, extensions, and source control.</p>
+          <p><strong>Why Bash?</strong> Some AI tools expect Unix-style shell behaviour. Git Bash gives that on Windows.</p>
+          <p><strong>When to use WSL?</strong> Use for Linux-heavy tools, PDF-heavy pipelines, or scripts that assume Linux paths.</p>
+          <p><strong>Other options:</strong> Cursor, GitHub Copilot, Continue.</p>
+          <p class="muted">Add your videos: VIDEO_LINK_HERE and WSL_VIDEO_LINK_HERE</p>
+        `
+      },
+      {
+        title: "Done",
+        optional: false,
+        html: `
+          <h2>You're done</h2>
+          <p>You now have a simple working setup.</p>
+          <ul class="checklist">
+            <li><label><input type="checkbox">VS Code installed</label></li>
+            <li><label><input type="checkbox">Git Bash + Node installed</label></li>
+            <li><label><input type="checkbox">Codex or Claude runs</label></li>
+          </ul>
+          <div class="ok">If anything breaks later, copy the exact error into ChatGPT/Claude and ask for a Windows fix.</div>
+        `
+      }
+    ];
+
+    let idx = 0;
+
+    const content = document.getElementById('content');
+    const stepList = document.getElementById('stepList');
+    const backBtn = document.getElementById('backBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const skipOptBtn = document.getElementById('skipOptBtn');
+    const bar = document.getElementById('bar');
+
+    function renderMenu() {
+      stepList.innerHTML = '';
+      steps.forEach((s, i) => {
+        const li = document.createElement('li');
+        li.className = 'step-pill' + (i === idx ? ' active' : i < idx ? ' done' : '');
+        li.textContent = s.title;
+        if (s.optional) {
+          const b = document.createElement('span');
+          b.className = 'badge optional';
+          b.textContent = 'Optional';
+          li.appendChild(b);
+        }
+        li.onclick = () => { idx = i; render(); };
+        stepList.appendChild(li);
+      });
+    }
+
+    function render() {
+      content.innerHTML = steps[idx].html;
+      backBtn.disabled = idx === 0;
+      nextBtn.textContent = idx === steps.length - 1 ? 'Finish' : 'Next';
+      const pct = Math.round((idx / (steps.length - 1)) * 100);
+      bar.style.width = pct + '%';
+      renderMenu();
+    }
+
+    backBtn.onclick = () => { if (idx > 0) { idx--; render(); } };
+    nextBtn.onclick = () => { if (idx < steps.length - 1) { idx++; render(); } };
+    skipOptBtn.onclick = () => {
+      const doneIndex = steps.findIndex(s => s.title === 'Done');
+      idx = doneIndex;
+      render();
+    };
+
+    render();
+  </script>
+</body>
+</html>
