@@ -238,11 +238,7 @@ function installAgentStep() {
       <p>Step 3 installed prerequisites (editor, Git, Node). Now install your AI agent.</p>
       <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and run:</p>
       <div class="code">${agentCommands}</div>
-      <details class="learn">
-        <summary>Command failed?</summary>
-        <p>Run these checks, then paste the full error into chat:</p>
-        <div class="code">git --version\nnode -v\nnpm -v</div>
-      </details>
+      <p>If a command fails, paste the full error message into chat and ask for the exact next command.</p>
     `
   };
 }

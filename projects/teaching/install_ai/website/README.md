@@ -15,7 +15,7 @@ Wizard flow:
    - optional "Not working?" manual install dropdown
 4. Install AI agent:
    - run Codex/Claude install commands
-   - if a command fails, run `git`, `node`, and `npm` checks and paste the full error
+   - if a command fails, paste the full error and ask for the exact next command
 5. Basic starter folder setup (optional).
 6. Optional profile import.
 7. Pair with GitHub.
