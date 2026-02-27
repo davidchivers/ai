@@ -326,14 +326,14 @@ function profileStep() {
   const selectedProfileUrl = isCursor ? distribution.cursorProfileUrl : distribution.vscodeProfileUrl;
   const hasProfileUrl = hasConfiguredUrl(selectedProfileUrl);
   const profileLink = hasProfileUrl
-    ? `<p><a href="${selectedProfileUrl}">Download ${editorName} profile</a></p>`
+    ? `<p>Use this profile link:</p><div class="code">${selectedProfileUrl}</div>`
     : `<p>No ${editorName} profile link is configured yet. This step is optional, so you can skip it and continue.</p>`;
 
   return {
     id: 'profile',
-      title: 'Download Profile',
-      html: `
-      <h2>Page 7: Download ${editorName} profile (optional)</h2>
+    title: 'Import Profile',
+    html: `
+      <h2>Page 7: Import ${editorName} profile (optional)</h2>
       <p>This step is optional. Use it to quickly load the same settings as the workshop.</p>
       ${profileLink}
       <ol>
