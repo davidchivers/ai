@@ -16,7 +16,7 @@ const distribution = {
   },
   oneDriveFolderUrlBasic: '',
   oneDriveFolderUrlAdvanced: '',
-  vscodeProfileUrl: '',
+  vscodeProfileUrl: 'https://vscode.dev/editor/profile/github/0cf6696b0aa251846a9b1ed761267f88',
   cursorProfileUrl: 'cursor://profile/github/0cf6696b0aa251846a9b1ed761267f88',
   teachingSlidesUrl: 'https://1drv.ms/p/c/34def9d130aed1a9/IQBwHWaK-I16T7yC88Wf80p5AdKUKL3gW8454f3iwOOWwCk?e=lDNPKN'
 };
@@ -172,7 +172,7 @@ function installEverythingStep() {
       </ol>
       <p><strong>Run this command:</strong></p>
       <div class="code">winget install ${editorWinget} Git.Git OpenJS.NodeJS.LTS --accept-package-agreements --accept-source-agreements</div>
-      <div class="callout callout--warn"><strong>Important:</strong> After it finishes, <strong>close and reopen your terminal only</strong> (not VS Code/Cursor) before moving to page 4.</div>
+      <div class="callout callout--warn"><strong>Important:</strong> After it finishes, <strong>close and reopen your terminal only</strong> (not VS Code/Cursor). This is page 4 next.</div>
     `;
     manualBlock = `
       <ol>
@@ -203,7 +203,7 @@ function installEverythingStep() {
       </div>
       <p class="small">Current selection: <strong>${editorLabel(state.editor)}</strong></p>
       ${state.editor ? fastBlock + manualDropdown : '<p>Select an editor above to see the install command.</p>'}
-      ${state.editor ? '<p><strong>Next page:</strong> verify versions and install your AI agent.</p>' : ''}
+      ${state.editor ? '<p><strong>Next page:</strong> restart terminal, then install your AI agent.</p>' : ''}
     `,
     onRender: () => {
       document.querySelectorAll('[data-editor]').forEach(btn => {
@@ -215,6 +215,28 @@ function installEverythingStep() {
         });
       });
     }
+  };
+}
+
+function restartTerminalStep() {
+  const editorName = editorLabel(state.editor) || 'your editor';
+  const isMac = state.os === 'mac';
+
+  return {
+    id: 'restart-terminal',
+    title: 'Restart terminal',
+    html: `
+      <h2>Page 4: Restart terminal</h2>
+      <p>Do this now before installing ${toolLabel(state.tool)}:</p>
+      <ol>
+        <li>Close the terminal window/tab you used in step 3.</li>
+        <li>Keep <strong>${editorName}</strong> open.</li>
+        <li>Open a fresh terminal: <strong>Terminal → New Terminal</strong>.</li>
+      </ol>
+      ${isMac
+        ? '<p class="small">Mac: close and reopen the Terminal tab/window you used for install.</p>'
+        : '<p class="small">Windows: close and reopen terminal only (not VS Code/Cursor).</p>'}
+    `
   };
 }
 
@@ -234,8 +256,8 @@ function installAgentStep() {
     id: 'install-agent',
     title: 'Install AI agent',
     html: `
-      <h2>Page 4: Install ${toolLabel(state.tool)}</h2>
-      <p>Step 3 installed prerequisites (editor, Git, Node). Now install your AI agent.</p>
+      <h2>Page 5: Install ${toolLabel(state.tool)}</h2>
+      <p>Step 3 installed prerequisites and step 4 restarted your terminal. Now install your AI agent.</p>
       <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and run:</p>
       <div class="code">${agentCommands}</div>
       <p>If a command fails, paste the full error message into chat and ask for the exact next command.</p>
@@ -265,9 +287,9 @@ function templateStep() {
 
   return {
     id: 'template',
-    title: 'Basic Starter Folder Setup (Optional)',
-    html: `
-      <h2>Page 5: Basic starter folder setup (optional)</h2>
+      title: 'Basic Starter Folder Setup (Optional)',
+      html: `
+      <h2>Page 6: Basic starter folder setup (optional)</h2>
       <p>Start with Basic if you are new. You can try both.</p>
 
       <h3>Basic starter folder</h3>
@@ -313,9 +335,9 @@ function profileStep() {
 
   return {
     id: 'profile',
-    title: 'Download Profile',
-    html: `
-      <h2>Page 6: Download ${editorName} profile (optional)</h2>
+      title: 'Download Profile',
+      html: `
+      <h2>Page 7: Download ${editorName} profile (optional)</h2>
       <p>This step is optional. Use it to quickly load the same settings as the workshop.</p>
       ${profileLink}
       <ol>
@@ -335,7 +357,7 @@ function githubStep() {
     id: 'github',
     title: 'Pair with GitHub',
     html: `
-      <h2>Page 7: Pair with GitHub (beginner backup)</h2>
+      <h2>Page 8: Pair with GitHub (beginner backup)</h2>
       <p>GitHub is a free backup for your project files and gives you version history.</p>
       <p>If you are new, ask Claude or Codex to guide you step-by-step.</p>
       <p><a href="https://github.com/" target="_blank">Create or sign in to GitHub</a></p>
@@ -353,7 +375,7 @@ function appendixStep() {
     id: 'appendix',
     title: 'Glossary',
     html: `
-      <h2>Page 8: Quick glossary</h2>
+      <h2>Page 9: Quick glossary</h2>
       <ul>
         <li><strong>IDE:</strong> The app where you edit code (for example VS Code or Cursor).</li>
         <li><strong>Terminal:</strong> Text window where you run commands.</li>
@@ -389,6 +411,7 @@ function buildSteps() {
     chooseOsStep(),
     chooseToolStep(),
     installEverythingStep(),
+    restartTerminalStep(),
     installAgentStep(),
     templateStep(),
     profileStep(),

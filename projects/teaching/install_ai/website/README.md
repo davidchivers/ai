@@ -13,19 +13,20 @@ Wizard flow:
    - choose editor (VS Code or Cursor)
    - run one install command for Git + Node + editor
    - optional "Not working?" manual install dropdown
-4. Install AI agent:
+4. Restart terminal (separate step).
+5. Install AI agent:
    - run Codex/Claude install commands
    - if a command fails, paste the full error and ask for the exact next command
-5. Basic starter folder setup (optional).
-6. Optional profile import.
-7. Pair with GitHub.
-8. Glossary.
-9. Done.
+6. Basic starter folder setup (optional).
+7. Optional profile import.
+8. Pair with GitHub.
+9. Glossary.
+10. Done.
 
 ## Session note (2026-02-27)
 
 - Pages 3-6 were initially collapsed into one install page.
-- Then page 4 was restored as a separate "Verify and install AI agent" step for clarity.
+- Then restart-terminal guidance was split into its own separate step before agent install.
 - Windows fast path uses one `winget` command for editor + Git + Node.
 - Mac fast path remains a short two-command path (`xcode-select` then `brew`).
 
