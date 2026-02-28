@@ -1,0 +1,723 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{3em}
+\title{Learning by Viewing -- Kickoff Pack}
+\date{}
+\begin{document}
+\maketitle
+\section*{1. Project overview}
+Core question: does scalable access to high-quality video demonstration (for example, YouTube) causally increase skill acquisition relative to text, diagrams, and trial-and-error learning alone?\\
+
+Primary research questions:\\
+1. How much does video access change the probability, speed, and quality of mastering practical skills?\\
+2. Which skills benefit most from viewing (procedural, motor, tacit, sequence-heavy) versus reading/diagrams?\\
+3. Does video learning reduce or widen skill inequality across income, education, age, and geography?\\
+4. What is the welfare impact when video substitutes for paid instruction, apprenticeships, or formal training?\\
+5. Do platform dynamics (creator competition, recommendation systems, feedback loops) improve teaching quality over time?\\
+
+Scope and framing:\\
+\begin{itemize}
+\item Main paper should be empirical economics first, with reduced-form and quasi-experimental evidence.
+\item Theory/modeling should discipline mechanism interpretation and generate heterogeneity predictions.
+\item Minor extension: interactive human/AI help as a complement to passive viewing.
+\end{itemize}
+
+Candidate outcomes:\\
+\begin{itemize}
+\item Individual: task completion, error rate, time-to-completion, certification/passing, wages in skill-linked occupations.
+\item Household: DIY spending efficiency, contractor substitution, repair quality/safety incidents.
+\item Market: service prices, demand for professional instruction, entry into skilled occupations/hobbies.
+\item Distributional: gains by baseline skill and digital access.
+\end{itemize}
+
+Expected contribution:\\
+\begin{itemize}
+\item Introduce and measure "learning by viewing" as distinct from learning by doing and learning by reading.
+\item Provide causal evidence on when demonstration-rich media improves human capital formation.
+\item Quantify welfare and distributional implications in a platform-mediated learning environment.
+\end{itemize}
+
+\section*{2. Mechanisms and testable hypotheses}
+Main hypotheses:\\
+1. Video access raises skill acquisition rates more for procedural/motor tasks than for conceptual tasks.\\
+2. Effects are larger when learners can sort across many instructors and formats (choice set mechanism).\\
+3. Video narrows geographic inequality in skill access but can widen digital-access inequality.\\
+4. Platform learning effects grow over time as instructional best practices diffuse among creators.\\
+5. Video + minimal interactivity (comments, Q\&A, AI tutor) outperforms video-only for troubleshooting-heavy tasks.\\
+
+Key mechanisms/channels:\\
+1. Demonstration fidelity: moving visual sequences transmit tacit steps that text/diagrams miss.\\
+2. Lower search/matching costs: users find instructor style/pace that fits prior knowledge.\\
+3. Repetition and pacing control: pause/rewind/slow-motion increases effective practice intensity.\\
+4. Quality competition/network effects: creators optimize pedagogy under feedback and engagement.\\
+5. Scale and long tail supply: niche skills receive tutorials unavailable in local markets.\\
+6. Social proof and motivation: visible success examples increase effort and persistence.\\
+7. Complementarity with doing: viewing reduces early mistakes, making practice more productive.\\
+
+Testable predictions:\\
+1. Treatment effects should be strongest for tasks requiring ordered hand movements and error-sensitive sequencing.\\
+2. Effects should increase with broadband quality/video load speed and decrease with outages.\\
+3. Gains should be larger where local in-person instruction is scarce/high-cost.\\
+4. As platform maturity rises, average tutorial quality metrics should improve and learning effects should strengthen.\\
+5. Video-heavy learners should show fewer "first-try" errors and shorter completion times.\\
+
+Expected welfare implications:\\
+\begin{itemize}
+\item Likely winners: remote/rural learners, low-income self-learners, career-switchers, small creators of instructional content, consumers via cheaper services.
+\item Potential losers: incumbent local instructors with low differentiation, low-digital-access groups, workers in tasks where amateur substitution reduces paid demand.
+\item Inequality possibilities:
+\item Democratization channel: low-cost access broadens skill acquisition.
+\item Divergence channel: those with devices, bandwidth, and digital literacy capture larger gains.
+\item Net welfare sign likely positive if quality/safety externalities are managed and access gaps are addressed.
+\end{itemize}
+
+\section*{3. Modeling menu (34 options)}
+1. Binary mastery choice model.\\
+\begin{itemize}
+\item Agents/choices/timing/state: individual chooses learning mode (view/read/do) before attempting task; state is baseline ability.
+\item What viewing does: increases success probability and lowers time cost.
+\item Comparative statics/predictions: larger viewing premium for low baseline ability in procedural tasks.
+\item Data mapping: completion rates, attempt durations, modality exposure logs.
+\end{itemize}
+
+2. Sequential learning-with-errors model.\\
+\begin{itemize}
+\item Agents choose modality each period; state is accumulated mistakes.
+\item Viewing reduces transition probability into high-error states.
+\item Predicts fewer catastrophic failures early in learning.
+\item Map with repeated attempt data and error-type classifications.
+\end{itemize}
+
+3. Bayesian signal precision model.\\
+\begin{itemize}
+\item Learner updates belief about correct method from noisy signals.
+\item Viewing provides higher-precision signal than text.
+\item Predicts larger gains when prior uncertainty is high.
+\item Use pre/post confidence and objective test scores.
+\end{itemize}
+
+4. Search and matching over instructors.\\
+\begin{itemize}
+\item Learner samples creators with heterogeneous teaching fit.
+\item Viewing expands choice set and lowers sampling cost.
+\item Predicts gains from larger platform penetration and recommendation quality.
+\item Map using clickstream diversity, watch histories, completion outcomes.
+\end{itemize}
+
+5. Dynamic discrete choice of effort.\\
+\begin{itemize}
+\item Each period learner allocates time across viewing/practice/reading.
+\item Viewing raises marginal return to practice.
+\item Predicts complementarity: viewing and doing increase together.
+\item Use time-use + progression outcomes.
+\end{itemize}
+
+6. Human capital production with media inputs.\\
+\begin{itemize}
+\item Skill stock evolves with inputs: practice, text, video.
+\item Video has task-specific productivity parameter.
+\item Predicts modality elasticities vary by task type.
+\item Estimate with panel on practice intensity and outcomes.
+\end{itemize}
+
+7. Hazard model of time-to-mastery.\\
+\begin{itemize}
+\item State is not-yet-mastered; exit hazard depends on modality exposure.
+\item Viewing shifts hazard upward.
+\item Predicts shorter median time-to-mastery with video access.
+\item Map with cohort onboarding and milestone timestamps.
+\end{itemize}
+
+8. Multi-task allocation model.\\
+\begin{itemize}
+\item Learner chooses which skills to attempt under budget.
+\item Viewing lowers fixed learning cost for some tasks.
+\item Predicts broader skill portfolio and niche-skill entry.
+\item Measure number/type of new skills adopted.
+\end{itemize}
+
+9. Peer diffusion model.\\
+\begin{itemize}
+\item Individuals observe peers' success and adopt modalities.
+\item Viewing adoption diffuses through networks.
+\item Predicts local peer exposure amplifies individual treatment effects.
+\item Use social graph/proxy and staggered adoption.
+\end{itemize}
+
+10. Two-sided platform quality model.\\
+\begin{itemize}
+\item Creators choose instructional quality; learners choose watch time.
+\item Better pedagogy attracts demand; feedback improves quality.
+\item Predicts rising average instructional quality over platform maturity.
+\item Data: video metadata, retention, outcome-linked surveys.
+\end{itemize}
+
+11. Tournament among creators.\\
+\begin{itemize}
+\item Creator payoff depends on ranking/engagement.
+\item Viewing ecosystem induces innovation in teaching format.
+\item Predicts format convergence toward high-effectiveness designs.
+\item Use content feature trends and performance metrics.
+\end{itemize}
+
+12. Attention constraint model.\\
+\begin{itemize}
+\item Learner has finite cognitive bandwidth.
+\item Viewing can reduce extraneous cognitive load for some tasks.
+\item Predicts non-monotonic effects for overly edited/fast videos.
+\item Map with pace/length features and outcomes.
+\end{itemize}
+
+13. Information overload/search friction model.\\
+\begin{itemize}
+\item Large content supply creates selection frictions.
+\item Viewing benefit depends on recommendation/filter quality.
+\item Predicts stronger effects where curation improves.
+\item Use algorithm changes or playlist tools as shocks.
+\end{itemize}
+
+14. Mistake-cost minimization model.\\
+\begin{itemize}
+\item Learner chooses modality to minimize expected mistake damage.
+\item Viewing most valuable when mistakes are costly.
+\item Predicts strongest demand in high-penalty tasks (electrical, medical prep).
+\item Map with task risk ratings and modality usage.
+\end{itemize}
+
+15. Local instruction substitution model.\\
+\begin{itemize}
+\item Household chooses between paid instructor and self-learning via video.
+\item Viewing lowers demand for paid instruction.
+\item Predicts price/demand effects in local lesson markets.
+\item Use service market prices and platform penetration.
+\end{itemize}
+
+16. Complementarity with formal education model.\\
+\begin{itemize}
+\item Student chooses extra video supplement to classroom learning.
+\item Viewing boosts returns to formal training.
+\item Predicts bigger gains in under-resourced institutions.
+\item Map with school-level resources and online exposure.
+\end{itemize}
+
+17. Option value model for experimentation.\\
+\begin{itemize}
+\item Viewing lowers uncertainty before starting skill.
+\item More people attempt skills with positive option value.
+\item Predicts increased trial of previously intimidating tasks.
+\item Use new-channel/topic entry and novice participation metrics.
+\end{itemize}
+
+18. Quality threshold model.\\
+\begin{itemize}
+\item Skill mastery requires crossing an instruction-quality threshold.
+\item Viewing increases chance of encountering above-threshold instruction.
+\item Predicts discrete jump in mastery for users exposed to top-tail videos.
+\item Map with creator quality rankings and learner outcomes.
+\end{itemize}
+
+19. Heterogeneous learning-style model.\\
+\begin{itemize}
+\item Learners differ in visual/verbal preference parameter.
+\item Viewing effects heterogeneous by preference/cognitive traits.
+\item Predicts sorting and differential gains.
+\item Use baseline assessments + modality interactions.
+\end{itemize}
+
+20. Learning depreciation/refresh model.\\
+\begin{itemize}
+\item Skill decays without reinforcement.
+\item Viewing enables low-cost refresher episodes.
+\item Predicts slower skill decay and better retention.
+\item Map with follow-up tests and refresh watch behavior.
+\end{itemize}
+
+21. Credential production model.\\
+\begin{itemize}
+\item Workers choose learning paths to pass skill exams.
+\item Viewing raises pass probability at low cost.
+\item Predicts exam attempt and pass-rate increases after access shocks.
+\item Use certification data by region/time.
+\end{itemize}
+
+22. Spatial access model.\\
+\begin{itemize}
+\item Remote regions face high cost of in-person training.
+\item Viewing compresses distance penalty.
+\item Predicts larger treatment effects in low-density areas.
+\item Map with rural broadband rollout and local training supply.
+\end{itemize}
+
+23. Household bargaining model.\\
+\begin{itemize}
+\item Household allocates time/resources to member upskilling.
+\item Viewing lowers monetary cost and schedule coordination burden.
+\item Predicts stronger gains where time constraints bind (parents/caregivers).
+\item Use household composition interactions.
+\end{itemize}
+
+24. Firm training adoption model.\\
+\begin{itemize}
+\item Firms choose between in-house trainer and video modules.
+\item Viewing lowers training cost per worker.
+\item Predicts SME adoption and productivity gains in routine technical tasks.
+\item Map with firm surveys and output/productivity measures.
+\end{itemize}
+
+25. Apprenticeship queue model.\\
+\begin{itemize}
+\item Limited apprentice slots constrain doing-based learning.
+\item Viewing partially substitutes for queue-constrained slots.
+\item Predicts higher entry into constrained trades.
+\item Use waitlist data and training enrollments.
+\end{itemize}
+
+26. Safety externality model.\\
+\begin{itemize}
+\item Learners choose risky DIY with/without video preparation.
+\item Viewing may reduce per-attempt risk but increase attempts.
+\item Predicts ambiguous net accident levels; clearer effect on severity.
+\item Map with injury rates, severity, and DIY activity proxies.
+\end{itemize}
+
+27. Quality-adjusted output model.\\
+\begin{itemize}
+\item Task output has quality index, not just completion.
+\item Viewing increases precision and finish quality.
+\item Predicts quality gains even when completion rates unchanged.
+\item Use expert ratings, returns/complaints, rework rates.
+\end{itemize}
+
+28. Multi-stage production task model.\\
+\begin{itemize}
+\item Task has stages; failure at early stage cascades.
+\item Viewing especially improves stage transitions.
+\item Predicts largest gains on bottleneck stages.
+\item Map with step-level telemetry or process audits.
+\end{itemize}
+
+29. Algorithmic exposure model.\\
+\begin{itemize}
+\item Platform recommender determines instructional exposure quality.
+\item Viewing effect mediated by recommendation policy.
+\item Predicts discontinuities around algorithm updates.
+\item Use policy change/event study with creator-learner panels.
+\end{itemize}
+
+30. Creator entry model.\\
+\begin{itemize}
+\item Potential instructors decide whether to produce tutorials.
+\item Lower production tools + demand induce entry.
+\item Predicts more supply in underserved skills and faster pedagogic innovation.
+\item Map with category-level creator entry and learner outcomes.
+\end{itemize}
+
+31. Language accessibility model.\\
+\begin{itemize}
+\item Multilingual/subtitled videos reduce language barriers.
+\item Viewing lowers comprehension cost for migrants/non-native speakers.
+\item Predicts larger gains in language-mismatched populations.
+\item Use subtitle availability and migrant outcomes.
+\end{itemize}
+
+32. Social reputation model.\\
+\begin{itemize}
+\item Learners post outcomes publicly; reputation rewards mastery.
+\item Viewing strengthens norm of self-teaching and sharing.
+\item Predicts peer-driven adoption cycles and persistence.
+\item Map with social posting data and subsequent learning behavior.
+\end{itemize}
+
+33. Income-constrained investment model.\\
+\begin{itemize}
+\item Learning investment constrained by cash and liquidity.
+\item Viewing is low-cost capital-light learning input.
+\item Predicts larger effects among credit-constrained groups.
+\item Use income/credit proxies and heterogeneity.
+\end{itemize}
+
+34. Hybrid video + AI helper model (extension).\\
+\begin{itemize}
+\item Learner chooses passive video only or video plus interactive assistant.
+\item Interactivity lowers troubleshooting friction after failed attempts.
+\item Predicts gains concentrated in tasks with high idiosyncratic failure modes.
+\item Map with usage logs of Q\&A/assistant tools and retry outcomes.
+\end{itemize}
+
+\section*{4. Literature map (what to search + why)}
+Bucket A. Economics of learning / skill acquisition / human capital\\
+\begin{itemize}
+\item Subtopics:
+\item Learning-by-doing and experience curves.
+\item Observational/social learning and peer effects.
+\item Skill formation and dynamic human capital accumulation.
+\item Tacit knowledge transfer and apprenticeship economics.
+\item Keywords:
+\item "learning by doing economics"
+\item "observational learning human capital"
+\item "social learning labor economics"
+\item "tacit knowledge transfer productivity"
+\item "experience curve worker performance"
+\item What we need from this bucket:
+\item Theoretical foundations for mechanisms.
+\item Established predictions on heterogeneity and dynamic gains.
+\item Benchmarks for comparing viewing to doing/reading.
+\end{itemize}
+
+Bucket B. Economics of online platforms / information / media / education technology\\
+\begin{itemize}
+\item Subtopics:
+\item Platform content quality competition.
+\item Returns to online education and digital learning tools.
+\item Attention markets and recommendation systems.
+\item Video-based instruction versus text-based instruction.
+\item Keywords:
+\item "online platform content quality economics"
+\item "video learning outcomes quasi experimental"
+\item "education technology causal effects"
+\item "YouTube education skill acquisition"
+\item "recommendation algorithm learning outcomes"
+\item What we need from this bucket:
+\item Evidence on platform-mediated information quality and access.
+\item Empirical designs that isolate platform exposure.
+\item Measurement conventions for digital learning behavior.
+\end{itemize}
+
+Bucket C. Identification strategies used in related work\\
+\begin{itemize}
+\item Subtopics:
+\item Broadband rollout and internet speed shocks.
+\item Platform outages/blocks and access interruptions.
+\item Device adoption shocks (smartphone penetration, data pricing).
+\item Differential timing of local digital infrastructure upgrades.
+\item Keywords:
+\item "broadband rollout difference in differences skills"
+\item "internet outage natural experiment education"
+\item "platform ban block causal effects"
+\item "fiber rollout event study labor outcomes"
+\item "data price shock digital learning"
+\item What we need from this bucket:
+\item Credible treatment variation sources.
+\item Threat-mitigation playbooks (pre-trends, migration, anticipation, compositional shifts).
+\item Templates for event-study and IV diagnostics.
+\end{itemize}
+
+\section*{5. Empirical design brainstorm (10+)}
+1. Broadband rollout x skill intensity DiD.\\
+\begin{itemize}
+\item Outcomes: certification rates, DIY service substitution, skill-related earnings.
+\item Treatment/proxy: local high-speed internet availability.
+\item ID: staggered DiD/event study across regions.
+\item Threats/fixes: endogenous rollout; use planned infrastructure timing controls and pre-trend checks.
+\item Feasibility: high (public infrastructure and labor data often available).
+\end{itemize}
+
+2. YouTube outage natural experiment.\\
+\begin{itemize}
+\item Outcomes: search-to-completion of tasks, course completion, repair outcomes.
+\item Treatment: temporary outages or throttling episodes.
+\item ID: event study around outage windows.
+\item Threats/fixes: concurrent shocks; use unaffected platforms/regions as controls.
+\item Feasibility: medium (needs granular outage and platform usage data).
+\end{itemize}
+
+3. Mobile data price shock IV.\\
+\begin{itemize}
+\item Outcomes: instructional video watch time, task success proxies.
+\item Treatment: effective video affordability.
+\item ID: IV using telecom tariff changes.
+\item Threats/fixes: pricing endogeneity; exploit regulatory or exogenous policy shifts.
+\item Feasibility: medium.
+\end{itemize}
+
+4. School/workplace video-access policy change.\\
+\begin{itemize}
+\item Outcomes: pass rates, productivity metrics.
+\item Treatment: introduction of allowed/blocked video learning tools.
+\item ID: DiD across institutions adopting at different times.
+\item Threats/fixes: policy chosen where problems biggest; include institution trends and matched controls.
+\item Feasibility: medium-high.
+\end{itemize}
+
+5. Recommendation algorithm change.\\
+\begin{itemize}
+\item Outcomes: learning completion, retention, follow-through behavior.
+\item Treatment: exogenous shifts in exposure to instructional content.
+\item ID: event study or diff-in-discontinuities using policy change date.
+\item Threats/fixes: simultaneous UI changes; isolate affected categories and placebo categories.
+\item Feasibility: medium.
+\end{itemize}
+
+6. Geographic instrument: terrain-driven broadband quality.\\
+\begin{itemize}
+\item Outcomes: skill uptake and quality.
+\item Treatment: realized streaming quality.
+\item ID: IV with topography/cable distance interactions.
+\item Threats/fixes: exclusion concerns; saturate with geographic controls and historical development trends.
+\item Feasibility: medium.
+\end{itemize}
+
+7. Platform entry of localized language subtitles.\\
+\begin{itemize}
+\item Outcomes: learning gains among non-native speakers.
+\item Treatment: subtitle availability by language/time.
+\item ID: DiD by language community exposure.
+\item Threats/fixes: concurrent migration trends; add demographic and area-year controls.
+\item Feasibility: medium-high.
+\end{itemize}
+
+8. Public library/community center Wi-Fi expansion.\\
+\begin{itemize}
+\item Outcomes: skill course completion, certification, employment transitions.
+\item Treatment: nearby free high-speed access.
+\item ID: DiD or synthetic control at municipality level.
+\item Threats/fixes: targeted rollout; propensity-score weighting and pre-trend balance.
+\item Feasibility: high.
+\end{itemize}
+
+9. Vocational exam reform requiring practical competencies.\\
+\begin{itemize}
+\item Outcomes: pass rates in practical components.
+\item Treatment: differential need for demonstration learning.
+\item ID: triple-difference (before/after x practical-heavy exams x high-video-access regions).
+\item Threats/fixes: other reform components; isolate practical-specific sections.
+\item Feasibility: medium.
+\end{itemize}
+
+10. Device shock: low-cost smartphone rollout.\\
+\begin{itemize}
+\item Outcomes: first-time engagement with skill learning and outcomes.
+\item Treatment: smartphone/video-capable access.
+\item ID: DiD with staggered retail rollout or subsidy eligibility thresholds.
+\item Threats/fixes: income trends confounding; include local labor and price controls.
+\item Feasibility: medium-high.
+\end{itemize}
+
+11. Category-specific creator supply shock.\\
+\begin{itemize}
+\item Outcomes: skill adoption in affected categories.
+\item Treatment: sudden increase in tutorial supply from creator entry wave.
+\item ID: Bartik-style exposure or event study.
+\item Threats/fixes: demand-driven entry; instrument using creator-side shocks (policy, monetization changes).
+\item Feasibility: medium.
+\end{itemize}
+
+12. Platform block/unblock across countries.\\
+\begin{itemize}
+\item Outcomes: skill market indicators, learning outcomes.
+\item Treatment: access ban/lift timing.
+\item ID: synthetic control + event study.
+\item Threats/fixes: macro-political confounds; narrow windows and multiple controls.
+\item Feasibility: medium-low (policy complexity).
+\end{itemize}
+
+13. Firm-level adoption of video SOPs.\\
+\begin{itemize}
+\item Outcomes: error rates, training duration, output quality.
+\item Treatment: rollout of video-based standard operating procedures.
+\item ID: staggered DiD within multi-site firms.
+\item Threats/fixes: contemporaneous process upgrades; collect implementation details and phased controls.
+\item Feasibility: high if partnership data obtained.
+\end{itemize}
+
+14. Weather-driven stay-at-home shocks interacting with video access.\\
+\begin{itemize}
+\item Outcomes: home task completion, online instructional consumption.
+\item Treatment: exogenous time at home x internet quality.
+\item ID: shift-share panel with fixed effects.
+\item Threats/fixes: weather affects many behaviors; isolate task categories plausibly linked to viewing.
+\item Feasibility: medium.
+\end{itemize}
+
+\section*{6. Deep-dive: DIY/COVID and safety/accidents angle}
+Causal story:\\
+\begin{itemize}
+\item During COVID-era stay-at-home periods, households shifted toward DIY tasks.
+\item Video tutorials reduced information frictions for attempting/performing tasks.
+\item Net accidents can rise or fall: more attempts raise exposure, better instruction lowers per-attempt risk.
+\item Therefore identify both extensive margin (attempts) and intensive margin (risk per attempt/severity).
+\end{itemize}
+
+Outcome measures (at least 3):\\
+1. DIY project incidence/intensity: purchases of task-specific materials/tools.\\
+2. Safety outcomes: emergency visits for DIY-related injuries, severity, admissions.\\
+3. Quality outcomes: repeat purchases (rework), contractor call-backs after DIY attempts.\\
+4. Labor market outcomes (optional): home-service demand shifts/prices.\\
+
+YouTube learning exposure measures (at least 3):\\
+1. Region-time watch intensity in DIY tutorial categories.\\
+2. Search/query intensity for "how to" repair/build tasks.\\
+3. Exogenous video access proxies: broadband speed, data affordability, platform uptime.\\
+4. Creator supply in local language/region relevant DIY content.\\
+
+Identification strategies (at least 2):\\
+1. Triple-difference:\\
+\begin{itemize}
+\item Pre/post COVID periods x high/low broadband regions x DIY-intensive categories versus placebo categories.
+\end{itemize}
+2. Instrumental variables:\\
+\begin{itemize}
+\item Use exogenous network-quality variation (infrastructure timing, topology) for DIY video consumption.
+\end{itemize}
+3. Outage/event design:\\
+\begin{itemize}
+\item Compare DIY outcomes around local platform disruptions.
+\end{itemize}
+
+Key confounds and mitigation:\\
+1. Income shocks and unemployment changed DIY demand.\\
+\begin{itemize}
+\item Mitigate with local labor controls and category-placebo checks.
+\end{itemize}
+2. Supply chain disruptions altered project feasibility.\\
+\begin{itemize}
+\item Include product availability indices and SKU-level controls.
+\end{itemize}
+3. Healthcare utilization changed during COVID.\\
+\begin{itemize}
+\item Use injury severity and alternative care channels; compare against non-DIY injury controls.
+\end{itemize}
+4. Time-at-home and stress changed behavior broadly.\\
+\begin{itemize}
+\item Include mobility/time-use controls and category-specific falsification tests.
+\end{itemize}
+
+Feasibility:\\
+\begin{itemize}
+\item Medium-high. Data integration is nontrivial, but credible variation and measurable outcomes exist.
+\item Stronger if partnered data can measure attempts (denominator) to interpret accident rates correctly.
+\end{itemize}
+
+\section*{7. Deep-dive: Metal music technicality angle}
+Causal story:\\
+\begin{itemize}
+\item YouTube increases access to demonstrations of advanced techniques (sweep picking, polyrhythms, double-kick patterns).
+\item Musicians learn/practice higher-complexity techniques faster; stylistic best practices diffuse.
+\item Over time, compositions/performances may become more technically demanding.
+\item Risk: compositional trends also respond to taste, production tech, and selection into genres.
+\end{itemize}
+
+Outcome measures (at least 3):\\
+1. Audio/MIDI complexity metrics: tempo-adjusted note density, rhythmic irregularity, technique markers.\\
+2. Performance difficulty proxies: expert-rated difficulty, transcription complexity, playthrough error rates.\\
+3. Supply outcomes: share of releases exhibiting high-technical features by cohort/region.\\
+4. Labor outcomes: session-musician wages/premia for technical subgenres (if available).\\
+
+YouTube exposure measures (at least 3):\\
+1. Exposure to instructional metal guitar/drum channels by region/cohort.\\
+2. Timing of broadband/video quality improvements for likely musician populations.\\
+3. Tutorial supply shocks: entry/sudden growth of major technique-focused creators.\\
+4. Platform recommendation shifts affecting instructional music visibility.\\
+
+Identification strategies (at least 2):\\
+1. Cohort-by-region DiD:\\
+\begin{itemize}
+\item Younger cohorts in high-video-access regions compared with older cohorts and low-access regions.
+\end{itemize}
+2. Creator supply shock event study:\\
+\begin{itemize}
+\item Track technicality trends before/after major tutorial-supply expansions.
+\end{itemize}
+3. IV with internet quality:\\
+\begin{itemize}
+\item Instrument instructional consumption using infrastructure quality shocks.
+\end{itemize}
+
+Confounds and mitigation:\\
+1. Global genre trend cycles unrelated to YouTube.\\
+\begin{itemize}
+\item Include genre-time fixed effects and placebo genres with low tutorial intensity.
+\end{itemize}
+2. Recording software/instruments improved independently.\\
+\begin{itemize}
+\item Control for production technology adoption proxies.
+\end{itemize}
+3. Selection: high-ability musicians both consume tutorials and produce technical music.\\
+\begin{itemize}
+\item Use plausibly exogenous access shocks and pre-trend tests.
+\end{itemize}
+
+Feasibility assessment:\\
+\begin{itemize}
+\item Medium-low for clean causal inference at scale.
+\item Measurement is possible, but linking exposure to causal outcomes is data-intensive and identification is fragile.
+\item Better as a side project or mechanism illustration unless exceptional data partnership is available.
+\end{itemize}
+
+Better alternatives to metal technicality:\\
+1. Broader instrument learning outcomes (exam passes, lesson progression, upload quality metrics).\\
+2. Programming skills (course completion, coding test outcomes) with clearer labor-market links.\\
+3. Home repair quality/safety where objective outcomes are easier to observe.\\
+
+\section*{8. Alternative domains and best next steps}
+35 alternative skill domains more tractable than metal technicality, each with one empirical path:\\
+1. Cooking techniques: use recipe-video exposure shocks and meal-prep quality proxies from grocery basket shifts.\\
+2. Baking/pastry: link tutorial exposure to local bakery-entry/home-baking sales by region-time.\\
+3. Home electrical basics: relate tutorial watch intensity to permit pass rates and electrical service demand.\\
+4. Plumbing repair: examine changes in plumber call-outs after localized video-access improvements.\\
+5. Carpentry/furniture build: combine hardware SKU purchases with project completion reviews.\\
+6. Auto maintenance: track mechanic-service substitution and parts purchases after access shocks.\\
+7. Bicycle repair: use bike shop service records and local tutorial exposure.\\
+8. Sewing/alterations: analyze machine/thread sales and alterations-service demand displacement.\\
+9. Knitting/crochet: measure pattern complexity in marketplace uploads against video exposure.\\
+10. Makeup application: link tutorial trends to cosmetology enrollments and product basket complexity.\\
+11. Hairstyling/barber techniques: outcomes from cosmetology practical pass rates by broadband rollout.\\
+12. Nail art: complexity in posted designs and local training enrollment shifts.\\
+13. Fitness form training: injury-adjusted gym outcomes with instructional-video engagement.\\
+14. Yoga technique: posture quality scores from app/video-linked cohorts.\\
+15. Dance choreography: skill progression in studio assessments after tutorial integration.\\
+16. Language pronunciation: spoken assessment scores with subtitle-rich video access shocks.\\
+17. Public speaking: improvement in judged speech metrics with instructional video assignment.\\
+18. Coding/programming: coding test performance by cohort exposed to tutorial channels.\\
+19. Excel/data analysis: certification pass rates versus local platform access.\\
+20. CAD/3D modeling: software certification outcomes around tutorial-supply increases.\\
+21. Graphic design tools: portfolio quality ratings linked to instructional content exposure.\\
+22. Video editing: freelance project quality/speed after tutorial-platform adoption.\\
+23. Photography lighting: contest outcomes vs exposure to tutorial creators.\\
+24. Music production/mixing: track-level mix-quality metrics after educational-channel growth.\\
+25. Piano skills: exam-level progression with broadband/video quality improvements.\\
+26. Guitar skills (general): grade-exam and performance outcomes by tutorial exposure.\\
+27. Drumming skills (general): tempo/precision improvements in standardized assessments.\\
+28. Drawing/illustration: quality ratings in marketplace portfolios vs tutorial access.\\
+29. 3D printing workflows: print failure rates in maker spaces after training video rollout.\\
+30. Gardening/horticulture: yield/plant survival outcomes with seasonal tutorial engagement.\\
+31. Wood finishing/painting: defect rates in DIY project forums after access shifts.\\
+32. First-aid procedures: simulation performance after assigned video modules.\\
+33. Childcare techniques: parent training outcomes linked to instructional-viewing interventions.\\
+34. Elder-care home assistance: caregiver competency assessments with video-based microtraining.\\
+35. Small-business digital marketing skills: ad campaign performance after tutorial exposure.\\
+
+Best near-term paper path (recommended):\\
+1. Primary empirical setting: DIY/home repair and safety-quality outcomes.\\
+2. Secondary robustness setting: coding or certification-based technical skills.\\
+3. Keep metal technicality as illustrative extension or appendix.\\
+
+Immediate next steps:\\
+1. Pick one main outcome family with clear denominator (attempts) and quality/safety decomposition.\\
+2. Build a data inventory table: outcomes, treatment proxies, geography-time unit, likely source, access risk.\\
+3. Pre-register 2-3 feasible ID designs before deep data collection.\\
+4. Draft a minimal conceptual model from options 7, 14, and 26 (hazard + mistake cost + safety externality).\\
+
+\section*{9. Assumptions and open questions}
+Assumptions used here:\\
+1. Video access variation can be measured with enough granularity for credible quasi-experimental designs.\\
+2. At least one domain will have both learning outcomes and attempt-denominator proxies.\\
+3. Platform exposure is sufficiently distinct from generic internet use.\\
+
+Open questions to resolve before committing to design:\\
+1. Unit of analysis: individual, household, region, or firm?\\
+2. Which domain has the cleanest measurable outcome and least selection bias?\\
+3. What exposure measure is actually obtainable (watch logs, search trends, broadband proxies)?\\
+4. Can we observe attempts vs success separately to avoid misinterpreting safety outcomes?\\
+5. Is there a viable partner dataset (retail, platform, exam authority, insurer, hospital)?\\
+6. How global vs country-specific should the first paper be?\\
+7. Which heterogeneity dimensions are central (income, geography, age, baseline digital literacy)?\\
+\end{document}

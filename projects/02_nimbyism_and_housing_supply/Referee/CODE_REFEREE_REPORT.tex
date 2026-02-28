@@ -1,0 +1,633 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+
+%% ============================================================
+%% Severity macros (replaces action macros for a code audit)
+%% ============================================================
+\newcommand{\critical}{\textcolor{red}{\textbf{[CRITICAL]}}}
+\newcommand{\high}{\textcolor{orange}{\textbf{[HIGH]}}}
+\newcommand{\medium}{\textcolor{blue}{\textbf{[MEDIUM]}}}
+\newcommand{\low}{\textcolor{gray}{\textbf{[LOW]}}}
+\newcommand{\confirmed}{\textcolor{teal}{\textbf{[CONFIRMED MATCH]}}}
+
+\title{Math + Code Audit Report\\[6pt]
+\large Gross \& Chivers (2025) ``NIMBYism and the Housing Supply''}
+\author{}
+\date{February 2026}
+
+\begin{document}
+\maketitle
+
+\noindent This document reports the findings of a static code audit of
+\texttt{Code/steadystate/} (MATLAB) and \texttt{Code/data/} (Stata)
+against the paper's stated model, equations, and calibration table.
+Seven MATLAB files and six Stata do-files were read in full.
+No compile or run tests were executed.
+
+\bigskip
+\noindent\textcolor{orange}{\textbf{Scope note.}} \textit{%
+\texttt{Code/Codes\_ABB/} (quantitative results, impulse responses,
+calibration routines) was not covered in this pass and should be
+audited separately. The \texttt{Code/steadystate/} folder is the
+likely production codebase; see Outstanding Item~O1.}
+
+\bigskip
+\noindent\textbf{Summary of findings.}
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Severity & MATLAB & Stata & Total \\
+\midrule
+Critical & 4 & 2 & 6 \\
+High     & 6 & 3 & 9 \\
+Medium   & 3 & 3 & 6 \\
+Low      & 2 & 2 & 4 \\
+\midrule
+Total    & 15 & 10 & 25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%% ============================================================
+\section*{High-Level Math Audit (Paper First)}
+%% ============================================================
+
+\noindent This section checks internal model logic and equation coherence in the paper
+before the code crosswalk. Source checked:
+\texttt{Gross and Chivers (2025) NIMBYism and the Housing Supply.lyx}.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ID & Severity & Description \\
+\midrule
+HLM1 & High & Median-voter regularity conditions not fully justified \\
+HLM2 & Medium & Mixed marginal and finite-difference voting objects \\
+HLM3 & Medium & Time/notation switching for prices and assets \\
+HLM4 & Medium & Calibration prose mismatches listed parameter vector \\
+HLM5 & Low & Math-adjacent typos in exposition \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{HLM1: Median-voter regularity conditions}
+
+\high{} The paper uses the equilibrium condition
+\[
+  \int g(\mathbf{s};p_t^h)\,\Theta(\mathbf{s};p^h)\,ds = 0.5,
+\]
+while also noting that household preferences over house prices are not monotonic for
+some households. That can violate single-peakedness assumptions typically used to justify
+a one-dimensional median-voter equilibrium.
+
+\noindent\textbf{Inference.} This is not automatically a model error, but the paper should
+state whether equilibrium is claimed as a numerical root condition only, or whether
+existence/uniqueness follows from an explicit monotonicity assumption.
+
+\subsection*{HLM2: Mixed marginal and finite-difference objects}
+
+\medium{} The narrative refers to marginal effects (\(\partial V/\partial p\)), while
+the formal voting rule uses:
+\[
+  V_j(\mathbf{s};p^h+\epsilon^p)-V_j(\mathbf{s};p^h)+\sigma \ge 0.
+\]
+These are equivalent only under a local-limit interpretation (\(\epsilon^p \to 0\)) or
+additional smoothness assumptions.
+
+\noindent\textbf{Requested clarification.} State whether \(\epsilon^p\) is an
+infinitesimal perturbation used numerically, or a finite policy step.
+
+\subsection*{HLM3: Time/notation consistency}
+
+\medium{} The paper alternates between \(p_t\) and \(p_t^h\) for house price, and uses
+both static and recursive constraint forms (\(a_t\) and \(a_{t+1}\) contexts). This likely
+reflects exposition choices rather than a structural inconsistency, but it obscures timing.
+
+\noindent\textbf{Requested clarification.} Add one compact timing-convention paragraph
+(start-of-period states, controls, end-of-period transitions), and normalize price notation.
+
+\subsection*{HLM4: Calibration prose vs parameter vector}
+
+\medium{} The calibration sentence describes a narrower parameter class, but the listed
+calibrated vector includes \(\beta, \sigma, \zeta, \bar{w}, \psi, \phi^{rent}\),
+which spans preferences, voting, bequests, and rental-sector terms.
+
+\noindent\textbf{Requested clarification.} Rewrite the sentence to classify all calibrated
+parameters by block.
+
+\subsection*{HLM5: Minor math-adjacent typos}
+
+\low{} There are low-risk typographic issues in formal section headers and nearby prose
+(e.g., ``Medan Voter Theorem''). These do not alter equations but reduce presentation quality.
+
+\subsection*{High-Level Math Verdict}
+
+No clear algebraic sign error was found in the core household Bellman setup, tenure-choice
+decomposition, or rental zero-profit equation in this high-level pass. The main outstanding
+math risk is the equilibrium-voting regularity argument (HLM1), followed by notation/timing
+clarity (HLM2--HLM4).
+
+%% ============================================================
+\section*{Critical Issues (M1--M4; S1--S2)}
+%% ============================================================
+
+\subsection*{M1: Housing weight in utility function}
+
+\critical{} The paper (Eq.~2) specifies a CES period utility function:
+\[
+  u(c_t, h_t) = \frac{\bigl(c_t^{1-\zeta}\,h_t^{\zeta}\bigr)^{1-\gamma}}{1-\gamma},
+  \qquad \zeta = 0.75,
+\]
+so housing receives weight $\zeta = 0.75$ and consumption receives $1-\zeta = 0.25$.
+
+The primary solver \texttt{SolveSS.m} (line~15) and \texttt{SolveSS\_iter.m} (line~14) implement:
+\begin{verbatim}
+omega = 0.5
+value = (C^omega * (H + theta_r*R)^(1-omega))^(1-eta) / (1-eta)
+\end{verbatim}
+Here \texttt{omega} is the \emph{consumption} weight, so the housing weight is $1-\omega = 0.50$. The correct code translation of $\zeta = 0.75$ would be \texttt{omega = 0.25} (not 0.50). Both the parameter value and the role of the symbol are reversed relative to the paper.
+
+\medskip
+\noindent\textbf{Impact.} The consumption--housing substitution ratio is entirely determined by $\zeta$. A value of 0.50 rather than 0.75 substantially changes optimal housing demand, ownership rates, and the price--income ratio---all calibration targets.
+
+\noindent\textbf{Decision needed.} Confirm the calibrated value of $\zeta$. If $\zeta=0.75$ is correct, set \texttt{omega = 1 - 0.75 = 0.25}.
+
+\subsection*{M2: Discount factor $\beta$}
+
+\critical{} The paper's calibration table states $\beta = 0.978$.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+File & Line & Value \\
+\midrule
+\texttt{SolveSS.m}          & 17 & \texttt{beta = 0.80} \\
+\texttt{SolveSS\_function.m} & 16 & \texttt{beta = 0.98} \\
+\texttt{SolveSS\_iter.m}    & 16 & \texttt{beta = 0.80} \\
+\texttt{SolveSS\_Loop.m}    & 20 & \texttt{beta = 0.80} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Only the optimisation wrapper \texttt{SolveSS\_function.m} is close to the calibrated value.
+The remaining three files---including the main standalone solver---use $\beta = 0.80$,
+which implies implausibly low patience and would dramatically compress life-cycle saving
+and housing accumulation.
+
+\noindent\textbf{Decision needed.} Identify the production file and update it to $\beta = 0.978$.
+
+\subsection*{M3: Non-financial preference parameter $\sigma$ absent from code}
+
+\critical{} The paper defines the individual voting indicator (Eq.~15) as:
+\[
+  \Theta(s;\,p^h) = \mathbf{1}\!\left\{V_j(s;\,p^h+\varepsilon) - V_j(s;\,p^h) + \sigma \geq 0\right\},
+  \qquad \sigma = -2.4.
+\]
+The parameter $\sigma$ captures non-financial motives for voting (congestion, ideology)
+and is calibrated to shift approximately 15\% of voters toward supply.
+
+No variable named \texttt{sigma} or equivalent with value $-2.4$ appears in any
+\texttt{Code/steadystate/} file. The voting block in \texttt{SolveSS.m}
+(lines~393--474) computes:
+\begin{verbatim}
+vote = sign(valuefunction_dp - valuefunction) * population_density
+\end{verbatim}
+This captures only the financial component; the $\sigma$ shift is absent entirely.
+
+\noindent\textbf{Impact.} Without $\sigma$, the voting equilibrium is determined
+solely by financial incentives and will produce a different equilibrium price from the paper.
+
+\noindent\textbf{Decision needed.} Confirm whether $\sigma$ was intentionally dropped
+(e.g.\ absorbed into a price normalisation) or is missing. If missing, add as an additive
+term in the voting threshold.
+
+\subsection*{M4: Rental price hardcoded; zero-profit condition absent}
+
+\critical{} The paper derives the rental price from a firm zero-profit condition (Eq.~12):
+\[
+  p_t^{\mathrm{rent}} = \varphi^{\mathrm{rent}} + r_t^a \cdot p_t^h - \Delta p_{t+1}^h,
+\]
+where $\varphi^{\mathrm{rent}} = 0.05$, $r_t^a = 0.02$, and $\Delta p_{t+1}^h$
+is expected house price appreciation.
+
+\texttt{SolveSS.m} (line~13) instead sets:
+\begin{verbatim}
+r_price = 0.09
+\end{verbatim}
+This is a fixed constant, not derived from the equilibrium condition. No file in
+\texttt{Code/steadystate/} computes \texttt{r\_price} as a function of
+\texttt{a\_price}, \texttt{rbPos}, or expected appreciation.
+
+\noindent\textbf{Impact.} The rental price does not respond to changes in the house price
+or interest rate, breaking the arbitrage between the rental and ownership markets.
+
+\noindent\textbf{Decision needed.} Either implement Eq.~12, or document that 0.09 is
+a pre-computed equilibrium value at the baseline calibration and explain why dynamic
+updating is unnecessary.
+
+\subsection*{S1: All Stata merges drop \texttt{\_merge} without validation}
+
+\critical{} Every merge in the data pipeline immediately discards the match
+indicator without tabulating match rates. Examples from \texttt{3 birthrates.do}:
+\begin{verbatim}
+merge m:1 statefips year using birthrates_updated   // line 25
+drop _merge                                          // line 26
+
+merge m:m metarea using weights, keepusing(sumcity) // line 41
+drop _merge                                          // line 42
+\end{verbatim}
+The same pattern appears in files 5 and 6. There is no \texttt{tab \_merge},
+\texttt{assert \_merge == 3}, or any check for unmatched observations.
+
+\noindent\textbf{Impact.} Any silently dropped metropolitan areas or years will not
+appear in the regression sample without re-running and inserting diagnostics.
+This is a replication risk.
+
+\noindent\textbf{Fix.} Add \texttt{tab \_merge} before every \texttt{drop \_merge}.
+For key merges, add \texttt{assert \_merge == 3} or document the expected match rate.
+
+\subsection*{S2: Impossible logical condition in \texttt{2 citystateweights.do}}
+
+\critical{} The manual override block (around line~1234) contains at minimum one
+condition that is logically impossible:
+\begin{verbatim}
+drop if metarea == 60 & bpl == 13 & bpl == 45
+\end{verbatim}
+A variable cannot simultaneously equal 13 and 45. This evaluates to false for all
+observations and silently does nothing. The probable intent was:
+\begin{verbatim}
+drop if metarea == 60 & (bpl == 13 | bpl == 45)
+\end{verbatim}
+
+\noindent\textbf{Impact.} The intended observations are not dropped, potentially leaving
+outlier or erroneous weight cells in the shift-share instrument. This affects weighted
+birth rate construction and all downstream regressions.
+
+\noindent\textbf{Fix.} Review the full 600-line block for similar errors and replace
+\texttt{\&} with \texttt{|} wherever \texttt{bpl} conditions are clearly alternatives.
+
+%% ============================================================
+\section*{High Priority Issues (M5--M10; S3--S5)}
+%% ============================================================
+
+\subsection*{M5: Retirement age}
+
+\high{} The paper states working life $J^{\mathrm{ret}} = 41$ periods (ages 25--65).
+\texttt{SolveSS.m} (line~34) sets \texttt{agepension = 60}, implying retirement at
+age~60 and only 35 working periods---five years shorter than the paper. This affects
+the earnings profile, savings accumulation, and the age at which households transition
+from renting to owning.
+
+\subsection*{M6: Risk-free savings rate}
+
+\high{} The calibration table states $r^a = 0.02$ (2\%). \texttt{SolveSS.m}
+(line~10) sets \texttt{rbPos = 0.03} (3\%). This affects all saving decisions,
+the rental price via Eq.~12, and the mortgage spread. With the paper's spread of
+3~percentage points, a savings rate of 3\% implies a mortgage rate of 6\%, not 5\%.
+
+\subsection*{M7: Bequest parameters}
+
+\high{} The paper (Eq.~4 and calibration table) specifies:
+\[
+  v(w) = \psi\,\frac{(w + \bar{w})^{1-\gamma}}{1-\gamma}, \qquad \psi = 10,\quad \bar{w} = 150.
+\]
+\texttt{SolveSS.m} (lines~23--24) sets \texttt{bequestweight1 = 0.72} and
+\texttt{bequestweight2 = 0.72}, and implements:
+\begin{verbatim}
+bequestweight1 * (1 + Bequest/bequestweight2)^(1-eta)
+\end{verbatim}
+Neither value is remotely close to $\psi = 10$ or $\bar{w} = 150$. The normalisation
+$(1 + B/\bar{w})$ could be algebraically equivalent to $(w + \bar{w})^{1-\gamma}$
+up to a scaling constant, but \texttt{bequestweight2} $= 0.72 \neq 150$.
+
+\noindent\textbf{Decision needed.} Provide the algebraic equivalence mapping both
+parameter sets, or correct the values.
+
+\subsection*{M8: Transaction cost inconsistent across files}
+
+\high{} The paper states $F^{\mathrm{sell}} = 0.07$ (7\%).
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+File & Line & \texttt{ka} \\
+\midrule
+\texttt{SolveSS.m}          & 22 & 0.07 \checkmark \\
+\texttt{SolveSS\_function.m} & 18 & 0.06 \\
+\texttt{SolveSS\_Loop.m}    & 22 & 0.09 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two of three function files use a different value from the paper.
+$F^{\mathrm{sell}}$ enters the budget constraint for adjusting owners (Eqs.~7 and~10)
+and governs the margin between adjusting and non-adjusting tenure.
+
+\subsection*{M9: Rental discount $\theta^{\mathrm{rent}}$ inconsistent across files}
+
+\high{} The calibration table (following Mian et al.\ 2017) states $\theta^{\mathrm{rent}} = 0.90$.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+File & Line & \texttt{theta\_r} \\
+\midrule
+\texttt{SolveSS.m}          & 16 & 0.90 \checkmark \\
+\texttt{SolveSS\_function.m} & 15 & 0.85 \\
+\texttt{SolveSS\_Loop.m}    & 19 & 0.85 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+$\theta^{\mathrm{rent}}$ governs the utility discount for renting vs.\ owning and
+directly shifts the rent--own margin.
+
+\subsection*{M10: Utility form inconsistent across solver files}
+
+\high{} The paper specifies CRRA utility with $\gamma = 2$ (Eq.~2). The files differ:
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+File & Utility form \\
+\midrule
+\texttt{SolveSS.m}           & CRRA, $\eta = 2$ \\
+\texttt{SolveSS\_iter.m}     & CRRA, $\eta = 2$ \\
+\texttt{SolveSS\_function.m} & Log: $\log c + s_h \log(h + \theta_r R)$ \\
+\texttt{SolveSS\_Loop.m}     & Log \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Log utility is the limiting case $\gamma \to 1$ and constitutes a different model.
+If \texttt{SolveSS\_Loop.m} is the grid-search production solver, the equilibrium
+prices it generates will not correspond to the CRRA model described in the paper.
+
+\subsection*{S3: 600$+$ lines of manual \texttt{replace share = 0} with no documentation}
+
+\high{} \texttt{2 citystateweights.do} lines~615--1234 contain over 600 statements of the form:
+\begin{verbatim}
+replace share = 0 if metarea == X & bpl == Y
+\end{verbatim}
+No comment explains the selection criterion. The logic is hand-coded, not
+rule-based (e.g.\ \texttt{replace share = 0 if count < 5}).
+
+\noindent\textbf{Impact.} The shift-share instrument is constructed from these weights.
+Undocumented exclusions affect instrument validity and cannot be assessed by a reader
+or replicator.
+
+\noindent\textbf{Recommendation.} Replace the manual block with a programmatic rule
+and document the threshold. If individual overrides are genuinely case-specific, add
+a comment to each.
+
+\subsection*{S4: Hardcoded machine-specific file paths}
+
+\high{} Multiple files contain paths tied to specific machines:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+File & Line & Path \\
+\midrule
+\texttt{1 tenurechoices.do} & 1 & \texttt{/Users/igro0002/Dropbox/\ldots} \\
+\texttt{4 importexcel .do} & 2, 13 & \texttt{/Users/igro0002/Dropbox/\ldots} \\
+\texttt{merge data.do} & 6--7 & \texttt{C:\textbackslash{}Users\textbackslash{}Dave\_\textbackslash{}\ldots} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The mixture of macOS and Windows paths indicates the pipeline was developed
+across machines without standardisation. No collaborator or replicator can run
+the code without modifying these lines.
+
+\noindent\textbf{Fix.} Replace all hardcoded paths with a single global macro
+at the top of each file, e.g.:
+\begin{verbatim}
+global datadir "C:\Users\Dave_\Dropbox\Zac and David\Data"
+use "$datadir/usa_00009.dta"
+\end{verbatim}
+
+\subsection*{S5: IV regressions without instrument diagnostics}
+
+\high{} \texttt{5 combinepermits.do} (lines~103--118) runs 50~IV regression
+specifications in nested loops. No first-stage $F$-statistics are reported and
+no Kleibergen--Paap or Cragg--Donald statistics are computed. The outlier
+exclusion \texttt{abs(totalunits[h]growth) < 2} is not documented.
+
+\noindent\textbf{Recommendation.} Add \texttt{estat firststage} to each IV loop
+and export first-stage $F$-statistics alongside point estimates in
+\texttt{Regressions.csv}.
+
+%% ============================================================
+\section*{Medium Priority Issues (M11--M13; S6--S8)}
+%% ============================================================
+
+\subsection*{M11: Housing grid inconsistent across files}
+
+\medium{} The paper does not report the grid size used for published results.
+The files vary substantially:
+
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+File & $J$ & \texttt{housingmax} & Liquid grid $I$ \\
+\midrule
+\texttt{SolveSS.m}           & 40 & 14 & 50 \\
+\texttt{SolveSS\_function.m} & 10 & 15 & 50 \\
+\texttt{SolveSS\_iter.m}     & 20 & 25 & 50 \\
+\texttt{SolveSS\_Loop.m}     & 20 & 30 & 60 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A grid of $J = 10$ is very coarse and likely insufficiently accurate for value function
+approximation. The varying \texttt{housingmax} changes which housing quantities are
+accessible to households. Document which grid was used for the published results.
+
+\subsection*{M12: \texttt{agemax = 90} in \texttt{SolveSS\_function.m}}
+
+\medium{} The paper states agents live from age~25 to age~80 ($J = 56$ periods).
+\texttt{SolveSS\_function.m} (line~26) sets \texttt{agemax = 90}, extending the
+model life by 10~years. With \texttt{dage = 5} in that file (coarser age grid),
+the terminal condition and bequest calculation apply at a different age than stated
+in the paper.
+
+\subsection*{M13: Notation reversal between paper and code}
+
+\medium{} The paper uses $\zeta$ as the \emph{housing} weight ($\zeta = 0.75$,
+so housing receives 75\%). The code uses \texttt{omega} as the
+\emph{consumption} weight. The correct translation is \texttt{omega = 1 - zeta = 0.25}.
+The code instead uses \texttt{omega = 0.50} (see~M1). The reversal in naming
+conventions creates a risk of silent errors whenever the utility function is
+re-parameterised.
+
+\subsection*{S6: Lag construction duplicated between files~3 and~5}
+
+\medium{} \texttt{3 birthrates.do} constructs lags \texttt{l1bw}--\texttt{l50bw}
+(lines~55--119). \texttt{5 combinepermits.do} reconstructs \texttt{l1bw}--\texttt{l65bw}
+(lines~13--77). If the panel changes between files due to the crosswalk merge,
+lags may be computed over a different \texttt{tsset} structure. Any change to the
+lag range in file~3 must be replicated manually in file~5.
+
+\subsection*{S7: \texttt{statefips / 100} conversion}
+
+\medium{} \texttt{3 birthrates.do} (line~21) converts IPUMS birth-state codes to
+FIPS codes via \texttt{replace statefips = statefips / 100}. This arithmetic
+conversion may fail for codes that are not round multiples of 100 (e.g.\
+District of Columbia at IPUMS code~98 $\to$ 0.98, not a valid FIPS code).
+
+\noindent\textbf{Recommendation.} Use the IPUMS-provided state crosswalk rather
+than division. Verify all resulting values are valid FIPS codes before merging.
+
+\subsection*{S8: Predicted variable created but unused}
+
+\medium{} \texttt{5 combinepermits.do} (line~99) creates \texttt{own\_predicted}
+after a fixed-effects regression but this variable is never used in any subsequent
+command and is not saved to output. Remove or document its purpose.
+
+%% ============================================================
+\section*{Low Priority Issues (M14--M15; S9--S10)}
+%% ============================================================
+
+\subsection*{M14: \texttt{IncomeProcess.m} is an incomplete fragment}
+
+\low{} \texttt{IncomeProcess.m} ends at line~104, mid-construction of lower-diagonal
+arrays for an income transition matrix. There is no return statement, no assembled
+sparse matrix, and no output. The file cannot be called as a standalone function.
+It appears to be a copy-paste fragment that was never completed.
+
+\subsection*{M15: Unused variable \texttt{sigma} in \texttt{SolveSS.m}}
+
+\low{} \texttt{SolveSS.m} (line~18) declares \texttt{sigma = 1.5} but this variable
+is never referenced again. The name coincides with the paper's non-financial preference
+parameter $\sigma = -2.4$ (see~M3), but the value differs and it is unused. Either
+remove or rename to avoid confusion.
+
+\subsection*{S9: Commented-out Wharton merge in \texttt{merge data.do}}
+
+\low{} Lines~28--32 of \texttt{merge data.do} contain a commented-out merge with a
+Wharton land-use regulation dataset (WRLURI), listed in the paper as a potential
+instrument for housing supply. No explanation is given for why it was removed.
+Document the decision.
+
+\subsection*{S10: Age bin boundary overlap}
+
+\low{} \texttt{1 tenurechoices.do} creates \texttt{age20\_30} for ages 20--30
+and \texttt{age30\_40} for ages 30--40. Age~30 falls in both bins. This may be
+intentional but can cause double-counting in regression or summary tables.
+Confirm and document.
+
+%% ============================================================
+\section*{Confirmed Matches}
+%% ============================================================
+
+The following items agree between the paper's calibration table and the primary
+solver \texttt{SolveSS.m}:
+
+\begin{itemize}
+  \item \confirmed{} \textbf{LTV ratio $m$}: Paper $m = 0.90$ $\to$ \texttt{CC = 0.90} (line~26).
+  \item \confirmed{} \textbf{Risk aversion $\gamma$}: Paper $\gamma = 2$ $\to$ \texttt{eta = 2}
+    (\texttt{SolveSS.m}; \texttt{SolveSS\_iter.m}).
+  \item \confirmed{} \textbf{Transaction cost (primary file)}: Paper $F^{\mathrm{sell}} = 0.07$
+    $\to$ \texttt{ka = 0.07} (\texttt{SolveSS.m} line~22).
+  \item \confirmed{} \textbf{Rental discount (primary file)}: Paper $\theta^{\mathrm{rent}} = 0.90$
+    $\to$ \texttt{theta\_r = 0.90} (\texttt{SolveSS.m} line~16).
+  \item \confirmed{} \textbf{Life span}: Paper $J = 56$ (ages 25--80) $\to$
+    \texttt{agemin = 25}, \texttt{agemax = 80}, \texttt{dage = 1} (\texttt{SolveSS.m}).
+  \item \confirmed{} \textbf{Borrowing constraint form}: Paper $a_t \geq -m \cdot h_t \cdot p_t^h$
+    $\to$ \texttt{-b > a*P\_h*CC} (\texttt{SolveSS.m} lines~144--147).
+  \item \confirmed{} \textbf{Backward induction structure}: Paper solution algorithm
+    (backward from terminal age, forward distribution simulation) $\to$
+    \texttt{SolveSS.m} backward loop from \texttt{agemax} to \texttt{agemin} followed
+    by forward pass.
+  \item \confirmed{} \textbf{Voting direction}: Paper votes to restrict supply when
+    value rises with price $\to$ \texttt{sign(valuefunction\_dp - valuefunction)}
+    (\texttt{SolveSS.m} lines~393--474). Note: financial component only; $\sigma$ term absent (see~M3).
+\end{itemize}
+
+%% ============================================================
+\section*{Referee Recommendation (Code and Replication)}
+%% ============================================================
+
+\noindent\textbf{Recommendation:} \textbf{Major code revision} before treating the
+current repository as a replication-ready implementation of the published model.
+
+\medskip
+\noindent This recommendation is based on observed implementation mismatches
+(M1--M4), parameter inconsistencies across solver files (M5--M10), and missing
+data-pipeline diagnostics (S1--S5). As an inference, if the published quantitative
+results were generated from a different private branch, the immediate requirement is
+to document the production-file mapping and provide a clean reproducible pipeline in
+this repository.
+
+\medskip
+\noindent\textbf{Minimum acceptance checklist for replication release:}
+\begin{itemize}
+  \item Identify and document the exact production solver file(s) and calibration
+    used for published tables/figures.
+  \item Reconcile utility, discounting, voting, and rental-price equations with
+    the paper, or explicitly document approved deviations.
+  \item Add merge diagnostics and path standardisation to Stata scripts and re-run
+    to regenerate key regression outputs.
+  \item Publish a short \texttt{README\_code.md} mapping each paper equation block
+    to code locations.
+  \item Run and archive one end-to-end reproducibility test from raw inputs to
+    final outputs.
+\end{itemize}
+
+%% ============================================================
+\section*{Outstanding Items}
+%% ============================================================
+
+\begin{enumerate}
+  \item \textbf{O1 (production file)}: \texttt{Code/steadystate/} is the
+    likely production codebase, but \texttt{SolveSS.m} contains parameter values
+    inconsistent with the calibration table (M1--M9). Verify whether
+    \texttt{SolveSS.m} is the production file or a development variant;
+    document in a \texttt{README\_code.md}. \textit{Owner: Authors.}
+
+  \item \textbf{O2 (housing weight)}: Is $\zeta = 0.75$ (housing weight) or
+    $\omega = 0.50$ (consumption weight) the calibrated value? Reconcile code
+    against calibration table. \textit{Owner: Authors.}
+
+  \item \textbf{O3 ($\sigma$ absent from code)}: Was $\sigma = -2.4$ intentionally
+    dropped? If not, add as an additive term in the voting indicator before the
+    median voter calculation. \textit{Owner: Authors.}
+
+  \item \textbf{O4 (rental price)}: Is \texttt{r\_price = 0.09} a pre-computed
+    equilibrium value or an error? If pre-computed, document the derivation.
+    If an error, implement Eq.~12. \textit{Owner: Authors.}
+
+  \item \textbf{O5 (retirement age)}: Retirement age 60 (code) or 65 (paper)?
+    Update whichever is wrong. \textit{Owner: Authors.}
+
+  \item \textbf{O6 (bequest parameters)}: Provide algebraic equivalence between
+    $(\psi = 10,\, \bar{w} = 150)$ and $(\texttt{bequestweight1} = 0.72,\,
+    \texttt{bequestweight2} = 0.72)$, or correct the code. \textit{Owner: Authors.}
+
+  \item \textbf{O7 (\texttt{Codes\_ABB/} audit)}: The quantitative results,
+    impulse responses, and calibration routines in \texttt{Code/Codes\_ABB/}
+    were not covered in this pass. Schedule a separate audit before resubmission.
+    \textit{Owner: Auditor.}
+
+  \item \textbf{O8 (impossible bpl condition)}: Review and fix the manual override
+    block in \texttt{2 citystateweights.do}; re-run the weights and all downstream
+    files. \textit{Owner: Code author.}
+
+  \item \textbf{O9 (merge diagnostics)}: Add \texttt{tab \_merge} before every
+    \texttt{drop \_merge} across the Stata pipeline.
+    \textit{Owner: Code author.}
+
+  \item \textbf{O10 (share override documentation)}: Replace or document the
+    600-line manual \texttt{replace share = 0} block with a programmatic rule
+    or per-line comments. \textit{Owner: Code author.}
+\end{enumerate}
+
+\end{document}

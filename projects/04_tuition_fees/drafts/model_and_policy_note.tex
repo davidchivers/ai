@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{\usepackage{url}}
+\urlstyle{same}
+\setlength{\emergencystretch}{3em}
+\setlength{\hfuzz}{1pt}
+
+\title{Tuition Fees Project: Model Skeleton and UK Policy Inputs}
+\author{}
+\date{February 23, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Purpose}
+This note converts the current project scaffold into a compact equation skeleton and records verified institutional inputs for England student finance policy.
+
+\section{Model in Words First}
+\subsection{What problem this model is trying to solve}
+The model asks a narrow but important incidence question: if the same higher-education spending is financed in three different ways, who pays in present-value terms, and at what point in the life cycle? The three funding systems are:
+\begin{itemize}
+\item an income-contingent tuition loan system,
+\item a graduate tax, and
+\item financing from broad general taxation.
+\end{itemize}
+The objective is not to model university demand or macro feedback in v0. The objective is to map policy rules into distributional incidence transparently.
+
+\subsection{Why this is a live policy issue}
+Policy debate often compares these systems using annual cash flows or average repayments. That can blur the key economic margin: timing. A payment made at age 19 is not equivalent to the same nominal payment made at age 40. The model makes this timing margin explicit by converting each regime into discounted lifetime burdens.
+
+There is also a composition issue. Under loan systems, some higher-wealth families may pay fees upfront. If that group exits the borrowing pool, measured subsidy and cross-subsidization in the remaining loan book can shift. The model includes this margin directly.
+
+\subsection{What this model can and cannot answer in v0}
+\textbf{Can answer:}
+\begin{itemize}
+\item How burden differs between graduates and non-graduates across regimes.
+\item How burden differs across earnings profiles among graduates.
+\item How an upfront-fee margin by wealth type changes measured incidence.
+\end{itemize}
+\textbf{Cannot answer yet:}
+\begin{itemize}
+\item Schooling participation responses to policy (education choice is exogenous).
+\item Wage-equilibrium or macro feedback effects.
+\item Behavioral responses in labor supply or avoidance.
+\end{itemize}
+
+\subsection{Intuition}
+The baseline intuition is straightforward:
+\begin{itemize}
+\item Income-contingent loans insure low-earnings graduates because payments depend on realized earnings and unpaid balances can be written off. That tends to compress burdens at the lower end of the graduate earnings distribution.
+\item Graduate taxes spread cost over graduate income without personal debt balances. This can look similar to income-contingent repayment for some earnings paths, but differs through duration and rate design.
+\item General taxation broadens incidence to non-graduates by construction, so it can reduce average graduate burden but increases burden outside the graduate group.
+\item Even when undiscounted totals are similar, PDV burdens can differ materially because the payment timing differs across regimes.
+\end{itemize}
+
+\section{Equation Skeleton (v0)}
+\subsection{Indices and primitives}
+Individual type is $i=(e_i,a_i,g_i)$ where $e_i\in\{G,N\}$ is graduate status, $a_i\in\{H,L\}$ is family wealth type, and $g_i$ indexes an exogenous earnings path $\{y_{i,t}\}_{t=0}^{T}$. Tuition is $F$, discount factor is $\beta\in(0,1)$, and loan interest rate in regime A is $r_L$.
+
+\subsection{Common incidence object}
+Define net period public payment under regime $r$ as
+\[
+p_{i,t}^{r}=\text{Payment}_{i,t}^{r}-\text{Transfer}_{i,t}^{r},
+\]
+and PDV burden as
+\[
+B_i^{r}=\sum_{t=0}^{T}\beta^t p_{i,t}^{r}.
+\]
+Pairwise comparison:
+\[
+\Delta B_i^{r,s}=B_i^{r}-B_i^{s}.
+\]
+$\Delta B_i^{r,s}<0$ implies type $i$ prefers regime $r$ to $s$ on PDV burden.
+
+\subsection{Regime A: income-contingent tuition loan}
+Loan participation indicator among graduates: $I_i^{\text{loan}}\in\{0,1\}$.
+\[
+D_{i,0}=I_i^{\text{loan}}F.
+\]
+Repayment rule:
+\[
+R_{i,t}^{A}=\phi\max(y_{i,t}-\bar y,0)\mathbf{1}\{D_{i,t}>0\}.
+\]
+Debt evolution:
+\[
+D_{i,t+1}=\max\{(1+r_L)D_{i,t}-R_{i,t}^{A},0\},\qquad t=0,\dots,T-1.
+\]
+Write-off at $T_w$:
+\[
+D_{i,T_w+1}=0,\quad R_{i,t}^{A}=0\text{ for }t>T_w.
+\]
+Upfront payment component (if no loan):
+\[
+P_{i,0}^{A,\text{upfront}}=(1-I_i^{\text{loan}})\mathbf{1}\{e_i=G\}F.
+\]
+Working-life repayment component:
+\[
+P_{i,t}^{A,\text{repay}}=R_{i,t}^{A}.
+\]
+Total payment flow:
+\[
+\text{Payment}_{i,t}^{A}=P_{i,t}^{A,\text{upfront}}+P_{i,t}^{A,\text{repay}}.
+\]
+Baseline incidence accounting sets $\text{Transfer}_{i,t}^{A}=0$ unless explicit rebate channels are added.
+
+\subsection{Regime B: graduate tax}
+No personal debt stock. Baseline tax function:
+\[
+\text{Payment}_{i,t}^{B}=\tau_G y_{i,t}\mathbf{1}\{e_i=G\}\mathbf{1}\{t\le T_G\}.
+\]
+Optional threshold variant:
+\[
+\text{Payment}_{i,t}^{B}=\tau_G\max(y_{i,t}-\bar y^{G},0)\mathbf{1}\{e_i=G\}\mathbf{1}\{t\le T_G\}.
+\]
+
+\subsection{Regime C: general taxation finance}
+No tuition debt and no graduate-specific surcharge.
+\[
+\text{Payment}_{i,t}^{C}=\tau_{\text{all}}y_{i,t}.
+\]
+
+\subsection{Cohort bookkeeping identities}
+Higher-education outlay for cohort $k$:
+\[
+HE_k=F\,N_{G,k}.
+\]
+Regime A receipts and subsidy:
+\[
+\text{Rev}_k^A=\sum_i\sum_t\beta^t R_{i,t}^{A},\qquad \text{Sub}_k^A=HE_k-\text{Rev}_k^A.
+\]
+Regime B and C receipts:
+\[
+\text{Rev}_k^B=\sum_i\sum_t\beta^t\text{Payment}_{i,t}^{B},\qquad
+\text{Rev}_k^C=\sum_i\sum_t\beta^t\text{Payment}_{i,t}^{C}.
+\]
+
+\section{UK Policy Inputs (England, verified on 2026-02-23)}
+\subsection{Tuition fee caps}
+For 2025/26 (from 1 August 2025), government-published maximum fees include:
+\begin{itemize}
+\item GBP 9,535 (standard full-time)
+\item GBP 11,440 (accelerated full-time)
+\item GBP 7,145 (part-time)
+\end{itemize}
+[INFERENCE] A baseline calibration value of annual tuition $F=9{,}535$ is policy-consistent for a standard full-time course in 2025/26.
+
+\subsection{Repayment thresholds and rates}
+Current thresholds in repayment guidance:
+\begin{itemize}
+\item Plan 2: GBP 28,470
+\item Plan 5: GBP 25,000
+\end{itemize}
+Both plans repay 9\% of earnings above the relevant threshold.
+
+\subsection{Plan definitions and write-off}
+\begin{itemize}
+\item Plan 2: undergraduate starters from 1 September 2012 to 31 July 2023; balance cancellation after 30 years.
+\item Plan 5: starters on/after 1 August 2023; balance cancellation after 40 years.
+\end{itemize}
+
+\subsection{Interest rules}
+\begin{itemize}
+\item Plan 2: RPI-based, income-contingent post-study rates; while studying, normally RPI + 3\%.
+\item Plan 5: normally RPI only.
+\end{itemize}
+
+\subsection{Evidence on upfront payment vs borrowing}
+SLC reports 7.3\% of full-time loan borrowers in 2024/25 took only a Tuition Fee Loan and no Maintenance Loan. SLC also states that estimated tuition-fee-loan take-up against the eligible population is no longer published after a November 2025 method change.
+
+[INFERENCE] Direct measurement of ``paid tuition upfront with no tuition loan'' is not identified in this published series; scenario shares for upfront payment should be treated as assumptions and tested in sensitivity analysis.
+
+\section{Sources}
+\begin{enumerate}
+\item GOV.UK, ``Changes to tuition fees: 2025 to 2026 academic year'' (updated 26 November 2025): \href{https://www.gov.uk/government/publications/tuition-fees-and-student-support-2025-to-2026-academic-year/changes-to-tuition-fees-2025-to-2026-academic-year}{source link}
+\item GOV.UK, ``Repaying your student loan: How much you repay'' (accessed 2026-02-23): \href{https://www.gov.uk/repaying-your-student-loan/what-you-pay}{source link}
+\item GOV.UK, ``Student loans: a guide to terms and conditions 2025 to 2026'' (accessed 2026-02-23): \href{https://www.gov.uk/government/publications/student-loans-a-guide-to-terms-and-conditions/student-loans-a-guide-to-terms-and-conditions-2025-to-2026}{source link}
+\item GOV.UK/SLC, ``Student support for higher education in England 2025'' (updated 11 December 2025): \href{https://www.gov.uk/government/statistics/student-support-for-higher-education-in-england-2025/student-support-for-higher-education-in-england-2025}{source link}
+\item GOV.UK/SLC, ``Income Contingent Student Loan repayment plans, interest rates and calculations (England)'' (2024/25): \href{https://www.gov.uk/government/statistics/student-loans-in-england-2024-to-2025/income-contingent-student-loan-repayment-plans-interest-rates-and-calculations-england}{source link}
+\end{enumerate}
+
+\end{document}
