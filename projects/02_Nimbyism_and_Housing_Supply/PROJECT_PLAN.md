@@ -17,18 +17,18 @@ We develop a political economy model of the housing market in which the supply o
 ## Folder Structure
 
 - `Gross and Chivers (2025)...lyx/pdf` — Main paper (LyX source + published JME PDF)
-- `Code/` — All computational scripts (no large data files)
+- `code/` — All computational scripts (no large data files)
   - `Codes_ABB/` — MATLAB estimation code (quantile regression, MCMC, bootstraps) + Stata do-files
   - `SteadyState/` — MATLAB OLG steady-state solver + impulse responses
   - `Iacoviello_Pavan_JME/` — Reference replication code (Fortran + MATLAB)
-  - `Data/` — Stata do-files + small CSVs for data processing (raw data excluded)
-- `Figures/` — 27 publication-ready figures
-- `Graphs/` — Working graphs + Stata generation scripts
-- `Literature/` — 90+ reference PDFs organized by topic
-- `Slides/` — Presentation LyX files
-- `Referee/` — Journal referee reports + automated review
-- `Submission/` — Cover letters + disclosure statements
-- `Moments/` — Supplementary calibration materials
+  - `data/` — Stata do-files + small CSVs for data processing (raw data excluded)
+- `figures/` — 27 publication-ready figures
+- `graphs/` — Working graphs + Stata generation scripts
+- `literature/` — 90+ reference PDFs organized by topic
+- `slides/` — Presentation LyX files
+- `referee/` — Journal referee reports + automated review
+- `submission/` — Cover letters + disclosure statements
+- `moments/` — Supplementary calibration materials
 
 ---
 
@@ -42,7 +42,7 @@ We develop a political economy model of the housing market in which the supply o
 ### WS2: Referee Report (Math/Typos) — OPTIONAL
 - **Status**: Not started
 - **Approach**: Read full LyX, check all equations, derivations, proofs
-- **Output**: `Referee/REFEREE_REPORT.md` + `.tex` + `.pdf`
+- **Output**: `referee/REFEREE_REPORT.md` + `.tex` + `.pdf`
 - Can run as background agent task if needed
 
 ### WS3: Code Review — OPTIONAL
@@ -52,7 +52,7 @@ We develop a political economy model of the housing market in which the supply o
   2. MATLAB steady-state solver (`SteadyState/`, ~19 .m files)
   3. Fortran replication (`Iacoviello_Pavan_JME/`, lighter review)
   4. Stata data processing (9 .do files)
-- **Output**: `Code/CODE_REVIEW.md`
+- **Output**: `code/CODE_REVIEW.md`
 - Good candidate for Codex batch task
 
 ### WS3: LyX-to-TeX Conversion — OPTIONAL
@@ -65,7 +65,7 @@ We develop a political economy model of the housing market in which the supply o
 ## Tools & Resources
 
 - **Stata**: StataNow 19 SE at C:/Program Files/StataNow19/StataSE-64.exe
-- **MATLAB**: Required for Code/Codes_ABB and Code/SteadyState
+- **MATLAB**: Required for code/Codes_ABB and code/SteadyState
 - **Codex**: Available for self-contained batch tasks (code review, literature)
 
 ---

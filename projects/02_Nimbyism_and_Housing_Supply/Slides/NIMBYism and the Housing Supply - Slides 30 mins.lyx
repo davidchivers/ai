@@ -599,7 +599,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/1. Rent to Median Income.png
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/1. Rent to Median Income.png
 	lyxscale 20
 	scale 50
 
@@ -646,7 +646,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/2. Home Ownership Rate.png
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/2. Home Ownership Rate.png
 	lyxscale 20
 	scale 50
 
@@ -694,7 +694,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/3. Projections by age group, median immigration.png
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/3. Projections by age group, median immigration.png
 	lyxscale 20
 	scale 48
 
@@ -741,7 +741,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Code/SteadyState/Polling by Age.jpg
+	filename C:/Users/Dave_/Dropbox/Zac and David/code/steadystate/Polling by Age.jpg
 	lyxscale 20
 	scale 10
 
@@ -1774,7 +1774,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/4.1 VoteByYQ.jpg
+	filename ../figures/4.1 VoteByYQ.jpg
 	lyxscale 20
 	scale 5
 
@@ -1782,7 +1782,7 @@ label{Question}
 
 
 \begin_inset Graphics
-	filename ../Figures/4.2 VoteByhQ.jpg
+	filename ../figures/4.2 VoteByhQ.jpg
 	lyxscale 20
 	scale 5
 
@@ -1794,7 +1794,7 @@ label{Question}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/4.3 VoteByAge.jpg
+	filename ../figures/4.3 VoteByAge.jpg
 	lyxscale 20
 	scale 5
 
@@ -1802,7 +1802,7 @@ label{Question}
 
 
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/4.4 DensityVote.jpeg
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/4.4 DensityVote.jpeg
 	lyxscale 20
 	scale 5
 
@@ -1902,7 +1902,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/5. Price Income Ratio.jpg
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/5. Price Income Ratio.jpg
 	lyxscale 20
 	scale 10
 
@@ -1949,7 +1949,7 @@ label{MarketClearing}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/6. Price Income Ratio Scenario.jpg
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/6. Price Income Ratio Scenario.jpg
 	lyxscale 20
 	scale 10
 
@@ -2000,7 +2000,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/7.1 Bith.jpg
+	filename ../figures/7.1 Bith.jpg
 	lyxscale 20
 	scale 5
 
@@ -2008,7 +2008,7 @@ label{Firms1}
 
 
 \begin_inset Graphics
-	filename ../Figures/7.2 Average Age.jpg
+	filename ../figures/7.2 Average Age.jpg
 	lyxscale 20
 	scale 5
 
@@ -2020,7 +2020,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/7.3 Smoothed House Price.jpg
+	filename ../figures/7.3 Smoothed House Price.jpg
 	lyxscale 20
 	scale 5
 
@@ -2028,7 +2028,7 @@ label{Firms1}
 
 
 \begin_inset Graphics
-	filename ../Figures/7.4 Home30.jpg
+	filename ../figures/7.4 Home30.jpg
 	lyxscale 20
 	scale 5
 
@@ -2075,7 +2075,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/8.1 Generations 1.jpg
+	filename ../figures/8.1 Generations 1.jpg
 	lyxscale 20
 	scale 5
 
@@ -2083,7 +2083,7 @@ label{Firms1}
 
 
 \begin_inset Graphics
-	filename ../Figures/8.2 Generations 3.jpg
+	filename ../figures/8.2 Generations 3.jpg
 	lyxscale 20
 	scale 5
 
@@ -2095,7 +2095,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename ../Figures/8.3 NW2.jpg
+	filename ../figures/8.3 NW2.jpg
 	lyxscale 20
 	scale 5
 
@@ -2103,7 +2103,7 @@ label{Firms1}
 
 
 \begin_inset Graphics
-	filename ../Figures/8.4 NW1.jpg
+	filename ../figures/8.4 NW1.jpg
 	lyxscale 20
 	scale 5
 
@@ -2150,7 +2150,7 @@ label{Firms1}
 \begin_layout Standard
 \align center
 \begin_inset Graphics
-	filename C:/Users/Dave_/Dropbox/Zac and David/Figures/12. PriceIncome Ratio Alternatives.jpg
+	filename C:/Users/Dave_/Dropbox/Zac and David/figures/12. PriceIncome Ratio Alternatives.jpg
 	lyxscale 20
 	scale 10
 

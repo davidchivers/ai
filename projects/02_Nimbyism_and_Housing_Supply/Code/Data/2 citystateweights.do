@@ -1,7 +1,7 @@
 
 
 clear all
-use "/Users/igro0002/Dropbox/Zac and David/Data/dataslim.dta"
+use "/Users/igro0002/Dropbox/Zac and David/data/dataslim.dta"
 numlabel, add
 
 gen count=1

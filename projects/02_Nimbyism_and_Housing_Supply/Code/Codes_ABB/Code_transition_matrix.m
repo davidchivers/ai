@@ -59,4 +59,4 @@ figure
 hist(y_transformed(:));
 
 save TransitionMatrix
-save('/Users/igro0002/Dropbox/Zac and David/Code/SteadyState/TransitionMatrix')
+save('/Users/igro0002/Dropbox/Zac and David/code/steadystate/TransitionMatrix')

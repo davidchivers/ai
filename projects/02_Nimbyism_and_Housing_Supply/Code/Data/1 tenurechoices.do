@@ -1,4 +1,4 @@
-use "/Users/igro0002/Dropbox/Zac and David/Data/usa_00009.dta", clear
+use "/Users/igro0002/Dropbox/Zac and David/data/usa_00009.dta", clear
 numlabel, add
 drop race raced
 drop bpl gq cbserial serial sample

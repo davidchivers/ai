@@ -1,11 +1,20 @@
-# memory.md — NIMBYism and the Housing Supply
+# Project Memory - NIMBYism and the Housing Supply
 
 Most recent session first.
 
 ---
 
+### Session: 2026-02-23 (single canonical status tracker)
+- Added canonical tracker: `projects/02_nimbyism_and_housing_supply/STATUS.md`
+- Set rule that "where are we" and to-do updates should be made in `STATUS.md` first.
+
+### Session: 2026-02-22 (workflow note)
+- Checked for WSL path artifacts in this project (`/mnt/c`, bash shebangs, Linux-only path assumptions): none found.
+- Preferred shell for this project is PowerShell/Windows because core tooling is MATLAB + Stata + LyX on Windows paths.
+- If doing PDF-heavy extraction/search work, consider running those specific tasks in WSL tools, while keeping core project runs in PowerShell.
+
 ### Session: 2026-02-19 (repo reorganisation)
-- Project moved from `PaperProjects/02_Nimbyism_and_Housing_Supply/` to `projects/02_Nimbyism_and_Housing_Supply/`
+- Project moved from `PaperProjects/02_nimbyism_and_housing_supply/` to `projects/02_nimbyism_and_housing_supply/`
 - `README.md` and `memory.md` created as part of workspace standard
 - No changes to paper content
 
@@ -21,12 +30,12 @@ Most recent session first.
 
 | Role | Path |
 |---|---|
-| Paper source (LyX) | `projects/02_Nimbyism_and_Housing_Supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.lyx` |
-| Published PDF | `projects/02_Nimbyism_and_Housing_Supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.pdf` |
-| MATLAB steady-state | `projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS.m` |
-| Stata data pipeline | `projects/02_Nimbyism_and_Housing_Supply/Code/Data/merge data.do` |
-| Upstream fix log | `projects/02_Nimbyism_and_Housing_Supply/UPSTREAM_FIX_LOG.md` |
-| Referee reports | `projects/02_Nimbyism_and_Housing_Supply/Referee/Economic Journal Referee Reports.docx` |
+| Paper source (LyX) | `projects/02_nimbyism_and_housing_supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.lyx` |
+| Published PDF | `projects/02_nimbyism_and_housing_supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.pdf` |
+| MATLAB steady-state | `projects/02_nimbyism_and_housing_supply/code/steadystate/SolveSS.m` |
+| Stata data pipeline | `projects/02_nimbyism_and_housing_supply/code/data/merge data.do` |
+| Upstream fix log | `projects/02_nimbyism_and_housing_supply/UPSTREAM_FIX_LOG.md` |
+| Referee reports | `projects/02_nimbyism_and_housing_supply/referee/Economic Journal Referee Reports.docx` |
 
 ## Upstream relationship
 
@@ -48,3 +57,4 @@ Any fix found here that affects the model structure should be:
 - LyX is the authoritative paper format.
 - MATLAB code in `Codes_ABB/` follows Arellano-Blundell-Bond notation.
 - Do NOT commit `.mat` or `.dta` files (already in `.gitignore`).
+- Shell preference for this project: PowerShell first; use WSL selectively for PDF-heavy utilities.

@@ -1,6 +1,6 @@
-﻿# UPSTREAM_SYNC_LOG
+# UPSTREAM_SYNC_LOG
 Project: 03_Fertility_and_Housing_Supply
-Upstream: ../02_Nimbyism_and_Housing_Supply/UPSTREAM_FIX_LOG.md
+Upstream: ../02_nimbyism_and_housing_supply/UPSTREAM_FIX_LOG.md
 
 ## Template
 - Date reviewed:

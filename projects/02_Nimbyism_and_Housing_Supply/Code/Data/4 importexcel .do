@@ -1,5 +1,5 @@
 
-import delimited  using "/Users/igro0002/Dropbox/Zac and David/Data/Buildings/Metarea to MSA crosswalk.csv", clear
+import delimited  using "/Users/igro0002/Dropbox/Zac and David/data/Buildings/Metarea to MSA crosswalk.csv", clear
 
 rename ïyear year
 
@@ -10,5 +10,5 @@ keep year metarea metareano total
 
 sort  year metareano
 
-save "/Users/igro0002/Dropbox/Zac and David/Data/buildingcrosswalk.dta", replace
+save "/Users/igro0002/Dropbox/Zac and David/data/buildingcrosswalk.dta", replace
 

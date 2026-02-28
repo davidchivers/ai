@@ -1,18 +1,18 @@
 clear
 close all
-cepath='/Users/igro0002/Library/CloudStorage/GoogleDrive-isaac.gross@monash.edu/My Drive/Code/compecon2011/'; path([cepath 'CEtools;' cepath 'CEdemos'],path);
+cepath='/Users/igro0002/Library/CloudStorage/GoogleDrive-isaac.gross@monash.edu/My Drive/code/compecon2011/'; path([cepath 'CEtools;' cepath 'CEdemos'],path);
 %cepath='/Users/igro0002/Library/CloudStorage/GoogleDrive-isaac.gross@monash.edu/My Drive/Code'; path(cepath,path);
 
 
 
-baseline=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
-param1=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF_Param1/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
-param2=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF_Param2/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
+baseline=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
+param1=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF_Param1/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
+param2=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF_Param2/irfs_smoothed.mat','Pstars_smoothed','param','ageimpulse','TargetVote','options','ss_eq','agevector','boom','glob');
 
 
-baseline=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF/irfs_smoothed.mat');
-param1=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF_Param1/irfs_smoothed.mat');
-param2=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/Code/SteadyState/Mod_IRF_Param2/irfs_smoothed.m);
+baseline=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF/irfs_smoothed.mat');
+param1=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF_Param1/irfs_smoothed.mat');
+param2=load('/Users/igro0002/Dropbox (Monash Uni Enterprise)/Zac and David/code/steadystate/Mod_IRF_Param2/irfs_smoothed.m);
 
 
 %%
