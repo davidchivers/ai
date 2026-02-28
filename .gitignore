@@ -10,14 +10,21 @@ yarn-error.log*
 # Build/test output
 /slides/
 *.aux
+*.bbl
+*.blg
+*.brf
+*.fdb_latexmk
+*.fls
 *.nav
 *.out
 *.snm
+*.synctex.gz
 *.toc
 
 # OS/editor
 .DS_Store
 Thumbs.db
+~$*.docx
 
 # Stata outputs (usually generated)
 *.smcl
@@ -25,10 +32,14 @@ Thumbs.db
 # Codex/Claude local metadata
 .claude/
 .codex/
+projects/.claude/
 
 # Large binary data files
 *.mat
 *.dta
+
+# Book project: PDFs copied in for Claude to read (source of truth is Google Drive)
+projects/book/literature/*.pdf
 
 # LyX backup/temp files
 *.lyx~
