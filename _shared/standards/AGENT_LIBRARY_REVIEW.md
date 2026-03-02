@@ -31,12 +31,12 @@ Goal: keep `_shared/` lean and accurate. Remove dead weight; promote what is act
 - [ ] Archive pruned items to `_playground/backups/YYYY-MM-DD-pruned/` rather than deleting.
 
 ### 4. Check project READMEs are accurate
-- [ ] Open each `projects/<name>/README.md`. Does the "current status" still reflect reality?
+- [ ] Open each `research_projects/<name>/README.md`. Does the "current status" still reflect reality?
 - [ ] Update "next 3 concrete tasks" to reflect what actually comes next.
 - [ ] If a project has concluded or stalled, update status accordingly (e.g., "Published", "On hold").
 
 ### 5. Check project memory files
-- [ ] Open each `projects/<name>/memory.md`. Are key file paths still correct?
+- [ ] Open each `research_projects/<name>/memory.md`. Are key file paths still correct?
 - [ ] Have any conventions changed? Have new conventions emerged that aren't documented?
 - [ ] Update notes from recent sessions.
 
@@ -52,3 +52,4 @@ Goal: keep `_shared/` lean and accurate. Remove dead weight; promote what is act
 
 - Commit the updated files with message: `chore: quarterly agent library review YYYY-MM-DD`
 - Note any major changes in `_shared/memory/RESEARCH_STYLE.md` if style preferences changed.
+

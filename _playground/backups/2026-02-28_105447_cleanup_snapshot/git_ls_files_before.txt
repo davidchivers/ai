@@ -1,0 +1,392 @@
+﻿.claude/settings.local.json
+.gitignore
+AGENTS.md
+CLAUDE.md
+README.md
+_playground/backups/2026-02-22_restore_cleanup/demo_regression.do
+_playground/backups/Chivers et al. (2025) Necessity Entrepreneurship.pdf
+_playground/daaf_tutorial.md
+_playground/nimbyism_setup_plan.md
+_playground/scripts/clean-demos.sh
+_shared/agents/code-paper-crosswalk.md
+_shared/agents/literature-reviewer.md
+_shared/agents/math-auditor.md
+_shared/agents/project-status-updater.md
+_shared/agents/referee-response-drafter.md
+_shared/memory/RESEARCH_STYLE.md
+_shared/skills/academic-paper-writer-SKILL.md
+_shared/skills/api-data-fetcher-SKILL.md
+_shared/skills/beamer-presentation-SKILL.md
+_shared/skills/econ-visualization-SKILL.md
+_shared/skills/general-equilibrium-model-builder-SKILL.md
+_shared/skills/latex-econ-model-SKILL.md
+_shared/skills/latex-tables-SKILL.md
+_shared/skills/lit-review-assistant-SKILL.md
+_shared/skills/python-panel-data-SKILL.md
+_shared/skills/r-econometrics-SKILL.md
+_shared/skills/research-ideation-SKILL.md
+_shared/skills/stata-data-cleaning-SKILL.md
+_shared/skills/stata-regression-SKILL.md
+_shared/standards/AGENT_LIBRARY_REVIEW.md
+_shared/standards/referee_response_standard.md
+_shared/templates/referee_response_example.tex
+_shared/templates/referee_response_template.tex
+projects/01_Necessity_Entrepreneurs/Chivers et al. (2025) Necessity Entrepreneurship.tex
+projects/01_Necessity_Entrepreneurs/Figures/Entrepreneurs and Development.png
+projects/01_Necessity_Entrepreneurs/Figures/Opportunity Driven Entrepreneurs and Development.png
+projects/01_Necessity_Entrepreneurs/Figures/case_220_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_221_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_222_cutoff_value_3X1.eps
+projects/01_Necessity_Entrepreneurs/Figures/case_222_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_220_cutoff_value_3X1.eps
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_220_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_221_cutoff_value_3X1.eps
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_221_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_225_cutoff_value_3X1.eps
+projects/01_Necessity_Entrepreneurs/Figures/case_222_with_225_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_225_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/case_226_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/enter_period_employed_submission.eps
+projects/01_Necessity_Entrepreneurs/Figures/enter_period_employed_submission.pdf
+projects/01_Necessity_Entrepreneurs/Figures/enter_period_unemployed_submission.eps
+projects/01_Necessity_Entrepreneurs/Figures/enter_period_unemployed_submission.pdf
+projects/01_Necessity_Entrepreneurs/Figures/generate_enter_employed.py
+projects/01_Necessity_Entrepreneurs/Figures/generate_enter_unemployed.py
+projects/01_Necessity_Entrepreneurs/Figures/root_name_collisions_2026-02-18/case_220_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/root_name_collisions_2026-02-18/case_221_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/Figures/root_name_collisions_2026-02-18/case_226_cutoff_value_3X1.png
+projects/01_Necessity_Entrepreneurs/PROJECT_PLAN.md
+projects/01_Necessity_Entrepreneurs/README.md
+projects/01_Necessity_Entrepreneurs/Referee/Chivers et al. (2025) Necessity Entrepreneurship.pdf
+projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/CODE_REFEREE_REPORT.md
+projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/FIX_CHECKLIST.md
+projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/PAPER_CODE_CROSSWALK.csv
+projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/SUMMARY_EASY_READ.md
+projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/SUMMARY_EASY_READ.pdf
+projects/01_Necessity_Entrepreneurs/Referee/RESPONSE_TO_REFEREE.pdf
+projects/01_Necessity_Entrepreneurs/Referee/RESPONSE_TO_REFEREE.tex
+projects/01_Necessity_Entrepreneurs/Referee/Slides_MathAudit_2026-02-18/Slides_MathAudit_2026-02-18.pdf
+projects/01_Necessity_Entrepreneurs/Referee/Slides_MathAudit_2026-02-18/Slides_MathAudit_2026-02-18.tex
+projects/01_Necessity_Entrepreneurs/Slides_paper_v4.pdf
+projects/01_Necessity_Entrepreneurs/Slides_paper_v4.tex
+projects/01_Necessity_Entrepreneurs/docs/policy/PROJECT_HYGIENE.md
+projects/01_Necessity_Entrepreneurs/memory.md
+projects/01_Necessity_Entrepreneurs/paper_unlocked.pdf
+projects/02_Nimbyism_and_Housing_Supply/AgeByYear.xlsx
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons_FE_by_assets.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons_by_assets.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons_nonparametric_bootstrap.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_IR_cons_nonparametric_bootstrap_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_canonical_model_IR.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_canonical_model_est_and_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_est.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_est_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_fit_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_nonparametric_bootstrap.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_nonparametric_bootstrap_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_parametric_bootstrap.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_consumption_parametric_bootstrap_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_est.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_est_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_fit_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_nonparametric_bootstrap.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_nonparametric_bootstrap_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_parametric_bootstrap.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_earnings_parametric_bootstrap_fit.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_simu_nonlinear.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_simu_nonlinear_cons.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_simulated_model.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_transition_matrix.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Readme.txt
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Readme_wordfile.rtf
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/covariance_cm.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/covariance_cm_consumption_twostep.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/first_stage_regs.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/first_stage_regsmalewages.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/fun_qrlocal.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/hermite.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/postr_QRMCMC_age_hermite.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/postr_QRMCMC_age_hermite_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/postr_nonlinear_consumption_age_hermite_FE_predet.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/postr_nonlinear_consumption_age_hermite_predet.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/rq.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/select.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_e0_age.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_e0_age_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_eps_age.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_eps_age_FE.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_pt_age.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/wqregk_zeta_age.m
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/1 tenurechoices.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/2 citystateweights.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/3 birthrates.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/4 importexcel .do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/5 combinepermits.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/ACS_13_1YR_CP04_with_ann.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/FirstStage.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/Regressions.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/Regressions1year.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/Regressions2year.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/Regressions2years2.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/Regressions5year.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/age state.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/merge data.do
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/msa pop change 2010 to 2018 combined.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/Data/msa pop change 2010 to 2018.csv
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/ClearMarkets.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/Code_transition_matrix.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/CompareParameter.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/IncomeProcess.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/IncomeProcess_KMZ.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/PlotIRFs.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/PlotYouGov.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_11.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_Loop.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_fixedrent.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_function.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_function_boom.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_iter.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_iter_boom.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/SolveSS_price1p.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/export_fig.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/print2array.m
+projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/solve_steadystate.m
+projects/02_Nimbyism_and_Housing_Supply/Figures/1. Rent to Median Income.png
+projects/02_Nimbyism_and_Housing_Supply/Figures/10.1 Generations1.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/10.2 Generations2.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/11. Smoothed House Price Params.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/12. PriceIncome Ratio Alternatives.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/2. Home Ownership Rate.png
+projects/02_Nimbyism_and_Housing_Supply/Figures/3. Projections by age group, median immigration.png
+projects/02_Nimbyism_and_Housing_Supply/Figures/4.1 VoteByYQ.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/4.2 VoteByhQ.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/4.3 VoteByAge.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/4.4 DensityVote.jpeg
+projects/02_Nimbyism_and_Housing_Supply/Figures/4.4 EXBuy.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/5. Price Income Ratio.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/5b. PriceIncomeRatio with Real Rents.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/6. Price Income Ratio Scenario.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/7.1 Bith.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/7.2 Average Age.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/7.3 Smoothed House Price.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/7.4 Home30.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/8.1 Generations 1.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/8.2 Generations 3.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/8.3 NW2.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/8.4 NW1.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/9.1 Average Age with Negative Permanent Shock.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/9.2 Smoothed House Prices with Negative Permanent Shock.jpg
+projects/02_Nimbyism_and_Housing_Supply/Figures/PriceIncomeRatio_Forecasts.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Age share projections.do
+projects/02_Nimbyism_and_Housing_Supply/Graphs/AlternativeMeasures.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/AverageAge.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Baby Boomers.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Baseline.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Bith.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/CentralProjection.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Consum.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/EXBuy.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/ExpectedBuy.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/ForecastScenarios.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Forecasts.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generation Percentage Sare of Total Adult Population Over Time Small.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generation Percentage Sare of Total Adult Population Over Time.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generations1.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generations2.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generations3.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Generations4.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Home Ownership Graph.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Home Ownership Rate.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Home30.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Home60.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/NW1.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/NW2.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Owners Compared.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/PriceIncomeRatio.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/PriceIncomeRatio_alts.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/PricetoIncome.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Projections by age group, median immigration msall.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Projections by age group, median immigration.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Projections by age group.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Rent to Median Income .png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/Renters compared.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/SmoothedHousePrice.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/VoteByAge.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/VoteByYQ.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/VoteByhQ.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/forecast.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/homeownership 21 to 85.gif
+projects/02_Nimbyism_and_Housing_Supply/Graphs/homeownership.gif
+projects/02_Nimbyism_and_Housing_Supply/Graphs/owner comparisons.png
+projects/02_Nimbyism_and_Housing_Supply/Graphs/priceincome.jpg
+projects/02_Nimbyism_and_Housing_Supply/Graphs/smoothedprojection.jpg
+projects/02_Nimbyism_and_Housing_Supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.lyx
+projects/02_Nimbyism_and_Housing_Supply/Gross and Chivers (2025) NIMBYism and the Housing Supply.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Aasveist et al 2018 Time-varying housing supply elasticities and US housing cycles.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Ahlfeldt, G. M. (2011) Blessing or curse Appreciation, amenities and resistance to urban renewal. Regional Science and Urban Economics.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Ahlfeldt, G. M. and Maennig, W. (2015) Homevoters vs leasevoters A spatial analysis of airport effects. Journal of Urban Economics.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Altonji and Card 1991.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Arellano et al 2016 Econometrica.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Bosetti and Simms 2016.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Breach 2019 Capital-cities-how-the-planning-system-creates-housing-shortages-and-drives-wealth-inequality.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Caldera and Johansson (2013).pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Capital-cities-how-the-planning-system-creates-housing-shortages-and-drives-wealth-inequality.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Census BabyBoomers.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Cheung, R. and Meltzer, R. (2013) Homeowners associations and the demand for local land use regulation. Journal of Regional Science.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Dehring, C. A., Depken II, C. A., and Ward, M. R. (2008). A direct test of the homevoter hypothesis. Journal of Urban Economics.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Eggleston et al 2020 The wealth of households 2017.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Fischel (2002) An economic history of zoning.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Francke and Korevaar 2022 Baby Booms and ASset Booms.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Freemark 2019 Upzoning Chicago.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Gabbe 2017 Why Are Regulations Changed.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Glaeser 2003.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Glaeser and Gyourko 2002 The impact of zoning on housing affordability.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Glaeser and Gyourko 2018 The economics implications of housing supply.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Gray_Vote.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Gyourko and Molloy 2014 Regulation and Housing supply.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Gyourko, J., Saiz, A. and Summers, A. (2008) A New Measure of the Local Regulatory Environment.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/HACT_slides.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Herkenhoff et al 2018 Tarnishing the gold and empire states.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Hilber and Robert-Nicoud 2010 On the origins of land use regulations working paper.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Hilber and Robert-Nicoud 2013 On the origins of land use regulations.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Hilber and Vermeulen The impact of supply constraints on house prices in England.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Hilber, C. A. and Robert-Nicoud, F. (2013). On the origins of land use regulations Theory and evidence from us metro areas. Journal of Urban Economic.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Homeownership and voter turnout in u.s. local elections.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/House Price Expectations/CEPR-DP17158.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/House Price Expectations/dp1829.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Hsieh and Moretti 2018 Housing constraints and spatial misallocation.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Ihlanfeldt 2007 The effects of land use regulation on housing and land prices.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Jiang 2018 Journal of Housing Economics.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Karahan and Rhee 2017.pdf
+"projects/02_Nimbyism_and_Housing_Supply/Literature/Karahan, Pugsley, \305\236ahin 2019.pdf"
+projects/02_Nimbyism_and_Housing_Supply/Literature/Kuhn et al 2018 Income and wealth inequality 1949 2016.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Local Elections and Representation in the United States.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Macnamara et al 2021.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Mankiw and Weil  The baby boom, the baby bust and the housing market.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Median Voter Theorem/Alesina and Rodrick 1994.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Median Voter Theorem/Alesina nad Rodrick 1994 lecture notes.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Miles and Monro (2020).pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Mobility in housing market.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Modelling the demand for housing over the life cycle.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Muellbauer 2018 housing-debt-and-the-economy-a-tale-of-two-countries.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Mumtaz and Roman Sustek 2023 Global House Prices Everywhere.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/NIMBY papers/Comment on  Does the Likely Demographics of Affordable Housing Justify NIMBYism  .pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/NIMBY papers/Ikeda-Land-Use-Regulation.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/NIMBY papers/Levinson 1998 NIMBY taxes matter.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/NIMBY papers/Rognlie 2015 Deciphering the fall and rise in the net capital share.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/NIMBY papers/The Wharton Zoning Regulation Index-July 2, 2007.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Ortalo-Magne and Rady 1999 EER.pdf
+"projects/02_Nimbyism_and_Housing_Supply/Literature/Ortalo-Magn\303\251 and Andrea Prat 2014 AER.pdf"
+projects/02_Nimbyism_and_Housing_Supply/Literature/Overview-Talk-Panel-5.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Parkhomenko_LandUseRegulation.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Profile of UK private landlords 2016.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Saiz 2010 QJE.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Sam and SImms 2016.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/The baby boom and baby bust AER.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/The equilibriumeffectoffundamentalsonhouse 2013 JME.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/UK landlord survey.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/Democracy in Action NIMBY as Impediment to Equitable Affordable Housing Siting.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/Holleran 2021.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/SB375_July_2018_Final.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/Song (2022).pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/aer.20141751.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/US housing market/manville et all (2020).pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Understanding_the_Local_Impact_of_New_Residential_Development.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Unit overview and Topic 1. Two-period consumption-saving model.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Wharton Land Use Index Paper.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/When councillors go against officer recommendations 2019.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Wilson and Banfield (1974).pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/Zhang 2015 Inequality and House Prices.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/cdy_RED_in_press.pdf
+projects/02_Nimbyism_and_Housing_Supply/Literature/graph-4.13.svg
+projects/02_Nimbyism_and_Housing_Supply/Literature/voting age particpation over time.pdf
+projects/02_Nimbyism_and_Housing_Supply/Moments/Optimal taxation with homeownership and wealth inequality.pdf
+projects/02_Nimbyism_and_Housing_Supply/Moments/US wealth data 2017.xlsx
+projects/02_Nimbyism_and_Housing_Supply/PROJECT_PLAN.md
+projects/02_Nimbyism_and_Housing_Supply/README.md
+projects/02_Nimbyism_and_Housing_Supply/Referee/Economic Journal Referee Reports.docx
+projects/02_Nimbyism_and_Housing_Supply/Slides/Green-Belt-Areas-of-EnglanD.png
+projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash v2.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash_50min.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_WEAI.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/NIMBYism and the Housing Supply - Slides 30 mins.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/NIMBYism and the Housing Supply - Slides.lyx
+projects/02_Nimbyism_and_Housing_Supply/Slides/US Zoning.jpg
+projects/02_Nimbyism_and_Housing_Supply/Submission/Disclosure Statement Chivers.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Disclosure Statement Chivers.pdf
+projects/02_Nimbyism_and_Housing_Supply/Submission/Disclosure Statement Gross.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Disclosure Statement Gross.pdf
+projects/02_Nimbyism_and_Housing_Supply/Submission/Doc1.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Letter to AEJ Macro Editor.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Letter to EJ.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Letter to IER.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/Letter to JME Editor.docx
+projects/02_Nimbyism_and_Housing_Supply/Submission/NIMBY AEJMacro.lyx
+projects/02_Nimbyism_and_Housing_Supply/Submission/This research project will use the PLIDA Core Modules to examine how macroeconomic conditions affect Indigenous employment.docx
+projects/02_Nimbyism_and_Housing_Supply/UPSTREAM_FIX_LOG.md
+projects/02_Nimbyism_and_Housing_Supply/US Age Share Fine Grained.xlsx
+projects/02_Nimbyism_and_Housing_Supply/memory.md
+projects/03_Fertility_and_Housing_Supply/PROJECT_PLAN.md
+projects/03_Fertility_and_Housing_Supply/README.md
+projects/03_Fertility_and_Housing_Supply/UPSTREAM_SYNC_LOG.md
+projects/03_Fertility_and_Housing_Supply/memory.md
+projects/README.md
+projects/Tuition_Fees/README.md
+projects/Tuition_Fees/calibration/calibration_targets.md
+projects/Tuition_Fees/drafts/incidence_table_template.md
+projects/Tuition_Fees/literature/literature_notes.md
+projects/Tuition_Fees/memory.md
+projects/Tuition_Fees/notes/uk_policy_notes.md
+projects/Tuition_Fees/project.md
+projects/Tuition_Fees/theory/model/model_sketch.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/.vscode/extensions.json
+projects/teaching/ai_teaching_starter/_publish_ai_install/.vscode/settings.json
+projects/teaching/ai_teaching_starter/_publish_ai_install/README.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/code-paper-crosswalk.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/empirical-idea-generator.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/literature-reviewer.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/math-auditor.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/project-status-updater.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/agents/referee-response-drafter.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/memory/README.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/memory/global_notes.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/README.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/memory.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/01_project_overview.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/02_literature_and_synthesis.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/03_model_notes.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/04_empirical_notes.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/05_research_plan.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/projects/_project_template/notes/README.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/academic-paper-writer-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/api-data-fetcher-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/beamer-presentation-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/econ-visualization-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/general-equilibrium-model-builder-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/latex-econ-model-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/latex-tables-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/lit-review-assistant-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/python-panel-data-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/r-econometrics-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/research-ideation-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/stata-data-cleaning-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/skills/stata-regression-SKILL.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/standards/notes_phase_standard.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/standards/paper_project_structure_standard.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/standards/project_status_standard.md
+projects/teaching/ai_teaching_starter/_publish_ai_install/templates/referee_response_example.tex
+projects/teaching/ai_teaching_starter/_publish_ai_install/templates/referee_response_template.tex
+projects/teaching/ai_workshop/slides_outline.md
+projects/teaching/install_ai/Install_VS_Code_and_AI_agents.docx
+projects/teaching/install_ai/install_ai_wizard.html
+projects/teaching/install_ai/install_vs_code_and_ai_agents.md
+projects/teaching/install_ai/website/README.md
+projects/teaching/install_ai/website/app.js
+projects/teaching/install_ai/website/index.html
+projects/teaching/install_ai/website/styles.css

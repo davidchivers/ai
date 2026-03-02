@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Empirical Strategy Blueprint\\Fertility and Housing Supply}
+\author{Fertility and Housing Supply Project}
+\date{February 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This note ranks candidate empirical designs and provides an implementation blueprint for the top two. The ranking criterion is practical: high identification credibility with feasible data assembly in finite time.
+
+\section{Ranking summary}
+\begin{center}
+\begin{tabular}{p{0.58\textwidth}c}
+\toprule
+Design & Rank \\
+\midrule
+State middle-housing legalizations and fertility outcomes & 1 \\
+NIMBY political turnover (close elections) and fertility via supply & 2 \\
+Family-sized unit composition shocks (shift-share IV) & 3 \\
+Short-term rental crackdown shocks and fertility & 4 \\
+Single-city mega-reform with legal interruptions & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Top design 1: Middle-housing legalizations}
+\subsection*{Research question}
+Do reforms that legalize middle housing (duplex/triplex/fourplex forms) increase fertility among prime childbearing populations by improving access to family-suitable housing?
+
+\subsection*{Estimand}
+Dynamic average treatment effect on treated locations (ATT) for age-specific birth rates.
+
+\subsection*{Identification strategy}
+Staggered event-study difference-in-differences with treatment intensity.
+
+Baseline event-study:
+\[
+BirthRate_{it} = \sum_{k\neq -1}\beta_k 1\{EventTime_{it}=k\}+\alpha_i+\delta_t+X_{it}'\Gamma+\varepsilon_{it}.
+\]
+
+Intensity extension:
+\[
+BirthRate_{it}=\beta(Post_{it}\times Exposure_i)+\alpha_i+\delta_t+X_{it}'\Gamma+\varepsilon_{it}.
+\]
+
+\subsection*{Data build}
+\begin{itemize}
+\item Natality outcomes by mother's age from public vital-statistics sources (county-year minimum).
+\item Permits and housing production composition (single-family vs multifamily; where possible, unit-size proxies).
+\item Price/rent controls and labor-market controls.
+\item Policy adoption and effective-implementation timing panel.
+\end{itemize}
+
+\subsection*{Main identifying assumptions}
+\begin{itemize}
+\item In absence of reform, treated and untreated areas follow parallel fertility trends conditional on fixed effects and controls.
+\item No confounding policy shocks perfectly collinear with reform timing after controls.
+\item Exposure intensity captures meaningful heterogeneity in reform bite.
+\end{itemize}
+
+\subsection*{Falsification and robustness}
+\begin{itemize}
+\item Pre-trend tests and placebo policy dates.
+\item Alternative treatment windows (announcement vs implementation).
+\item Alternative exposure definitions.
+\item Re-estimation excluding major outliers and migration-heavy areas.
+\end{itemize}
+
+\subsection*{Strengths and risks}
+\textbf{Strengths:} policy relevance, scalable geography, direct link to housing supply.
+
+\textbf{Risks:} first-stage quantity response may be slow; fertility response may lag reform substantially.
+
+\section{Top design 2: NIMBY political turnover design}
+\subsection*{Research question}
+Does narrowly electing pro-housing local governments shift housing supply and affordability, and through this channel alter fertility outcomes?
+
+\subsection*{Estimand}
+Two-step causal object:
+\begin{enumerate}
+\item effect of pro-housing victory on supply/price outcomes;
+\item effect of induced supply changes on fertility.
+\end{enumerate}
+
+\subsection*{Identification strategy}
+Close-election RD combined with IV-style mediation.
+
+First-stage equation:
+\[
+Supply_{it}=\pi\,ProHousingWin_{it}+f(Margin_{it})+\eta_i+\tau_t+u_{it}.
+\]
+Second-stage equation:
+\[
+BirthRate_{it}=\beta\,\widehat{Supply}_{it}+f(Margin_{it})+\eta_i+\tau_t+e_{it}.
+\]
+
+\subsection*{Data build}
+\begin{itemize}
+\item Local election returns with close-race margins.
+\item Candidate/council platform coding for housing stance.
+\item Permit and unit-composition outcomes.
+\item Price/rent outcomes and fertility outcomes mapped to compatible geography.
+\end{itemize}
+
+\subsection*{Main identifying assumptions}
+\begin{itemize}
+\item Near the cutoff, winners and losers are quasi-random.
+\item Platform coding is sufficiently accurate to separate pro-housing from anti-growth outcomes.
+\item Exclusion for second stage: election-induced fertility impacts operate primarily through supply/price channels (to be argued carefully).
+\end{itemize}
+
+\subsection*{Falsification and robustness}
+\begin{itemize}
+\item McCrary-style density and covariate-balance checks at the cutoff.
+\item Placebo cutoffs and placebo outcomes.
+\item Alternative bandwidths and polynomial orders.
+\item Robustness to coding uncertainty (drop ambiguous races).
+\end{itemize}
+
+\subsection*{Strengths and risks}
+\textbf{Strengths:} direct NIMBY political-economy identification; strong conceptual fit.
+
+\textbf{Risks:} heavy data engineering and potential power constraints from close-race sample size.
+
+\section{Why these two are the best portfolio}
+These top two designs are complementary:
+\begin{itemize}
+\item Design 1 delivers broad external validity and cleaner implementation.
+\item Design 2 delivers a sharper political-economy test tied directly to your paper's NIMBY channel.
+\end{itemize}
+
+Running both in parallel gives a ``safe'' main design and a ``high-upside'' political design.
+
+\section{Operational sequencing}
+\subsection*{Phase 1 (fast start)}
+\begin{enumerate}
+\item Build policy timing panel and core outcome panel.
+\item Estimate first-pass event-study for design 1.
+\item Verify first stage on permits and composition.
+\end{enumerate}
+
+\subsection*{Phase 2 (NIMBY track)}
+\begin{enumerate}
+\item Build election and coding dataset.
+\item Run close-race diagnostics and first stage.
+\item Add second-stage fertility mapping where geography allows.
+\end{enumerate}
+
+\section*{Bottom line}
+For a credible and publishable empirical chapter, begin with middle-housing reforms as the baseline design. In parallel, develop the close-election NIMBY design as the distinctive contribution that links your theory directly to political supply restrictions and demographic outcomes.
+
+\end{document}

@@ -1,0 +1,40 @@
+{
+  "folders": [
+    {
+      "name": "research_projects",
+      "path": "../../research_projects"
+    },
+    {
+      "name": "research_ideas",
+      "path": "../../research_ideas"
+    },
+    {
+      "name": "teaching",
+      "path": "../../teaching"
+    },
+    {
+      "name": "book",
+      "path": "../../book"
+    },
+    {
+      "name": "other",
+      "path": "../../other"
+    },
+    {
+      "name": "_shared",
+      "path": "../../_shared"
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/.claude": true,
+      "**/_playground": true
+    },
+    "search.exclude": {
+      "**/.git": true,
+      "**/.claude": true,
+      "**/_playground": true
+    }
+  }
+}

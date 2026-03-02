@@ -26,9 +26,9 @@ Your Dropbox folder (`C:/Users/Dave_/Dropbox/Zac and David/`) has ~17GB of files
 |------|--------|------|
 | Latest paper (LyX) | `NIMBYism and the Housing Supply v13.lyx` → rename to `Gross and Chivers (2025) NIMBYism and the Housing Supply.lyx` | 128KB |
 | Published PDF | `NIMBYism and the Housing Supply (2025) JME.pdf` → rename similarly | 6MB |
-| MATLAB scripts | All `.m` files from `Code/Codes_ABB/`, `Code/SteadyState/` | ~500KB |
-| Stata do-files | `.do` files from `Code/Codes_ABB/` and `Data/` | tiny |
-| Fortran source | `.f90`/`.for` files from `Code/Iacoviello_Pavan_JME/` | tiny |
+| MATLAB scripts | All `.m` files from `Code/codes_abb/`, `Code/steadystate/` | ~500KB |
+| Stata do-files | `.do` files from `Code/codes_abb/` and `Data/` | tiny |
+| Fortran source | `.f90`/`.for` files from `Code/iacoviello_pavan_jme/` | tiny |
 | Code documentation | `Readme.txt`, `Overview.lyx`, `FirstOrderConditions.lyx` | tiny |
 | Figures | All 27 images from `Figures/` | ~5MB |
 | Graphs | Working graphs + Stata scripts from `Graphs/` | ~1.5MB |

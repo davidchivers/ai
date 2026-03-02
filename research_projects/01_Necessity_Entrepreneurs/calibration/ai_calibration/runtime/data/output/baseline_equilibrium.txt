@@ -1,0 +1,6 @@
+Baseline equilibrium tau_y: 0.00811986
+Baseline total tax revenue: 4092.3
+Baseline UI spending: 4043.32
+Baseline consumption floor spending: 0
+Baseline total govt spending: 4043.32
+Budget balance (should be ~0): 48.971

@@ -1,0 +1,170 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Utility-Function Literature Review Note \\ Fertility and Housing Supply Project}
+\author{Project 03: Fertility and Housing Supply}
+\date{February 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This note reviews utility-function specifications that are suitable for extending the housing-supply political-economy model to include fertility decisions. The evidence below is based on verified local files in this repository.
+
+\section{Verified Evidence from Local Sources}
+
+\subsection{Project-02 baseline utility (current upstream model)}
+\textbf{Source:} \path{projects/02_nimbyism_and_housing_supply/submission/NIMBY AEJMacro.lyx}
+
+The upstream housing model uses lifetime utility of the form
+\begin{equation}
+U = \sum_{j=0}^{J} \beta^{j-1} u(c_j,h_j) + \beta^J v(w_{J+1}),
+\end{equation}
+with flow utility
+\begin{equation}
+u(c_t,h_t)=\frac{\left(c_t^{1-\zeta}h_t^{\zeta}\right)^{1-\gamma}}{1-\gamma}.
+\end{equation}
+Housing services are tenure-dependent (renter/owner mapping in the model equations).
+
+\textbf{Implication:} the upstream block is homothetic CRRA over a Cobb-Douglas aggregate of nondurables and housing services, plus warm-glow bequests.
+
+\subsection{Attanasio et al. (2012) life-cycle housing demand}
+\textbf{Source:} \path{projects/02_nimbyism_and_housing_supply/literature/Modelling the demand for housing over the life cycle.pdf}
+
+Extracted text indicates a recursive life-cycle problem with
+\(\max\, u(c_t,h_t)+\beta E[V_{t+1}]\), and states that within-period utility is CRRA in consumption with terms added to capture the value of homeownership.
+
+\textbf{Implication:} adding tenure-specific utility wedges is compatible with a CRRA core and preserves tractability.
+
+\subsection{Ortalo-Magne and Rady (1999)}
+\textbf{Source:} \path{projects/02_nimbyism_and_housing_supply/literature/Ortalo-Magne and Rady 1999 EER.pdf}
+
+Extracted text indicates time-separable utility over numeraire consumption and housing type (parental home, rented flat, owned flat, owned house), with additive separability and linear utility in numeraire. The setup allows heterogeneity in housing preferences.
+
+\textbf{Implication:} this supports ladder-style tenure transitions with parsimonious preference heterogeneity.
+
+\subsection{Sommer and Sullivan (AER 2018)}
+\textbf{Source:} \path{projects/02_nimbyism_and_housing_supply/literature/us housing market/aer.20141751.pdf}
+
+Extracted text indicates OLG households with per-period utility \(U(c,s)\), where \(c\) is nondurable consumption and \(s\) is shelter services, and calibration discussion references risk aversion and Cobb-Douglas-type weights.
+
+\textbf{Implication:} this is close to the current project-02 utility architecture and is a natural bridge for fertility extensions.
+
+\subsection{Fertility quantity-quality mechanism}
+\textbf{Source:} \path{projects/02_nimbyism_and_housing_supply/literature/The baby boom and baby bust AER.pdf}
+
+Extracted text discusses quantity-quality fertility channels in lifetime utility setups.
+
+\textbf{Important verification note:} canonical references currently listed in the project plan (Becker and Lewis 1973; Becker, Murphy, and Tamura 1990) remain \texttt{[UNVERIFIED]} in this repository until those exact PDFs are added under project 03 literature files.
+
+\section{Candidate Utility Specifications for Project 03}
+
+\subsection*{Candidate 1: Minimal extension (recommended baseline)}
+\begin{equation}
+u_t = \frac{\left(c_t^{1-\zeta} h_{t,\text{eff}}^{\zeta}\right)^{1-\gamma}}{1-\gamma},
+\qquad
+h_{t,\text{eff}} = \frac{h_t}{(1+\lambda n_t)^{\psi}}.
+\end{equation}
+Here \(n_t\) is number of children. Fertility enters through crowding-adjusted housing services.
+
+\subsection*{Candidate 2: Add direct child utility (quantity channel)}
+\begin{equation}
+u_t = u_{ch}(c_t,h_{t,\text{eff}}) + \chi\frac{n_t^{1-\eta}}{1-\eta}.
+\end{equation}
+This adds a direct quantity margin and can later be augmented with child-quality expenditure terms.
+
+\subsection*{Candidate 3: Tenure wedge plus fertility}
+\begin{equation}
+u_t = \frac{\left(c_t^{1-\zeta} h_{t,\text{eff}}^{\zeta}\right)^{1-\gamma}}{1-\gamma} + \omega_{own}\,\mathbf{1}\{owner_t=1\}.
+\end{equation}
+This combines crowding with an ownership premium.
+
+\section{Children Leaving Home: Dynamic Structure}
+Your concern is central for identification and life-cycle fit: utility should depend on children \emph{at home}, not total births over the lifetime.
+
+Define:
+\begin{itemize}
+\item \(b_t\): births in period \(t\),
+\item \(n_t\): dependent children currently at home,
+\item \(n_t^{tot}\): cumulative births (optional accounting state).
+\end{itemize}
+
+Then Candidate 2 should use \(n_t\) in both crowding and child utility terms.
+
+\subsection*{Candidate A: Deterministic home-leaving age}
+Track child cohorts by age \(a \in \{0,\dots,A_{max}\}\). Let \(N_{a,t}\) be the number of children age \(a\) in period \(t\):
+\begin{align}
+N_{0,t+1} &= b_t, \\
+N_{a+1,t+1} &= N_{a,t} \quad \text{for } a=0,\dots,A_{max}-1.
+\end{align}
+Children leave home at age \(A_{leave}\), so
+\begin{equation}
+n_t = \sum_{a=0}^{A_{leave}-1} N_{a,t}.
+\end{equation}
+Pros: transparent and easy to discipline with age-profile moments.
+
+\subsection*{Candidate B: Reduced-form stochastic leaving}
+Use a compact law of motion:
+\begin{equation}
+n_{t+1} = (1-\pi^{leave}_{j_t})\,n_t + b_t,
+\end{equation}
+where \(\pi^{leave}_{j_t}\) is an age-of-parent-specific exit probability.
+Pros: much smaller state space; easy to solve numerically.
+
+\subsection*{Candidate C: Hybrid (recommended)}
+Use deterministic child dependence duration for baseline (\(A_{leave}=18\) or \(21\)), and test robustness with stochastic departures in sensitivity runs.
+
+\subsection*{Calibration note: U.S. leave-home timing}
+Practical calibration choices for the deterministic benchmark:
+\begin{itemize}
+\item Baseline: \(A_{leave}=18\) (clean institutional benchmark).
+\item Data-aligned alternative: \(A_{leave}=19\), consistent with U.S. evidence that the median age at first move-out is about 19 (BLS/NLSY97 cohort evidence).
+\end{itemize}
+Given observed boomerang behavior, an additional robustness case should allow partial return transitions in the stochastic version.
+
+\subsection*{Partner formation note (endogenous vs agnostic)}
+A clean baseline is to remain agnostic on partner matching by using an exogenous age-profile of household formation probabilities. This keeps focus on the fertility-housing mechanism and avoids introducing a second source of delayed births/homeownership at the same stage.
+
+Endogenous partner matching can be added as a later extension if needed for fit:
+\begin{itemize}
+\item Baseline: exogenous coupling hazard \(m_j\) by age \(j\), calibrated to U.S. household formation moments.
+\item Extension: endogenous matching with search frictions and marriage/partnership state in the household problem.
+\end{itemize}
+This sequencing is recommended because endogenous matching materially increases state dimensionality and can confound identification of housing-driven fertility effects.
+
+\textbf{Implementation note:}
+In period utility, replace generic child count by children at home:
+\begin{equation}
+u_t = u_{ch}(c_t,h_{t,\text{eff}}) + \chi\frac{n_{t,\text{home}}^{1-\eta}}{1-\eta},
+\qquad
+h_{t,\text{eff}} = \frac{h_t}{(1+\lambda n_{t,\text{home}})^{\psi}}.
+\end{equation}
+
+\section{Recommendation}
+Given project goals, use Candidate 2 as the baseline (direct child utility + crowding) and explicitly model children leaving home with Candidate C (hybrid dynamic structure).
+
+\textbf{Reasoning:}
+\begin{itemize}
+\item Candidate 2 is closer to the economics of fertility timing/completed fertility than a crowding-only specification.
+\item Modeling \(n_{t,\text{home}}\) resolves the key life-cycle concern that children eventually leave the household.
+\item The hybrid structure keeps baseline tractable while preserving realistic household-size dynamics.
+\end{itemize}
+
+\section{Next Actions}
+\begin{enumerate}
+\item Implement Candidate 2 with \(n_{t,\text{home}}\) in the model sketch and state-variable map.
+\item Choose baseline dependence duration \(A_{leave}\) and add one robustness case with stochastic leaving.
+\item Household formation choice: keep partner-finding agnostic in the baseline (reduced-form age profile) to avoid large state-space expansion; evaluate endogenous matching only as a later extension.
+\item Draft a calibration memo for \((\zeta,\gamma,\lambda,\psi,\chi,\eta,A_{leave})\) with inherited vs new parameters separated.
+\item Add verified fertility-utility canonical papers to project-03 literature folder and remove \texttt{[UNVERIFIED]} tags when confirmed.
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,854 @@
+%% LyX 2.4.4 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{babel}
+\usepackage{verbatim}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{verbose,tmargin=1.1in,bmargin=1.1in,lmargin=1.1in,rmargin=1.1in}
+\usepackage{setspace}
+\usepackage[authoryear,round]{natbib}
+\onehalfspacing
+\usepackage[bookmarks=false,
+ breaklinks=false,pdfborder={0 0 1},backref=section,colorlinks=false]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\usepackage{babel}
+%
+\usepackage{amsfonts}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{lem}{Lemma}
+
+\setcounter{MaxMatrixCols}{30}
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{assumption}{Assumption}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\usepackage{lscape}
+\usepackage{placeins}
+\setlength{\emergencystretch}{2.5em}
+\sloppy
+
+\makeatother
+
+\begin{document}
+\title{Necessity Entrepreneurs,\thanks{We thank}}
+\author{David Chivers\thanks{Department of Economics, Durham Business School, DH1 3LB, \protect\protect\href{mailto:david.chivers@durham.ac.uk}{david.chivers@durham.ac.uk}\textbf{ }}
+\and Zhigang Feng\thanks{Department of Economics, University of Nebraska, Omaha, NE 68106,
+United States, \protect\protect\href{mailto:z.feng2@gmail.com}{z.feng2@gmail.com}.} \and Elisa Keller\thanks{Department of Economics, University of Exeter, \protect\protect\href{mailto:elisa.keller@exeter.ac.uk}{elisa.keller@exeter.ac.uk}}
+\and Bo Li\thanks{Department of Economics, Peking University, \protect\protect\href{mailto:lb.harbin@gmail.com\%5C\%2520}{lb.harbin@gmail.com }.} }
+\maketitle
+\begin{abstract}
+TO BE COMPLETED.
+
+\ 
+
+\textbf{JEL Classification}: E23, I10, O40.
+
+\textbf{Keywords}:Occupational Choice, Entrepreneur, Misallocation, 
+\end{abstract}
+\pagebreak{}
+
+\section{Introduction}
+
+Entrepreneurship is often treated as a driver of innovation, productivity,
+and growth. However, not all entrepreneurship has the same economic
+role. In many settings, a substantial share of entry is necessity-driven
+rather than opportunity-driven. This distinction matters because necessity
+entry can reflect weak labor-market outside options rather than comparative
+advantage in managing production.
+
+Empirical work typically separates necessity and opportunity entrepreneurship
+using survey responses or prior labor-market status. Both approaches
+are useful, but each has limits. Self-reported motives are subjective,
+while classifications based only on previous employment status can
+misclassify agents whose timing is strategic or constrained by insurance
+and search frictions. A worker who expects separation may enter early
+and look ``opportunity'' in the data; an unemployed household can
+enter temporarily while searching and look ``necessity'' even when
+underlying talent is high.
+
+This paper provides a model-based definition that maps directly into
+counterfactual behavior. We define opportunity entrepreneurs as households
+that choose entrepreneurship regardless of whether they enter the
+period employed or non-employed. We define necessity entrepreneurs
+as households that choose entrepreneurship only when they lack an
+employment relationship. The model combines heterogeneous managerial
+talent, human-capital heterogeneity, search frictions, and social
+insurance, allowing us to quantify how labor-market risk and policy
+jointly shape the composition of entrepreneurship.
+
+Our contribution is threefold. First, we provide a structural framework
+in which necessity entrepreneurship emerges endogenously from occupational
+choice under incomplete insurance. Second, we provide a quantitative
+decomposition of how unemployment risk and unemployment insurance
+affect entry margins and firm scale across education groups. Third,
+we reinterpret necessity entry as a misallocation channel: low outside
+options can push households into entrepreneurship even when their
+productivity is better used in paid work.
+
+The rest of the paper proceeds as follows. Section 2 discusses related
+literature. Section 3 presents the economic environment. Section 4
+characterizes household behavior and equilibrium. Section 5 discusses
+calibration. Section 6 presents baseline quantitative results. Section
+7 studies policy counterfactuals, and Section 8 concludes.
+
+\section{Literature Review}
+
+This paper contributes at the intersection of four literatures: occupational
+choice, entrepreneurship under financial frictions, labor-market search,
+and heterogeneity in entrepreneurial motives.
+
+The first strand is occupational-choice theory with heterogeneous ability
+and outside options. \citet{lucas_1978} provides the canonical
+span-of-control benchmark. \citet{evans_jovanovic_1989} and
+\citet{hurst_lusardi_2004} show that liquidity constraints
+shape who can enter entrepreneurship. \citet{cagetti_denardi_2006}
+then quantifies how entrepreneurial frictions and wealth dynamics interact
+in general equilibrium.
+
+The second strand studies entrepreneurship and firm dynamics under financial
+constraints over the cycle. \citet{buera_2009} shows that credit
+frictions affect both entry and post-entry scale. \citet{poschke_2013}
+is especially close to our setup: labor-market prospects are central
+for occupational choice into entrepreneurship. \citet{sedlacek_sterk_2017}
+further show that startup cohorts differ in growth potential over the
+business cycle.
+
+The third strand is the search-and-matching labor literature. \citet{mortensen_pissarides_1994}
+and \citet{petrongolo_pissarides_2001} provide the benchmark
+framework for job-finding and separation dynamics that discipline our
+transition structure.
+
+The fourth strand emphasizes entrepreneurial motives and composition.
+\citet{fairlie_fossen_2019} distinguish opportunity and necessity
+entrepreneurship in the data, while \citet{hurst_pugsley_2011}
+show that most small-business activity is not primarily innovation-driven.
+\citet{poschke_necessity_snapshot_2013} provides direct evidence
+that necessity-based entry is quantitatively important in cross section.
+These findings motivate our focus on composition, not only the aggregate
+entrepreneurship rate.
+
+Relative to existing work, our contribution is to integrate these channels
+in a single heterogeneous-agent framework with explicit state-contingent
+occupational choice. This allows us to quantify how unemployment risk
+and social insurance reshape the mix of necessity and opportunity entrepreneurship,
+firm scale, and aggregate outcomes.
+
+\section{The Model: Economic Environment}
+
+Consider a Lucas (1978) span of control model, where individuals differ
+in the level of human capital, $h.$ As in Gomez and Kuhen (2017),
+individuals are educated to either the primary $(P)$, secondary $(S)$
+or tertiary level $(T)$. The level of education means that a tertiary
+educated individuals have a higher draw of human capital, on average,
+than secondary educated individuals, who in turn have a higher draw
+on average than primary educated individuals. This human capital draw
+is positively correlated with managerial ability $x$ as well as labor
+productivity $z$.
+
+At the start of the period agents enter as either unemployed $($$i_{w}=0)$,
+employed $($$i_{w}=1)$, or an entrepreneur $($$i_{w}=2)$. Individuals
+face a choice of whether to become an entrepreneur, to continue working
+or to search for work. However, the value of employment is different
+depending on whether an agent enters the period as employed $($$i_{w}=1)$
+or not. Although there is a risk that an employee may become separated
+from a firm with probability $\rho$, this is less risky than searching
+for work which has a $p(\theta)$ probability of obtaining employment.
+Consequently, the expected value of employment is higher for those
+already in employment than those who are not. Additionally, the probability
+of separation is lower for individuals with higher levels of human
+capital and they are able to command a higher wage due to higher levels
+of productivity. So the value of employment, holding other things
+equal, is higher for those with higher human capital as well.
+
+The innovation of this model is that the entrepreneurial decision
+results in two types of entrepreneurs emerge, opportunity-based entrepreneurs
+and necessity-based entrepreneurs. We define opportunity-based entrepreneurs
+are those whose value of entrepreneurship is higher, even if they
+had employment. Necessity-based entrepreneurs are those who would
+not have become entrepreneurs, if they had employment.
+
+\paragraph{Timing: }
+
+The timing of events can be summarized below. Occupational choice
+happens at the start of time $t.$ Those choosing to become entrepreneurs
+run projects and hire workers on on rolling contracts (i.e. contracts,
+will be reassessed each period). Those who were previously employed
+within a project can decide to carry on working but carry a risk of
+separation with probability $\rho$. If separation occurs these workers
+will claim unemployed benefits and be unable to look for work until
+the following period. After separation occurs, vacancies are posted
+and who were unemployed in the previous period are matched with firms.
+Those that are successful and match with with probability $p(\theta)$
+go on to earn a wage. Whereas those that are unsuccessful will claim
+unemployment benefits and be unable to search again until the following
+period.~
+
+Unlike the search and matching literature there is no wage bargaining
+between workers and the firm at the end of matching. Instead the wage
+pins down the occupational choice decision which determines those
+wanting to become entrepreneurs and those who will search for work.
+Crucially, the worker only finds out whether they enter production
+and earn a wage after their occupational choice decision.
+
+\begin{figure}[H]
+\begin{centering}
+\caption{Timing for Matched Workers}
+\par\end{centering}
+\includegraphics[width=0.82\textwidth]{../figures/enter_period_employed_submission} 
+\end{figure}
+
+\begin{figure}[H]
+\caption{Timing for Unmatched Workers}
+
+\includegraphics[width=0.82\textwidth]{../figures/enter_period_unemployed_submission} 
+\end{figure}
+
+
+\subsection{Preferences, endowments and technology}
+
+\paragraph{Preferences: }
+
+Consumption by an agent in period $t$ is $c_{t}$, with utility given
+by $U(c_{t})$.
+
+\paragraph{Endowments: }
+
+Agents are endowed with an initial capital asset, $a_{0}$, which
+can be used as an input in production. Each individual is endowed
+with human capital shock $h^{i}$. Human capital $h$ is positively
+correlated with managerial talent $x$, labor productivity $z$ and
+separation rate $\rho.$
+
+\paragraph{Production: }
+
+Firms use labor $n$ and capital $k$ to produce a single consumption
+good, $y$. Capital depreciates at a constant rate of $\delta$. Managers
+can operate only one project. The functional form of the production
+function is: 
+\begin{equation}
+y=xk^{\alpha}(zn){}^{\gamma}\ \ \mbox{where}\ \alpha,\gamma>0.\ \label{eq:firm_prod}
+\end{equation}
+Managerial talent $x$ is determined by the Pareto distribution $F(x)=\left[1+\frac{x-\varsigma}{\xi}\right]^{-\vartheta_{i}}$
+where $\vartheta$ is the shape parameter, $\varsigma$ the location
+parameter and $\xi$ is the scale parameter.
+
+\paragraph{Factor remuneration: }
+
+Firms rent capital at the common market rate $r$.
+
+\paragraph{Government:}
+
+The government runs a balanced budget each period and provides unemployment
+insurance which is financed through lump sum taxation $\tau$, which
+is shared by the employee $(1-\psi)\tau$ and employer $\psi\tau$.
+This program guarantees each household an unemployment benefit of
+$b$.
+
+\subsection{The Firm's problem}
+
+The firm's problem is: 
+\begin{equation}
+\max_{n,k}Xk^{\alpha}n^{\gamma}-(1+\tau\psi)wzn-rk-\kappa\frac{\rho zn}{q(\theta_{t})}\label{eq:max_firm}
+\end{equation}
+employees must pay a share of unemployment insurance $\tau$ to all
+workers who produce output. Firms have to pay search costs $\kappa$
+for all vacancies posted. The number of vacancies posted is designed
+to replace any lost workers, $\rho zn.$ This, however, is affected
+by the firm-hiring rate $q(\theta_{t})=\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{-\mu}$,
+where aggregate vacancies $v_{t}$ is simply the aggregate level of
+all those who have separate from firms $\sum\rho zn$ within the period
+and $u_{t}$ is the total unemployed looking for work within that
+period (see appendix).
+
+When the market is tight and the hiring rate is low, firms have to
+search more and thus face higher search costs in order to replace
+lost workers. $\text{This is because }0<q(\theta_{t})<1,$so a lower
+$q(\theta_{t})$ increases $\frac{\rho zn}{q(\theta_{t})}$. If the
+firm lose 10 workers, they want to hire 10 workers to replace them.
+But if the hiring rate, $q(\theta_{t}),$ is 50\% then they will face
+double the amount of search costs than if $q(\theta_{t})$ were 100\%.
+The upshot of this is that when markets are tight, the size of the
+desired firm size $n$ decreases ex ante , as the cost of replacing
+workers is high and so entrepreneurs would prefer to run smaller firms.
+
+To avoid issues of directed search, we assume that employees are randomly
+matched with firms (as in Chivers et al., 2015) and each firm employees
+a distribution of workers across the human capital spectrum such that
+each firm employs the market average.
+
+\section{Optimal behavior and equilibrium}
+
+In any time period $t$ agents are distinguished by $(h,a,x,i,z)$.
+The timing of the economy is given as follows. 
+\begin{enumerate}
+\item Households enter each new period with assets $a$ and an employment
+status $i_{w}$ 
+\item Idiosyncratic shocks $h$ is drawn which determines $x$ (managerial
+ability) and $z$ (labor productivity), $\rho$ seperation rate conditional
+on education level, $P,S$ or $T.$ 
+\item Households make an occupation decision: entrepreneur ($\mathcal{I}_{e}=1$)
+or worker ($\mathcal{I}_{e}=0$). 
+\item Capital and labor markets clear. A fraction $\rho$ of employees separate
+from firms and~$p(\theta)$ are hired to replace them 
+\item Households choose: consumption ($c$), borrowing/saving ($a'$) 
+\end{enumerate}
+
+\subsection{Firm manager}
+
+Firms are distinguished by their productivity realization $x$. Agents
+with sufficient ability to become managers choose the level of capital
+and the number of employees to maximize profit subject to a technological
+constraint. In order to simplify the exposition, first consider the
+problem of a manager with talent $x^{i}$ for a given level of capital
+$k$ (i.e., labor input choice only): 
+\begin{equation}
+\max_{zn}xk^{\alpha}(zn){}^{\gamma}-zw(1+\psi\tau)n-rk-\kappa\frac{\rho zn}{q(\theta)}\label{maxP}
+\end{equation}
+
+The first order conditions are:
+
+\begin{equation}
+\gamma xk^{\alpha}(zn)^{\gamma-1}=w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}\label{maxP-1}
+\end{equation}
+
+\begin{equation}
+n^{*}(k,x,\widetilde{w})=\left[\frac{\gamma xk^{\alpha}}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right]^{\frac{1}{1-\gamma}}\label{FOC}
+\end{equation}
+
+Substituting (\ref{FOC}) into (\ref{maxP}) yields the manager's
+profit function for a given level of capital: 
+\begin{equation}
+y(k,x,\widetilde{w})=xk^{\alpha}(zn^{*})^{\gamma}-zn^{*}w(1+\psi\tau)-\kappa\frac{\rho zn^{*}}{q(\theta)}\label{profitj}
+\end{equation}
+
+
+\subsubsection{Capital}
+
+Initially we assume capital markets function perfectly.
+
+\subsection{Entrepreneurs}
+
+Entrepreneurs maximize expected discounted utility of consumption
+\[
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\]
+subject to the following budget constraint: 
+\begin{align}
+c+a' & \leq(1+r-\delta)a+\nu-\tau_{\pi}\label{eq:c_worker-3}
+\end{align}
+
+\[
+a'\geq-\bar{a}
+\]
+
+
+\subsection{Employed}
+
+The workforce (previous periods employed who choose to reapply for
+work) maximize expected discounted utility of consumption 
+\[
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\]
+subject to the following budget constraint: 
+\begin{align}
+c+a' & \leq(1+r-\delta)a+(1-\rho)\left(wz(1-(1-\psi)\tau_{y})\right)+\rho b\label{eq:c_worker}
+\end{align}
+
+\[
+a'\geq-\bar{a}
+\]
+where $b$ is the unemployment benefit.
+
+\subsection{Unemployed}
+
+The unemployed maximize expected discounted utility of consumption
+\[
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\]
+subject to the following budget constraint: 
+\begin{align}
+c+a' & \leq(1+r-\delta)a+p(\theta)\left(wz(1-(1-\psi)\tau_{y})\right)+(1-p(\theta))b\label{eq:c_worker-2}
+\end{align}
+
+\[
+a'\geq-\bar{a}
+\]
+where $b$ is the unemployment benefit.
+
+\subsection{Government }
+
+The government runs a balanced budget with a lump-sum taxes $T(y)=(y-\lambda_{p}y^{1-\tau_{p}})$
+
+\subsection{The household's problem}
+
+Let $i_{w}$ denote the household's labor market status in the previous
+period, with $i_{w}=2$ indicating being entrepreneur, $i_{w}=1$
+being employed and $i_{w}=0$ being unemployed. Let $\mathcal{I}_{e}$
+indicate occupational choice, where $\mathcal{I}_{e}=1$ if the household
+is an entrepreneur and $\mathcal{I}_{e}=0$ if the household is a
+worker.
+
+Let denote $\mathbb{E}_{\rho}$ the expected value considering the
+possibility of being separated from the job as employed; $\mathbb{E}_{p(\theta)}$
+the expected value considering the possibility of finding new job
+if previously unmatched with a firm (unemployed former entrepreneurs).
+$V_{w}$ is the contemporary utility as a worker, which varies with
+the employment status. $\iota_{i_{w}=1}$ is an indicator function.
+We can write the household's problem recursively as follows. More
+specifically, 
+\begin{align*}
+\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =p(\theta)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)\\
+ & +(1-p(\theta))\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)
+\end{align*}
+
+\begin{align*}
+\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =\rho\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\\
+ & +(1-\rho)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)
+\end{align*}
+Notice that for agents who recently separated from the firm cannot
+rematch with a new firm in the current period.
+
+\begin{align*}
+\mathbf{V}(a,h,i_{w}) & =\max_{\left\{ a',c,\mathcal{I}_{e}\right\} }\left\{ \begin{array}{c}
+\iota_{i_{w}=0}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
+\iota_{i_{w}=1}\left[(1-\mathcal{I}_{e})\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
+\iota_{i_{w}=2}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]
+\end{array}\right\} 
+\end{align*}
+subject to
+
+\begin{align}
+c+a' & \leq(1-\tilde{{r}}-\delta)a+inc\label{eq:c_worker-1}
+\end{align}
+\begin{align*}
+inc & =\begin{cases}
+ra+\widetilde{w}_{n} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}=1}}\\
+ra+\widetilde{w}_{u} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}\neq1}}\\
+ra+\nu(k,x;\tilde{r},w,\tau) & \mbox{ if \ensuremath{\mathcal{I}_{e}=1}}
+\end{cases}
+\end{align*}
+
+where $inc$ is the earnings of the worker or entrepreneur, $\widetilde{w}_{n}=(1-\rho)\left\{ zw(1-(1-\psi)\tau)\right\} +\rho b$
+and $\widetilde{w}_{u}=p(\theta)\left\{ zw(1-(1-\psi)\tau)\right\} +\{1-p(\theta)\}b$.
+
+\subsection{Equilibrium}
+
+Let $\hat{h}$ be the critical value of human capital that determines
+occupational choice which is affected by both employment status and
+education level. If $h\geq\hat{h}$ then individuals choose entrepreneurship
+over becoming a worker. The critical value of human capital is always
+higher for those who have employment than those who are unmatched
+with a firm $\hat{h}_{i_{w}\neq1}<\hat{h}_{i_{w}=1}$. We define necessity
+entrepreneurship as those who would not have become an entrepreneur
+\textit{if} they had an employment contract: 
+\[
+\hat{h}_{i_{w}\neq1}<h<\hat{h}_{i_{w}=1}.
+\]
+We define opportunity-driven entrepreneurship as those who would become
+an entrepreneur \textit{regardless} of circumstance: 
+\[
+h\geq\hat{h}_{i_{w}=1}\geq\hat{h}_{i_{w}\neq1}
+\]
+As there are three education levels, there are a total of six critical
+values of human capital: two for primary educated matched or unmatched,
+$\hat{h}_{i_{w}=1}^{P}\text{ and }\hat{h}_{i_{w}\neq1}^{P}$ two for
+secondary educated, $\hat{h}_{i_{w}=1}^{S}\text{ and }\hat{h}_{i_{w}\neq1}^{S},$
+and two for tertiary educated, $\hat{h}_{i_{w}=1}^{T}\text{ and }\hat{h}_{i_{w}\neq1}^{T}$.
+
+\section{Calibration}
+\begin{center}
+\begin{table}[htbp]
+\caption{Parameter values, baseline economy}
+
+\centering{}\resizebox{\textwidth}{!}{{\small{}%
+\begin{tabular}{cccc}
+\hline 
+{\small Parameters } & {\small Values } & {\small Description } & {\small Comments/observations/target}\tabularnewline
+\hline 
+{\small$\beta$ } & {\small$0.94$ } & {\small Discount factor } & \tabularnewline
+{\small$\sigma$ } & {\small$2.0$ } & {\small Risk aversion } & {\small$u(c)=\frac{c^{1-\sigma}}{1-\sigma}$}\tabularnewline
+\hline 
+{\small$\delta$ } & {\small$0.06$ } & {\small Capital depreciation } & \tabularnewline
+{\small$\alpha$ } & {\small$0.3207$ } & {\small Capital share } & \tabularnewline
+{\small$\gamma$ } & {\small$0.4693$ } & {\small Labour Share } & {\small Frac. of entrepreneurs}\tabularnewline
+\hline 
+{\small$h$ } & {\small$\{0.109,0.581,0.310\}$ } & {\small Share of population by $h$ } & {\small Barro and Lee (2013)}\tabularnewline
+{\small$\vartheta_{e}$ } & {\small$\{0.967,1.007,1.156\}$ } & {\small Shape parameter by $h$ } & {\small Mean firm size, Gomez and Kuhen (2017)}\tabularnewline
+{\small$\varsigma$ } & {\small$2.02655$ } & {\small Location parameter } & {\small$F(x)=\left[1+\frac{x-\varsigma}{\xi}\right]^{-\alpha_{i}}$}\tabularnewline
+{\small$\xi$ } & {\small$0.1115$ } & {\small Scale parameter } & {\small Gomez and Kuhen (2017)}\tabularnewline
+{\small$z$ } & {\small$\{1.0,1.31,1.61\}$ } & {\small Wage premium by $h$ } & {\small Goldin and Katz (2009)}\tabularnewline
+{\small$\rho$ } & {\small$\{0.0383,0.0288,0.0136\}$ } & {\small Job separation rate by $h$ } & {\small Cairo and Cajner (2016)}\tabularnewline
+\hline 
+{\small$\bar{m}$ } & {\small$0.8$ } & {\small Matching efficiency } & {\small Lubik, 2013 $p(\theta)=\bar{m}\left(\frac{v}{u}\right)^{1-\mu}$}\tabularnewline
+{\small$\mu$ } & {\small$[0.5,0.7]$ } & {\small Matching elasticity } & {\small Petrongolo and Pissarides (2001)}\tabularnewline
+{\small$\kappa$ } & {\small$[0.03,0.045]\cdot w$ } & {\small Search costs } & {\small (Hagedorn and Manovskii, 2008)}\tabularnewline
+\hline 
+{\small$\tau_{\pi}$ } & {\small$0$ } & {\small Corporation tax } & {\small Set as zero for now}\tabularnewline
+{\small$\tau_{y}$ } & {\small$0.151$ } & {\small Income Tax } & {\small$T(y)=(y-\lambda_{p}y^{1-\tau_{p}})$}\tabularnewline
+{\small$\lambda_{p}$ } &  & {\small Income Tax } & {\small Determined in equm.}\tabularnewline
+{\small$b$ } & {\small$0.40\cdot w$, } & {\small Social security benefits } & {\small Shimmer and Krause and Lubik (2005)}\tabularnewline
+{\small$\psi$ } & {\small$0$ } & {\small Share } & \tabularnewline
+{\small$\Delta$ } & {\small$0$ } & {\small Credit spread } & \tabularnewline
+{\small$\bar{a}$ } & {\small$0$ } & {\small Borrowing constraint } & \tabularnewline
+ &  &  & \tabularnewline
+\hline 
+\end{tabular}}} 
+\end{table}
+\par\end{center}
+
+\section{Baseline Results}
+
+The baseline equilibrium shows moderate entrepreneurship (0.1472 overall),
+with substantial heterogeneity by education. Entry is highest for
+high education (0.1618) and lowest for middle education (0.1398),
+while average labor demand is 21.9129 workers and rises steeply with
+skill from 9.7237 (low) to 33.5470 (high). This pattern indicates
+that high-education entrepreneurs operate at much larger scale even
+when their entry rate is only modestly above other groups. Labor-market
+transitions also suggest strong persistence in employment (Employed
+$\rightarrow$ Work = 0.740) and a small unemployment-to-entrepreneurship
+channel (0.002), so necessity entry is present but limited in the
+baseline.
+
+\input{tables/baseline_results_only.tex}
+
+\section{Quantitative Analysis}
+
+This section evaluates each policy experiment relative to the baseline
+and reports how unemployment insurance design and tax closure affect
+entry, scale, and output.
+
+\FloatBarrier
+
+\subsection{Low unemployment insurance with endogenous tax}
+
+This subsection reports the low-UI endogenous-tax experiment against
+the baseline.
+
+\input{tables/baseline_vs_low_ui_endogenous.tex}
+
+Lower UI increases entrepreneurship and per-capita output relative
+to baseline, while output per entrepreneur is slightly lower.
+
+\FloatBarrier
+
+\subsection{No unemployment insurance with endogenous tax}
+
+This subsection reports the no-UI endogenous-tax experiment against
+the baseline.
+
+\input{tables/baseline_vs_no_ui_endogenous.tex}
+
+Removing UI under endogenous tax strongly raises entry, but average
+labor demand and output per entrepreneur decline materially.
+
+\FloatBarrier
+
+\subsection{No unemployment insurance with fixed tax}
+
+This subsection reports the no-UI fixed-tax experiment against the
+baseline.
+
+\input{tables/baseline_vs_no_ui_fixed.tex}
+
+With fixed tax and no UI, entry rises modestly, per-capita output
+is roughly unchanged, and productivity per entrepreneur declines.
+
+\FloatBarrier
+
+\section{Conclusion}
+
+This paper develops a high-level quantitative framework for studying
+necessity entrepreneurship as an equilibrium outcome of occupational
+choice under labor market frictions. By defining necessity and opportunity
+entrepreneurship through counterfactual choices, the model separates
+compositional shifts in entry from changes in aggregate entrepreneurship
+rates.
+
+The main message is that unemployment risk and social insurance jointly
+shape who becomes an entrepreneur. Reducing insurance can raise entrepreneurship
+on paper, but part of this increase reflects necessity entry associated
+with lower average firm scale. Conversely, stronger insurance can
+reduce necessity entry and improve sorting, even when effects on total
+entrepreneurship are modest. These results support evaluating entrepreneurship
+policy through composition, not levels alone.
+
+Several extensions remain important for the next draft. First, the
+credit friction wedge and job-market experiments should be fully completed
+and integrated into a unified welfare comparison. Second, calibration
+choices that are still open should be aligned with the code implementation
+and reported transparently. Third, the literature discussion can be
+broadened further once the project-specific verified PDF library is
+restored.
+
+\section*{\newpage}
+
+\section*{Appendix}
+
+\section*{Computation}
+
+Given the values for parameters, the discretized spaces $\Omega_{a}$
+for $a$, $\Omega_{z}$ for $z$ and $\Omega_{x}$ for $x$. Each
+agent draw a human capital level $h$ (interpreted as educational
+attainment) at the beginning of the economy, which will be fixed henceforth.
+$h$ will determine their labor productivity $z\in\Omega_{z}$, the
+separation rate $\rho$, and managerial ability $x\in\Omega_{x}$.
+Let $i_{w}=0$ indicating being entrepreneur, $i_{w}=1$ being employed
+and $i_{w}=2$ being unemployed. The numerical algorithm works as
+follows. 
+\begin{enumerate}
+\item Set a tolerance $\epsilon>0$. 
+\item Guess $\Phi^{0}=\left(r^{0},w^{0},\rho^{0},\tau_{y}^{0}\right)$.
+Solve for optimal household behavior: 
+\[
+f:\left(\varphi;\Phi\right)\rightarrow\left(c,a',\mathcal{I}_{e},n,k\right),
+\]
+where $\varphi=\left\{ h,z,x,a,i_{w}\right\} $. We will use the method
+of value function iteration as follows.
+\begin{enumerate}
+\item Guess value function $\mathbf{V}{}^{0}\left(\varphi;\Phi^{0}\right)$
+and policy functions $f^{0}\left(\varphi;\Phi^{0}\right)$. 
+\item Calculate the cutoff values of $x_{u}^{*}$ (for previously unemployed
+worker, or entrepreneur) and $x_{n}^{*}$ (for previously employed
+worker) via the following conditions. 
+\begin{align}
+\widetilde{w}_{u}= & \pi(x_{u}^{*})=\max_{n}\left\{ \left(x_{u}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_u}\\
+\widetilde{w}_{n}= & \pi(x_{n}^{*})=\max_{n}\left\{ \left(x_{n}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_n}
+\end{align}
+where $\widetilde{w}_{n}$ and $\widetilde{w}_{u}$ denote the expected
+compensation for the employed worker and unemployed worker respectively.
+More specifically, 
+\begin{align}
+\widetilde{w}_{n} & =(1-\rho)\left\{ zw(1-(1-\psi)\tau)\right\} +\rho b\label{eq:income_n}\\
+\widetilde{w}_{u} & =p(\theta)\left\{ zw(1-(1-\psi)\tau)\right\} p(\theta))b.\label{eq:income_u}
+\end{align}
+Noting that the separation rate $\rho$ is pre-determined by the individual's
+initial human capital level $h$. 
+\item Update value and policy functions: 
+\begin{align}
+\mathbf{V}^{1}(h,z,x,a,i_{w})=\label{eq:V_overall}\\
+\max_{\left\{ a',c,\mathcal{I}_{e}\right\} }\left\{ \begin{array}{c}
+\iota_{i_{w}=0}\cdot\left[\begin{array}{c}
+(1-\mathcal{I}_{e})\cdot\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w})\right)\\
++\mathcal{I}_{e}\cdot\left(V_{e}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w}=2)\right)
+\end{array}\right]+\\
+\iota_{i_{w}=1}\cdot\left[\begin{array}{c}
+(1-\mathcal{I}_{e})\cdot\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w})\right)\\
++\mathcal{I}_{e}\cdot\left(V_{e}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w}=2)\right)
+\end{array}\right]+\\
+\iota_{i_{w}=2}\cdot\left[\begin{array}{c}
+(1-\mathcal{I}_{e})\cdot\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w})\right)\\
++\mathcal{I}_{e}\cdot\left(V_{e}+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a',i'_{w}=2)\right)
+\end{array}\right]
+\end{array}\right\} \nonumber \\
+f^{1}\left(\varphi;\Phi^{0}\right)=\arg\max\mathbf{V}^{1}\left(\varphi;\Phi^{0}\right)\nonumber 
+\end{align}
+where $\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)$
+denotes the expected payoff for the individual who is previously unemployed
+worker, or entrepreneur, and decides to look for paid job, while $\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)$
+represents the expected payoff for the previously employed worker
+who decide to stay in workplace. 
+\begin{align}
+\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w})\right) & =p(\theta)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w}=1)\right)\label{eq:V_u}\\
+ & +(1-p(\theta))\left(V_{u}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w}=0)\right)\nonumber \\
+\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w})\right) & =(1-\rho)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w}=1)\right)\label{eq:V_w}\\
+ & +\rho\left(V_{u}+\beta\mathbb{E}\mathbf{V}(h,z',x',a',i'_{w}=0)\right)\nonumber 
+\end{align}
+To simplify the analysis, we assume that the individual who was previously
+employed and newly separated from the firm is not allowed to search
+for job at the current period. The measure for the individuals who
+are looking for jobs, $u_{t}$, the total vacancies $v_{t}$, and
+job matching rate $\theta_{n,t}$ are given as follows. 
+\begin{align}
+u_{t} & =\left(\int_{x}\iota_{i_{w}=0}+\int_{x}\iota_{i_{w}=2}\right)\cdot\int_{0}^{x_{u}^{*}}\label{eq:measure_u}\\
+v_{t} & =\int_{x}\iota_{i_{w}=1}\cdot\rho\label{eq:measure_v}\\
+\theta_{n,t} & =\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{1-\mu}\label{eq:measure_matching}
+\end{align}
+Note that we can write the above value functions explicitly as a system
+of sub-problems: $P_{x<x_{u}^{*}}^{i_{w}=0}$ , $P_{x\geq x_{u}^{*}}^{i_{w}=0}$,
+$P_{x<x_{n}^{*}}^{i_{w}=1}$ , $P_{x\geq x_{n}^{*}}^{i_{w}=1}$, $P_{x<x_{u}^{*}}^{i_{w}=2}$
+, $P_{x\geq x_{u}^{*}}^{i_{w}=2}$, which correspond to the dynamic
+programing problem for i). previously self-employed with $x<x_{u}^{*}$;
+ii). previously self-employed with $x\geq x_{u}^{*}$; iii). previously
+employed with $x<x_{n}^{*}$; iv). previously employed with $x\geq x_{n}^{*}$;
+v). previously unemployed with $x<x_{u}^{*}$; vi). previously unemployed
+with $h\geq h_{u}^{*}$. To economize the space, we only provide the
+details for $P_{x<x_{u}^{*}}^{i_{w}=0}$ , and $P_{x\geq x_{u}^{*}}^{i_{w}=0}$
+as follows. \\
+ $\left(P_{x<x_{u}^{*}}^{i_{w}=0}\right)$: 
+\begin{equation}
+\mathbf{V}^{1}(h,z,x<x_{u}^{*},a,i_{w}=0)=\max_{a'_{n},a'_{u}}\left\{ \begin{array}{c}
+p(\theta)\left(u(c_{n})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a'_{n},i'_{w}=1)\right)\\
++(1-p(\theta))\left(u(c_{u})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a'_{u},i'_{w}=0)\right)
+\end{array}\right\} \label{eq:V_iw0_xl}
+\end{equation}
+s.t. 
+\begin{align}
+c_{n}+a'_{n} & \leq(1-\tilde{r}-\delta)a+zw(1-(1-\psi)\tau),\text{if matched with a firm}\label{eq:bdg_iw0_xl_1}\\
+c_{u}+a'_{u} & \leq(1-\tilde{r}-\delta)a+b,\text{if unemployed}\label{eq:bdg_iw0_xl_2}
+\end{align}
+$\left(P_{x\geq x_{u}^{*}}^{i_{w}=0}\right)$: 
+\begin{equation}
+\mathbf{V}^{1}(h,z,x\geq x_{u}^{*},a,i_{w}=0)=\max_{a_{e}'}\left\{ u(c_{e})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a_{e}',i'_{w}=w)\right\} \label{eq:V_iw0_xh}
+\end{equation}
+s.t. 
+\begin{equation}
+c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\nu(k,x;\tilde{r},w,\tau)\label{eq:bdg_iw0_xh}
+\end{equation}
+where 
+\begin{equation}
+\nu(k,x;\tilde{r},w,\tau)=\max_{n}\left\{ x^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa\rho n}{q(\theta)}\right\} .\label{eq:profit_emtrepreneur}
+\end{equation}
+\item Stop if $\max\left\{ \left|\mathbf{V}^{1}-\mathbf{V}^{0}\right|,\left|f^{1}-f^{0}\right|\right\} \leq\epsilon$.
+Set $\mathbf{V}^{*}=\mathbf{V}^{1}$, and $f^{*}=f^{1}$. Otherwise,
+set $\mathbf{V}^{0}=\mathbf{V}^{1}$, $f^{0}=f^{1}$ and repeat from
+step (c). 
+\end{enumerate}
+\item Generate a large number of individuals, $N=100000$. For each agent
+$j$ assign a vector of initial condition $\left(h_{t}^{j},z_{0}^{j},x_{0}^{j},a_{0}^{j},i_{w,0}^{j}\right)$,
+where $x_{0}^{j}\sim\Omega_{x}$, $z_{0}^{j}\in\Omega_{z}$, $i_{w,0}^{j}\in\Omega_{w}$. 
+\item Simulate the economy for $T$ periods, where $T$ is sufficiently
+large. 
+\item Calculate the following statistics from the simulated path $\left\{ h_{t}^{j},z_{t}^{j},x_{t}^{j},a_{t}^{j},i_{w,t}^{j},\mathcal{I}_{e,t}^{j},n_{t}^{j},k_{t}^{j}\right\} _{t=0}^{T}$.
+\begin{align}
+LS^{0} & =\frac{\sum_{j=1}^{N}\left(\iota_{i_{w}=1}\cdot z^{j}\right)}{N}\label{eq:agg_simulation_1}\\
+KS^{0} & =\frac{\sum_{j=1}^{N}\left(\iota_{i_{w}=0}\cdot a^{j}+\iota_{i_{w}=1}\cdot a^{j}+\iota_{i_{w}=2}\cdot a^{j}-\iota_{i_{w}=0}\cdot k^{j}\right)}{\sum_{j=1}^{N}a^{j}}\label{eq:agg_simulation_2}\\
+u_{t} & =\left(\int_{h}\iota_{i_{w}=0}+\int_{h}\iota_{i_{w}=2}\right)\cdot\int_{0}^{h_{u}^{*}}\\
+v_{t} & =\int_{h}\iota_{i_{w}=1}\cdot\rho\\
+p(\theta)_{t} & =\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{1-\mu}\\
+G & =\int\tau wz
+\end{align}
+and $\tau_{y}^{1}$ that balances the government's budget. 
+\item Stop and set $\left(r^{*},w^{*},\theta^{*}\right)=\left(r^{0},w^{0},\theta^{0}\right)$,
+if $\max\left\{ LS^{0},KS^{0},\left|\theta_{n}^{1}-\theta_{n}^{0}\right|\right\} \leq\epsilon$.
+Otherwise, update aggregate variables (restart from step 2): 
+\begin{align*}
+r^{0} & =\chi r^{0}+(1-\chi)r^{1}\left(KS^{0}\right)\\
+w^{0} & =\chi w^{0}+(1-\chi)w^{1}\left(LS^{0}\right)\\
+p(\theta)^{0} & =\chi p(\theta)^{0}+(1-\chi)p(\theta)^{1}\\
+\tau_{y}^{0} & =\chi\tau_{y}^{0}+(1-\chi)\tau_{y}^{1}
+\end{align*}
+where $\chi\in(0,1)$ is the step for updating aggregate variables. 
+\end{enumerate}
+
+\section*{}
+
+\section*{Appendix Search and Matching}
+
+I am not sure how much of this is needed for coding purposes but this
+is the standard search and matching model. The stock of employed workers
+$n_{t}$ can be expressed as the current pool of workers who did not
+separate from firms, plus new hires
+
+\[
+n_{t}=(1-\rho)n_{t-1}+m_{t-1}
+\]
+The matching function is Cobb-Douglass where
+
+\[
+m_{t}=\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}
+\]
+$\bar{m}$ is a match efficiency parameter , $v$ is vacancies, $u$
+is unemployment, and match elasticity is $0<\mu<1$.The hiring rate
+can be defined for firms as total number of new hires to the number
+of vacancies
+
+\[
+q(\theta_{t})=\frac{m_{t}}{v_{t}}=\bar{m}\theta_{t}^{-\mu}
+\]
+where $\theta_{t}=\frac{v_{t}}{u_{t}}$is aggregate labour market
+tightness. Similarly we can define this from the perspective of the
+worker in the job-finding rate.
+
+\[
+p(\theta_{t})=\frac{m_{t}}{u_{t}}=\bar{m}\theta_{t}^{1-\mu}
+\]
+The Job Creation Condition determines the amount of new vacancies
+an employer will post. In our model, most workers are on rolling contracts,
+so firms only need to post new vacancies after some workers separate
+from these rolling contracts. Usually in search and matching models
+the wage is determined ex-post of matching by Nash bargaining between
+the employer and employee. However, in our span-of-control model the
+wage has already been determined ex ante, as the wage is an endogenous
+variable that determines occupational choice. The marginal benefit
+that the new employee would bring to the firm is expressed as $A$
+(which can be derived from the firms production function, $\gamma Xk^{\alpha}(zn)^{\gamma-1}$).
+The $JCC\text{ can be then expressed as the costs of replacing out workers on the \ensuremath{LHS} and the expected benefit on the \ensuremath{RHS.}}$
+
+\[
+\frac{\kappa}{q(\theta_{t})}=A-w_{t}+\beta E_{t}\left[A-w_{t+1}+(1-\rho)\frac{\kappa}{q(\theta_{t+1})}\right]
+\]
+where $\kappa$ is the cost of posting a vacancy. %
+\begin{comment}
+This is different from the standard JCC as usually production starts
+the period after matching so the JCC would be $\frac{\kappa}{q(\theta_{t})}=+\beta E_{t}\left[A-w_{t+1}+(1-\rho)\frac{\kappa}{q(\theta_{t+1})}\right].$
+See alternative timing version to think about the problem this way,
+I am not sure it makes much difference. 
+\end{comment}
+
+
+\subsection*{Matching Steady States}
+
+To find the steady state of the employment equation $n_{t}=(1-\rho)n_{t-1}+m_{t-1}$,
+we use the fact that $u=(1-n)$ and $m_{t}=\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}.$
+Substituting and getting rid of time subscript gives $(1-u)=(1-\rho)(1-u)+\bar{m}v^{1-\mu}u^{\mu}$
+which simplifies to $\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}=$$\rho(1-u)$.
+Making $v\text{\,the subject of the foruma gives us the Beveridge curve.}$
+
+\[
+v=\left(\frac{\rho(1-u)}{\bar{mu}}\right)^{1-\mu}u
+\]
+The steady state for the JCC can be found by using $\frac{\kappa}{q(\theta_{t})}=A-w_{t}+\beta E_{t}\left[A-w_{t+1}+(1-\rho)\frac{\kappa}{q(\theta_{t+1})}\right]$
+and $q(\theta_{t})=\bar{m}\theta_{t}^{-\mu}=\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{-\mu}$.
+Substituting and getting rid of time subscripts yields 
+\[
+\frac{\kappa}{\bar{m}}\left(\frac{v}{u}\right)^{\mu}=A-w_{t}+\beta\left[A-w+(1-\rho)\frac{\kappa}{\bar{m}}\left(\frac{v}{u}\right)^{\mu}\right]
+\]
+
+Simplifying yields the steady state of the JCC
+
+\[
+1-\beta(1-\rho)\frac{\kappa}{\bar{m}}\left(\frac{v}{u}\right)^{\mu}=(1+\beta)\left[A-w\right]
+\]
+
+ \bibliographystyle{apalike}
+\bibliography{../../../_shared/references/global_references}
+
+\end{document}
+

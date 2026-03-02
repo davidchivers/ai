@@ -1,0 +1,41 @@
+{
+    "workbench.sideBar.location":  "left",
+    "workbench.sideBar.visible":  true,
+    "workbench.activityBar.location":  "top",
+    "workbench.panel.defaultLocation":  "right",
+    "workbench.secondarySideBar.defaultVisibility":  "hidden",
+    "workbench.startupEditor":  "none",
+    "window.restoreWindows":  "one",
+    "latex-workshop.latex.autoBuild.run":  "onSave",
+    "latex-workshop.view.pdf.viewer":  "tab",
+    "latex-workshop.synctex.afterBuild.enabled":  true,
+    "latex-workshop.latex.outDir":  "%DIR%/out",
+    "workbench.editorAssociations":  {
+                                         "*.md":  "vscode.markdown.preview.editor",
+                                         "*.pdf":  "pdf.preview"
+                                     },
+    "markdown-preview-enhanced.automaticallyShowPreviewOfMarkdownBeingEdited":  true,
+    "markdown-preview-enhanced.mathRenderingOption":  "KaTeX",
+    "markdown-preview-enhanced.previewTheme":  "github-dark.css",
+    "markdown-preview-enhanced.previewColorScheme":  "editorColorScheme",
+    "workbench.colorCustomizations":  {
+        "activityBar.activeBackground": "#4c596f",
+        "activityBar.background": "#4c596f",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#261a1e",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#4c596f",
+        "statusBar.background": "#374151",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#4c596f",
+        "statusBarItem.remoteBackground": "#374151",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#374151",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#37415199",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color":  "#374151"
+}

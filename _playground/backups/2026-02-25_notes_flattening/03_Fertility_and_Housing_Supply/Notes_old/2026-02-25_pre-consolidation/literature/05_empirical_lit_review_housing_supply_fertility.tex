@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Empirical Literature Review: Housing Supply, Housing Costs, and Fertility}
+\author{Fertility and Housing Supply Project}
+\date{February 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Scope}
+This review focuses on economics papers with explicit empirical content and emphasizes causal identification. The objective is to assess how strong the current evidence is for the claim that housing supply constraints can materially affect fertility outcomes.
+
+\section{How to organize the evidence}
+For this project, the empirical literature naturally splits into three layers:
+\begin{enumerate}
+\item Upstream causal block: supply constraints/policies $\rightarrow$ prices and construction outcomes.
+\item Downstream causal block: prices, affordability, or unit composition $\rightarrow$ fertility.
+\item Dynamic background block: demographic change $\leftrightarrow$ housing market dynamics.
+\end{enumerate}
+
+This decomposition is useful because the strongest existing evidence is often in layer 1, while the policy question you care about requires a convincing bridge to layer 2.
+
+\section{Layer 1: Supply constraints and policy shocks}
+\subsection*{Saiz (2010)}
+Saiz develops exogenous geographic measures of developable land and terrain constraints for U.S. metropolitan areas and shows these strongly explain local housing supply elasticity differences.
+
+\textbf{Why this is important for your project:}
+\begin{itemize}
+\item It provides a credible source of variation in supply responsiveness.
+\item It supports the claim that demand shocks translate into larger price responses where supply is inelastic.
+\item It gives a disciplined empirical foundation for your model's supply-elasticity heterogeneity.
+\end{itemize}
+
+\subsection*{Hilber and Vermeulen (2012 working-paper version)}
+Using long-panel data for English planning authorities, they estimate how regulatory and physical constraints amplify price responses to demand. They explicitly address endogeneity of local constraints via IV-style instruments (policy reform variation, vote shares, historical density).
+
+\textbf{Why this matters:}
+\begin{itemize}
+\item It is close to your political-economy context.
+\item It links planning restrictiveness directly to affordability pressures.
+\item It is one of the most policy-relevant pieces for UK-style planning systems.
+\end{itemize}
+
+\subsection*{Freemark (2019)}
+A local DiD design around Chicago upzoning finds robust increases in transaction values but no strong short-run increase in permitting volumes.
+
+\textbf{Interpretation for your paper:}
+\begin{itemize}
+\item Legal reform can capitalize into values quickly.
+\item Quantity responses may be delayed or administratively constrained.
+\item This is a warning that fertility impacts may not appear instantly after reform unless family-suitable supply actually expands.
+\end{itemize}
+
+\section{Layer 2: Housing-to-fertility evidence}
+\subsection*{Couillard (2025, Build, Baby, Build)}
+This paper is currently the strongest direct fit to your mechanism in the verified local set. It estimates a dynamic joint housing-fertility model with location and unit-size choices and evaluates fertility effects of housing-cost and supply-composition changes.
+
+\textbf{Key empirical contribution relevant for you:}
+The paper quantifies a large contribution of housing-cost increases to fertility decline and highlights a strong role for family-sized unit supply.
+
+\textbf{Identification nature:}
+Structural causal quantification (counterfactual policy variation within an estimated model), rather than a pure reduced-form natural experiment.
+
+\textbf{What this means for your project:}
+\begin{itemize}
+\item Strong mechanism alignment (unit size, affordability, family formation).
+\item Strong policy counterfactual relevance.
+\item Still leaves room for complementary reduced-form designs to satisfy stricter ``design-based'' standards.
+\end{itemize}
+
+\section{Layer 3: Dynamic background evidence}
+\subsection*{Francke and Korevaar (2022)}
+This work documents that birth-rate changes predict housing market outcomes with long lags.
+
+\textbf{Use in your project:}
+\begin{itemize}
+\item Important to motivate two-way dynamics between demography and housing.
+\item Not a direct estimate of housing-cost effects on fertility.
+\item Best treated as background evidence for dynamic equilibrium feedbacks.
+\end{itemize}
+
+\section{What is strong, what is weak, what is missing}
+\subsection*{Strong in the current set}
+\begin{itemize}
+\item Causal and quasi-causal evidence from supply restrictions/policy to price outcomes.
+\item Mechanism-consistent structural fertility evidence with housing composition channels.
+\end{itemize}
+
+\subsection*{Weak in the current set}
+\begin{itemize}
+\item Reduced-form fertility responses to plausibly exogenous housing shocks are underrepresented.
+\item Timing decomposition (delay of first birth vs completed fertility) is not yet heavily populated in your local evidence stack.
+\end{itemize}
+
+\subsection*{Missing priorities}
+\begin{itemize}
+\item More design-based papers that identify fertility responses to policy-induced housing-cost changes.
+\item More evidence that separates total unit growth from family-sized unit growth.
+\end{itemize}
+
+\section{Implications for your empirical narrative in the paper}
+A disciplined narrative would proceed as follows:
+\begin{enumerate}
+\item Establish that supply constraints and planning restrictions causally raise prices / limit quantity responses.
+\item Establish that housing affordability and unit composition plausibly shift fertility decisions.
+\item Show your model links these two blocks and explains cross-market and over-time fertility outcomes.
+\end{enumerate}
+
+This structure avoids over-claiming while still making a strong policy argument.
+
+\section{Verification matrix}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.20\textwidth} p{0.23\textwidth} p{0.30\textwidth} p{0.22\textwidth}}
+\toprule
+Paper & Identification core & Direct relevance to your mechanism & Confidence \\
+\midrule
+Saiz (2010) & Predetermined geography & High for supply elasticity block & High \\
+Hilber--Vermeulen (2012 WP) & IV around endogenous constraints & High for planning-to-price channel & High \\
+Freemark (2019) & Policy DiD & Medium-High for reform transmission and timing & High \\
+Couillard (2025) & Structural estimation + counterfactuals & Very high for housing-to-fertility mechanism & High \\
+Francke--Korevaar (2022) & Long-horizon reduced form & Medium for dynamic context, indirect for causal target & Medium \\
+\bottomrule
+\end{tabular}
+
+\section*{Bottom line}
+The evidence base is now strong enough to defend the upstream housing-supply channel and to motivate a fertility mechanism with direct empirical support. The next upgrade should be adding a few reduced-form fertility designs so the empirical section is balanced between structural and design-based causal evidence.
+
+\end{document}

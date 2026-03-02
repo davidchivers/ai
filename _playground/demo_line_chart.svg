@@ -1,0 +1,10 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#0f172a"/>
+  <text x="40" y="40" fill="#e2e8f0" font-size="22" font-family="Segoe UI, Arial">Output and Inflation (Demo)</text>
+  <line x1="80" y1="340" x2="840" y2="340" stroke="#64748b" stroke-width="2"/>
+  <line x1="80" y1="80" x2="80" y2="340" stroke="#64748b" stroke-width="2"/>
+  <polyline fill="none" stroke="#38bdf8" stroke-width="4" points="100,280 180,250 260,265 340,220 420,200 500,210 580,180 660,170 740,150 820,140"/>
+  <polyline fill="none" stroke="#f59e0b" stroke-width="4" points="100,310 180,300 260,290 340,275 420,260 500,255 580,240 660,225 740,210 820,195"/>
+  <text x="680" y="90" fill="#38bdf8" font-size="16" font-family="Segoe UI, Arial">Output</text>
+  <text x="680" y="115" fill="#f59e0b" font-size="16" font-family="Segoe UI, Arial">Inflation</text>
+</svg>

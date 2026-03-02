@@ -1,0 +1,31 @@
+{
+  "folders": [
+    {
+      "path": "../../research_projects/01_Necessity_Entrepreneurs"
+    }
+  ],
+  "settings": {
+    "workbench.colorCustomizations": {
+      "activityBar.activeBackground": "#c74470",
+      "activityBar.background": "#c74470",
+      "activityBar.foreground": "#e7e7e7",
+      "activityBar.inactiveForeground": "#e7e7e799",
+      "activityBarBadge.background": "#69c43b",
+      "activityBarBadge.foreground": "#15202b",
+      "commandCenter.border": "#e7e7e799",
+      "sash.hoverBorder": "#c74470",
+      "statusBar.background": "#a63259",
+      "statusBar.foreground": "#e7e7e7",
+      "statusBarItem.hoverBackground": "#c74470",
+      "statusBarItem.remoteBackground": "#a63259",
+      "statusBarItem.remoteForeground": "#e7e7e7",
+      "titleBar.activeBackground": "#a63259",
+      "titleBar.activeForeground": "#e7e7e7",
+      "titleBar.inactiveBackground": "#a6325999",
+      "titleBar.inactiveForeground": "#e7e7e799"
+    },
+    "peacock.color": "#a63259",
+    "window.title": "Project 01 - Necessity Entrepreneurs"
+  }
+}
+

@@ -1,0 +1,167 @@
+﻿\documentclass[english,aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{babel}
+
+\mode<presentation>{
+  \usetheme{boxes}
+  \setbeamercovered{transparent}
+}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{navigation symbols}{}
+\setbeamersize{text margin left=5mm, text margin right=5mm}
+
+\title{NecessityEntrepreneurs: Paper Math Referee Findings}
+\author{Draft slides for coauthor discussion}
+\institute{Source of truth: Chivers et al. (2025) Necessity Entrepreneurship.lyx}
+\date{February 18, 2026}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Objective and Scope}
+\begin{itemize}
+\item Goal: identify remaining \textbf{paper-math} issues in the current .lyx draft.
+\item Scope: equations/definitions only (not code implementation details).
+\item Baseline checked: main text and appendix consistency.
+\item Output: numbered issues with exact equation labels and line locations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Good News: Major Old Errors Look Fixed}
+\begin{itemize}
+\item Firm FOC no longer has stray $-rk$ term.
+\item Main closed forms now coherent:
+\begin{itemize}
+\item labor demand at \texttt{FOC} (lyx:1147)
+\item profit at \texttt{profitj} (lyx:1175)
+\end{itemize}
+\item Unified budget sign now uses $(1+r-\delta)a$ in \texttt{eq:c\_worker-1} (lyx:1469).
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issue 1 (High): Main vs Appendix Technology Mismatch}
+\begin{itemize}
+\item Main text uses production proportional to $xk^{\alpha}(zn)^{\gamma}$:
+\begin{itemize}
+\item \texttt{maxP} (lyx:1078), \texttt{profitj} (lyx:1175)
+\end{itemize}
+\item Appendix uses $x^{1-\alpha-\gamma}k^{\alpha}(zn)^{\gamma}$:
+\begin{itemize}
+\item \texttt{eq:xstar\_u}, \texttt{eq:xstar\_n} (lyx:8866--8867)
+\item \texttt{eq:profit\_emtrepreneur} (lyx:9111)
+\end{itemize}
+\item This can shift talent returns, cutoffs, and entrepreneurship shares.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issue 2 (High): Entrepreneur Continuation State Inconsistency}
+\begin{itemize}
+\item State labels define entrepreneur as a distinct state:
+\begin{itemize}
+\item main text (lyx:1373--1382), appendix (lyx:8786--8795)
+\end{itemize}
+\item But Bellman terms send entrepreneur choice to $i'_w=0$:
+\begin{itemize}
+\item main Bellman (lyx:1454--1457)
+\item appendix Bellman \texttt{eq:V\_overall} block (lyx:8907--8919)
+\end{itemize}
+\item Need one clear transition convention for entrepreneurship status.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issue 3 (Medium): Formal Typo in Appendix Bellman}
+\begin{itemize}
+\item In \texttt{eq:V\_iw0\_xh}, continuation state is written as $i'_w=w$.
+\item Location: lyx:9094.
+\item This is almost surely a typo, but should be fixed for formal validity.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issue 4 (High): Cutoff in Flow Terms vs Dynamic Values}
+\begin{itemize}
+\item Appendix cutoff equations set $\tilde{w}=\pi(x^*)$:
+\begin{itemize}
+\item \texttt{eq:xstar\_u}, \texttt{eq:xstar\_n} (lyx:8866--8867)
+\end{itemize}
+\item Dynamic decision is defined by Bellman value comparison:
+\begin{itemize}
+\item \texttt{eq:V\_overall} block (lyx:8907--8922)
+\end{itemize}
+\item Need either:
+\begin{itemize}
+\item value-equality cutoffs, or
+\item explicit assumptions that justify flow-equality shortcut.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Issue 5-6 (Medium): Notation Consistency Gaps}
+\begin{itemize}
+\item Tax symbol inconsistency:
+\begin{itemize}
+\item uses $\tau_y$ in worker budgets (lyx:1259, 1299)
+\item uses $\tau$ in expected worker income (lyx:1496--1500, 8885--8886)
+\end{itemize}
+\item Bellman continuation notation drops state components:
+\begin{itemize}
+\item LHS: $V(a,h,z,x,i_w)$
+\item continuation written as $V(a',x',i'_w)$ at lyx:1454--1457
+\end{itemize}
+\item Likely fixable as notation cleanup, but important for replication clarity.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Could These Issues Change Results?}
+\begin{itemize}
+\item \textbf{Most likely to matter quantitatively:}
+\begin{itemize}
+\item Issue 1 (technology mismatch)
+\item Issue 2 (state transition inconsistency)
+\item Issue 4 (flow vs value cutoff logic)
+\end{itemize}
+\item \textbf{Mostly clarity/formal correctness:}
+\begin{itemize}
+\item Issue 3 (typo $i'_w=w$)
+\item Issue 5-6 (notation consistency)
+\end{itemize}
+\item If implementation follows corrected logic, some may be documentation-only.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Numbered Edit Plan in the Paper}
+\begin{enumerate}
+\item Unify production/profit form across main text and appendix.
+\item Fix entrepreneur continuation state mapping in both Bellman blocks.
+\item Correct \texttt{eq:V\_iw0\_xh} typo ($i'_w=w$).
+\item Rewrite cutoff derivation in value-function terms (or state assumptions).
+\item Standardize tax symbol usage ($\tau$ vs $\tau_y$).
+\item Harmonize continuation notation to keep full state accounting explicit.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}
+\frametitle{Deliverables in Referee Folder}
+\begin{itemize}
+\item \texttt{PaperMathReferee\_2026-02-18/PAPER\_MATH\_REFEREE\_REPORT.tex}
+\item \texttt{PaperMathReferee\_2026-02-18/PAPER\_MATH\_REFEREE\_REPORT.pdf}
+\item \texttt{CodeAudit\_2026-02-18/CODE\_REFEREE\_REPORT.md}
+\item \texttt{CodeAudit\_2026-02-18/PAPER\_CODE\_CROSSWALK.csv}
+\item \texttt{CodeAudit\_2026-02-18/FIX\_CHECKLIST.md}
+\end{itemize}
+\vspace{2mm}
+\textbf{Next step:} resolve Issues 1/2/4 first, then rerun baseline tables.
+\end{frame}
+
+\end{document}

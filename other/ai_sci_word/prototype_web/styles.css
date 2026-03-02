@@ -1,0 +1,161 @@
+:root {
+  --bg: #f2f1ed;
+  --paper: #fffefc;
+  --text: #1f1f1f;
+  --muted: #666666;
+  --math-color: #1f4d88;
+  --paper-border: #e2dfd8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: "KaTeX_Main", "Latin Modern Roman", "Computer Modern Serif", "Times New Roman", serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% -10%, #ffffff 0%, transparent 38%),
+    radial-gradient(circle at 85% 110%, #efece4 0%, transparent 32%),
+    var(--bg);
+}
+
+.writer-shell {
+  min-height: 100vh;
+  padding: 26px 18px;
+}
+
+.paper-shell {
+  width: min(860px, 100%);
+  margin: 0 auto;
+  background: var(--paper);
+  border: 1px solid var(--paper-border);
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(28, 25, 21, 0.08);
+  padding: 44px 50px;
+}
+
+.editor {
+  min-height: 78vh;
+  outline: none;
+  line-height: 1.68;
+  font-size: 20px;
+  font-family: inherit;
+  counter-reset: eqnum_editor;
+}
+
+.editor h1 {
+  margin-top: 0.2em;
+  margin-bottom: 0.65em;
+  font-size: 2em;
+}
+
+.editor p {
+  margin: 0 0 0.95em 0;
+}
+
+math-field.ai-math {
+  --hue: 213;
+  --primary: var(--math-color);
+  --caret-color: var(--math-color);
+  --selection-background-color: #d9e6ff;
+  --contains-highlight-background-color: transparent;
+  --smart-fence-color: #a2b7d8;
+  --padding: 0;
+  --border: 0;
+  --background-color: transparent;
+
+  color: var(--math-color);
+  background: transparent;
+  border: none;
+  border-bottom: 0.5px solid transparent;
+  border-radius: 2px;
+  font-family: "KaTeX_Math", "KaTeX_Main", "Latin Modern Math", "Cambria Math", serif;
+  font-size: 1em;
+  line-height: 1;
+  padding: 0;
+  margin: 0 0.05em;
+  min-width: 1.2ch;
+  display: inline-block;
+  vertical-align: -0.12em;
+}
+
+math-field.ai-math:focus,
+math-field.ai-math:focus-visible,
+math-field.ai-math:focus-within {
+  border-bottom-color: #1f4d8866;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+math-field.ai-math.display {
+  display: block;
+  text-align: center;
+  width: 100%;
+  margin: 14px 0;
+  position: relative;
+  padding-right: 3em;
+  counter-increment: eqnum_editor;
+}
+
+math-field.ai-math.display::after {
+  content: "(" counter(eqnum_editor) ")";
+  position: absolute;
+  right: 0.35em;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #1f4d88aa;
+  font-size: 0.9em;
+  pointer-events: none;
+}
+
+math-field.ai-math::part(virtual-keyboard-toggle),
+math-field.ai-math::part(menu-toggle),
+math-field.ai-math::part(prompt) {
+  display: none !important;
+}
+
+math-field.ai-math::part(container),
+math-field.ai-math::part(content) {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+.status-pill {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  background: #ffffffef;
+  border: 1px solid #d7d4cd;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 13px;
+  color: var(--muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+  box-shadow: 0 4px 14px rgba(20, 20, 20, 0.08);
+}
+
+.status-pill.visible {
+  opacity: 1;
+}
+
+@media (max-width: 900px) {
+  .paper-shell {
+    padding: 30px 22px;
+    border-radius: 12px;
+  }
+
+  .editor {
+    min-height: 74vh;
+    font-size: 18px;
+  }
+}

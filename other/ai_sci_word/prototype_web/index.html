@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Sci Word - LyX Lite</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="writer-shell">
+    <section class="paper-shell">
+      <div id="editor" class="editor" contenteditable="true" spellcheck="true">
+        <h1>Your paper title</h1>
+        <p>Write normally. Press <strong>Ctrl+M</strong> to enter or exit inline math. Press <strong>Ctrl+D</strong> for a display equation.</p>
+        <p>In math mode use <strong>Ctrl+Up</strong>/<strong>Ctrl+Down</strong> for super/subscript and <strong>Ctrl+G</strong> then a letter for Greek.</p>
+      </div>
+    </section>
+  </main>
+
+  <div id="statusText" class="status-pill" aria-live="polite"></div>
+
+  <script type="module" src="https://unpkg.com/mathlive?module"></script>
+  <script defer src="./app.js"></script>
+</body>
+</html>

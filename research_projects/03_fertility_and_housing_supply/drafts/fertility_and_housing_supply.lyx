@@ -1,0 +1,1361 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+%
+\usepackage{amsfonts}\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\newtheorem{lem}{Lemma}
+\interfootnotelinepenalty=10000
+\setcounter{MaxMatrixCols}{30}
+\providecommand{\U}[1]{\protect\rule{.1in}{.1in}}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{assumption}{Assumption}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\usepackage{lscape}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children no
+\language english
+\language_package default
+\inputencoding auto-legacy
+\fontencoding auto
+\font_roman "" "default"
+\font_sans "" "default"
+\font_typewriter "" "default"
+\font_math "" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement H
+\float_alignment class
+\paperfontsize 11
+\spacing onehalf
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 0
+\use_package mhchem 1
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1.1in
+\topmargin 1.1in
+\rightmargin 1.1in
+\bottommargin 1.1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Fertility, Immigration, and the Housing Supply
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We thank Stephane Bonhomme,
+ Fatih Guve
+\color black
+nen,
+ Serdar Ozkan and Roman Sustek for help for their comments as well as with data and calibration issues.
+ We also thank participants in seminars at Durham University,
+ Monash University,
+ University of Sydney,
+ CEMAP,
+ WAMS,
+ OzMac,
+ SCE a
+\color inherit
+nd SEHO.
+ All errors remaining are our own.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Author
+Isaac Gross
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+isaac.gross@monash.edu
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+Monash University
+\size default
+ 
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+and
+\end_layout
+
+\end_inset
+
+ David Chivers
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+david.chivers@durham.ac.uk
+\series bold
+ 
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\size small
+Durham University
+\size default
+ 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+\begin_inset space \space{}
+\end_inset
+
+We develop a political economy model of the housing market in which the supply of new homes is shaped by a democratic vote among households and in which fertility is endogenous to housing conditions.
+ Households derive utility from consumption,
+ housing services and children,
+ but children crowd the housing stock:
+ effective housing services fall as the number of children at home rises.
+ Voter support for additional housing is determined by the effect of a change in house prices on households' expected discounted utility.
+ Households that own housing generally oppose new supply -- the 'Not In My Backyard' (NIMBY) effect -- while younger,
+ lower-income and renting households support it.
+ We show that a temporary baby boom tightens future housing politics as boom cohorts age into homeownership,
+ raising house prices and depressing fertility for subsequent generations through the crowding channel.
+ The model therefore generates a demographic feedback loop:
+ a past fertility boom worsens housing affordability,
+ which in turn reduces future fertility.
+\end_layout
+
+\begin_layout Abstract
+\begin_inset space \space{}
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+
+\series bold
+JEL Classification
+\series default
+:
+ E24,
+ J10,
+ J13,
+ R31.
+
+\end_layout
+
+\begin_layout Abstract
+
+\series bold
+Keywords
+\series default
+:
+ Housing supply,
+ fertility,
+ political economy,
+ NIMBYism
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The Model
+\end_layout
+
+\begin_layout Standard
+In this section we outline a life-cycle model with housing and debt choices.
+ The model features heterogeneous,
+ life-cycle households that optimize their consumption of non-durable consumption,
+ housing and saving in liquid assets.
+ A number of factors influence households preferences on house prices and thus their political support for additional housing supply.
+ These include household income and wealth as well as portfolio allocation and age over the life cycle.
+ We use the model to study the housing market response to an exogenous change in demographics.
+ Following the shock,
+ the behavior of owner-occupiers and renters determines equilibrium house prices.
+\end_layout
+
+\begin_layout Standard
+A consumer of age 
+\begin_inset Formula $j$
+\end_inset
+
+ enters the economy at age 25 and lives for further 
+\begin_inset Formula $J$
+\end_inset
+
+ periods and maximizes lifetime expected utility which consists of consumption 
+\begin_inset Formula $c_{t}$
+\end_inset
+
+,
+ housing services,
+ 
+\begin_inset Formula $h_{t}$
+\end_inset
+
+ and a bequest 
+\begin_inset Formula $v\left(w_{J+1}\right)$
+\end_inset
+
+.
+ Housing services depends on whether they own or rent the property.
+ Individuals also have access to a liquid asset that pays an interest 
+\begin_inset Formula $r_{t+1}$
+\end_inset
+
+.
+ The household's lifetime utility function is given by
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sum_{j=0}^{J}\beta^{j}u(c_{j},h_{j})+\beta^{J+1}v\left(w_{J+1}\right)
+\end{equation}
+
+\end_inset
+
+where households optimize over consumption,
+ 
+\begin_inset Formula $c_{t}$
+\end_inset
+
+,
+ liquid assets,
+ 
+\begin_inset Formula $a_{t}$
+\end_inset
+
+,
+ and housing,
+ 
+\begin_inset Formula $h_{t}$
+\end_inset
+
+ at each age 
+\begin_inset Formula $j$
+\end_inset
+
+.
+ The flow utility is increasing and strictly concave in 
+\begin_inset Formula $c$
+\end_inset
+
+ and 
+\begin_inset Formula $h$
+\end_inset
+
+.
+ Household receive utility from wealth they bequest 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\xout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $w_{J+1}$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\xout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+.
+ We assume the functional form 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+u(c_{t},h_{t})=\frac{\left(c_{t}^{1-\zeta}h_{t}^{\zeta}\right)^{1-\gamma}}{1-\gamma}
+\end{equation}
+
+\end_inset
+
+where the consumption of housing stock consists of either the amount of housing owned or rented
+\end_layout
+\begin_layout Standard
+\color blue
+Relative to Gross and Chivers (2025), we augment the household block with an endogenous fertility margin.
+ The fertility-extension flow utility used in the model note is
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+\begin_inset Formula 
+\begin{equation}
+u_{t}=\frac{\left(c_{t}^{1-\zeta}h_{t,eff}^{\zeta}\right)^{1-\gamma}}{1-\gamma}
++\chi\frac{n_{t,home}^{1-\eta}}{1-\eta}
+\end{equation}
+
+\end_inset
+
+with effective housing services
+\begin_inset Formula 
+\begin{equation}
+h_{t,eff}=\frac{h_{t}}{\left(1+\lambda n_{t,home}\right)^{\psi_{c}}}.
+\end{equation}
+
+\end_inset
+
+Hence, additional children reduce effective space through crowding (governed by sensitivity
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and exponent
+\begin_inset Formula $\psi_{c}$
+\end_inset
+
+), and this feeds back into housing demand and fertility timing.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+Children-at-home is a state variable generated by cohort dynamics:
+\begin_inset Formula 
+\begin{equation}
+N_{0,t+1}=b_{t},\qquad N_{a+1,t+1}=N_{a,t},\qquad n_{t,home}=\sum_{a=0}^{A_{leave}-1}N_{a,t}.
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $b_{t}$
+\end_inset
+
+ are births and 
+\begin_inset Formula $A_{leave}$
+\end_inset
+
+ is the leave-home age.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+In the current prototype code, fertility choice is implemented with the reduced-form shortcut
+\begin_inset Formula 
+\begin{equation}
+f_{t}^{*}=\operatorname{clip}\left(f_{\text{level}}\exp\left(-\eta_{p}p_{t}^{h}\right),0.05,0.85\right),\qquad b_{t}=f_{t}^{*}M_{t}^{15-44}\mu_{t},
+\end{equation}
+
+\end_inset
+
+which is intended as a computational approximation to the full crowding-based utility mechanism above.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+where
+\begin_inset Formula $M_{t}^{15-44}$
+\end_inset
+
+ is the female population age 15-44 and
+\begin_inset Formula $\mu_{t}$
+\end_inset
+
+ is the temporary baby-boom multiplier.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+h_{t}=\begin{cases}
+\theta^{rent}h_{t}^{rent} & \mbox{if }h_{t}^{own}=0\\
+h_{t}^{own} & \mbox{if }h_{t}^{own}>0.
+\end{cases}
+\end{equation}
+
+\end_inset
+
+The curvature parameter 
+\begin_inset Formula $\gamma$
+\end_inset
+
+ determines households' risk aversion and inter-temporal elasticity of substitution and 
+\begin_inset Formula $\zeta$
+\end_inset
+
+ denotes housing's share of total consumption.
+ Rental housing provides a stream of utility that is discounted by 
+\begin_inset Formula $\theta^{rent}$
+\end_inset
+
+ compared to self-owned housing.
+ Finally there is a warm glow bequest function when households die that provides utility
+\begin_inset Formula 
+\begin{equation}
+v(w)=\psi\frac{\left(w+\overline{w}\right)^{1-\gamma}}{1-\gamma}
+\end{equation}
+
+\end_inset
+
+which generates a bequest function with decreasing marginal utility with respect to wealth,
+ 
+\begin_inset Formula $w$
+\end_inset
+
+,
+ governed by the parameters 
+\begin_inset Formula $\overline{w}$
+\end_inset
+
+ and 
+\begin_inset Formula $\psi$
+\end_inset
+
+.
+ Households supply one unit of labor inelastically and are paid a wage 
+\begin_inset Formula $y_{t,j}$
+\end_inset
+
+.
+ The wage they receive varies according to their productivity which is driven by the exogenous process
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+\text{ln}y_{t,j} & = & g_{j}+z_{t}\text{ for }j\leq J^{retired}
+\end{eqnarray}
+
+\end_inset
+
+where 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ is a Markov process calibrated to yield realistic inequality (as per Kindermann and Krueger (2022)) and 
+\begin_inset Formula $g_{j}$
+\end_inset
+
+ is a deterministic age profile.
+ The stochastic process comprises of an AR(1) process for lowest income states,
+ with two additional top-income states which incorporate 
+\begin_inset Quotes eld
+\end_inset
+
+superstar
+\begin_inset Quotes erd
+\end_inset
+
+ incomes.
+ Once workers reach retirement age 
+\begin_inset Formula $J^{retired}$
+\end_inset
+
+ income falls to a fixed level based on their wage upon retirement.
+ The income process is normalized to have a mean of 1,
+ such that the price of housing 
+\begin_inset Formula $p_{t}^{h}$
+\end_inset
+
+ reflects the house price to income ratio.
+\end_layout
+
+\begin_layout Standard
+Households may save or borrow liquid assets subject to a borrowing constraint where each household can borrow against a proportion,
+ 
+\begin_inset Formula $m$
+\end_inset
+
+,
+ of the total value of the stock of housing they own
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+a_{t}\geq-mh_{t}^{own}p_{t}^{h}.
+\end{equation}
+
+\end_inset
+
+Households may buy or sell housing at price,
+ 
+\begin_inset Formula $p_{t}^{h},$
+\end_inset
+
+ subject to a minimum block size 
+\begin_inset Formula $\bar{h}$
+\end_inset
+
+.
+ All property sales,
+ including those that are sold as part of a bequest are subject to a transaction cost 
+\begin_inset Formula $F_{sell}$
+\end_inset
+
+ proportional to the total value of property sold,
+ which is reflected by the indicator function 
+\begin_inset Formula $I_{sell}$
+\end_inset
+
+.
+ If they do not own any housing they must rent it from real estate firms at price 
+\begin_inset Formula $p_{t}^{rent}$
+\end_inset
+
+.
+ The household's utility function is thus maximized subject to the general budget constraint
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Noting that households only interact with the rental market if they own no housing stock of their own.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+a_{t+1}=\left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}-p_{t}^{rent}h_{t}^{rent}-\left(1-I^{sell}F^{sell}\right)p_{t}^{h}\varDelta h_{t}^{own}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $I^{sell}$
+\end_inset
+
+ is an indicator variable for households that choose to sell part or all of their current stock of housing.
+ 
+\end_layout
+
+\begin_layout Standard
+We assume the households start with some initial wealth with the mean of the distribution of initial liquid wealth,
+ 
+\begin_inset Formula $a_{25}$
+\end_inset
+
+,
+ defined by the average bequest of the household's at the end of their life.
+ 
+\end_layout
+
+\begin_layout Subsection
+Household's Problem
+\end_layout
+
+\begin_layout Standard
+Each household's state vector is 
+\begin_inset Formula $\mathbf{s}_{t}=\left\{ a_{t},h_{t-1}^{own},z_{t}\right\} $
+\end_inset
+
+,
+ where 
+\begin_inset Formula $a_{t}$
+\end_inset
+
+ is the stock of liquid assets,
+ 
+\begin_inset Formula $h_{t-1}^{own}$
+\end_inset
+
+ is the amount of housing they owned at the end of period 
+\begin_inset Formula $t-1$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{t}$
+\end_inset
+
+ is the persistent component of their income.
+\end_layout
+
+\begin_layout Standard
+\color blue
+In the fertility extension, the state vector is augmented to
+\begin_inset Formula $\mathbf{s}_{t}=\left\{ a_{t},h_{t-1}^{own},z_{t},n_{t,home}\right\} $
+\end_inset
+
+, where
+\begin_inset Formula $n_{t,home}$
+\end_inset
+
+ is the number of children at home.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+ The price of housing,
+ 
+\begin_inset Formula $p_{t}$
+\end_inset
+
+,
+ is an aggregate state variable.
+ The value function for the household is given by the maximum of the three possible housing tenure options:
+ rent (either because they owned no housing or sell it all that period),
+ or are owners who choose to adjust their stock of housing or maintain their current level of housing.
+ Households who choose to rent (and thus sell whatever stock of housing they owned at the beginning of the period) are able to freely adjust the amount of housing they rent each period.
+ The value function for a household that choose to rent housing (and thus sell any previously owned housing stock) at age age 
+\begin_inset Formula $j$
+\end_inset
+
+ is 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{rent}\left(\mathbf{s}_{t};p_{t}\right) & = & \underset{c_{t},a_{t+1},h_{t}^{rent}}{\mbox{max}}u\left(c_{t},h_{t}^{rent}\right)+\beta E_{t}V_{j+1}\left(\mathbf{s}_{t+1};p_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}-p_{t}^{rent}h_{t}^{rent}+\left(1-F^{sell}\right)p_{t}^{h}h_{t-1}^{own}\nonumber \\
+a_{t+1} & \geq & 0\nonumber \\
+h_{t}^{own} & = & 0\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+The value function for home owners who choose not to adjust their (non-zero) stock of housing in period 
+\begin_inset Formula $t$
+\end_inset
+
+ is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{non-adjust}\left(\mathbf{s}_{t};p_{t}\right) & = & \underset{c_{t},a_{t+1}}{\mbox{max}}u\left(c_{t},h_{t}^{own}\right)+\beta E_{t}V_{j+1}\left(\mathbf{s}_{t+1};p_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}\nonumber \\
+a_{t+1} & \geq & -mp_{t}^{h}h_{t}^{own}\nonumber \\
+h_{t}^{own} & = & h_{t-1}^{own}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+finally,
+ the value function for households who choose to buy or sell housing in period 
+\begin_inset Formula $t$
+\end_inset
+
+ is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+V_{j}^{adjust}\left(\mathbf{s}_{t};p_{t}\right) & = & \underset{c_{t},a_{t+1},h_{t}^{own}}{\mbox{max}}u\left(c_{t},h_{t}^{own}\right)+\beta EV_{j+1}\left(\mathbf{s}_{t+1};p_{t+1}\right)\\
+s.t\nonumber \\
+a_{t+1} & = & \left(1+r_{t}^{a}\right)a_{t}+y_{t}-c_{t}-\left(1-I^{sell}F^{sell}\right)p_{t}^{h}\varDelta h_{t}^{own}\nonumber \\
+a_{t+1} & \geq & -mp_{t}^{h}h_{t}^{own}\nonumber \\
+h_{t}^{own} & = & h_{t-1}^{own}+\varDelta h_{t}^{own}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+The final value function is the maximum of each of the three choices over housing tenure
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{j}\left(\mathbf{s}_{t};p_{t}\right)=\underset{}{\mbox{max}\left\{ V_{j}^{rent}\text{\left(\mathbf{s}_{t};p_{t}\right)},V_{j}^{adjust}\left(\mathbf{s}_{t};p_{t}\right),V_{j}^{non-adjust}\left(\mathbf{s}_{t};p_{t}\right)\right\} }
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The expected value function for the final year of life is the same for all types of housing tenure and is given by the warm glow bequest function given by equation 8 where total wealth is the sum of liquid and illiquid wealth given the current housing price.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+w=a+\left(1-F^{sell}\right)p_{t}^{h}h^{own}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Real Estate Firms
+\end_layout
+
+\begin_layout Standard
+Real estate firms borrow from households by issuing debt in the form of the liquid asset to fund the purchase of housing,
+ which is rented out to households that do not own their own home.
+ Real estate firms operate in a perfectly competitive market,
+ and thus the rental price is pinned down by the cost of borrowing,
+ a fixed cost of providing rental services,
+ the price of purchasing house stock and any expected capital appreciation driven by the drift in the price of housing.
+ We assume that real estate firms are able to borrow against the full value of their housing stock.
+ The zero profit condition pins down the price of rental stock as the function of the cost of housing,
+ capital gains from housing and the interest rate
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+p_{t}^{rent}=\phi^{rent}+\left(r_{t}^{a}\right)p_{t}^{h}-\Delta p_{t+1}^{h},
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\phi^{rent}$
+\end_inset
+
+ is the per unit cost of providing rental services.
+\end_layout
+
+\begin_layout Subsection
+Housing Supply
+\end_layout
+
+\begin_layout Standard
+The aggregate economy consists of unit measure of neighborhoods across which all types of households are equally distributed.
+ The neighborhood's housing supply in period 
+\begin_inset Formula $t+1$
+\end_inset
+
+ is determined in each neighborhood by a simple majoritarian voting mechanism in which households vote over the amount of permitted housing in an area.
+ Only households who currently reside in that neighborhood can vote to determine the next periods level of new housing.
+ Once the quantity of housing permits has been determined by the households' collective vote within the neighbourhood,
+ the supply of housing is costlessly produced by a perfectly competitive construction sector in 
+\begin_inset Formula $t+1$
+\end_inset
+
+.
+ This is similar to Kaplan et al.
+ (2020),
+ who model a perfectly competitive construction sector in which all rents from land permits accrue to the government.
+ 
+\end_layout
+
+\begin_layout Standard
+An increase in the housing supply will reduce the price of housing in the locality and households vote understanding that an increase in housing permits will lead to a small persistent decrease in the cost of housing.
+ An increase in the housing supply will also affect the price of rental properties by lowering the input price for the real estate firms.
+ As a result,
+ each household in a neighborhood will vote to increase (or decrease) the availability of housing permits in their locality based on how a small,
+ but permanent,
+ change in house prices will affect their expected welfare.
+ Specifically,
+ households will vote to decrease the supply of housing if a small change in house prices,
+ 
+\begin_inset Formula $\epsilon^{p}$
+\end_inset
+
+ ,
+ increases their expected lifetime utility such that
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+V_{j}\left(\mathbf{s};p^{h}+\epsilon^{p}\right)-V_{j}\left(\mathbf{s};p^{h}\right)+\sigma\geq0
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ represents a non-financial preference over the supply of housing.
+ A negative or positive 
+\begin_inset Formula $\sigma$
+\end_inset
+
+ indicates a non-financial preference for lower or higher housing supply,
+ respectively.
+ For example,
+ households may view new housing negatively as a result of congestion effects on infrastructure,
+ or positively because of the new amenities that greater density could bring.
+ Households may also hold ideological views about housing supply,
+ which this parameter would capture as well.
+\end_layout
+
+\begin_layout Standard
+In principle these preferences could vary by household,
+ either due to changes in age,
+ productivity,
+ or as a result of an idiosyncratic shock.
+ However,
+ allowing for such heterogeneity would require introducing a larger set of novel parameters that would then need to be calibrated.
+ To limit our degrees of freedom,
+ we therefore calibrate these preferences as a simple,
+ fixed constant across all households regardless of age,
+ income or wealth.
+ As a result,
+ this parameter is effectively the average non-financial preference for all households.
+ We test this assumption in the robustness section and find that the main results of the model do not substantively change with alternative assumptions.
+\end_layout
+
+\begin_layout Standard
+The impact of a small perturbation to the price of housing will vary depending on household's ownership of liquid assets,
+ housing and their current level of productivity.
+ If a small increase in the price of housing increases their expected lifetime utility,
+ then the left hand side of equation 18 will be positive and thus they will vote for lower supply of housing permits.
+\end_layout
+
+\begin_layout Subsection
+The Median Voter Theorem
+\end_layout
+
+\begin_layout Standard
+Applying the median voter theorem,
+ equilibrium in the housing market will occur when the median voter is indifferent to a change in the price of housing.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+While these preferences are in general well defined,
+ it is important to note that preferences over house prices are not monotonic.
+ For example,
+ a household with a moderate amount of housing might prefer a small increase in house prices as this will increase their expected bequest,
+ but would be better off if house prices fall substantially as they would be able to consume more housing.
+\end_layout
+
+\end_inset
+
+ The equilibrium house price 
+\begin_inset Formula $p_{t}$
+\end_inset
+
+ is determined by the median voter equation
+\begin_inset Formula 
+\begin{equation}
+\int g\left(\mathbf{s};p_{t}^{h}\right)\Theta\left(\mathbf{s};p^{h}\right)ds=0.5
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+and 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Theta\left(\mathbf{s};p^{h}\right)=\mathbf{1}_{\left\{ V_{j}\left(\mathbf{s};p^{h}+\epsilon^{p}\right)-V_{j}\left(\mathbf{s};p^{h}\right)+\sigma\geq0\right\} }
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+in which 
+\begin_inset Formula $g\left(\mathbf{s};p_{t}^{h}\right)$
+\end_inset
+
+ is the distribution of households over their state variables,
+ and 
+\begin_inset Formula $\Theta\left(\mathbf{s};p^{h}\right)$
+\end_inset
+
+ is an indicator variable which defines whether a vote prefers higher house prices is equal to 0.5.
+\end_layout
+
+\begin_layout Standard
+The change in expected lifetime utility from a small,
+ persistent change in the price of housing is determined by the households current portfolio of assets and expected life-time income.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "Figure 4"
+plural "false"
+caps "false"
+noprefix "false"
+nolink "false"
+
+\end_inset
+
+ shows how different household characteristics correlate with the decision to vote for lower supply and thus higher house prices.
+ Households who currently rent or expect to have a high likelihood of purchasing new housing in the near term will vote for housing supply to increase thus decreasing the price of housing and relaxing their budget constraint.
+ These households tend to be younger,
+ have low incomes and low wealth.
+ Looking at the distribution of voters according to the expected probability that a given household will make a purchase of housing at some point in their life,
+ we can see that households that do not have a high expected probability of purchasing housing over the rest of their life-time will generally prefer a higher price of housing in order to increase the size of their bequest and the resale value of their stock of housing.
+ By contrast the coalition of support for lower house prices consists of two distinct groups of households:
+ households that anticipate buying additional housing (particularly in the near term) and thus want to loosen their budget constraint.
+ as well as households that are currently renters because an increase in the supply of housing also lowers the price of rental units.
+\end_layout
+
+\begin_layout Standard
+The equilibrium price of housing will thus vary according to the relative size of these groups of households.
+ An exogenous increase in young households,
+ who disproportionately rent and thus prefer lower house prices,
+ will lead to an increase in the supply of housing.
+ The price of housing will thus fall until a sufficient number of renters become homeowners,
+ and accordingly switch their political support towards higher house prices,
+ thus making the median household indifferent to a change in house prices.
+\end_layout
+
+\begin_layout Standard
+In order to abstract from strategic voting across dynasties,
+ we assume different children and parents live in different neighborhoods and thus do not effect the other's house market dynamics.
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+According to Fu (2019) 61.5% adults live more than 10 miles away from their mother.
+\end_layout
+
+\end_inset
+
+ Consequently even if an individual may benefit from a larger inheritance if the price of their parents home increases,
+ it will not affect their vote on the optimal level of housing supply in their local neighborhood.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This assumption also makes our model robust to other forms of altruistic giving.
+ For example,
+ in addition to receiving a warm glow from giving to their descendants at death,
+ households may care about their descendant's welfare directly and thus may wish to sell housing in order to give their children funds to purchase housing earlier.
+ As families live in different neighbourhoods,
+ however,
+ this would still not change their voting behaviour.
+ This is because parents with housing would still wish to restrict housing supply in their neighbourhood in order to receive the highest return on their house so they can maximise their child's welfare.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We assume that households are unable to forecast future changes in political support for additional housing supply and instead assume that the house prices follow a random walk.
+ This ensures the dynamics of the model are solvable as it does not require the households to consider the possibility of strategic voting (i.e.
+ voting to lower the house price today to ensure wider support for higher house prices in future periods).
+ We also assume that households are unable to form coalitions when voting,
+ nor bargain political support across time periods and vote solely based on their individual interest at time 
+\begin_inset Formula $t$
+\end_inset
+
+.
+ Once the quantity of housing permits has been determined by the households' collective vote the supply of housing is costlessly supplied by a perfectly competitive construction sector.
+ This is similar to Kaplan et al (2020) who assume a perfectly competitive construction sector in which all rents from land permits accrue to the government.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+This assumption allows us to abstract from any potential employment benefits derived from additional demand for the construction sector.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\emph on
+\begin_inset Float figure
+placement document
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/4.1 VoteByYQ.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/4.2 VoteByhQ.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Figures/4.3 VoteByAge.jpg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename Figures/4.4 DensityVote.jpeg
+	lyxscale 20
+	scale 8
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+\align left
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Household Support for Higher House Prices
+\end_layout
+
+\end_inset
+
+
+\emph on
+
+\begin_inset CommandInset label
+LatexCommand label
+name "Figure 4"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Equilibrium 
+\end_layout
+
+\begin_layout Standard
+For ease of notation we the distribution of households age 
+\begin_inset Formula $\Omega=\{\omega_{25},...\omega_{80}\}$
+\end_inset
+
+ ,
+ where 
+\begin_inset Formula $\omega_{i}$
+\end_inset
+
+ is the share of the population at age 
+\begin_inset Formula $i$
+\end_inset
+
+.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+We drop the 
+\begin_inset Formula $t$
+\end_inset
+
+ subscript for simplicity.
+\end_layout
+
+\end_inset
+
+ The political-economic equilibrium of this model consists of value functions 
+\begin_inset Formula $\left\{ V_{j}^{rent}\left(\mathbf{s};p^{h}\left(\Omega\right)\right),V_{j}^{adjust}\left(\mathbf{s}_{};p^{h}\left(\Omega\right)\right),V_{j}^{non-adjust}\left(\mathbf{s}_{};p^{h}\left(\Omega\right)\right)\right\} $
+\end_inset
+
+,
+ decision rules over the consumption,
+ 
+\begin_inset Formula $c\left(\mathbf{s};p^{h}\left(\Omega\right)\right)$
+\end_inset
+
+,
+ housing demand,
+ 
+\begin_inset Formula $\left\{ h^{rent}\left(\mathbf{s};p^{h}\left(\Omega\right)\right),h\left(\mathbf{s};p^{h}\left(\Omega\right)\right)\right\} $
+\end_inset
+
+,
+ liquid savings 
+\begin_inset Formula $a\left(\mathbf{s};p^{h}\left(\Omega\right)\right)$
+\end_inset
+
+,
+ and votes over housing supply,
+ 
+\begin_inset Formula $\Theta\left(\mathbf{s};p^{h}\left(\Omega\right)\right)$
+\end_inset
+
+,
+ which define the households' optimal allocations as a function of their individual state variables and the aggregate price of housing,
+ and the price of housing and rental units which in turn is a function of the distribution of the households' age 
+\begin_inset Formula $p^{h}\left(\Omega\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $p^{rent}\left(\Omega\right)$
+\end_inset
+
+.
+ After calibrating the age distribution of households across the model we set the formation of new households to keep the demographic structure constant (in the absence of demographic shocks).
+ Finally we assume households expectations of the future path of house prices follow a random walk and thus in expectation will remain at their current level - at least with respect to the demographic changes in the model.
+ The distribution of households,
+ 
+\begin_inset Formula $g\left(\mathbf{s};p^{h}\left(\Omega\right)\right)$
+\end_inset
+
+,
+ is thus defined by the deterministic age and income processes,
+ the stochastic income shocks and their optimal choices in response to these shocks.
+The full numerical computational method is outlined in detail in the Appendix.
+\end_layout
+
+\begin_layout Subsection
+Project-03 differences (highlighted)
+\end_layout
+
+\begin_layout Standard
+\color blue
+Beyond the utility extension, project 03 changes two additional model blocks relative to the baseline NIMBY write-up.
+ First, political tightness includes a lagged baby-boom cohort term.
+ Second, children-at-home feeds directly into housing demand dynamics.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+\begin_inset Formula 
+\begin{equation}
+\theta_{t}=\operatorname{clip}\left(\theta_{0}+\theta_{old}\cdot old_{t}-\theta_{young}\cdot young_{t}+\theta_{boom}\cdot\overline{b}_{t-\ell:t-\ell-w+1},0,0.95\right)
+\end{equation}
+
+\end_inset
+
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+\begin_inset Formula 
+\begin{equation}
+D_{t}=d_{0}+d_{young}\cdot young_{t}+d_{birth}\cdot b_{t}+0.15\cdot n_{t,home}
+\end{equation}
+
+\end_inset
+
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+Coding alignment status (current MATLAB prototype): (i) the reduced-form fertility rule and lagged-boom political term above are coded;
+ (ii) the full crowding-based household optimization problem is not yet solved as a full dynamic-programming household block.
+ So the code is directionally aligned with the mechanism, but not yet a one-to-one implementation of the full structural utility equations.
+\color inherit
+\end_layout
+
+\begin_layout Subsection
+Prototype MATLAB simulation evidence
+\end_layout
+
+\begin_layout Standard
+\color blue
+Temporary baby-boom experiment used in the current code:
+ +60% births for periods 
+\begin_inset Formula $t=15$
+\end_inset
+
+ to 
+\begin_inset Formula $t=24$
+\end_inset
+
+, damping 0.25, post window 
+\begin_inset Formula $t\geq40$
+\end_inset
+
+.
+ Phase-delta results:
+ new model 
+\begin_inset Formula $\Delta f_{post}=-0.001812$
+\end_inset
+
+ and 
+\begin_inset Formula $\Delta p_{post}=+0.038142$
+\end_inset
+
+;
+ old proxy 
+\begin_inset Formula $\Delta f_{post}=-0.000107$
+\end_inset
+
+ and 
+\begin_inset Formula $\Delta p_{post}=-0.085626$
+\end_inset
+
+.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Figures/old_vs_new_paths.png
+	lyxscale 20
+	scale 45
+
+\end_inset
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename Figures/old_vs_new_policy_effects.png
+	lyxscale 20
+	scale 45
+
+\end_inset
+
+\end_layout
+
+\end_body
+\end_document

@@ -9,7 +9,7 @@ At the end of a work session (or start of a new one), update the project's `READ
 - Before handing off to a co-author or RA
 
 ## Inputs required
-- Project folder path (e.g., `projects/01_Necessity_Entrepreneurs/`)
+- Project folder path (e.g., `research_projects/01_necessity_entrepreneurs/`)
 - A brief summary of what was done this session (can be a bullet list)
 - Any new key file paths, decisions, or conventions that emerged
 
@@ -32,3 +32,4 @@ At the end of a work session (or start of a new one), update the project's `READ
 - Do NOT delete existing decisions from `memory.md` — only add or update.
 - Do NOT mark tasks as complete unless they actually are.
 - Session notes in `memory.md` must be dated: `### Session: YYYY-MM-DD`.
+

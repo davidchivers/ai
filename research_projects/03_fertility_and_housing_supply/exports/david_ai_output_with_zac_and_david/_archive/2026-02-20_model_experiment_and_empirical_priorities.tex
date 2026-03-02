@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Fertility Project Experiment Note: Model Setup Trial + Empirical Idea Ranking}
+\author{Project 03: Fertility and Housing Supply}
+\date{February 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This note does two things:
+\begin{enumerate}
+\item Runs a small computational experiment based on the model setup in
+\path{projects/03_fertility_and_housing_supply/notes/model/02_fertility_extension_model_key_equations.tex}.
+\item Ranks empirical causal ideas and expands the top 2 in detail (including a NIMBY-focused design).
+\end{enumerate}
+
+\section{Part I: Model setup trial (code + run)}
+
+\subsection*{What was implemented}
+A version-0 transition simulation was coded in:
+\begin{itemize}
+\item \path{projects/03_fertility_and_housing_supply/code/fertility_extension_experiment.py}
+\end{itemize}
+The prototype keeps the model intentionally stylized but consistent with the note's key feedback loop:
+\[
+\text{prices} \rightarrow \text{fertility} \rightarrow \text{cohort shares} \rightarrow \text{political tightness} \rightarrow \text{prices}.
+\]
+
+Scenarios simulated for 50 periods:
+\begin{itemize}
+\item No damping (aggressive update).
+\item Damping 0.25 (stabilized fixed-point style update).
+\item Damping 0.25 + family-sized supply policy shift from period 15 onward.
+\end{itemize}
+
+Outputs were written to:
+\begin{itemize}
+\item \path{projects/03_fertility_and_housing_supply/notes/build/model_experiment_summary.csv}
+\item \path{projects/03_fertility_and_housing_supply/notes/build/model_experiment_paths.png}
+\end{itemize}
+
+\subsection*{Run command}
+\begin{verbatim}
+python3 projects/03_fertility_and_housing_supply/code/fertility_extension_experiment.py
+\end{verbatim}
+
+\subsection*{Results (from summary csv)}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Scenario & Avg price (t=10..49) & Avg fertility (t=10..49) & Max abs price change \\
+\midrule
+No damping & -5.939 & 0.723 & 2.426 \\
+Damping 0.25 & -2.597 & 0.416 & 1.948 \\
+Damping 0.25 + policy & -2.638 & 0.443 & 1.349 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Interpretation:}
+\begin{itemize}
+\item The undamped update is much less stable (larger jumps and corner-like dynamics).
+\item Damping materially improves numerical behavior.
+\item The family-sized supply shift raises fertility in the damped run (0.416 to 0.443 average fertility rate in this toy environment).
+\end{itemize}
+
+\textbf{What failed and what was changed:}
+Initial runs generated overflow in exponential terms (numerical blow-up), so the code was patched with bounded exponent arguments and price clamps. This is direct evidence that the full model will require strong numerical safeguards (damping, normalization, bounded controls).
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{build/model_experiment_paths.png}
+\caption{Version-0 paths: damping sensitivity and policy experiment}
+\end{figure}
+
+\subsection*{Value of this experiment}
+This is not structural estimation. It is a feasibility stress test that confirms the convergence warning in the model note is operationally relevant, not just theoretical.
+
+\section{Part II: Empirical causal ideas ranked}
+
+\subsection*{Ranking criteria}
+Scores reflect four dimensions: identification credibility, data feasibility, novelty potential, and alignment with your housing-fertility channel.
+
+\begin{center}
+\begin{tabular}{p{0.44\textwidth}c}
+\toprule
+Idea & Rank \\
+\midrule
+State middle-housing legalization (staggered reform) and fertility & 1 \\
+NIMBY political-economy design: close local elections and pro-housing wins & 2 \\
+Family-sized unit-composition shock and fertility (shift-share IV) & 3 \\
+Short-term rental crackdown and fertility & 4 \\
+Single-city zoning mega-reform with legal interruptions & 5 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Top idea 1 (expanded): State middle-housing legalization and fertility}
+\textbf{Question:} Do legalizations of duplex/triplex/fourplex construction increase births among prime childbearing cohorts?
+
+\textbf{Estimand:} Dynamic ATT of reform exposure on age-specific birth rates.
+
+\textbf{Design:} Staggered DiD/event study at county or PUMA level with intensity-by-exposure.
+
+\textbf{Core specification (event study):}
+\[
+BirthRate_{it} = \sum_{k \neq -1}\beta_k \cdot 1\{EventTime_{it}=k\} + \alpha_i + \delta_t + X_{it}'\Gamma + \varepsilon_{it}.
+\]
+Intensity extension:
+\[
+BirthRate_{it} = \beta\,(Post_{it}\times Exposure_i) + \alpha_i + \delta_t + X_{it}'\Gamma + \varepsilon_{it}.
+\]
+
+\textbf{Data (feasible now):}
+\begin{itemize}
+\item CDC WONDER natality (county-level births by mother's age).
+\item Census Building Permits Survey (new units; single vs multifamily).
+\item FHFA/Zillow house-price and rent controls.
+\item Reform timing panel (state/city policy adoption and implementation).
+\end{itemize}
+
+\textbf{Why this is strong:}
+\begin{itemize}
+\item Direct policy shock on the supply margin.
+\item Directly matches your mechanism (housing constraints $\\rightarrow$ family formation/fertility).
+\item Good external validity due to multi-jurisdiction rollout.
+\end{itemize}
+
+\textbf{Main threats and tests:}
+\begin{itemize}
+\item Threat: pre-trends in treated areas.
+\item Test: pre-period event coefficients and placebo reform dates.
+\item Threat: migration composition shifts.
+\item Test: control for migration proxies; run residence-duration restricted samples if possible.
+\item Threat: weak first stage on effective supply.
+\item Test: document permit/unit-mix response as first-stage evidence.
+\end{itemize}
+
+\textbf{Novelty claim (current confidence): Medium-High.}
+The novelty is to estimate fertility effects of explicit middle-housing legalizations, not only generic price shocks.
+
+\section{Top idea 2 (expanded): NIMBY political-economy design via close elections}
+\textbf{Question:} Does narrowly electing pro-housing local governments causally increase supply and, through this channel, affect fertility?
+
+\textbf{Estimand:}
+\begin{itemize}
+\item First stage: effect of pro-housing win on permits/unit composition and prices.
+\item Second stage: effect of induced housing-supply changes on fertility.
+\end{itemize}
+
+\textbf{Design:} Close-election RD at municipal level + 2SLS mediation.
+
+First stage:
+\[
+Supply_{it} = \pi\,ProHousingWin_{it} + f(Margin_{it}) + \eta_i + \tau_t + u_{it}.
+\]
+Second stage:
+\[
+BirthRate_{it} = \beta\,\widehat{Supply}_{it} + f(Margin_{it}) + \eta_i + \tau_t + e_{it}.
+\]
+
+\textbf{Why this is NIMBY-relevant and novel:}
+\begin{itemize}
+\item It directly uses political turnover in the local anti-/pro-development margin.
+\item It maps your theoretical political channel into a causal empirical design.
+\item Compared with standard housing papers, the fertility endpoint is a newer margin.
+\end{itemize}
+
+\textbf{Data requirements (hard but feasible):}
+\begin{itemize}
+\item Municipal election returns with candidate coding (pro-housing stance).
+\item Municipal permits and unit mix.
+\item Local prices/rents.
+\item Birth outcomes at the finest feasible geography (county minimum; subcounty where available).
+\end{itemize}
+
+\textbf{Main risks:}
+\begin{itemize}
+\item Candidate stance coding may be noisy.
+\item Fertility outcomes may be coarser than election geography.
+\item Sample size can be thin once restricting to close races.
+\end{itemize}
+
+\textbf{Risk mitigation:}
+\begin{itemize}
+\item Use transparent text-based coding protocol with inter-rater checks.
+\item Aggregate to county-year with municipality exposure weights.
+\item Pool multiple states and cycles.
+\end{itemize}
+
+\textbf{Novelty claim (current confidence): Medium.}
+Potentially high upside, but novelty depends on whether recent housing-politics papers already run near-identical RD-to-fertility pipelines.
+
+\section{Pragmatic recommendation}
+If the objective is ``credible result in finite time,'' start with Top 1.
+If the objective is ``high-upside NIMBY contribution,'' develop Top 2 in parallel as a second track.
+
+\section*{Deliverables generated in this session}
+\begin{itemize}
+\item Prototype code: \path{projects/03_fertility_and_housing_supply/code/fertility_extension_experiment.py}
+\item Experiment outputs: \path{projects/03_fertility_and_housing_supply/notes/build/model_experiment_*}
+\item This report PDF/TeX.
+\end{itemize}
+
+\end{document}

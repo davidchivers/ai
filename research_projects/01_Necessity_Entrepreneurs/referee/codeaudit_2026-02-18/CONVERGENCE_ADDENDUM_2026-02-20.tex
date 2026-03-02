@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hyphens]{url}
+\setlength{\emergencystretch}{3em}
+\title{Code Referee Addendum: Low-UI Convergence Failure}
+\date{2026-02-24}
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This addendum documents the likely convergence failure channels when unemployment insurance is set very low (especially UI$\rightarrow 0$), and lists the exact artifacts needed from the code owner to diagnose and fix the issue.
+
+\section*{Status Update (2026-02-24)}
+\begin{itemize}
+\item An isolated calibration workspace is now set up at:
+\texttt{projects/01\_Necessity\_Entrepreneurs/calibration/AI\_calibration/}.
+\item Convergence guardrail patches are implemented in the AI copy of
+\texttt{cfv\_red\_final.cpp} (theta tolerance in aggregate stopping rule,
+runtime path/input checks, and denominator guards in fragile updates).
+\item A runnable compiler toolchain is now available in this environment
+(\texttt{C:/msys64/ucrt64/bin/g++.exe}).
+\item Full replication remains blocked by missing required solver inputs under
+\texttt{data/input/cfv/}: \texttt{policy\_functions\_v17\_in.txt},
+\texttt{rnd\_100k.txt}, \texttt{x\_shk\_iid.txt},
+\texttt{input\_pi\_x\_iid\_1.txt}, \texttt{input\_pi\_x.txt}.
+\end{itemize}
+
+\section*{Likely Failure Channels (ranked)}
+\begin{enumerate}
+\item \textbf{GE outer-loop instability at low UI.} With UI near zero, worker outside options collapse, occupational cutoffs move sharply, and fixed-point updates in wages/taxes/tightness can overshoot without damping.
+\item \textbf{Infeasible-state spillovers.} Low UI increases probability mass near binding liquidity/consumption constraints; if feasibility guards are weak (negative/near-zero consumption), value updates can produce NaN/Inf or oscillation.
+\item \textbf{Interpolation/indexing fragility.} Existing audit findings on education-index order and CEV indexing can amplify numerical noise and appear as non-convergence.
+\item \textbf{Stopping-rule defect.} The previously flagged malformed aggregate convergence check can misclassify convergence/divergence and create false failures.
+\item \textbf{Matching-object inconsistency.} If the implementation mixes objects corresponding to $p(\theta)$ and $q(\theta)$ inconsistently, effective hiring costs can become highly sensitive and destabilize updates when UI is low.
+\end{enumerate}
+
+\section*{What Is Needed From Coauthor (minimum package)}
+\begin{enumerate}
+\item \textbf{Code snapshot:} exact source file(s) used for runs plus commit hash/date.
+\item \textbf{Two logs:} one convergent run (UI=0.4 benchmark) and one failing run (UI=0.0), each with full iteration prints.
+\item \textbf{Parameter blocks:} all primitives and numerical controls for both runs:
+\begin{itemize}
+\item policy params: UI replacement rate $b$, tax settings, transfer rules,
+\item frictions: matching efficiency, elasticity, search cost parameters,
+\item numerics: tolerances, max iterations, damping factors, update rules,
+\item grids/interp settings: asset grid bounds, state grid sizes, interpolation method.
+\end{itemize}
+\item \textbf{Failure signature:} indicate whether failure is
+\begin{itemize}
+\item inner VFI non-convergence,
+\item policy oscillation,
+\item GE outer-loop divergence,
+\item NaN/Inf,
+\item or infeasible choice sets.
+\end{itemize}
+\item \textbf{Intermediate outputs:} sequence of key aggregates by iteration (e.g., $w$, $\tau$, $\theta$, entrepreneurship rate, firm size) to locate where divergence starts.
+\end{enumerate}
+
+\section*{Requested Debug Protocol}
+\begin{enumerate}
+\item Reproduce both benchmark and failing runs with identical seed and logging format.
+\item Verify feasibility guards in utility/resource constraints before maximization.
+\item Separate inner-loop and outer-loop tolerances; confirm which loop fails first.
+\item Add damping or line search to aggregate updates if not already present.
+\item Use homotopy in UI: solve UI=0.4, then 0.3, 0.2, 0.1, 0.05, 0.0, warm-starting each step.
+\item Re-run after applying previously flagged audit fixes (indexing and stopping-rule fixes) and compare convergence traces.
+\end{enumerate}
+
+\section*{Decision Rule for ``Ready to Recalibrate''}
+Proceed to new policy runs only after:
+\begin{itemize}
+\item benchmark and low-UI runs both converge under the same stopping logic,
+\item no NaN/Inf or feasibility violations are present,
+\item convergence traces are monotone/stable under at least two seeds,
+\item and reported moments are reproducible across reruns.
+\end{itemize}
+
+\end{document}

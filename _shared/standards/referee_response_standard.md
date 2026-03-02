@@ -2,7 +2,7 @@
 
 **Template**: `_shared/templates/referee_response_template.tex`
 **Best example**: `_shared/templates/referee_response_example.tex`
-(copied from `projects/01_Necessity_Entrepreneurs/Referee/RESPONSE_TO_REFEREE.tex`)
+(copied from `research_projects/01_necessity_entrepreneurs/referee/RESPONSE_TO_REFEREE.tex`)
 
 ---
 
@@ -141,11 +141,12 @@ Author field is left blank. Date uses month + year (e.g., `February 2026`).
 
 ## 10. File Naming
 
-Store in the project's `Referee/` subdirectory:
+Store in the project's `referee/` subdirectory:
 
 ```
-projects/<project>/Referee/RESPONSE_TO_REFEREE.tex
-projects/<project>/Referee/RESPONSE_TO_REFEREE.pdf   ← compiled output
+research_projects/<project>/referee/RESPONSE_TO_REFEREE.tex
+research_projects/<project>/referee/RESPONSE_TO_REFEREE.pdf   ← compiled output
 ```
 
 Build artifacts (`.aux`, `.log`, `.out`) should not be committed.
+

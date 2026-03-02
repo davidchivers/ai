@@ -1,0 +1,138 @@
+﻿ M .gitignore
+ M AGENTS.md
+ M _playground/nimbyism_setup_plan.md
+ M _shared/agents/code-paper-crosswalk.md
+ M _shared/agents/literature-reviewer.md
+ M _shared/agents/math-auditor.md
+ M _shared/agents/project-status-updater.md
+ M _shared/agents/referee-response-drafter.md
+ M _shared/memory/RESEARCH_STYLE.md
+ M _shared/standards/referee_response_standard.md
+ D "projects/01_Necessity_Entrepreneurs/Chivers et al. (2025) Necessity Entrepreneurship.tex"
+ D projects/01_Necessity_Entrepreneurs/PROJECT_PLAN.md
+ M projects/01_Necessity_Entrepreneurs/README.md
+ M projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/CODE_REFEREE_REPORT.md
+ M projects/01_Necessity_Entrepreneurs/Referee/CodeAudit_2026-02-18/FIX_CHECKLIST.md
+ D projects/01_Necessity_Entrepreneurs/Slides_paper_v4.pdf
+ D projects/01_Necessity_Entrepreneurs/Slides_paper_v4.tex
+ D projects/01_Necessity_Entrepreneurs/docs/policy/PROJECT_HYGIENE.md
+ M projects/01_Necessity_Entrepreneurs/memory.md
+ D projects/01_Necessity_Entrepreneurs/paper_unlocked.pdf
+ M projects/02_Nimbyism_and_Housing_Supply/Code/Codes_ABB/Code_transition_matrix.m
+ M "projects/02_Nimbyism_and_Housing_Supply/Code/Data/1 tenurechoices.do"
+ M "projects/02_Nimbyism_and_Housing_Supply/Code/Data/2 citystateweights.do"
+ M "projects/02_Nimbyism_and_Housing_Supply/Code/Data/4 importexcel .do"
+ M projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/CompareParameter.m
+ M projects/02_Nimbyism_and_Housing_Supply/Code/SteadyState/PlotIRFs.m
+ M projects/02_Nimbyism_and_Housing_Supply/PROJECT_PLAN.md
+ M projects/02_Nimbyism_and_Housing_Supply/README.md
+ M "projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash v2.lyx"
+ M projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash.lyx
+ M projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_Monash_50min.lyx
+ M projects/02_Nimbyism_and_Housing_Supply/Slides/Gross_NIMBY_WEAI.lyx
+ M "projects/02_Nimbyism_and_Housing_Supply/Slides/NIMBYism and the Housing Supply - Slides 30 mins.lyx"
+ M "projects/02_Nimbyism_and_Housing_Supply/Slides/NIMBYism and the Housing Supply - Slides.lyx"
+ M projects/02_Nimbyism_and_Housing_Supply/memory.md
+ M projects/03_Fertility_and_Housing_Supply/PROJECT_PLAN.md
+ M projects/03_Fertility_and_Housing_Supply/README.md
+ M projects/03_Fertility_and_Housing_Supply/UPSTREAM_SYNC_LOG.md
+ M projects/03_Fertility_and_Housing_Supply/memory.md
+ M projects/README.md
+ D projects/Tuition_Fees/README.md
+ D projects/Tuition_Fees/calibration/calibration_targets.md
+ D projects/Tuition_Fees/drafts/incidence_table_template.md
+ D projects/Tuition_Fees/literature/literature_notes.md
+ D projects/Tuition_Fees/memory.md
+ D projects/Tuition_Fees/notes/uk_policy_notes.md
+ D projects/Tuition_Fees/project.md
+ D projects/Tuition_Fees/theory/model/model_sketch.md
+?? .vscode/
+?? _playground/_tmp_lit_section.txt
+?? _playground/ai_install_repo/
+?? "_playground/backups/01 - Draft - Introduction.txt"
+?? "_playground/backups/02 - Draft - Offside Law.txt"
+?? _playground/backups/2026-02-20/
+?? _playground/backups/2026-02-22_desktop_shortcuts/
+?? _playground/backups/2026-02-23/
+?? _playground/backups/2026-02-25_notes_flattening/
+?? _playground/backups/2026-02-28_105447_cleanup_snapshot/
+?? _playground/core_sedlacek.html
+?? _playground/demo_bar_chart.svg
+?? _playground/demo_line_chart.svg
+?? _playground/eprint1176.html
+?? _playground/evans_jovanovic_ideas.html
+?? _playground/hurst_lusardi_ideas.html
+?? _playground/lucas_ideas.html
+?? _playground/lucas_ssrn.html
+?? _playground/lusardi_research.html
+?? _playground/maps/
+?? _playground/markdown_images_graphs_test.md
+?? _playground/markdown_math_example.md
+?? _playground/markdown_viewer_showcase.md
+?? _playground/mp_1994_ideas.html
+?? _playground/mp_dp0110_ideas.html
+?? _playground/stuff_repo/
+?? _playground/tmp_davidchivers_homepage.html
+?? _playground/tmp_more_pdf_fetch.ps1
+?? _shared/agents/empirical-idea-generator.md
+?? _shared/agents/evidence-checker.md
+?? _shared/agents/lit-review-writer.md
+?? _shared/agents/literature-scout.md
+?? _shared/agents/notes-organizer.md
+?? _shared/agents/replication-package-auditor.md
+?? _shared/agents/style-editor.md
+?? _shared/agents/tex-integrator.md
+?? _shared/references/
+?? _shared/scripts/
+?? _shared/skills/codex-review-SKILL.md
+?? _shared/standards/code_calibration_standard.md
+?? _shared/standards/notes_phase_standard.md
+?? _shared/standards/paper_project_structure_standard.md
+?? _shared/standards/project_status_standard.md
+?? _shared/workspaces/
+?? projects/01_Necessity_Entrepreneurs/STATUS.md
+?? projects/01_Necessity_Entrepreneurs/calibration/
+?? projects/01_Necessity_Entrepreneurs/drafts/
+?? projects/01_Necessity_Entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.pdf
+?? projects/01_Necessity_Entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.png
+?? projects/01_Necessity_Entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.pdf
+?? projects/01_Necessity_Entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.png
+?? projects/01_Necessity_Entrepreneurs/figures/curve_transition_rates_current_experiments.pdf
+?? projects/01_Necessity_Entrepreneurs/figures/curve_transition_rates_current_experiments.png
+?? projects/01_Necessity_Entrepreneurs/figures/generate_experiment_curves.py
+?? projects/01_Necessity_Entrepreneurs/literature/
+?? projects/01_Necessity_Entrepreneurs/notes/
+?? projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/CONVERGENCE_ADDENDUM_2026-02-20.md
+?? projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/CONVERGENCE_ADDENDUM_2026-02-20.pdf
+?? projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/CONVERGENCE_ADDENDUM_2026-02-20.tex
+?? projects/01_Necessity_Entrepreneurs/scripts/
+?? projects/01_Necessity_Entrepreneurs/slides/
+?? projects/02_nimbyism_and_housing_supply/STATUS.md
+?? projects/02_nimbyism_and_housing_supply/referee/CODE_REFEREE_REPORT.md
+?? projects/02_nimbyism_and_housing_supply/referee/CODE_REFEREE_REPORT.pdf
+?? projects/02_nimbyism_and_housing_supply/referee/CODE_REFEREE_REPORT.tex
+?? projects/03_fertility_and_housing_supply/STATUS.md
+?? projects/03_fertility_and_housing_supply/calibration/
+?? projects/03_fertility_and_housing_supply/code/
+?? projects/03_fertility_and_housing_supply/drafts/
+?? projects/03_fertility_and_housing_supply/exports/
+?? projects/03_fertility_and_housing_supply/literature/
+?? projects/03_fertility_and_housing_supply/notes/
+?? projects/03_fertility_and_housing_supply/slides/
+?? projects/04_tuition_fees/
+?? projects/05_learning_by_viewing/
+?? projects/06_accents_and_dialects/
+?? projects/07_michelin_cuisine_innovation_diffusion/
+?? projects/ai_sci_word/
+?? projects/ai_sci_word_bibtex/
+?? projects/book/
+?? projects/department_admin_project/
+?? projects/durham_data_lab/
+?? projects/teaching/NAMING_CONVENTIONS.md
+?? projects/teaching/README.md
+?? projects/teaching/ai_teaching_starter/PUBLISH_GUIDE.md
+?? projects/teaching/ai_teaching_starter/README.md
+?? projects/teaching/ai_teaching_starter/starter_advanced/
+?? projects/teaching/ai_teaching_starter/starter_basic/
+?? projects/teaching/ai_workshop/ai_coding_agents_workshop_slides.pptx
+?? projects/teaching/global_folder/

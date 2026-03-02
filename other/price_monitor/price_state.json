@@ -1,0 +1,191 @@
+{
+  "products": {
+    "Tikamoon Kort Teak Small Chest of Drawers": {
+      "price": 749.0,
+      "was": null,
+      "badge": "Pop-up sale",
+      "url": "https://www.tikamoon.co.uk/art-kort-solid-teak-small-chest-of-drawers-2330.html",
+      "last_checked": "2026-03-02T10:17:51.269983"
+    },
+    "Dreams Lucia Upholstered Bed Frame": {
+      "price": 599.0,
+      "was": null,
+      "badge": null,
+      "url": "https://www.dreams.co.uk/lucia-upholstered-bed-frame/p/261-00172-configurable",
+      "last_checked": "2026-03-02T10:17:52.855327"
+    },
+    "Bugaboo Butterfly 2": {
+      "price": 435.0,
+      "was": null,
+      "badge": null,
+      "url": "https://www.bugaboo.com/gb-en/pushchairs/bugaboo-butterfly-2/",
+      "last_checked": "2026-03-02T10:17:56.143502"
+    }
+  },
+  "collections": {
+    "Snuz Bedside Cribs": {
+      "SnuzPod5 Bedside Crib Walnut": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-walnut",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Natural": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-natural",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Mocha": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-mocha",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Pebble": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-pebble",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Cashmere": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-cashmere",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Sage": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-sage",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib White": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-white",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Graphite": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-graphite",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      },
+      "SnuzPod5 Bedside Crib Terracotta": {
+        "price": 199.95,
+        "was": null,
+        "url": "https://www.snuz.co.uk/products/snuzpod5-bedside-crib-terracotta",
+        "last_checked": "2026-03-02T10:17:57.670034"
+      }
+    }
+  },
+  "sites": {
+    "https://www.tikamoon.co.uk": {
+      "exists": true,
+      "finding_keys": [
+        "banner::sale:Pop-up sale",
+        "promo_code:BATH226::"
+      ],
+      "last_checked": "2026-03-02T10:17:59.681844"
+    },
+    "https://www.tikamoon.co.uk/sale": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:01.315462"
+    },
+    "https://www.tikamoon.co.uk/offers": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:01.973923"
+    },
+    "https://www.tikamoon.co.uk/outlet": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:02.582192"
+    },
+    "https://www.dreams.co.uk": {
+      "exists": true,
+      "finding_keys": [
+        "banner::% off:UP TO 30 % OFF SHOP NOW",
+        "banner::offer:ALL OFFERS END IN: 0 0 5 5 Days : 1 1 6 6 Hours : 5 5 1 1 Minutes",
+        "banner::clearance:PAYDAY WEEKEND TREAT SPEND MORE *TEMPUR® mattresses and clearance are excluded",
+        "banner::now £:Now £349",
+        "banner::% off:30 % OFF",
+        "banner::clearance:PAYDAY WEEKEND TREAT SPEND MORE *TEMPUR® mattresses and clearance are excluded £",
+        "banner::% off:20 % OFF SOFA BEDS From £159 Ends Tuesday",
+        "banner::offer:UP TO 30 % OFF SHOP NOW ALL OFFERS END IN: 0 0 5 5 Days : 1 1 6 6 Hours : 5 5 1 ",
+        "banner::offer:ALL OFFERS END IN:",
+        "banner::now £:Wilson ottoman bed Now £349 Ends Tuesday",
+        "banner::% off:50 % OFF",
+        "banner::clearance:*TEMPUR® mattresses and clearance are excluded",
+        "banner::% off:20 % OFF",
+        "banner::% off:UP TO 50 % OFF",
+        "banner::now £:£250 OFF Wilson ottoman bed Now £349 Ends Tuesday",
+        "banner::offer:UP TO 30 % OFF SHOP NOW ALL OFFERS END IN: 0 0 5 5 Days : 1 1 6 6 Hours : 5 5 1 ",
+        "banner::clearance:CLEARANCE Whilst stocks last",
+        "banner::clearance:UP TO 50 % OFF CLEARANCE Whilst stocks last",
+        "banner::offer:UP TO 30 % OFF SHOP NOW ALL OFFERS END IN: 0 0 5 5 Days : 1 1 6 6 Hours : 5 5 1 ",
+        "banner::clearance:CLEARANCE",
+        "banner::clearance:£250 OFF Wilson ottoman bed Now £349 Ends Tuesday FROM £239 BIG SAVINGS ON SELEC",
+        "promo_code:dependent::"
+      ],
+      "last_checked": "2026-03-02T10:18:03.396860"
+    },
+    "https://www.dreams.co.uk/sale": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:04.833905"
+    },
+    "https://www.dreams.co.uk/offers": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:05.441957"
+    },
+    "https://www.dreams.co.uk/outlet": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:05.958440"
+    },
+    "https://www.bugaboo.com/gb-en/": {
+      "exists": true,
+      "finding_keys": [
+        "banner::discount:Bugaboo Outlet Check out all our amazing deals and discounts. Toggle navigation",
+        "banner::discount:Bugaboo Outlet Check out all our amazing deals and discounts.",
+        "banner::outlet:Bugaboo Outlet",
+        "banner::discount:Check out all our amazing deals and discounts."
+      ],
+      "last_checked": "2026-03-02T10:18:07.566942"
+    },
+    "https://www.bugaboo.com/gb-en/sale/": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:09.394711"
+    },
+    "https://www.bugaboo.com/gb-en/outlet/": {
+      "exists": true,
+      "finding_keys": [
+        "banner::discount:Bugaboo Outlet Check out all our amazing deals and discounts. Toggle navigation",
+        "banner::discount:Bugaboo Outlet Check out all our amazing deals and discounts.",
+        "banner::outlet:Bugaboo Outlet",
+        "banner::outlet:Outlet",
+        "banner::discount:Check out all our amazing deals and discounts."
+      ],
+      "last_checked": "2026-03-02T10:18:11.991550"
+    },
+    "https://www.snuz.co.uk": {
+      "exists": true,
+      "finding_keys": [
+        "banner::sale:Baby's First Bed Sale | Save up to £25",
+        "banner::sale:Baby's First Bed Sale Save up to £25 on best-selling bedside cribs and Moses bas",
+        "banner::sale:Klarna available Free UK next day delivery on orders over £50 Free 100 day retur"
+      ],
+      "last_checked": "2026-03-02T10:18:13.743115"
+    },
+    "https://www.snuz.co.uk/collections/sale": {
+      "exists": true,
+      "finding_keys": [
+        "banner::sale:Baby's First Bed Sale | Save up to £25"
+      ],
+      "last_checked": "2026-03-02T10:18:16.838358"
+    },
+    "https://www.snuz.co.uk/pages/offers": {
+      "exists": false,
+      "last_checked": "2026-03-02T10:18:18.585066"
+    }
+  },
+  "last_run": "2026-03-02T10:18:19.235133"
+}

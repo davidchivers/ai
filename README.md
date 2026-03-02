@@ -6,17 +6,21 @@ Personal research workspace for economics paper projects, AI-assisted workflows,
 
 ```
 Economics/
-  projects/          ← research paper projects (self-contained)
-  _shared/           ← reusable assets across all projects
-    memory/          ← persistent preferences and style notes
-    agents/          ← specialist agent definitions
-    skills/          ← knowledge packs (SKILL.md files)
-    templates/       ← document templates (referee response, etc.)
-    standards/       ← conventions and checklists
-    prompts/         ← reusable prompt fragments
-  _playground/       ← scratch work, learning material, backups
-  AGENTS.md          ← how AI assistants should behave (read first)
-  CLAUDE.md          ← tool-specific instructions (Stata paths, etc.)
+  research_projects/  <- mature paper-track research projects
+  research_ideas/     <- early-stage speculative research ideas
+  teaching/           <- teaching materials and workshops
+  book/               <- book writing and interview workflow
+  other/              <- non-paper miscellaneous projects
+  _shared/            <- reusable assets across all projects
+    memory/           <- persistent preferences and style notes
+    agents/           <- specialist agent definitions
+    skills/           <- knowledge packs (SKILL.md files)
+    templates/        <- document templates (referee response, etc.)
+    standards/        <- conventions and checklists
+    prompts/          <- reusable prompt fragments
+  _playground/        <- scratch work, learning material, backups
+  AGENTS.md           <- how AI assistants should behave (read first)
+  CLAUDE.md           <- tool-specific instructions (Stata paths, etc.)
 ```
 
 ## Projects
@@ -31,7 +35,7 @@ Economics/
 
 1. Read `AGENTS.md` (steering rules)
 2. Read `_shared/memory/RESEARCH_STYLE.md` (style preferences)
-3. Read `projects/<name>/README.md` and `projects/<name>/memory.md` (project state)
+3. Read `research_projects/<name>/README.md` and `research_projects/<name>/memory.md` (project state)
 
 ## Notes
 

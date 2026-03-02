@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{array}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Utility, Model Differences, and Code Experiment\\Fertility and Housing Supply}
+\author{Fertility and Housing Supply Project}
+\date{February 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This document gives a detailed model explanation focused on what changes relative to the baseline NIMBY paper, why those changes matter, and what was learned from a first coding experiment.
+
+\section{Baseline NIMBY model block (reference point)}
+The original baseline (as used in the NIMBY project) can be summarized as:
+\begin{enumerate}
+\item Household utility over consumption and housing services (CRRA/Cobb-Douglas).
+\item Life-cycle decision problem for tenure, assets, housing, and consumption.
+\item Housing market/political equilibrium where supply outcomes (prices/quantities) are shaped by voting incentives.
+\item Exogenous demography in transition calculations.
+\end{enumerate}
+
+The fertility project keeps (1)--(3) as much as possible, but changes (4) and links household fertility choices to housing and political dynamics.
+
+\section{Exact differences from the NIMBY paper}
+\subsection*{Difference A: Utility now includes children-at-home and crowding}
+\textbf{Baseline flow utility:}
+\[
+u(c_t,h_t)=\frac{(c_t^{1-\zeta}h_t^{\zeta})^{1-\gamma}}{1-\gamma}.
+\]
+
+\textbf{Fertility extension flow utility:}
+\[
+ u_t = \frac{(c_t^{1-\zeta}h_{t,eff}^{\zeta})^{1-\gamma}}{1-\gamma} + \chi\frac{n_{t,home}^{1-\eta}}{1-\eta},
+\quad
+h_{t,eff}=\frac{h_t}{(1+\lambda n_{t,home})^{\psi}}.
+\]
+
+\textbf{Economic meaning:}
+\begin{itemize}
+\item Housing enters utility through \emph{effective} space, so crowding makes the same dwelling less valuable for larger families.
+\item Fertility is not only a budget burden; it can generate direct utility via the child term.
+\item This creates a quantity--space tradeoff even before adding child quality spending.
+\end{itemize}
+
+\subsection*{Difference B: Fertility is now a household choice variable}
+In fertile ages, births are chosen jointly with consumption/housing/saving:
+\[
+V_t(s_t)=\max_{c_t,a_{t+1},h_{t+1},b_t}\{u_t+\beta E_tV_{t+1}(s_{t+1})\}
+\]
+subject to the extended budget:
+\[
+ c_t + q_t^h h_{t+1} + a_{t+1} + \kappa(b_t,n_{t,home})
+\le y_t + (1+r_t)a_t + \text{housing cash-flow terms}.
+\]
+
+\textbf{Economic meaning:}
+\begin{itemize}
+\item In the baseline, demographics do not respond to housing affordability.
+\item In the extension, higher housing costs can delay or reduce births through both utility crowding and budget channels.
+\end{itemize}
+
+\subsection*{Difference C: Children leave home explicitly}
+Children-at-home state evolves with cohort aging and a leave-home rule (deterministic benchmark):
+\begin{align*}
+N_{0,t+1} &= b_t, \\
+N_{a+1,t+1} &= N_{a,t}, \\
+n_{t,home} &= \sum_{a=0}^{A_{leave}-1}N_{a,t}.
+\end{align*}
+
+\textbf{Economic meaning:}
+\begin{itemize}
+\item Utility and housing demand respond to \emph{dependent} children, not lifetime births.
+\item This allows realistic life-cycle housing demand reversals (space pressure rises then later falls).
+\end{itemize}
+
+\subsection*{Difference D: Demography becomes endogenous}
+Cohort masses evolve with endogenous births:
+\begin{align*}
+M_{j+1,t+1} &= \ell_j M_{j,t}, \\
+M_{1,t+1} &= \sum_{j\in\mathcal F} f_j M_{j,t}.
+\end{align*}
+
+\textbf{Economic meaning:}
+\begin{itemize}
+\item Fertility decisions alter future age distribution.
+\item Age distribution alters future median-voter composition.
+\item Median-voter composition alters future supply outcomes.
+\end{itemize}
+
+\subsection*{Difference E: Equilibrium is now a joint price--demography fixed point}
+Instead of solving prices/policies with exogenous demographic weights, the extension solves:
+\[
+\{p_t,r_t,\text{policy}_t,M_t\}_{t\ge 0}
+\]
+jointly, because each object feeds back into the others over time.
+
+\section{Why this matters for your paper contribution}
+The key conceptual gain is that the model now has a full mechanism from housing supply restrictions to fertility outcomes:
+\[
+\text{planning/supply} \rightarrow \text{housing prices + unit mix} \rightarrow \text{crowding + fertility choice} \rightarrow \text{future demography}.
+\]
+This is stronger than treating fertility as an exogenous reduced-form trend because it ties fertility outcomes to policy-relevant housing margins.
+
+\section{Code experiment: objective and design}
+\subsection*{Objective}
+The prototype was not intended for calibration or quantitative policy claims. Its purpose was to test numerical behavior of the new fixed-point structure and confirm whether the convergence concerns in the model setup are operationally important.
+
+\subsection*{Prototype architecture}
+A compact simulation was implemented with:
+\begin{itemize}
+\item age shares (8 cohorts),
+\item endogenous births in fertile cohorts,
+\item a political-tightness index increasing with older-share and decreasing with younger-share,
+\item price updates from demand--supply imbalance,
+\item optional family-sized supply shock,
+\item outer-loop damping parameter.
+\end{itemize}
+
+\subsection*{Scenarios run}
+\begin{enumerate}
+\item No damping (aggressive update).
+\item Damping $\xi=0.25$ (stabilized update).
+\item Damping $\xi=0.25$ plus family-sized supply shift from period 15.
+\end{enumerate}
+
+\section{Code experiment results and diagnostics}
+\subsection*{Main diagnostics}
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Scenario & Avg price (t=10..49) & Avg fertility (t=10..49) & Max $|\Delta p_t|$ \\
+\midrule
+No damping & -5.939 & 0.723 & 2.426 \\
+Damping 0.25 & -2.597 & 0.416 & 1.948 \\
+Damping 0.25 + policy & -2.638 & 0.443 & 1.349 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Interpretation:}
+\begin{itemize}
+\item Undamped updates generate large jumps and near-corner behavior.
+\item Damping reduces oscillation and keeps trajectories in a more interpretable range.
+\item In the damped setting, family-sized supply support increases fertility and lowers transition volatility.
+\end{itemize}
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.9\textwidth]{build/model_experiment_paths.png}
+\caption{Prototype dynamics under alternative update rules and policy shift}
+\end{figure}
+
+\subsection*{Failure log (important)}
+Early runs produced exponential overflow and pathological paths. Two stabilization changes were required:
+\begin{enumerate}
+\item Bounding exponent arguments in demand/supply transforms.
+\item Clamping price updates and using damped outer-loop updates.
+\end{enumerate}
+This is direct evidence that the full MATLAB implementation should start with tight numerical guards.
+
+\section{Implementation implications for the full model}
+\subsection*{What should be coded first}
+\begin{enumerate}
+\item Household block with fertility control and children-at-home state.
+\item Demographic transition block that consumes policy functions and updates cohort masses.
+\item Outer fixed-point wrapper with damping and share normalization.
+\end{enumerate}
+
+\subsection*{Recommended convergence checks}
+Use three tolerances, not one:
+\begin{itemize}
+\item price-path distance,
+\item cohort-share distance,
+\item aggregate births distance.
+\end{itemize}
+All three should converge before declaring equilibrium solved.
+
+\subsection*{Suggested baseline robustness grid}
+\begin{itemize}
+\item Damping values: $\xi\in\{0.10,0.25,0.40\}$.
+\item Leave-home age: $A_{leave}\in\{18,19,21\}$.
+\item Child-cost curvature and crowding intensity: low/medium/high triplets.
+\end{itemize}
+
+\section*{Bottom line}
+The fertility extension is not a marginal tweak to the NIMBY model; it changes the equilibrium object from a housing-policy fixed point with exogenous demographics to a joint housing--demography fixed point. The prototype confirms that this is computationally feasible but numerically delicate, so disciplined damping and normalization should be treated as core model ingredients.
+
+\end{document}

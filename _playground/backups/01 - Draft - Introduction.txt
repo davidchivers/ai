@@ -1,0 +1,54 @@
+Chapter 1: Introduction [Draft]
+
+Who also hath made us able ministers of the new testament; not of the letter, but of the spirit: for the letter killeth, but the spirit giveth life. 
+-Saint Paul, Second Epistle to the Corinthians, Chapter 3, Verse 6
+
+Imagine a kitchen in a shared space: an office, or a student house. Inevitably, the kitchen sink keeps filling up with dirty plates and mugs
+
+Eventually, the problem becomes so bad that a house, or office, meeting is called. We are all grownups, goes the discussion. Surely we can manage to wash up our own dishes. Someone makes a suggestion: how about a rota? Each person is responsible for washing up on a given day! Surely that should solve the problem! 
+
+But it doesn’t. The problem gets worse. People who, previously, were cleaning their dishes are now dumping them in the sink, to be dealt with by whoever’s on duty that day. People fail to stick to the rota. And what’s more, there’s now a row about the rota itself: who gets to be in charge of that? How come you, Becky, have given yourself the weekend off? Hmm?
+
+Dirty crockery piles up even worse than before, but now no one is talking to anyone else.
+
+Something like this occurs in kitchens throughout the land every day. It’s a minor, everyday thing. But it demonstrates a deep and intractable problem for human societies: what one person wants does not perfectly line up with what everyone else wants. (Most of us want a clean kitchen; but no one particularly wants to be the one to clean it.) 
+
+A kitchen rota is a quotidian example. But similar dynamics occur all the time, between employer and employee, parent and child, governments and the governed. 
+
+We have to deal with other people’s interests all the time. We are not alone, stranded on a desert island; we have to work, live, and interact with other people every day. We have to give, and follow, instructions. The human story is about cooperation (and, sometimes, non-cooperation), and most of the time, cooperation means coordination. But our interests rarely align perfectly, so getting other people to do the things you want them to do can be complicated.
+
+The human race has eradicated smallpox; it has travelled to the moon; it has peered into the heart of the atom. But we still cannot get people to wash their own bloody dishes.
+
+The Goodhart, the bad, and the ugly
+
+Some readers may have heard of “Goodhart’s Law”, named for the British economist Charles Goodhart and usually expressed as “When a measure becomes a target, it ceases to be a good measure.”
+
+We usually think of it in terms of policy. A classic example: good schools tend to churn out children who get high grades. That’s not the reason – or not the only reason – that we might consider a school good: we worry also about whether the children enjoy their time, whether there is bullying, and in a general and ill-defined sense whether the school helps create well-rounded people who will contribute to society. But those things correlate quite well with the number of children who get good grades, so the grades are quite a good measure of a school’s quality. 
+
+Policymakers, who want to encourage schools to be better, notice this. So they impose targets on schools – say, they might say that a certain percentage of children need to get a C or above at their GCSEs. Which makes sense! After all, schools in which lots of children get high grades tend to be good schools – so encouraging schools to get more high grades should make them better schools, right?
+
+But in fact, the schools realise that the easiest way of getting more A-C grades is not to give all the children in their care a well-rounded education, but to focus on those kids who look like they’re going to get a D and boost them up to C, or the ones who look like they’re going to get a C and might drop down to a D, while largely ignoring the ones who can be relied upon to get a B or above on their own or the ones who won’t get above a D whatever you do.
+
+(This exact phenomenon has been observed in British schools, which were given a target of a percentage of pupils getting five A* to C grades.)
+
+You see similar problems in healthcare, such as when hospitals given targets based on mortality refuse admission to very sick patients, who are likely to die and bring mortality stats up. You see it in science, where the worth of a scientist’s career is partly judged on how many scientific papers he or she publishes, and the citations and impact they have – so scientists desperately publish as many papers as they can. No doubt everyone can think of similar examples from their own line of work.
+
+Goodhart’s law is just one example of something deeper, something more profound: the “principal-agent problem”. It describes any situation where one person or group, the agent, acts on behalf of another, the principal. The two participants will not have the exact same interests and they will not have access to the exact same information, so the efforts of one to control the other will be imperfect.
+
+As soon as your partner asks you to pick up some groceries on the way back from work, you have created a principal-agent problem; your partner is the principal, you are the agent. Your other half wants you to bring back food for the family dinner; but because you have other interests, you return with a box of Australian wine, a packet of Minstrels and a jumbo bag of lawn seed (it was half price).
+
+Once you understand the principal-agent problem, you start seeing it everywhere. the principal-agent problem costs governments billions in taxes, because writing laws to make individuals and corporations pay taxes is difficult, and those individuals and corporations will work hard to avoid them. The same problem costs corporations themselves billions, because what the company wants – maximising shareholder profits – is not aligned with what staff want, which is usually being left alone to play Candy Crush. And in the future, the problem will become even larger, as AIs become more agentic and are given more responsibilities in the real world: how do we ensure that the goals we give them really align with what we want them to do? 
+
+It is the problem that the letter of the law and the spirit of the law are not the same thing, as Saint Paul realised, two thousand years ago.
+
+This book
+
+This book will be about the many ways in which regulation, laws, targets and metrics go wrong. 
+
+But we’ll also try to explain why these metrics and regulations are vital. If you’re running a modern state of millions of people, government can’t directly supervise every person’s life. Managers in even medium-sized companies can’t know what every employee is up to. And if you want a fair, democratic state in which the same laws apply to everyone, you need to have those laws written down. 
+
+Ultimately there is no perfect solution to any of these alignment problems, although there are whole fields of economics dedicated to them; there are only tradeoffs. We can do away with the targets in schools, but it might mean some students get left behind. We can create a surveillance state so that people are forced to do the washing up, but it might make people miserable.
+
+In this book we will go through lots of examples of this problem: Sport, health care and education are three we’ve discussed, but it’s just as prevalent in science, in economics, in the law. It is even, in essence, the reason why people think artificial intelligence might end up destroying the world.
+
+

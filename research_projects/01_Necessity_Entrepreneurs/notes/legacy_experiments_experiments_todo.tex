@@ -1,0 +1,65 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{xurl}
+\setlength{\emergencystretch}{3em}
+\title{Necessity Entrepreneurs: Experiments To-Do}
+\date{2026-02-20}
+\begin{document}
+\maketitle
+
+\section*{Slides-Paper Table Alignment}
+\begin{tabular}{p{0.28\linewidth} p{0.32\linewidth} p{0.32\linewidth}}
+\toprule
+Slides item & Paper section & Paper table label \\
+\midrule
+Counterfactual 1: No Unemployment Risk & Quantitative Analysis / No Unemployment & \texttt{tab:cf1\_no\_unemployment} \\
+Counterfactual 2: UI Level Changes & Quantitative Analysis / Unemployment Insurance & \texttt{tab:cf2\_ui\_levels} \\
+Counterfactual 3: Consumption Floor (UI=0.4) & Quantitative Analysis / Consumption floor & \texttt{tab:cf3\_consumption\_floor\_ui04} \\
+Slides ``Next Steps'': Credit Friction & Quantitative Analysis / Credit friction wedge & placeholder section \\
+Slides ``Next Steps'': Job Market & Quantitative Analysis / Job market experiment & placeholder section \\
+\bottomrule
+\end{tabular}
+
+\section*{Table Fill Status}
+\begin{tabular}{p{0.48\linewidth} p{0.18\linewidth} p{0.27\linewidth}}
+\toprule
+Table & Status & Action \\
+\midrule
+\texttt{tab:cf1\_no\_unemployment} & Complete & Keep as benchmark table \\
+\texttt{tab:cf2\_ui\_levels} & Complete (constant-tax) & Add revenue-neutral variant if available \\
+\texttt{tab:cf3\_consumption\_floor\_ui04} & Complete & Keep as slide Counterfactual 3 \\
+\texttt{tab:cf\_consumption\_floor\_ui00\_pending} & Pending & Fill UI=0.0 baseline/lump-sum/penalty values \\
+\texttt{tab:cf\_consumption\_floor\_ui00\_lowmatch\_pending} & Pending & Fill low matching-efficiency values \\
+\texttt{tab:cf\_consumption\_floor\_ui06} & Complete & Keep as high-UI robustness \\
+\texttt{tab:cf\_consumption\_floor\_no\_unemp\_no\_tax} & Complete & Keep as near-invariance check \\
+\bottomrule
+\end{tabular}
+
+\section*{Immediate To-Do}
+\begin{enumerate}[leftmargin=1.5em]
+\item Fill the two pending consumption-floor tables and add one interpretation sentence below each.
+\item Decide whether UI analysis in paper remains \emph{constant-tax only} or includes a separate \emph{revenue-neutral} table.
+\item Add one summary table collecting three outcomes across completed experiments: \texttt{entrepreneur-avg}, \texttt{firm size-avg}, \texttt{Unemp-Ent}.
+\item Keep row order identical across all experiment tables for scanning consistency.
+\end{enumerate}
+
+\section*{Baseline Interpretation (for paper and slides)}
+\begin{itemize}[leftmargin=1.5em]
+\item Necessity share in baseline: $0.00204/0.145 = 1.41\%$.
+\item Education scale gradient: high-education firm size is $33.417/9.682 = 3.45\times$ low-education.
+\item No-unemployment counterfactual: entrepreneurship rises by $35.9\%$ and average firm size rises by $10.3\%$ relative to baseline.
+\end{itemize}
+
+\section*{What To Send Coauthors Next}
+\begin{itemize}[leftmargin=1.5em]
+\item Updated draft PDF with standardized table labels.
+\item This checklist PDF.
+\item A one-page convergence request memo (separate PDF) asking for run logs/code for low-UI non-convergence.
+\end{itemize}
+
+\end{document}

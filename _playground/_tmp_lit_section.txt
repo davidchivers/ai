@@ -1,0 +1,35 @@
+\section{Literature Review}
+
+This paper contributes at the intersection of three literatures:
+necessity versus opportunity entrepreneurship, entrepreneurship under
+financial frictions, and equilibrium labor-market search.
+
+The first relevant strand is empirical work that distinguishes entrepreneurial
+entry by labor-market origin and by business-cycle conditions. \citet{fairlie_fossen_2019} [CHECK]
+show that transitions into entrepreneurship differ systematically between
+those entering from non-employment and those entering from employment.
+\citet{sedlacek_sterk_2017} [CHECK] document that startup cohorts are
+cyclically heterogeneous in quality and growth outcomes. These results
+motivate our focus on composition, not just the aggregate entrepreneurship
+rate.
+
+The second strand studies occupational choice and firm dynamics under
+financial constraints. \citet{buera_2009} [CHECK] shows that credit
+frictions affect both selection into entrepreneurship and post-entry
+scale choices, with quantitatively important aggregate implications.
+\citet{hurst_pugsley_2011} [CHECK] emphasize that a large share of
+small-business activity reflects non-innovation motives, reinforcing
+the need to model entrepreneurship as a broad margin rather than a
+narrow innovation margin.
+
+The third strand is the search-and-matching tradition in labor economics.
+\citet{petrongolo_pissarides_2001} [CHECK] provide the benchmark synthesis
+for job-finding and separation dynamics that underpins our labor-market
+block and transition structure.
+
+Relative to existing work, our contribution is to integrate these channels
+in a single heterogeneous-agent framework with explicit state-contingent
+occupational choice. This allows us to quantify how unemployment risk
+and social insurance reshape the mix of necessity and opportunity entrepreneurship,
+firm scale, and aggregate outcomes.
+

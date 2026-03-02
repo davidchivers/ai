@@ -1,0 +1,261 @@
+\documentclass[english,aspectratio=169]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\mode<presentation>{
+  \usetheme{boxes}
+  \setbeamercovered{transparent}
+}
+\setbeamertemplate{footline}[frame number]
+\setbeamersize{text margin left=5mm, text margin right=5mm}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Necessity Entrepreneurship and Misallocation}
+\author[Chivers, Feng, Keller, Li]{David Chivers \and Zhigang Feng \and Elisa Keller \and Bo Li}
+\institute{Durham University \and University of Nebraska Omaha \and University of Exeter \and Peking University}
+\date{Draft presentation}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\frametitle{Motivation}
+\begin{itemize}
+\item Aggregate entrepreneurship is often higher in lower-income economies.
+\item But composition matters: necessity entrepreneurship is much more prevalent where formal jobs and insurance are limited.
+\item Our goal is to separate \textit{opportunity} vs \textit{necessity} entrepreneurship using optimal behavior, not self-reported motives.
+\item Central policy question: how unemployment insurance (UI) affects occupational sorting and misallocation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Definitions and Identification}
+\begin{itemize}
+\item Existing empirical proxy: previous employment status (employed = opportunity, unemployed = necessity).
+\item Limitation: this can misclassify agents with strategic entry timing.
+\item In our model, necessity entrepreneurship is defined by a \textbf{counterfactual occupational choice}:
+\begin{itemize}
+\item Necessity entrepreneur: chooses entrepreneurship only when unemployed.
+\item Opportunity entrepreneur: chooses entrepreneurship regardless of employment status.
+\end{itemize}
+\item This maps naturally to cutoff rules by education and labor-market status.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Research Questions}
+\begin{itemize}
+\item How much of entrepreneurship is necessity-driven in equilibrium?
+\item Does stronger UI reduce necessity entry and improve allocation?
+\item Are effects concentrated by education group?
+\item Do financing and matching frictions amplify these effects?
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Economic Environment}
+\begin{itemize}
+\item Infinite-horizon economy with occupational choice and search frictions.
+\item State variables: $(h,a,x,z,i_w)$.
+\item Education groups: $h \in \{P,S,T\}$.
+\item Labor status: unemployed, employed, entrepreneur.
+\item Occupational choice each period: worker vs entrepreneur.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Timing: Previously Employed}
+\begin{center}
+\includegraphics[width=0.90\linewidth]{figures/enter_period_employed_submission.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Timing: Previously Unemployed / Entrepreneur}
+\begin{center}
+\includegraphics[width=0.90\linewidth]{figures/enter_period_unemployed_submission.pdf}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Firm Problem}
+\[
+\max_{n}\; xk^{\alpha}(zn)^{\gamma} - zw(1+\psi\tau)n - rk - \kappa\frac{\rho zn}{q(\theta)}
+\]
+\begin{itemize}
+\item Output: span-of-control technology with managerial talent $x$.
+\item Hiring/search costs rise when vacancy filling is harder ($q(\theta)$ lower).
+\item Main implication: weaker labor markets raise effective labor costs and shrink efficient firm scale.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Household Problem and Worker Income Risk}
+\[
+\mathbf{V}(a,h,z,x,i_w)=\max_{\{a',c,\mathcal{I}_e\}}\{\cdots\}
+\]
+\[
+\tilde w_n=(1-\rho)\{zw(1-(1-\psi)\tau)\}+\rho b,
+\quad
+\tilde w_u=p(\theta)\{zw(1-(1-\psi)\tau)\}+(1-p(\theta))b
+\]
+\begin{itemize}
+\item Employed workers face separation risk $\rho$.
+\item Unemployed/ex-entrepreneurs face job-finding risk $p(\theta)$.
+\item Different continuation risks generate necessity vs opportunity margins.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cutoff Characterization}
+\begin{itemize}
+\item Let $\hat h_{i_w=1}$ and $\hat h_{i_w\neq 1}$ be occupation cutoffs.
+\item Necessity region: $\hat h_{i_w\neq 1}<h<\hat h_{i_w=1}$.
+\item Opportunity region: $h\geq\hat h_{i_w=1}$.
+\item Six cutoffs in total: two per education group $(P,S,T)$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Calibration: Key Parameters}
+\begin{center}
+\small
+\begin{tabular}{lcl}
+\hline
+Parameter & Value & Interpretation \\
+\hline
+$\beta$ & 0.94 & Discount factor \\
+$\sigma$ & 2.0 & Risk aversion \\
+$\alpha$ & 0.3207 & Capital share \\
+$\gamma$ & 0.4693 & Labor share \\
+$\rho$ & $\{0.0383,0.0288,0.0136\}$ & Separation by education \\
+$z$ & $\{1.0,1.31,1.61\}$ & Wage premium by education \\
+$\bar m$ & 0.8 & Matching efficiency \\
+$\kappa$ & $[0.03,0.045]\cdot w$ & Search cost scale \\
+$b$ & $0.40\cdot w$ & UI replacement benchmark \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Baseline Equilibrium (UI=0.4)}
+\begin{center}
+\small
+\begin{tabular}{lcc}
+\hline
+Outcome & Model & Notes \\
+\hline
+Entrepreneurship (avg) & 0.145 & baseline \\
+Entrepreneurship (low/mid/high) & 0.143 / 0.137 / 0.161 & heterogeneity by education \\
+Firm size (avg) & 21.877 & baseline \\
+Firm size (low/mid/high) & 9.682 / 18.007 / 33.417 & steep by education \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Counterfactual 1: No Unemployment Risk}
+\begin{center}
+\small
+\begin{tabular}{lcc}
+\hline
+Outcome & Baseline & No unemployment \\
+\hline
+Entrepreneurship (avg) & 0.145 & 0.197 \\
+Entrepreneurship (low) & 0.143 & 0.207 \\
+Entrepreneurship (mid) & 0.137 & 0.184 \\
+Entrepreneurship (high) & 0.161 & 0.216 \\
+Firm size (avg) & 21.877 & 24.126 \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{1mm}
+Interpretation: labor-market risk is a key driver of necessity entrepreneurship.
+\end{frame}
+
+\begin{frame}
+\frametitle{Counterfactual 2: UI Level Changes}
+\begin{center}
+\small
+\begin{tabular}{lcccc}
+\hline
+Outcome & UI=0.4 & UI=0.3 & UI=0.0 & UI=0.6 \\
+\hline
+Entrepreneurship (avg) & 0.145 & 0.145 & 0.193 & 0.144 \\
+Entrepreneurship (low) & 0.143 & 0.141 & 0.197 & 0.135 \\
+Entrepreneurship (mid) & 0.137 & 0.136 & 0.187 & 0.141 \\
+Entrepreneurship (high) & 0.161 & 0.164 & 0.181 & 0.154 \\
+Firm size (avg) & 21.877 & 21.550 & 14.680 & 21.177 \\
+\hline
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\frametitle{Counterfactual 3: Consumption Floor}
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\hline
+UI=0.4 & Baseline & Lump-sum & Penalty \\
+\hline
+Entrepreneurship (avg) & 0.145 & 0.144 & 0.144 \\
+Firm size (avg) & 21.877 & 21.867 & 21.951 \\
+Unemp-Ent & 0.00204 & 0.00189 & 0.00177 \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{2mm}
+\begin{itemize}
+\item At baseline UI, consumption-floor variants have modest effects on aggregate entrepreneurship.
+\item Effects are stronger when unemployment risk and insurance are jointly changed.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Cutoff Visualization}
+\begin{columns}[T]
+\begin{column}{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/case_222_cutoff_value_3X1.png}
+\\ \scriptsize Baseline cutoffs
+\end{column}
+\begin{column}{0.49\linewidth}
+\centering
+\includegraphics[width=\linewidth]{figures/case_222_with_225_cutoff_value_3X1.png}
+\\ \scriptsize Baseline vs no-unemployment
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}
+\frametitle{Main Takeaways}
+\begin{itemize}
+\item Necessity entrepreneurship is an equilibrium response to unemployment risk.
+\item UI reduces necessity entry and can improve allocation by discouraging low-productivity self-employment.
+\item Education heterogeneity matters for both entry and firm size responses.
+\item Policy design should account for both insurance benefits and occupational-sorting distortions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Next Steps in Paper}
+\begin{itemize}
+\item Finalize credit-friction wedge experiment.
+\item Finalize job-market weakening experiment (matching efficiency/productivity).
+\item Tighten baseline-data fit discussion for firm-size targets.
+\item Integrate final robustness checks into quantitative section.
+\end{itemize}
+\end{frame}
+
+\end{document}
+

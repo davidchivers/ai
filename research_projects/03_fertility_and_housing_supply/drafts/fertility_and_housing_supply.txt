@@ -1,0 +1,141 @@
+Fertility, Baby Booms, and the Political Economy of Housing Supply
+Draft for project 03 (extension of the NIMBY housing-supply model)
+Date: March 1, 2026
+
+ABSTRACT
+This paper develops a fertility extension of the NIMBY housing-supply framework from project 02.
+The baseline project-02 mechanism links local political preferences to endogenous housing supply
+tightness. The extension adds endogenous fertility and a lagged cohort-political channel:
+a temporary baby-boom shock can increase later political resistance to housing supply, raise
+future housing prices, and reduce later fertility. We present side-by-side simulations against
+an old-model proxy that excludes the fertility channel, and we clarify exactly what the current
+prototype can and cannot establish. The model is a mechanism exercise and does not yet identify
+causal effects in US data. We close with an empirical implementation plan for a US fertility
+panel with explicit immigration/cohort accounting.
+
+1) INTRODUCTION
+The main question is whether demographic shocks can feed back into housing politics and then
+affect fertility in the next generation. In the original NIMBY model, housing supply outcomes are
+determined by political equilibrium and demand pressures. In this extension, fertility and
+demographics are part of the state transition.
+
+Conceptual sequence:
+1. A baby-boom shock temporarily raises births.
+2. As these cohorts age into politically relevant groups, local supply preferences tighten.
+3. Tighter supply raises housing costs and can lower subsequent fertility.
+
+This paper is separate from project 02. It reuses the political housing-supply core, but asks a
+distinct question and introduces new dynamic channels.
+
+2) RELATION TO THE NIMBY PAPER
+Inherited from project 02:
+- political housing-supply block
+- endogenous housing-price dynamics
+
+New in project 03:
+- endogenous fertility choice
+- lagged baby-boom cohort entry into the political block
+- side-by-side old/new simulation design focused on fertility implications
+
+3) MODEL
+State variables:
+- M_t(j): population share in age bin j
+- p_t: housing price index
+- theta_t: political supply tightness
+- b_t: births
+- f_t: fertility rate
+- n_home_t: lagged births proxy for children-at-home demand pressure
+
+Fertility (new channel):
+- Desired fertility:
+  f*_t = clip( f_level * exp(-eta_p * p_t), 0.05, 0.85 )
+- Observed births with temporary baby-boom multiplier mu_t:
+  b_t = f*_t * sum_{j in F} M_t(j) * mu_t
+  mu_t = 1 + boom_amp on [t_start, t_end], else 1
+
+Political tightness:
+theta_t = clip(
+  theta_0
+  + theta_old * old_t
+  - theta_young * young_t
+  + theta_boom * average_lagged_births,
+  0, 0.95
+)
+
+Housing block:
+- Demand:
+  D_t = d_0 + d_young * young_t + d_birth * b_t + 0.15 * n_home_t
+- Supply:
+  S_t = s_0 + eps_0 * (1 - theta_t) * exp(-p_t)
+- Price update:
+  p_{t+1} = (1-lambda) * p_t + lambda * [ p_t + g * (D_t - S_t) ]
+
+4) SIMULATION DESIGN
+- Horizon T = 80
+- Damping lambda = 0.25
+- Baby-boom shock: +60% births from t=15 to t=24
+- Post-shock evaluation window starts at t=40
+
+Compared models:
+- New model: endogenous fertility + lagged boom-to-politics channel
+- Old proxy: pre-extension logic without endogenous fertility response
+
+5) SIDE-BY-SIDE RESULTS (LATEST MATLAB RUN)
+Phase deltas (shock minus baseline):
+- New model:
+  delta_fertility_pre = 0.000000
+  delta_fertility_boom = 0.145361
+  delta_fertility_post = -0.001812
+  delta_price_pre = 0.000000
+  delta_price_boom = -0.001259
+  delta_price_post = 0.038142
+- Old proxy:
+  delta_fertility_pre = 0.000000
+  delta_fertility_boom = 0.141054
+  delta_fertility_post = -0.000107
+  delta_price_pre = 0.000000
+  delta_price_boom = -0.019750
+  delta_price_post = -0.085626
+
+Interpretation:
+1. During the boom window, fertility rises mechanically in both models.
+2. In the new model, post-shock prices are higher and post-shock fertility is lower than baseline.
+3. The old proxy does not deliver the same post-shock direction for prices.
+
+6) WHAT THIS DOES AND DOES NOT SHOW
+What it shows:
+- The extension is internally consistent with the mechanism:
+  baby-boom cohorts can tighten later housing politics and reduce later fertility,
+  conditional on calibration.
+
+What it does not show:
+- No causal empirical estimate yet for US fertility decline.
+- Not yet the full project-02 steady-state MATLAB stack in this repo copy
+  (upstream .mat dependencies missing).
+- Immigration and migration composition effects are not yet estimated.
+
+7) EMPIRICAL IMPLEMENTATION: US FERTILITY PANEL
+Immediate objective:
+Test whether the model-implied dynamic pattern appears in US data once migration/immigration
+composition is handled explicitly.
+
+Panel target:
+- Geography-time: county-year or MSA-year panel (state-year fallback)
+- Outcomes: age-specific fertility rates, first-birth timing proxies, cohort-completed fertility proxies
+- Housing: permits, completions/unit mix, price/rent indices, reform timing
+- Demographics: migration flows and foreign-born share changes by age cohort
+
+Identification:
+1. Staggered event study around housing-supply reforms.
+2. Political close-election design where feasible.
+3. Geographic-supply IV as complementary margin.
+
+Baseline estimators will include immigration/cohort decomposition terms so fertility changes are
+not conflated with compositional shifts.
+
+8) CONCLUSION
+This is a separate paper built on the NIMBY framework with one core extension:
+endogenous fertility and lagged demographic-political feedback. The current model delivers
+a plausible mechanism in which temporary baby booms can worsen later housing-supply politics
+and reduce subsequent fertility. The next stage is empirical discipline using a US panel with
+explicit immigration-aware cohort accounting.

@@ -1,0 +1,27 @@
+﻿% Core equations for triple-lock relative-price mechanism
+\begin{align}
+U_g &= \alpha_g \ln C_{gN} + (1-\alpha_g)\ln C_{gT}, \quad g\in\{W,P\}, \quad \alpha_P > \alpha_W \\
+P_N C_{gN} + P_T C_{gT} &= Y_g \\
+C_{gN} &= \frac{\alpha_g Y_g}{P_N}, \qquad C_{gT} = \frac{(1-\alpha_g)Y_g}{P_T}
+\end{align}
+
+\begin{align}
+D_N(P_N;B,\tau) &= \frac{n_W\alpha_W Y_W(\tau) + n_P\alpha_P B}{P_N} \\
+S_N(P_N) &= D_N(P_N;B,\tau)
+\end{align}
+
+With implicit differentiation of equilibrium in sector $N$:
+\begin{align}
+\frac{dP_N}{dB} = -\frac{\partial F/\partial B}{\partial F/\partial P_N}
+\quad \text{where} \quad
+F(P_N,B,\tau) \equiv S_N(P_N) - D_N(P_N;B,\tau).
+\end{align}
+
+If $S_N'(P_N)>0$ and $\partial D_N/\partial B > 0$, then $dP_N/dB>0$.
+
+Payroll-tax cost channel (reduced form):
+\begin{align}
+mc_N &= \frac{w(1+\tau_{pay})}{A_N}, \\
+P_N &= \mu_N \cdot mc_N
+\end{align}
+so $\partial P_N/\partial \tau_{pay} > 0$ for given markup $\mu_N$.

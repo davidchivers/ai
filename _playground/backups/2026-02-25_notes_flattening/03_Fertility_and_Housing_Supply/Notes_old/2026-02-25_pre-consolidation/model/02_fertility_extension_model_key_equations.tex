@@ -1,0 +1,236 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Fertility Extension of the NIMBY Model: Key Equations and Equilibrium}
+\author{Project 03: Fertility and Housing Supply}
+\date{February 19, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Purpose}
+This note writes a minimal fertility extension of the existing NIMBY model, using only key equations. Equations inherited from the NIMBY paper are kept compact, and each new equation is flagged as a difference.
+
+\section{Baseline Block Carried from NIMBY (unchanged)}
+
+\textbf{(B1) Preferences over consumption and housing services:}
+\begin{equation}
+U = \sum_{j=0}^{J}\beta^{j-1}u(c_j,h_j) + \beta^J v(w_{J+1}),
+\qquad
+u(c,h)=\frac{\left(c^{1-\zeta}h^{\zeta}\right)^{1-\gamma}}{1-\gamma}.
+\end{equation}
+
+\textbf{(B2) Housing politics / voting condition (median-voter implementation):}
+\begin{equation}
+\frac{\partial V_j(a_t,h_t^{own},z_t)}{\partial p_t} + \sigma \ge 0,
+\end{equation}
+with equilibrium house price pinned down by the median voter's indifference condition.
+
+\textbf{(B3) Rental-pricing / housing market block and household budget constraints:}
+unchanged from the NIMBY baseline implementation.
+
+\section{Fertility Extension: Core New Equations}
+
+\subsection*{Difference 1: Household utility with children at home}
+Use children-at-home, not total births:
+\begin{equation}
+\label{eq:flow_new}
+ u_t
+=
+\frac{\left(c_t^{1-\zeta}h_{t,\text{eff}}^{\zeta}\right)^{1-\gamma}}{1-\gamma}
++
+\chi\frac{n_{t,\text{home}}^{1-\eta}}{1-\eta},
+\qquad
+h_{t,\text{eff}}=\frac{h_t}{(1+\lambda n_{t,\text{home}})^{\psi}}.
+\end{equation}
+This is Candidate 2 with crowding and direct child utility.
+
+\subsection*{Difference 2: Fertility choice in household problem}
+At fertile ages, choose births $b_t \in \{0,1,2,\dots,\bar b\}$ (or continuous if needed):
+\begin{equation}
+V_t(s_t)=\max_{c_t,a_{t+1},h_{t+1},b_t}\left\{u_t + \beta E_t[V_{t+1}(s_{t+1})]\right\}
+\end{equation}
+subject to baseline budget/borrowing constraints plus child cost term
+\begin{equation}
+\label{eq:child_cost}
+ c_t + q_t^h h_{t+1} + a_{t+1} + \kappa(b_t,n_{t,\text{home}})
+\le y_t + (1+r_t)a_t + \text{housing cash-flow terms}.
+\end{equation}
+
+\subsection*{Difference 2a: Partner formation timing (baseline restriction)}
+Partner formation is exogenous with age-specific hazard \(m_j\). The period sequence is:
+\[
+\text{partner state realized} \rightarrow \text{fertility choice} \rightarrow \text{consumption/housing/saving choices}.
+\]
+To keep identification clean in the baseline, we do \emph{not} model endogenous matching or rich dual-earner composition effects. This prevents two channels (partner-income effects and housing-crowding effects) from being mixed in the first implementation.
+
+\subsection*{Difference 3: Children leave home dynamics}
+Deterministic benchmark with leaving age $A_{leave}\in\{18,19\}$:
+\begin{align}
+N_{0,t+1} &= b_t, \\
+N_{a+1,t+1} &= N_{a,t}, \quad a=0,\dots,A_{max}-1, \\
+n_{t,\text{home}} &= \sum_{a=0}^{A_{leave}-1}N_{a,t}.
+\end{align}
+Optional robustness: stochastic departure probabilities (boomerang extension).
+
+\subsection*{Difference 4: Endogenous generation size (demographic law of motion)}
+Let $M_{j,t}$ be mass of households age $j$ at date $t$, and $\ell_j$ survival to next age:
+\begin{align}
+M_{j+1,t+1} &= \ell_j M_{j,t}, \quad j=1,\dots,J-1, \\
+M_{1,t+1} &= \sum_{j\in\mathcal F} f_j\,M_{j,t},
+\end{align}
+where $f_j$ is average births per household of age $j$ implied by policy functions.
+
+Aggregate fertility (model counterpart of TFR-like moment):
+\begin{equation}
+\bar n_t = \frac{\sum_{j\in\mathcal F} f_j M_{j,t}}{\sum_{j\in\mathcal F} M_{j,t}}.
+\end{equation}
+
+\section{Political-Economy Equilibrium with Endogenous Fertility}
+
+Relative to baseline NIMBY, fertility changes equilibrium through two channels:
+\begin{itemize}
+\item \textbf{Current demand channel:} higher $n_{t,\text{home}}$ raises crowding costs and shifts tenure/housing demand.
+\item \textbf{Future voting-mass channel:} $\bar n_t$ changes future cohort masses $M_{j,t+k}$, altering the future median voter and thus future endogenous supply/price outcomes.
+\end{itemize}
+
+Hence, the transition equilibrium is a fixed point over:
+\begin{equation}
+\{p_t,r_t,\text{policy}_t,M_t\}_{t\ge0}
+\end{equation}
+such that (i) household optimality holds, (ii) market clearing holds, (iii) voting equilibrium holds each $t$, and (iv) demographics evolve via endogenous fertility decisions.
+
+\section{Convergence and Stationarity: What Changes}
+
+\subsection*{1) Why convergence becomes harder}
+In baseline NIMBY, demographics are exogenous, so the equilibrium loop is mainly over prices/policies given a fixed population structure. In this extension, demographics are endogenous because fertility choices today change the future age distribution.
+
+This does \textbf{not} require strategic voting coalitions or rational expectations. Even with the same reduced-form expectations as baseline, convergence can still be slower because the model now solves a joint system:
+\begin{itemize}
+\item prices and voting outcomes given current demographics,
+\item demographics next period given current fertility decisions,
+\item then back to prices with the updated demographic composition.
+\end{itemize}
+
+So the numerical difficulty comes from an additional endogenous state transition (population composition), not from strategic behavior.
+
+Key feedback loop:
+\begin{align}
+\text{housing price path}
+&\rightarrow \text{fertility decisions}
+\rightarrow \text{future age distribution} \nonumber\\
+&\rightarrow \text{future voting coalitions}
+\rightarrow \text{housing price path}.
+\end{align}
+
+\subsection*{2) Practical equilibrium concept}
+Use a \textbf{transition equilibrium} from an initial demographic state, with demographic dynamics solved jointly with prices/voting. For long-run analysis:
+\begin{itemize}
+\item \textbf{Stationary normalized equilibrium:} normalize by total adult population if level population drifts.
+\item \textbf{Balanced-growth demographic equilibrium:} if population growth converges to constant $g_M$, solve in per-capita terms.
+\end{itemize}
+
+\subsection*{3) Sufficient discipline for numerical convergence}
+For tractable and stable computation, impose/target:
+\begin{itemize}
+\item bounded fertility choices $b_t\in[0,\bar b]$,
+\item concavity in fertility utility ($\eta>0$) and convex child costs $\kappa(\cdot)$,
+\item demographic update map with locally stable fixed point in normalized shares,
+\item damping in outer fixed-point iterations over demographic paths.
+\end{itemize}
+
+\subsection*{4) Minimal algorithm (high-level)}
+\begin{enumerate}
+\item Guess a path for demographic shares and prices.
+\item Solve household problem with fertility choice and children-at-home states.
+\item Aggregate births to update $M_{t+1}$.
+\item Recompute voting equilibrium and market clearing prices.
+\item Iterate until both prices and demographic paths converge.
+\end{enumerate}
+
+\section{What Else Is Needed Before Coding}
+
+\begin{enumerate}
+\item \textbf{Definition of fertility (\(n\)):} keep this simple. Let \(n_t\) be births per fertile household in period \(t\), and target one empirical fertility moment first (a period TFR-style moment).
+\item \textbf{Partner-formation block:} keep exogenous hazard \(m_j\) by age and realize partner status before fertility choice. Treat endogenous matching and rich two-earner channels as a later extension.
+\item \textbf{Child-cost structure:} choose reduced-form cost $\kappa$ (time + goods) consistent with calibration data availability.
+\item \textbf{Normalization for convergence:} check convergence in per-adult (or per-household) terms and age shares, not only in levels, so population growth does not look like non-convergence.
+\end{enumerate}
+
+\section{Version 0 Computational Algorithm (MATLAB-aligned)}
+This implementation is designed to layer onto the current project-02 solver structure in
+\texttt{Code/steadystate/}, especially \texttt{SolveSS.m}, \texttt{SolveSS\_iter.m},
+\texttt{ClearMarkets.m}, and \texttt{Code\_transition\_matrix.m}.
+
+\subsection*{State extension}
+Extend the current household state to include children-at-home:
+\[
+s_t=(a_t,h_t,z_t,j_t,n_{t,\text{home}}).
+\]
+
+\subsection*{Outer fixed point objects}
+At outer iteration \(q\), track:
+\[
+\mathcal X^{(q)}=\{p_t^{(q)},r_t^{(q)},M_t^{(q)}\}_{t=0}^{T_{sim}}.
+\]
+
+\subsection*{Algorithm steps}
+\begin{enumerate}
+\item \textbf{Household solve (modified \texttt{SolveSS\_iter}-style):}
+Given \(\mathcal X^{(q)}\), solve the dynamic program with fertility choice and store policy functions
+\(\Gamma(\mathcal X^{(q)})=\{c_t^*,a_{t+1}^*,h_{t+1}^*,b_t^*\}\), plus the voting derivative object \(dV/dp\).
+
+\item \textbf{Forward density + births (new block):}
+Propagate the cross-sectional distribution with fertility transitions and compute aggregate births
+\[
+B_t^{(q)}=\int b_t^*(s)\,d\mu_t^{(q)}(s).
+\]
+
+\item \textbf{Demographic update (new block):}
+Update cohort masses:
+\[
+M_{1,t+1}^{(q+1)}=B_t^{(q)},\qquad
+M_{j+1,t+1}^{(q+1)}=\ell_j M_{j,t}^{(q+1)}.
+\]
+Use normalized cohort shares in market-clearing and voting updates for numerical stability.
+
+\item \textbf{Voting + prices (current \texttt{ClearMarkets} logic with new weights):}
+Recompute political equilibrium and market-clearing prices using updated demographic weights.
+
+\item \textbf{Damped update:}
+\[
+\mathcal X^{(q+1)}=(1-\xi)\mathcal X^{(q)}+\xi\,\widehat{\mathcal X}^{(q+1)},\qquad 0<\xi\le1.
+\]
+
+\item \textbf{Convergence criteria:}
+Stop when all are below tolerance:
+\[
+\max_t|p_t^{(q+1)}-p_t^{(q)}|,\quad
+\max_t\|M_t^{(q+1)}-M_t^{(q)}\|,\quad
+\max_t|B_t^{(q+1)}-B_t^{(q)}|.
+\]
+\end{enumerate}
+
+\subsection*{Suggested file plan}
+\begin{enumerate}
+\item Add \texttt{SolveSS\_iter\_fertility.m} (household DP + fertility control).
+\item Add \texttt{UpdateDemographics\_fertility.m} (birth aggregation + cohort mass transition).
+\item Add \texttt{ClearMarkets\_fertility.m} (outer fixed point over prices and demographics).
+\item Keep a coarse-grid test mode first (small state space, short horizon) before full calibration runs.
+\end{enumerate}
+
+\section*{Numerical caution}
+With endogenous fertility, the young-renter share can move voting outcomes strongly, which can induce oscillatory transitions. In practice, damping and population-share normalization are central for stable convergence.
+
+\section*{Bottom Line}
+The fertility extension is feasible with limited disruption to the NIMBY core if we: (i) keep the housing-voting block unchanged, (ii) add children-at-home utility/cost terms, (iii) explicitly evolve cohort masses through endogenous births, and (iv) solve equilibrium as a joint price-demography fixed point.
+
+\end{document}

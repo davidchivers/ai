@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\setlength{\emergencystretch}{3em}
+
+\title{Empirical Literature Review Note: Housing Supply and Fertility\\(Economics-First, Causal Evidence Focus)}
+\author{Project 03: Fertility and Housing Supply}
+\date{February 20, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Scope and rule}
+This note focuses on empirical economics evidence with attention to causal identification. It is based on verified local PDFs in:
+\begin{itemize}
+    \item \path{projects/03_fertility_and_housing_supply/literature/}
+\end{itemize}
+Theoretical models are intentionally deferred to a follow-up note.
+
+\section{Bottom line for your concern (weak empirical footing)}
+The strongest direct fertility-housing empirical evidence in the current local folder is \textbf{Couillard (2025, JMP)}. Most other high-quality empirical papers in the folder identify the housing \emph{supply-to-price} link rather than \emph{price-to-fertility} directly. 
+
+So the empirical chain is currently:
+\begin{enumerate}
+    \item supply constraints/upzoning $\rightarrow$ prices/quantities (strong evidence),
+    \item prices/composition $\rightarrow$ fertility (promising but thinner in this local set).
+\end{enumerate}
+
+\section{Empirical economics evidence (causal design first)}
+\subsection*{A. Direct housing--fertility evidence}
+\textbf{Couillard (2025), ``Build, Baby, Build: How Housing Shapes Fertility'' (JMP).} \\
+From the abstract in the local draft: the paper estimates a dynamic joint housing-fertility model using U.S. Census Bureau data, allows location and unit-size choices, and runs policy/supply counterfactuals. Reported magnitudes include: housing-cost increases since 1990 explaining 11\% fewer children, 51\% of the 2000s-to-2010s TFR decline, and 7 percentage points fewer young families; supply shifts for large units produce 2.3x the births of equal-cost shifts for small units.
+
+\textbf{Identification assessment:} this is structural causal quantification (model-based counterfactual variation in costs/supply), not a reduced-form natural experiment. It is directly relevant to your project because unit size enters as a central mechanism.
+
+\subsection*{B. Housing supply constraints and price transmission (upstream causal block)}
+\textbf{Saiz (2010, QJE).} \\
+Uses predetermined geographic constraints (terrain and water) to characterize local supply elasticities and shows strong heterogeneity in supply responsiveness across U.S. metros.
+
+\textbf{Identification assessment:} quasi-exogenous geography provides credible variation for supply constraints.
+
+\textbf{Hilber and Vermeulen (2012 working paper version in local folder).} \\
+Panel of English local planning authorities (1974--2008). Uses policy reform variation, vote shares, and historical density as instruments for endogenous local constraints. Finds constraints amplify house-price responses to demand and reports large long-run price effects.
+
+\textbf{Identification assessment:} explicit IV strategy targeting endogeneity of regulatory constraints.
+
+\textbf{Freemark (2019, Urban Affairs Review).} \\
+Difference-in-differences around Chicago upzoning that increased allowed density and reduced parking requirements in ways described as exogenous to neighborhood development plans. Finds higher land/condo prices but no significant increase in permitted units over five years.
+
+\textbf{Identification assessment:} local policy quasi-experiment with transparent DiD design; informative about implementation frictions and short-run quantity effects.
+
+\subsection*{C. Demographic pressure and prices (reverse-direction benchmark)}
+\textbf{Francke and Korevaar (2022, SSRN draft in local folder).} \\
+Documents that birth-rate variation predicts house prices decades later (1 pp higher birth rate associated with 4--5\% higher prices 25--30 years later), with limited effects on rents.
+
+\textbf{Identification assessment:} strong long-horizon reduced-form evidence on demography $\rightarrow$ house prices. For your project, this is useful as a dynamic background fact, not direct evidence of prices $\rightarrow$ fertility.
+
+\section{What this implies for the NIMBY-fertility paper}
+\begin{enumerate}
+    \item You can already claim strong empirical support for the \textbf{supply-constraint-to-price} link from Saiz, Hilber--Vermeulen, and Freemark.
+    \item You now have a directly relevant fertility paper (Couillard) linking \textbf{housing affordability/composition to fertility outcomes} with structural causal counterfactuals.
+    \item The remaining empirical vulnerability is a shortage of reduced-form causal papers that cleanly estimate \textbf{housing-cost shocks on fertility timing/completed fertility}. [INFERRED -- based on current local folder contents]
+\end{enumerate}
+
+\section{Brief note on non-economics literatures}
+There is broader work in sociology/demography/policy on housing affordability and delayed family formation, but this note does not rely on it because your criterion is rigorous causal economics evidence.
+
+\section{Verification table}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.24\textwidth} p{0.25\textwidth} p{0.34\textwidth} p{0.12\textwidth}}
+\toprule
+Paper & Key claim (from source) & Relevance to current paper & Confidence \\
+\midrule
+Couillard (2025) & Housing costs and housing-unit composition materially affect fertility in structural counterfactuals; large-unit supply shifts produce larger fertility responses. & Direct evidence for the core mechanism (housing costs/supply composition $\rightarrow$ fertility). & High \\
+Saiz (2010) & Geography strongly shapes local housing supply elasticity. & Provides causal/credible upstream supply elasticity block for your mechanism. & High \\
+Hilber \& Vermeulen (2012 WP) & Regulatory constraints causally amplify house-price responses to demand in England. & Directly useful for UK-style regulatory channel from planning constraints to affordability. & High \\
+Freemark (2019) & Upzoning raised values but did not raise permitted units in short run. & Shows that easing regulation may have delayed quantity effects; important for transitional dynamics in empirical motivation. & High \\
+Francke \& Korevaar (2022) & Birth-rate changes predict future house-price cycles. & Useful dynamic complement; highlights two-way demography-housing interactions. & Medium \\
+\bottomrule
+\end{tabular}
+
+\section{Next empirical priority (before theory note)}
+To tighten the empirical section further, add 2--4 reduced-form papers that estimate fertility responses to plausibly exogenous housing-cost shocks, then separate your evidence discussion into:
+\begin{itemize}
+    \item \textbf{Direct fertility effects} (price/rent/supply shocks on births),
+    \item \textbf{Upstream housing-supply effects} (regulation/geography/policy on prices and unit mix).
+\end{itemize}
+
+\end{document}

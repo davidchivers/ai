@@ -1,0 +1,14 @@
+﻿.claude
+01_Necessity_Entrepreneurs
+02_nimbyism_and_housing_supply
+03_fertility_and_housing_supply
+04_tuition_fees
+05_learning_by_viewing
+06_accents_and_dialects
+07_michelin_cuisine_innovation_diffusion
+ai_sci_word
+ai_sci_word_bibtex
+book
+department_admin_project
+durham_data_lab
+teaching
