@@ -1,0 +1,57 @@
+# Work log
+
+## 2026-03-08
+
+- Created isolated `data_laptop/` sidecar folder to avoid interfering with the canonical project status pipeline.
+- Locked the first-pass measurement choice for the motivation figure:
+  - `0 employees`: Census Nonemployer Statistics (`NESTAB`) for total US nonemployer establishments.
+  - `1-4`, `5-19`, `20+ employees`: Census Business Dynamics Statistics establishment counts (`ESTAB`) by establishment employment size.
+- Date-range target: `1997-2022` unless a source-quality issue forces narrowing.
+- Reason for using establishment counts rather than firm counts:
+  - the `0 employees` series is naturally available as nonemployer establishments,
+  - establishment counts are the cleaner like-for-like match for combining zero-employee and positive-employment bins in one line figure.
+- Pending:
+  - inspect the first figure and decide whether the draft should use levels or index form.
+
+- Added reproducible pull script:
+  - `pull_us_business_size_cycle_data.py`
+- Generated first clean sidecar artifacts:
+  - `us_business_counts_by_size_annual.csv`
+  - `us_business_counts_by_size_indexed.png`
+- Drafted literature note:
+  - `firm_creation_business_cycle_literature_review.md`
+- Data choices implemented in the first pass:
+  - annual range: `1997-2022`,
+  - recession measure: FRED `USREC`, aggregated to an annual any-recession flag,
+  - `5-19 employees` built as `5-9` plus `10-19`,
+  - `20+ employees` built as `20-499` plus `500+`.
+- First-pass pattern check from the annual dataset:
+  - over `2007-2010`, `0 employees` rises by about `1.9%`,
+  - `1-4` falls by about `3.6%`,
+  - `5-19` falls by about `2.6%`,
+  - `20+` falls by about `5.8%`.
+- Provisional interpretation:
+  - the initial series already supports the idea that recession-era growth is concentrated on the smallest or own-account margin rather than on larger employer establishments.
+- Added companion outputs from the same script:
+  - `us_business_counts_by_size_levels.png`
+  - `us_business_counts_by_size_shares.png`
+  - `recession_window_changes.csv`
+  - `recession_window_changes.md`
+- Current read on figure usefulness:
+  - `us_business_counts_by_size_indexed.png` is the best single chart for a first paper motivation figure,
+  - `us_business_counts_by_size_shares.png` is the best companion chart if we want the composition shift made explicit.
+- Added literature-structure outputs:
+  - `firm_creation_business_cycle_literature_matrix.csv`
+  - `motivation_framing_note.md`
+- Suggested next sidecar extension:
+  - add a separate person-level CPS self-employment series or a clean business-formation flow series, but keep those in separate figures rather than mixing units.
+- Added aggregate companion outputs:
+  - `us_business_counts_aggregate_indexed.png`
+  - `aggregate_recession_window_changes.tex`
+- Aggregate interpretation lock:
+  - for `2007-2010`, the all-bin tracked total rises only about `0.5%`,
+  - but the employer total falls about `3.6%`,
+  - so a single aggregate count can hide the shift from employer establishments toward zero-employee activity.
+- Formatting note:
+  - PNG remains the default figure output for now,
+  - a small `.tex` table is now also generated for recession-window aggregates so the sidecar already contains a paper-ready LaTeX fragment.
