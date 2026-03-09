@@ -1,8 +1,102 @@
-# Project Memory - Necessity Entrepreneurs
+﻿# Project Memory - Necessity Entrepreneurs
 
 Most recent session first.
 
 ---
+
+### Session: 2026-03-06 (self-employment closure benchmark + employer-threshold test)
+- Clarified the self-employment failure benchmark and coded/ran two main self-employment benchmark cases in:
+  - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/main_2025_v1_case113_self_employment.cpp`
+- `case 146` now means:
+  - self-employment root active,
+  - entrepreneur closure risk active,
+  - closure preserves current-period entrepreneurial income,
+  - closure sends the household to the non-UI unemployment state,
+  - `25%` partial capital loss on failure.
+- `case 146` baseline run:
+  - log: `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_se146_baseline_caploss025_m40_20260306_154805.log`
+  - final outcomes:
+    - `best_tol = 0.00366586`
+    - `entr_share = 0.17872`
+    - self-employed share among entrepreneurs `= 0.438675`
+    - employer share among entrepreneurs `= 0.561325`
+    - `n_entrepreneur avg = 6.07554`
+    - `k_entrepreneur avg = 97.4221`
+- Matched policy checks for `case 146`:
+  - `UI=0.05`:
+    - `calibration/ai_calibration/runtime/data/output/case_1/run_ui_005_se146_ui005_caploss025_m40_20260306_160236.log`
+    - final outcomes:
+      - `best_tol = 0.00638394`
+      - `entr_share = 0.28679`
+      - self-employed share among entrepreneurs `= 0.572126`
+      - employer share among entrepreneurs `= 0.427874`
+  - `UI=0.00`:
+    - `calibration/ai_calibration/runtime/data/output/case_1/run_ui_000_se146_ui000_caploss025_m40_20260306_160236.log`
+    - final outcomes:
+      - `best_tol = 0.0113072`
+      - `entr_share = 0.33784`
+      - self-employed share among entrepreneurs `= 0.637314`
+      - employer share among entrepreneurs `= 0.362686`
+- Interpretation of `case 146`:
+  - this branch is much more credible than the no-risk self-employment baseline;
+  - lower UI raises entrepreneurship mainly through more self-employment and lower average firm scale;
+  - baseline still looked too employer-heavy, which motivated testing an employer-threshold cost.
+- Added `case 147 = case 146 + f_hire`:
+  - `self_employment_hiring_fixed_cost = 0.25`
+  - intended interpretation: a discrete employer-threshold cost on top of smooth hiring/search cost `kappa`
+- `case 147` baseline run:
+  - log: `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_se147_baseline_caploss025_fhire025_m40_20260306_162657.log`
+  - final outcomes:
+    - `best_tol = 0.00803501`
+    - `entr_share = 0.17805`
+    - self-employed share among entrepreneurs `= 0.576804`
+    - employer share among entrepreneurs `= 0.423196`
+    - `n_entrepreneur avg = 6.15868`
+    - `k_entrepreneur avg = 98.1596`
+- Key inference:
+  - `f_hire` barely changes total entrepreneurship,
+  - but it moves composition materially toward more self-employment and fewer employers,
+  - so `case 147` is a promising next benchmark candidate.
+- Literature/provenance work:
+  - added `notes/12_failure_timing_capital_loss_and_legal_form.md`
+  - added `notes/13_employer_threshold_cost.md`
+  - source chain recorded there:
+    - Cockx and Desiere (2024) on the first employee,
+    - Guo and Wallskog (2025) on new-employer payroll taxes,
+    - Harju, Matikka, and Rauhanen (2019) on compliance costs,
+    - Blatter, Muehlemann, and Schenker (2012) as broader hiring-cost evidence and caution.
+- Paper draft update:
+  - `drafts/necessity_entrepreneurship_self_employed.lyx` now explicitly includes `f_hire` in the calibration discussion and parameter table
+  - wording states clearly that `f_hire` is an evidence-motivated experimental choice, not a directly estimated structural parameter.
+
+### Session: 2026-03-05 (post-fix proper UI experiment set + draft update)
+- Ran the corrected case-101 endogenous-tax UI ladder under matched settings (`SingleCase=101`, `MaxIterAgg=40`, `RngSeed=12345`, `-SkipCompile`):
+  - baseline (`UI=0.40`): `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_endog101_baseline_m40_uioverridefix_20260305_20260305_145040.log`
+  - low UI (`UI=0.05`): `calibration/ai_calibration/runtime/data/output/case_1/run_ui_005_endog101_ui005_m40_uioverridefix_20260305_20260305_150731.log`
+  - no UI (`UI=0.00`): `calibration/ai_calibration/runtime/data/output/case_1/run_ui_000_endog101_ui000_m40_uioverridefix_20260305_20260305_145727.log`
+- Key outcomes (baseline -> low UI -> no UI):
+  - `entr_share`: `0.07884 -> 0.07944 -> 0.08466`
+  - equilibrium `tau_y`: `0.01812 -> 0.00277 -> 0.00066`
+  - `total_lower_out`: `8994.34 -> 1092.55 -> 0`
+  - final `theta_new`: `0.61111 -> 0.62802 -> 0.61191` (little change baseline vs no-UI)
+- By-education firm-size moments (mean entrepreneur `n`):
+  - low: `8.9299 -> 8.7125 -> 5.6389`
+  - medium: `12.0528 -> 11.6187 -> 10.8825`
+  - high: `21.5651 -> 21.9708 -> 21.6084`
+  - interpretation: scale contraction is concentrated in low/medium education groups; high-education scale is nearly unchanged.
+- Saved experiment artifacts:
+  - `notes/endog101_ui005_m40_uioverridefix_opt_n_diff_edu_2026-03-05.txt`
+  - `notes/endog101_ui005_m40_uioverridefix_state_change_occp_insim_2026-03-05.txt`
+  - `notes/endog101_postfix_ui_ladder_comparison.md`
+- Updated draft tables to post-fix case-101 values:
+  - `drafts/tables/baseline_vs_low_ui_endogenous.tex`
+  - `drafts/tables/baseline_vs_no_ui_endogenous.tex`
+  - added `drafts/tables/firm_size_by_education_postfix_case101.tex`
+  - inserted new firm-size table in `drafts/necessity_entrepreneurship.lyx`
+- LyX PDF build:
+  - added local `drafts/placeins.sty` fallback for compile reliability.
+  - built PDF with LyX batch export:
+    - `drafts/necessity_entrepreneurship.pdf` (updated `2026-03-05 15:18`).
 
 ### Session: 2026-03-02 (continued case-51 ladder on model 5.1)
 - Confirmed active runner remains on model 5.1:
@@ -268,51 +362,51 @@ Most recent session first.
   - move `.tex` exports to archive source paths
   - move LaTeX/BibTeX build artifacts to archive build paths
 - Necessity paths now:
-  - `projects/01_necessity_entrepreneurs/drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
-  - `projects/01_necessity_entrepreneurs/slides/old_slides/source_tex/necessity_entrepreneurship_slides.tex`
-  - `projects/01_necessity_entrepreneurs/drafts/old_drafts/build_artifacts/`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/old_slides/source_tex/necessity_entrepreneurship_slides.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/build_artifacts/`
 - Added reusable cleanup script:
   - `_shared/scripts/hide_tex_and_artifacts.ps1`
 - Updated reference-flag sync script to target archived TeX:
-  - `projects/01_necessity_entrepreneurs/scripts/sync_reference_flags.ps1`
+  - `research_projects/01_Necessity_Entrepreneurs/scripts/sync_reference_flags.ps1`
 
 ### Session: 2026-02-25 (drafts and slides structure standardization)
 - Standardized latest draft files (no version suffix) in `drafts/`:
-  - `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.lyx`
-  - `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.tex`
-  - `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.lyx`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.pdf`
 - Standardized latest slide files (no version suffix) in `slides/`:
-  - `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.lyx`
-  - `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.tex`
-  - `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.lyx`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
 - Standardized archive structure:
-  - `projects/01_necessity_entrepreneurs/drafts/old_drafts/`
-  - `projects/01_necessity_entrepreneurs/slides/old_slides/`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/old_slides/`
 - Preserved legacy root/temporary files under:
-  - `projects/01_necessity_entrepreneurs/drafts/old_drafts/legacy_pre_standardization/`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/legacy_pre_standardization/`
 
 ### Session: 2026-02-25 (checklist format switch + naming preference)
 - Replaced dated markdown reference checklist with single-file Excel-friendly CSV workflow:
-  - `projects/01_necessity_entrepreneurs/literature/checklist/reference_checklist.csv` (single source file)
+  - `research_projects/01_Necessity_Entrepreneurs/literature/checklist/reference_checklist.csv` (single source file)
   - `confirm_yn` values: `Y/Yes` = done; blank or `N` = open
   - open-item view handled directly in Excel via column filter (no second CSV, no script)
 - Folder organization cleanup for paper workflow:
-  - moved `projects/01_necessity_entrepreneurs/docs/` to `projects/01_necessity_entrepreneurs/notes/`
+  - moved `research_projects/01_Necessity_Entrepreneurs/docs/` to `research_projects/01_Necessity_Entrepreneurs/notes/`
   - initially set canonical latest outputs in project root (`paper_latest.pdf`, `slides_latest.pdf`) [later superseded by drafts/slides standardization]
-  - moved temporary LyX export PDFs to `projects/01_necessity_entrepreneurs/drafts/old_drafts/`
+  - moved temporary LyX export PDFs to `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/`
 - Removed the prior markdown checklist file (superseded by CSV workflow).
 - Shared memory updated with global filename preference:
   - no date prefixes for working documents by default; use dated names only for explicit archives/backups or when requested.
 - Renamed literature verification artifacts to non-dated filenames:
-  - `projects/01_necessity_entrepreneurs/notes/legacy_literature_citation_verification.md`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_restore_report.csv`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_direct_attempts.csv`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_additional_attempts.csv`
-  - `projects/01_necessity_entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_citation_verification.md`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_restore_report.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_direct_attempts.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_additional_attempts.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
 
 ### Session: 2026-02-24 (AI calibration workspace + solver robustness patch)
 - Created isolated calibration workspace:
-  - `projects/01_necessity_entrepreneurs/calibration/ai_calibration/`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/`
   - copied source/header: `.../ai_calibration/cfv_red_final.cpp`, `.../ai_calibration/nr.h`
   - created runtime scaffold: `.../ai_calibration/runtime/data/input/cfv/`, `.../ai_calibration/runtime/data/output/`
 - Added setup/run tooling:
@@ -335,15 +429,15 @@ Most recent session first.
 - Installed MSYS2 and UCRT64 GCC toolchain for forward-running calibration:
   - `C:/msys64/ucrt64/bin/g++.exe` (`g++ 15.2.0`)
 - Updated AI run script compiler detection:
-  - `projects/01_necessity_entrepreneurs/calibration/ai_calibration/run_ai_calibration.ps1`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/run_ai_calibration.ps1`
   - now auto-detects and uses `C:/msys64/ucrt64/bin/g++.exe` even when `g++` is not on PATH.
 - Updated literature review draft to add explicit verification flags after each cited study:
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
   - added `[CHECK]` markers after five citations in `\\section{Literature Review}`.
 
 ### Session: 2026-02-23 (draft sync, affiliation fix, experiment-curve update, calibration triage)
 - Stabilized LyX/TeX/PDF workflow for active draft:
-  - Source: `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.lyx`
+  - Source: `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.lyx`
   - Synced export: `.../drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
   - Rebuilt PDF: `.../drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
 - Updated section-table placement to keep experiment tables attached to sections:
@@ -357,20 +451,20 @@ Most recent session first.
   - Dropbox main paper LyX: `C:/Users/Dave_/Dropbox/Necessity Entrepeneurs/Chivers et al. (2025) Necessity Entrepreneurship.lyx`
   - Dropbox coauthor package LyX: `C:/Users/Dave_/Dropbox/Necessity Entrepeneurs/David AI output/Coauthor_Package_2026-02-18/Chivers et al. (2025) Necessity Entrepreneurship.lyx`
 - Curve figures for current experiment set (7.1/7.2/7.3) generated from latest tables:
-  - `projects/01_necessity_entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.png/.pdf`
-  - `projects/01_necessity_entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.png/.pdf`
-  - `projects/01_necessity_entrepreneurs/figures/curve_transition_rates_current_experiments.png/.pdf`
-  - generator script: `projects/01_necessity_entrepreneurs/figures/generate_experiment_curves.py`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.png/.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.png/.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_transition_rates_current_experiments.png/.pdf`
+  - generator script: `research_projects/01_Necessity_Entrepreneurs/figures/generate_experiment_curves.py`
   - copied same files to Dropbox project `figures/`.
 - Slide comparison result:
-  - `projects/01_necessity_entrepreneurs/Slides_paper_v4.tex` and `Dropbox/.../Slides_v3.lyx` still use old case-based curve figures (`case_220/221/222/225/226`, `case_222_with_*`), not the new 7.1/7.2/7.3 experiment framing.
+  - `research_projects/01_Necessity_Entrepreneurs/Slides_paper_v4.tex` and `Dropbox/.../Slides_v3.lyx` still use old case-based curve figures (`case_220/221/222/225/226`, `case_222_with_*`), not the new 7.1/7.2/7.3 experiment framing.
 - Calibration debugging triage:
-  - recovered code into project tree: `projects/01_necessity_entrepreneurs/calibration/cfv_red_final.cpp` and `nr.h`.
+  - recovered code into project tree: `research_projects/01_Necessity_Entrepreneurs/calibration/cfv_red_final.cpp` and `nr.h`.
   - identified likely no-UI convergence issues in code (theta tolerance check, aggregate loop stability, missing guards).
   - full replication not run yet due missing compiler in session and missing required external inputs (`data/input/cfv/*`) plus hardcoded root path.
 
 ### Session: 2026-02-23 (literature restore + lit-review rewrite)
-- Restored project-local literature PDFs into `projects/01_necessity_entrepreneurs/literature/`:
+- Restored project-local literature PDFs into `research_projects/01_Necessity_Entrepreneurs/literature/`:
   - `buera_2009.pdf`
   - `fairlie_fossen_2019.pdf`
   - `hurst_pugsley_2011.pdf`
@@ -378,32 +472,32 @@ Most recent session first.
   - `poschke_2013_workingpaper_2012.pdf`
   - `cagetti_denardi_2006_workingpaper.pdf`
 - Rewrote `\\section{Literature Review}` in
-  `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
+  `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
   to rely on verified local PDF evidence.
 - Added citation verification artifacts:
-  - `projects/01_necessity_entrepreneurs/notes/legacy_literature_citation_verification.md`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_restore_report.csv`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_direct_attempts.csv`
-  - `projects/01_necessity_entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_citation_verification.md`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_restore_report.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_direct_attempts.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
 - Recompiled draft with bibliography:
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
 - Remaining gap: several cited keys still do not have exact-paper PDFs restored locally (tracked in `STATUS.md` and citation verification report).
 
 ### Session: 2026-02-23 (additional citation recovery pass)
 - Added additional local literature files:
-  - `projects/01_necessity_entrepreneurs/literature/sedlacek_sterk_2017_repository_version.pdf`
-  - `projects/01_necessity_entrepreneurs/literature/donovan_lu_schoellman_2020_sr596.pdf`
-  - `projects/01_necessity_entrepreneurs/literature/cagetti_denardi_2003_wp620.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/literature/sedlacek_sterk_2017_repository_version.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/literature/donovan_lu_schoellman_2020_sr596.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/literature/cagetti_denardi_2003_wp620.pdf`
 - Added archive subfolder for failed/non-PDF fetches:
-  - `projects/01_necessity_entrepreneurs/literature/old/2026-02-23_failed_downloads/`
+  - `research_projects/01_Necessity_Entrepreneurs/literature/old/2026-02-23_failed_downloads/`
 - Updated literature-review text to include `\\citet{sedlacek_sterk_2017}` after restoring repository full text.
 - Recompiled draft and bibliography:
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
 - Final targeted recovery pass confirmed no open exact-paper PDFs for:
   - `lucas_1978`, `evans_jovanovic_1989`, `hurst_lusardi_2004`, `mortensen_pissarides_1994`, `donovan_lu_schoellman_2023`, `cagetti_denardi_2006` (exact journal versions).
 
 ### Session: 2026-02-23 (single canonical status tracker)
-- Added canonical project tracker: `projects/01_necessity_entrepreneurs/STATUS.md`
+- Added canonical project tracker: `research_projects/01_Necessity_Entrepreneurs/STATUS.md`
 - Consolidated "where are we" and next-actions workflow into `STATUS.md`.
 - Set rule: future to-do/status updates should go to `STATUS.md` first (not new ad hoc lists).
 
@@ -420,7 +514,7 @@ Most recent session first.
 ### Session: 2026-02-19 (global BibTeX + dedicated literature review section)
 - Created shared bibliography: `_shared/references/global_references.bib`
 - Added `natbib` + bibliography wiring in paper draft:
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
 - Added dedicated `\\section{Literature Review}` with verified citations.
 - Recompiled PDF with bibliography rendered.
 
@@ -432,8 +526,8 @@ Most recent session first.
 ### Session: 2026-02-18 (math audit + code crosswalk)
 - Math audit run on full LyX file; 30 issues found
 - Referee response drafted and compiled: `referee/RESPONSE_TO_REFEREE.tex/.pdf`
-- CodeÃ¢â‚¬â€œpaper crosswalk of `cfv_red_final.cpp` completed
-- 10 discrepancies found (D1Ã¢â‚¬â€œD10); D1 fixed; D2Ã¢â‚¬â€œD10 require decisions
+- CodeÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“paper crosswalk of `cfv_red_final.cpp` completed
+- 10 discrepancies found (D1ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“D10); D1 fixed; D2ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“D10 require decisions
 
 ---
 
@@ -441,11 +535,11 @@ Most recent session first.
 
 | Role | Path |
 |---|---|
-| Paper source (TeX) | `projects/01_necessity_entrepreneurs/Chivers et al. (2025) Necessity Entrepreneurship.tex` |
-| C++ calibration code | `projects/01_necessity_entrepreneurs/calibration/cfv_red_final.cpp` |
-| Referee response (TeX) | `projects/01_necessity_entrepreneurs/referee/RESPONSE_TO_REFEREE.tex` |
-| Math audit report | `projects/01_necessity_entrepreneurs/referee/codeaudit_2026-02-18/CODE_REFEREE_REPORT.md` |
-| Figure scripts | `projects/01_necessity_entrepreneurs/figures/generate_enter_employed.py` |
+| Paper source (TeX) | `research_projects/01_Necessity_Entrepreneurs/Chivers et al. (2025) Necessity Entrepreneurship.tex` |
+| C++ calibration code | `research_projects/01_Necessity_Entrepreneurs/calibration/cfv_red_final.cpp` |
+| Referee response (TeX) | `research_projects/01_Necessity_Entrepreneurs/referee/RESPONSE_TO_REFEREE.tex` |
+| Math audit report | `research_projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/CODE_REFEREE_REPORT.md` |
+| Figure scripts | `research_projects/01_Necessity_Entrepreneurs/figures/generate_enter_employed.py` |
 
 ## Open decisions (as of 2026-02-18)
 
@@ -468,11 +562,11 @@ Most recent session first.
 | 221 | High unemployment insurance |
 | 222 | **Baseline** |
 | 225 | No unemployment (frictionless market) |
-| 226 | Unknown Ã¢â‚¬â€ ask Dave |
+| 226 | Unknown ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â ask Dave |
 
 ## Key conventions
 
-- TeX file is ~54k tokens; read in 400Ã¢â‚¬â€œ500 line chunks.
+- TeX file is ~54k tokens; read in 400ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“500 line chunks.
 - $i_w$ coding: paper uses 0=unemployed, 1=employed, 2=entrepreneur; code uses reverse (0=entrepreneur).
 - Build LaTeX in the `referee/` folder: `pdflatex RESPONSE_TO_REFEREE.tex`.
 - Do NOT commit `.aux`, `.log`, `.out` build artifacts.

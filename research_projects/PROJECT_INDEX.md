@@ -2,7 +2,7 @@
 
 Canonical location map after the 2026-03-01 reorganization.
 
-| Type | Name | Current Path | Previous Path |
+| Type | Name | Current Path | Legacy Path (historical only) |
 |---|---|---|---|
 | Paper | Necessity Entrepreneurs | `research_projects/01_Necessity_Entrepreneurs` | `projects/01_Necessity_Entrepreneurs` |
 | Paper | Nimbyism and Housing Supply | `research_projects/02_nimbyism_and_housing_supply` | `projects/02_nimbyism_and_housing_supply` |

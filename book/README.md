@@ -25,4 +25,4 @@ This is a co-authored book project for Tom and David. The structure is designed 
 - Do not put old versions in the root. Use `Resources/old/` for archives.
 - Keep this structure simple and tidy so it remains novice-proof.
 - Do not use wrapped placeholder markers in any draft; use explicit tags like `[TODO: clarify this claim]`.
-- Before handoff, run `powershell -ExecutionPolicy Bypass -File projects/book/resources/code/check_placeholders.ps1`.
+- Before handoff, run `powershell -ExecutionPolicy Bypass -File book/resources/code/check_placeholders.ps1`.

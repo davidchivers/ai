@@ -1,9 +1,13 @@
 param(
   [string]$DrivePath = "G:\My Drive\The Target Trap (Book Project)",
-  [string]$OutputPath = "C:\Users\Dave_\OneDrive\Desktop\Economics\projects\BOOK\GoogleDrive\INDEX.md"
+  [string]$OutputPath = ""
 )
 
 $ErrorActionPreference = "Stop"
+
+if (-not $OutputPath) {
+  $OutputPath = Join-Path $PSScriptRoot "INDEX.md"
+}
 
 if (-not (Test-Path -LiteralPath $DrivePath)) {
   throw "Drive path not found: $DrivePath"

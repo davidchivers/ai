@@ -5,7 +5,7 @@ Personal research workspace for economics paper projects, AI-assisted workflows,
 ## Structure
 
 ```
-Economics/
+<repo root>/
   research_projects/  <- mature paper-track research projects
   research_ideas/     <- early-stage speculative research ideas
   teaching/           <- teaching materials and workshops
@@ -39,6 +39,6 @@ Economics/
 
 ## Notes
 
-- This repository is local and synced via OneDrive.
+- This repository is a local Git clone; GitHub is the canonical sync point.
 - Rebuildable/temp artifacts are excluded by `.gitignore`.
 - Referee responses use the template in `_shared/templates/referee_response_template.tex`.

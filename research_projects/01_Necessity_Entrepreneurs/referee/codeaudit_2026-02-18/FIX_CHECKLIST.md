@@ -1,6 +1,6 @@
-# Fix Checklist (Coding)
+﻿# Fix Checklist (Coding)
 
-Status note (2026-02-23): Active project tracking has moved to projects/01_necessity_entrepreneurs/STATUS.md. Keep this file as supporting detail for coding fixes.
+Status note (2026-02-23): Active project tracking has moved to research_projects/01_Necessity_Entrepreneurs/STATUS.md. Keep this file as supporting detail for coding fixes.
 Status update (2026-02-24): Items marked "AI copy" are implemented in `calibration/ai_calibration/cfv_red_final.cpp` but not yet merged into canonical `calibration/cfv_red_final.cpp`.
 
 ## Critical

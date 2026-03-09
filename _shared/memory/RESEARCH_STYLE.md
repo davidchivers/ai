@@ -154,6 +154,8 @@ If asked "where are we?" or asked to write/update a to-do list, update `STATUS.m
 - Use WSL selectively as a utility environment when doing PDF-heavy tasks (for example, Linux text/PDF extraction tools).
 - For mixed workflows, keep core project execution (Stata/MATLAB/LyX and Windows-path scripts) in PowerShell and use WSL only for targeted utilities.
 - Naming convention preference: use underscores (`_`) in folder/file names; if the user writes names with spaces, interpret that as underscores unless explicitly told otherwise.
+- When the user says "wrap it up", "that's it for today", or equivalent, check Git state before stopping and recommend or perform the appropriate commit/push.
+- When a meaningful milestone is reached, flag it as a good push point rather than leaving the work stranded locally.
 
 ## Global User Preferences (VS Code Layout)
 

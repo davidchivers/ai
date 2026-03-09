@@ -56,3 +56,8 @@ book/resources/literature/*.pdf
 
 # Nested repo (kept separate)
 daaf/
+
+# Necessity project generated output
+research_projects/01_Necessity_Entrepreneurs/calibration/**/runtime/data/output/
+research_projects/01_Necessity_Entrepreneurs/data_laptop/build/
+research_projects/01_Necessity_Entrepreneurs/data_laptop/$build/

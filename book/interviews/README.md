@@ -90,22 +90,22 @@ python -m pip install pandas openpyxl
 
 ```powershell
 # 1) Drop files into G:\My Drive\The Target Trap (Book Project)\Interviews\Raw, then process one guest
-python projects/book/interviews/scripts/process_from_excel.py --name "Jonathan Wilson"
+python book/interviews/scripts/process_from_excel.py --name "Jonathan Wilson"
 
 # 2) Optional: run watcher for automatic processing of new files
-python projects/book/interviews/scripts/watcher_manager.py start
+python book/interviews/scripts/watcher_manager.py start
 
 # Check watcher status
-python projects/book/interviews/scripts/watcher_manager.py status
+python book/interviews/scripts/watcher_manager.py status
 
 # Stop watcher
-python projects/book/interviews/scripts/watcher_manager.py stop
+python book/interviews/scripts/watcher_manager.py stop
 
 # 3) If needed, manually ingest extra files
-python projects/book/interviews/scripts/ingest_files.py --interview "2026-02-25__JaneSmith__school-choice-evidence" --file "C:\path\interview_audio.m4a"
+python book/interviews/scripts/ingest_files.py --interview "2026-02-25__JaneSmith__school-choice-evidence" --file "C:\path\interview_audio.m4a"
 
 # 4) Refresh master index
-python projects/book/interviews/scripts/update_index.py
+python book/interviews/scripts/update_index.py
 ```
 
 ## Very Simple Workflow (what you actually do)

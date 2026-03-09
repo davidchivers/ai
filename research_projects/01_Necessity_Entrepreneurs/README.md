@@ -1,6 +1,8 @@
 # 01_Necessity_Entrepreneurs
 
-Canonical status tracker: `projects/01_necessity_entrepreneurs/STATUS.md`
+Canonical status tracker: `research_projects/01_Necessity_Entrepreneurs/STATUS.md`
+
+Coauthor handoff bundle: `research_projects/01_Necessity_Entrepreneurs/coauthor_handoff/`
 
 ## Project type
 
@@ -8,16 +10,16 @@ Paper-phase project (active draft + referee workflow).
 
 ## Where key files go
 
-- Latest paper PDF: `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.pdf`
-- Latest draft LyX: `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.lyx`
-- Draft TeX export archive: `projects/01_necessity_entrepreneurs/drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
-- Latest slides PDF: `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
-- Latest slides LyX: `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.lyx`
-- Slides TeX export archive: `projects/01_necessity_entrepreneurs/slides/old_slides/source_tex/necessity_entrepreneurship_slides.tex`
-- Referee material: `projects/01_necessity_entrepreneurs/referee/`
-- Calibration code: `projects/01_necessity_entrepreneurs/calibration/`
-- Notes and pre-paper artifacts: `projects/01_necessity_entrepreneurs/notes/`
-- Literature PDFs: `projects/01_necessity_entrepreneurs/literature/`
+- Latest paper PDF: `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.pdf`
+- Latest draft LyX: `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.lyx`
+- Draft TeX export archive: `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
+- Latest slides PDF: `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
+- Latest slides LyX: `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.lyx`
+- Slides TeX export archive: `research_projects/01_Necessity_Entrepreneurs/slides/old_slides/source_tex/necessity_entrepreneurship_slides.tex`
+- Referee material: `research_projects/01_Necessity_Entrepreneurs/referee/`
+- Calibration code: `research_projects/01_Necessity_Entrepreneurs/calibration/`
+- Notes and pre-paper artifacts: `research_projects/01_Necessity_Entrepreneurs/notes/`
+- Literature PDFs: `research_projects/01_Necessity_Entrepreneurs/literature/`
 
 ## Folder structure
 

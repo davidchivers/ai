@@ -1,7 +1,7 @@
-# Citation Verification - Necessity Entrepreneurs (2026-02-23)
+﻿# Citation Verification - Necessity Entrepreneurs (2026-02-23)
 
 Scope: citations currently used in the literature-review section of
-`projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`.
+`research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`.
 
 ## Verified from local `literature/` PDFs
 
@@ -15,15 +15,15 @@ Scope: citations currently used in the literature-review section of
 
 ## Files restored to `literature/`
 
-- `projects/01_necessity_entrepreneurs/literature/buera_2009.pdf`
-- `projects/01_necessity_entrepreneurs/literature/fairlie_fossen_2019.pdf`
-- `projects/01_necessity_entrepreneurs/literature/hurst_pugsley_2011.pdf`
-- `projects/01_necessity_entrepreneurs/literature/petrongolo_pissarides_2001_workingpaper_2000.pdf`
-- `projects/01_necessity_entrepreneurs/literature/poschke_2013_workingpaper_2012.pdf`
-- `projects/01_necessity_entrepreneurs/literature/cagetti_denardi_2006_workingpaper.pdf`
-- `projects/01_necessity_entrepreneurs/literature/sedlacek_sterk_2017_repository_version.pdf`
-- `projects/01_necessity_entrepreneurs/literature/donovan_lu_schoellman_2020_sr596.pdf`
-- `projects/01_necessity_entrepreneurs/literature/cagetti_denardi_2003_wp620.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/buera_2009.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/fairlie_fossen_2019.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/hurst_pugsley_2011.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/petrongolo_pissarides_2001_workingpaper_2000.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/poschke_2013_workingpaper_2012.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/cagetti_denardi_2006_workingpaper.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/sedlacek_sterk_2017_repository_version.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/donovan_lu_schoellman_2020_sr596.pdf`
+- `research_projects/01_Necessity_Entrepreneurs/literature/cagetti_denardi_2003_wp620.pdf`
 
 ## Still missing exact-paper PDFs for some existing BibTeX keys
 
@@ -37,11 +37,11 @@ Scope: citations currently used in the literature-review section of
 ## Notes
 
 - Supporting extraction snippets were saved to:
-  - `projects/01_necessity_entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_verified_pdf_snippets.txt`
 - Automated restore attempts were logged to:
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_restore_report.csv`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_direct_attempts.csv`
-  - `projects/01_necessity_entrepreneurs/notes/literature/pdf_additional_attempts.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_restore_report.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_direct_attempts.csv`
+  - `research_projects/01_Necessity_Entrepreneurs/notes/literature/pdf_additional_attempts.csv`
 - Final targeted pass outcome:
   - Remaining unresolved exact-paper items above appear closed/restricted in current source endpoints (publisher paywalls or blocked anti-bot pages).
   - Best-available open precursors are restored locally for `cagetti_denardi_2006` and `donovan_lu_schoellman_2023`.

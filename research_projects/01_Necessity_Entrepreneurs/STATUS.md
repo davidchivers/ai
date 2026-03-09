@@ -1,9 +1,50 @@
-# STATUS - 01_Necessity_Entrepreneurs
+﻿# STATUS - 01_Necessity_Entrepreneurs
 
 ## Snapshot
 
-- Last updated: 2026-03-02
-- Overall state: canonical main is runnable and numerically stable under interpolation/indexing fixes; model 5.1 (case 51) is now reproducible across UI levels but remains in a corner regime with zero labor demand, so focus is identifying the mechanism locking the model there.
+- Last updated: 2026-03-06
+- Overall state: canonical main is runnable and numerically stable; the post-fix case-101 endogenous-tax UI ladder (`0.40`, `0.05`, `0.00`) now shows economically meaningful movement in entry/tax outcomes, with firm-size effects concentrated in low/medium education groups.
+- 2026-03-06 self-employment benchmark update:
+  - `case 146` is now the active closure-risk benchmark branch for the self-employment model:
+    - end-of-period entrepreneur closure,
+    - no automatic regular UI after closure,
+    - current-period entrepreneurial income preserved,
+    - `25%` partial capital loss on failure.
+  - `case 146` baseline (`SingleCase=146`, `MaxIterAgg=40`, `RngSeed=12345`) converges well and produces:
+    - entrepreneur share `0.17872`,
+    - self-employed share among entrepreneurs `0.43868`,
+    - employer share among entrepreneurs `0.56133`,
+    - `best_tol = 0.00366586`.
+  - `case 147 = case 146 + f_hire` was added as the first employer-threshold-cost test:
+    - `f_hire = 0.25` in model units,
+    - baseline converges with `best_tol = 0.00803501`,
+    - entrepreneur share `0.17805`,
+    - self-employed share among entrepreneurs `0.57680`,
+    - employer share among entrepreneurs `0.42320`.
+  - interpretation:
+    - adding a small fixed employer-threshold cost barely changes total entrepreneurship,
+    - but it materially improves the self-employed/employer composition,
+    - so `case 147` is now a promising benchmark candidate for the self-employment branch.
+- 2026-03-06 planning decision:
+  - treat the downturn/business-cycle angle as a separate extension running in parallel to current benchmark-repair and self-employment work;
+  - prerequisite remains a disciplined self-employment benchmark case;
+  - intended paper placement, once mature, is a post-quantitative-experiments section (target future Section 8, with conclusion shifted later at drafting stage).
+- 2026-03-05 post-fix case-101 endogenous-tax comparison (proper UI experiment set):
+  - completed runs (`MaxIterAgg=40`, `RngSeed=12345`, `SingleCase=101`) at:
+    - `UI=0.40`: `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_endog101_baseline_m40_uioverridefix_20260305_20260305_145040.log`
+    - `UI=0.05`: `calibration/ai_calibration/runtime/data/output/case_1/run_ui_005_endog101_ui005_m40_uioverridefix_20260305_20260305_150731.log`
+    - `UI=0.00`: `calibration/ai_calibration/runtime/data/output/case_1/run_ui_000_endog101_ui000_m40_uioverridefix_20260305_20260305_145727.log`
+  - key outcomes:
+    - entrepreneurship share: `0.07884 -> 0.07944 -> 0.08466` (baseline to low-UI to no-UI),
+    - equilibrium tax: `tau_y 0.01812 -> 0.00277 -> 0.00066`,
+    - total transfers (`total_lower_out`): `8994.34 -> 1092.55 -> 0`,
+    - mean entrepreneur labor demand by education (baseline vs no-UI):
+      - low edu: `8.9299 -> 5.6389` (`-36.85%`),
+      - med edu: `12.0528 -> 10.8825` (`-9.71%`),
+      - high edu: `21.5651 -> 21.6084` (`+0.20%`).
+  - interpretation:
+    - post-fix runs do produce meaningful effects;
+    - the no-UI response combines necessity-entry effects with a strong fiscal/tax-offset channel (taxes collapse as transfers are removed), and `theta` stays near baseline under vacancy-floor dynamics.
 - 2026-03-02 continued case-51 (model 5.1) ladder run and classification:
   - completed comparable runs (`-SkipTransition`, `MaxIterAgg=40`, `RngSeed=12345`, `SingleCase=51`) at:
     - `UI=0.40`: `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_case51_ladder_m40_ui040_20260302_125757.log`
@@ -112,23 +153,23 @@
     - `UI=0.05` and `UI=0.00` logs include completed first solve block (`not_converged`) before timing out in later execution (`timeout_seconds=900`).
 - 2026-02-28 cleanup and path check-in:
   - archived legacy planning file from project root:
-    - `projects/01_Necessity_Entrepreneurs/notes/old/2026-02-28/PROJECT_PLAN_legacy_2026-02-18.md`
+    - `research_projects/01_Necessity_Entrepreneurs/notes/old/2026-02-28/PROJECT_PLAN_legacy_2026-02-18.md`
   - archived non-canonical calibration logs:
-    - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/old/2026-02-28_noncanonical_logs/`
+    - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/old/2026-02-28_noncanonical_logs/`
   - archived referee build artifacts (`.aux/.log/.out/.nav/.snm/.toc`):
-    - `projects/01_Necessity_Entrepreneurs/referee/old/build_artifacts/2026-02-28/`
+    - `research_projects/01_Necessity_Entrepreneurs/referee/old/build_artifacts/2026-02-28/`
   - canonical Dropbox code source confirmed inside:
     - `C:/Users/Dave_/Dropbox/Necessity Entrepeneurs/Archive.zip`
     - canonical entry name in archive is `main_2025_v1_case113.cpp` (not literal `main_2025_vi+Case113`)
   - extracted canonical snapshot to:
-    - `projects/01_Necessity_Entrepreneurs/calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/`
+    - `research_projects/01_Necessity_Entrepreneurs/calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/`
   - input hash check: `policy_functions_v17_in.txt`, `rnd_100k.txt`, `x_shk_iid.txt`, and `input_pi_x_iid_1.txt` match byte-for-byte between extracted Dropbox snapshot and AI runtime input folder.
 - 2026-02-28 rerun execution check:
   - attempted UI ladder (`0.40` -> `0.00`) with fixed seed/caps in patched AI harness;
   - run wrapper now supports `-SkipCompile` without requiring compiler discovery (script fix applied);
   - however, this machine currently has no detectable `g++/clang++/cl`, and existing binaries are not currently runnable in a stable way under the present runtime environment;
   - provisional ladder logs from this failed attempt were archived to:
-    - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/old/2026-02-28_failed_ladder_attempt/`
+    - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/old/2026-02-28_failed_ladder_attempt/`
 - 2026-02-27 calibration check-in: ablation harness added and quick simplification matrix run completed (`skip transition`, fixed seed, iteration caps, optional fixed matching). All quick probes returned `solve_model_status=not_converged` with repeated warning-heavy dynamics; no converged steady-state under these short capped runs.
 - 2026-02-27 deep ablation check-in: 40-iteration focused runs (`baseline`, `ui_000`, `ui_000` with fixed matching) remain non-converged, but diagnostics isolate the bottleneck:
   - fixing matching (`theta/rho`) removes theta sign flips and lowers the residual gap (`tol_ge` around `0.112` at iter 40) without full convergence;
@@ -154,21 +195,21 @@
 
 - Math audit completed (30 issues identified).
 - Referee response drafted and compiled:
-  - `projects/01_necessity_entrepreneurs/referee/RESPONSE_TO_REFEREE.tex`
-  - `projects/01_necessity_entrepreneurs/referee/RESPONSE_TO_REFEREE.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/referee/RESPONSE_TO_REFEREE.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/referee/RESPONSE_TO_REFEREE.pdf`
 - Code-paper crosswalk completed (10 discrepancies tracked).
 - Draft paper v2.0 written and compiled:
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
-  - `projects/01_necessity_entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.pdf`
 - Draft/slide naming standardized (latest unversioned files):
-  - `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.{lyx,pdf}`
-  - `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.{lyx,pdf}`
+  - `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.{lyx,pdf}`
+  - `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.{lyx,pdf}`
   - tex exports archived in `drafts/old_drafts/source_tex/` and `slides/old_slides/source_tex/`
-  - legacy files preserved under `projects/01_necessity_entrepreneurs/drafts/old_drafts/legacy_pre_standardization/`
+  - legacy files preserved under `research_projects/01_Necessity_Entrepreneurs/drafts/old_drafts/legacy_pre_standardization/`
 - Literature task progressed:
-  - Restored additional verifiable PDFs into `projects/01_necessity_entrepreneurs/literature/` (including repository and working-paper versions for previously missing citations).
+  - Restored additional verifiable PDFs into `research_projects/01_Necessity_Entrepreneurs/literature/` (including repository and working-paper versions for previously missing citations).
   - Rewrote the draft literature-review section from verified local PDF evidence.
-  - Built citation verification artifacts in `projects/01_necessity_entrepreneurs/notes/literature/`.
+  - Built citation verification artifacts in `research_projects/01_Necessity_Entrepreneurs/notes/literature/`.
 - Draft/build workflow updates completed:
   - LyX -> TeX sync verified for `drafts/Chivers_et_al_2025_Necessity_Entrepreneurship_v2_0.lyx`.
   - PDF rebuilt successfully from synced TeX.
@@ -178,16 +219,16 @@
   - Local draft LyX/TeX now uses `Department of Economics, Durham Business School`.
   - Same affiliation fix applied to Dropbox coauthor LyX files.
 - New current-experiment curve figures generated from latest table set (7.1/7.2/7.3):
-  - `projects/01_necessity_entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.png/.pdf`
-  - `projects/01_necessity_entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.png/.pdf`
-  - `projects/01_necessity_entrepreneurs/figures/curve_transition_rates_current_experiments.png/.pdf`
-  - Script: `projects/01_necessity_entrepreneurs/figures/generate_experiment_curves.py`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_entrepreneurship_by_education_current_experiments.png/.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_labor_demand_by_education_current_experiments.png/.pdf`
+  - `research_projects/01_Necessity_Entrepreneurs/figures/curve_transition_rates_current_experiments.png/.pdf`
+  - Script: `research_projects/01_Necessity_Entrepreneurs/figures/generate_experiment_curves.py`
   - Copied to Dropbox project `figures/` for coauthor access.
 - Calibration source restored to project tree:
-  - `projects/01_necessity_entrepreneurs/calibration/cfv_red_final.cpp`
-  - `projects/01_necessity_entrepreneurs/calibration/nr.h`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/cfv_red_final.cpp`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/nr.h`
 - AI calibration workspace created for replication tasks 1-2:
-  - `projects/01_necessity_entrepreneurs/calibration/ai_calibration/`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/`
   - patched source with robust checks: `.../ai_calibration/cfv_red_final.cpp`
   - run/setup scripts: `.../ai_calibration/setup_ai_calibration.ps1`, `.../ai_calibration/run_ai_calibration.ps1`
   - runtime input/output scaffold: `.../ai_calibration/runtime/data/input/cfv/`, `.../ai_calibration/runtime/data/output/`
@@ -211,26 +252,35 @@
   - adaptive comparison table:
     - `.../ai_calibration/runtime/data/output/ablation/adaptive_comparison_2026-02-27.csv`
 - 2026-03-01 resumed ladder outputs captured in:
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui040_20260228_133935.log`
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui030_20260228_134301.log`
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui020_20260301_090124.log`
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui010_20260301_090804.log`
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui005_retry_20260301_100942.log`
-  - `projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui000_20260301_102517.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui040_20260228_133935.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui030_20260228_134301.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui020_20260301_090124.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui010_20260301_090804.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui005_retry_20260301_100942.log`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/runtime/data/output/case_1/run_baseline_ladder_m5_ui000_20260301_102517.log`
 
 ## In Progress
 
-- Case-51 (model 5.1) corner-regime diagnosis after completed comparable ladder (`UI=0.40/0.05/0.00`, `m40`) showing invariant outcomes.
-- Isolating vacancy-floor channel (`v_t=1`, `v_mode=2`) versus endogenous vacancy construction in `theta` updates.
-- Tracing why realized entrepreneur mass remains concentrated in education group 0 (`entr_count_edu` near `[10900,0,0]`) despite policy-top states concentrated in `edu=2`.
-- Diagnosing persistent asset out-of-grid frequency for entrepreneur states (`a0_from_prev` / `a1_policy`) and deciding whether grid expansion vs state-clamp is the better model-consistent remedy.
-- Slide-paper graph alignment: old case-based curve slides identified; migration to new 7.1/7.2/7.3 experiment graph set not yet integrated.
+- Mechanism decomposition for worker-risk channel in case-101 post-fix runs, focusing on how endogenous tax closure offsets the no-UI shock.
+- Isolating vacancy-floor channel (`v_floor=1`, `v_mode=2`) versus endogenous vacancy construction in `theta` updates under `UI=0.40/0.05/0.00`.
+- Validating robustness of by-education firm-size results to seed and horizon (`m40` vs longer runs) under the corrected UI override path.
+- Self-employment benchmark redesign:
+  - `case 146` established as the first viable closure-risk benchmark,
+  - `case 147` added to test a fixed employer-threshold cost on top of `case 146`,
+  - literature/provenance note for `f_hire` drafted in `notes/13_employer_threshold_cost.md`,
+  - self-employed paper LyX updated so `f_hire` is now explicit in the calibration discussion.
+- Case-51 (model 5.1) corner-regime diagnosis remains open in parallel.
+- Slide-paper graph/table alignment to ensure the draft reflects the new post-fix experiment set.
+- Separate downturn-composition extension planning is now active in parallel:
+  - use the self-employment branch as the core framework,
+  - finish the benchmark case first,
+  - then run downturn steady-state and transition experiments as a distinct extension rather than folding them into the current benchmark-repair task list.
 
 ## Next 3 Tasks
 
-1. For case 51, decompose the `theta` update channel with logging around vacancy-floor usage (`v_mode`, `v_floor`, `v_t`) versus endogenous vacancy terms to verify what pins `theta` near `0.0101` when `n_demand=0`.
-2. Run a controlled case-51 sensitivity with vacancy-floor logic relaxed (or disabled) to test whether UI variation (`0.40/0.05/0.00`) can recover an interior equilibrium.
-3. Compare case 51 vs case 101 under identical runner settings (`m40`, fixed seed, skip transition) to isolate whether corner behavior is case-specific or a broader post-fix dynamic.
+1. Start next session from the self-employment branch: run `case 147` at `UI=0.00` under matched settings and compare it directly to `case 146` to see whether the improved baseline composition carries through to the no-UI experiment.
+2. Run one local sensitivity around the employer-threshold cost, for example `f_hire = 0.15` or `0.35`, to test whether `case 147` is robust or just one lucky value.
+3. If `case 147` remains promising, promote it to the active self-employment benchmark in the paper and rebuild the self-employed quantitative tables before returning to broader extensions such as incorporated versus unincorporated firms.
 
 ## Blockers
 
@@ -251,17 +301,17 @@
 
 ## References
 
-- Primary project overview: `projects/01_necessity_entrepreneurs/README.md`
-- Project session log: `projects/01_necessity_entrepreneurs/memory.md`
-- Coding fix checklist (source detail): `projects/01_necessity_entrepreneurs/referee/codeaudit_2026-02-18/FIX_CHECKLIST.md`
-- Full coding audit report: `projects/01_necessity_entrepreneurs/referee/codeaudit_2026-02-18/CODE_REFEREE_REPORT.md`
-- Experiment action list: `projects/01_necessity_entrepreneurs/notes/experiments/experiments_todo.md`
-- Cleanup review note: `projects/01_necessity_entrepreneurs/notes/cleanup_candidates_2026-02-28.md`
-- Citation verification report: `projects/01_necessity_entrepreneurs/notes/legacy_literature_citation_verification.md`
-- Reference checklist (single Excel-editable file): `projects/01_necessity_entrepreneurs/literature/checklist/reference_checklist.csv`
-- Canonical Dropbox snapshot: `projects/01_necessity_entrepreneurs/calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/`
-- Latest paper PDF: `projects/01_necessity_entrepreneurs/drafts/necessity_entrepreneurship.pdf`
-- Latest slides PDF: `projects/01_necessity_entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
+- Primary project overview: `research_projects/01_Necessity_Entrepreneurs/README.md`
+- Project session log: `research_projects/01_Necessity_Entrepreneurs/memory.md`
+- Coding fix checklist (source detail): `research_projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/FIX_CHECKLIST.md`
+- Full coding audit report: `research_projects/01_Necessity_Entrepreneurs/referee/codeaudit_2026-02-18/CODE_REFEREE_REPORT.md`
+- Experiment action list: `research_projects/01_Necessity_Entrepreneurs/notes/experiments/experiments_todo.md`
+- Cleanup review note: `research_projects/01_Necessity_Entrepreneurs/notes/cleanup_candidates_2026-02-28.md`
+- Citation verification report: `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_citation_verification.md`
+- Reference checklist (single Excel-editable file): `research_projects/01_Necessity_Entrepreneurs/literature/checklist/reference_checklist.csv`
+- Canonical Dropbox snapshot: `research_projects/01_Necessity_Entrepreneurs/calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/`
+- Latest paper PDF: `research_projects/01_Necessity_Entrepreneurs/drafts/necessity_entrepreneurship.pdf`
+- Latest slides PDF: `research_projects/01_Necessity_Entrepreneurs/slides/necessity_entrepreneurship_slides.pdf`
 
 ## Working Rule
 

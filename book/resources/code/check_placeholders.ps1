@@ -1,5 +1,5 @@
 param(
-    [string]$Root = "projects/book",
+    [string]$Root = "book",
     [switch]$StrictStyleNotes = $true
 )
 

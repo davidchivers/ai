@@ -4,7 +4,7 @@
 - Toolchain is now available for reruns in the AI calibration workspace:
   - `C:/msys64/ucrt64/bin/g++.exe` (MSYS2 UCRT64 GCC).
 - Diagnostics/guardrail patches are implemented in:
-  - `projects/01_necessity_entrepreneurs/calibration/ai_calibration/cfv_red_final.cpp`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/cfv_red_final.cpp`
 - Execution is still blocked by missing solver input files under `data/input/cfv/`:
   - `policy_functions_v17_in.txt`, `rnd_100k.txt`, `x_shk_iid.txt`,
     `input_pi_x_iid_1.txt`, `input_pi_x.txt`.

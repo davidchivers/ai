@@ -13,4 +13,4 @@ Conventions
 - Put outputs in `figures/` or `Manuscript/`, not here.
 
 Utility checks
-- Run `powershell -ExecutionPolicy Bypass -File projects/book/resources/code/check_placeholders.ps1` before handing off drafts to catch unresolved markdown placeholder markers.
+- Run `powershell -ExecutionPolicy Bypass -File book/resources/code/check_placeholders.ps1` before handing off drafts to catch unresolved markdown placeholder markers.

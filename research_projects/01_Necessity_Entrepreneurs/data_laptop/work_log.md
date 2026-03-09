@@ -1,0 +1,188 @@
+# Work log
+
+## 2026-03-08
+
+- Created isolated `data_laptop/` sidecar folder to avoid interfering with the canonical project status pipeline.
+- Locked the first-pass measurement choice for the motivation figure:
+  - `0 employees`: Census Nonemployer Statistics (`NESTAB`) for total US nonemployer establishments.
+  - `1-4`, `5-19`, `20+ employees`: Census Business Dynamics Statistics establishment counts (`ESTAB`) by establishment employment size.
+- Date-range target: `1997-2022` unless a source-quality issue forces narrowing.
+- Reason for using establishment counts rather than firm counts:
+  - the `0 employees` series is naturally available as nonemployer establishments,
+  - establishment counts are the cleaner like-for-like match for combining zero-employee and positive-employment bins in one line figure.
+- Pending:
+  - inspect the first figure and decide whether the draft should use levels or index form.
+
+- Added reproducible pull script:
+  - `pull_us_business_size_cycle_data.py`
+- Generated first clean sidecar artifacts:
+  - `us_business_counts_by_size_annual.csv`
+  - `us_business_counts_by_size_indexed.png`
+- Drafted literature note:
+  - `firm_creation_business_cycle_literature_review.md`
+- Data choices implemented in the first pass:
+  - annual range: `1997-2022`,
+  - recession measure: FRED `USREC`, aggregated to an annual any-recession flag,
+  - `5-19 employees` built as `5-9` plus `10-19`,
+  - `20+ employees` built as `20-499` plus `500+`.
+- First-pass pattern check from the annual dataset:
+  - over `2007-2010`, `0 employees` rises by about `1.9%`,
+  - `1-4` falls by about `3.6%`,
+  - `5-19` falls by about `2.6%`,
+  - `20+` falls by about `5.8%`.
+- Provisional interpretation:
+  - the initial series already supports the idea that recession-era growth is concentrated on the smallest or own-account margin rather than on larger employer establishments.
+- Added companion outputs from the same script:
+  - `us_business_counts_by_size_levels.png`
+  - `us_business_counts_by_size_shares.png`
+  - `recession_window_changes.csv`
+  - `recession_window_changes.md`
+- Current read on figure usefulness:
+  - `us_business_counts_by_size_indexed.png` is the best single chart for a first paper motivation figure,
+  - `us_business_counts_by_size_shares.png` is the best companion chart if we want the composition shift made explicit.
+- Added literature-structure outputs:
+  - `firm_creation_business_cycle_literature_matrix.csv`
+  - `motivation_framing_note.md`
+- Suggested next sidecar extension:
+  - add a separate person-level CPS self-employment series or a clean business-formation flow series, but keep those in separate figures rather than mixing units.
+- Added aggregate companion outputs:
+  - `us_business_counts_aggregate_indexed.png`
+  - `aggregate_recession_window_changes.tex`
+- Aggregate interpretation lock:
+  - for `2007-2010`, the all-bin tracked total rises only about `0.5%`,
+  - but the employer total falls about `3.6%`,
+  - so a single aggregate count can hide the shift from employer establishments toward zero-employee activity.
+- Formatting note:
+  - PNG remains the default figure output for now,
+  - a small `.tex` table is now also generated for recession-window aggregates so the sidecar already contains a paper-ready LaTeX fragment.
+- Added person-level CPS companion series:
+  - `pull_us_self_employment_companion.py`
+  - `us_self_employment_rates_monthly.csv`
+  - `us_self_employment_rates_annual.csv`
+  - `us_self_employment_rates_annual.png`
+  - `self_employment_recession_windows.md`
+  - `self_employment_vs_nonemployer_note.md`
+- Person-level read:
+  - over `2007-2010`, the annual-average total self-employment rate falls by about `0.36` percentage points,
+  - unincorporated falls by about `0.17` percentage points,
+  - incorporated falls by about `0.19` percentage points.
+- Interpretation lock:
+  - the CPS self-employment rate and the nonemployer-establishment count do not move the same way in the Great Recession,
+  - keep them as separate companion figures rather than merging them into one series or one axis.
+- Added flow-side business-formation companion:
+  - `pull_us_business_applications_companion.py`
+  - `us_business_applications_monthly.csv`
+  - `us_business_applications_annual.csv`
+  - `us_business_applications_indexed.png`
+  - `business_applications_recession_windows.md`
+  - `business_applications_companion_note.md`
+- Flow-side read:
+  - over `2007-2010`, total applications fall about `5.8%`,
+  - high-propensity applications fall about `22.1%`,
+  - the high-propensity share falls about `9.7` percentage points.
+- Revised recommendation lock:
+  - best single motivation figure remains `us_business_counts_by_size_indexed.png`,
+  - best two-figure motivation pair is now:
+    - `us_business_counts_by_size_indexed.png`
+    - `us_business_applications_indexed.png`
+  - the CPS self-employment chart is still useful, but now looks more like a secondary companion than the main second figure.
+- Added standalone paper-style opening draft:
+  - `necessity_entrepreneurship_intro_motivation_sidecar.lyx`
+- Writing lock for the sidecar opening:
+  - keep academic paper voice rather than memo style,
+  - emphasize heterogeneous entrepreneurship, not a single aggregate entrepreneurship margin,
+  - use the size-bin figure plus the business-applications flow figure as the preferred empirical motivation pair,
+  - keep the file separate from the canonical draft until the user decides what to transplant.
+- Added transplant-ready snippet:
+  - `necessity_entrepreneurship_intro_transplant.tex`
+- Snippet lock:
+  - fragment only, not a full document,
+  - written to be pasted into the main paper with minimal adaptation,
+  - emphasizes the preferred two-figure motivation pair:
+    - `us_business_counts_by_size_indexed.png`
+    - `us_business_applications_indexed.png`
+- Added preview wrapper and PDF:
+  - `necessity_entrepreneurship_intro_transplant_preview.tex`
+  - `necessity_entrepreneurship_intro_transplant_preview_refs.bib`
+  - `necessity_entrepreneurship_intro_transplant_preview.pdf`
+- Preview note:
+  - the transplant snippet now has a standalone PDF preview without touching the main paper,
+  - build artifacts are kept in `data_laptop/build/`, while the finished preview PDF is copied back to `data_laptop/`.
+- Expanded literature integration in the transplant snippet:
+  - added or elevated citations tied directly to business creation over the cycle and startup composition:
+    - `fairlie_2013`
+    - `fossen_2021`
+    - `poschke_2013`
+    - `haltiwanger_etal_2013`
+    - `fort_etal_2013`
+    - `fairlie_miranda_2016`
+    - `zarutskie_yang_2017`
+    - plus model-side anchors `buera_2009` and `cagetti_denardi_2006`
+- Preview compile check:
+  - revised preview PDF compiles cleanly with the expanded bibliography,
+  - current preview length is 4 pages.
+- Reframed the transplant introduction around the identification problem:
+  - necessity entrepreneurship is now introduced as a latent counterfactual rather than as a recession fact,
+  - survey-based and prior-status-based measures are now presented as informative but imperfect proxies,
+  - recession evidence is now used as supporting motivation rather than as the opening definition.
+- Added GEM-focused sidecar note:
+  - `gem_measurement_note.md`
+- Added verified GEM and related literature coverage:
+  - U.S. GEM report evidence on job-scarcity motives,
+  - GEM global-report evidence on cross-country motive composition,
+  - a supporting Chivers citation on motive heterogeneity and development context.
+- Updated sidecar literature artifacts:
+  - `firm_creation_business_cycle_literature_review.md`
+  - `firm_creation_business_cycle_literature_matrix.csv`
+- Updated transplant bibliography to include:
+  - `gem_us_report_2024`
+  - `kelley_singer_herrington_2016`
+  - `chivers_2017`
+- Added a reproducible GEM APS microdata pull:
+  - `pull_gem_us_motive_microdata.py`
+- Public microdata scope currently verified:
+  - official APS individual-level files are publicly available for `2019`, `2020`, and `2021`,
+  - the current public microdata route is sufficient for a U.S. motive sidecar even without the old Dropbox copy.
+- New GEM microdata outputs:
+  - `us_gem_tea_motive_shares_2019_2021.csv`
+  - `us_gem_tea_motive_shares_2019_2021_long.csv`
+  - `us_gem_tea_motive_shares_2019_2021.png`
+  - `gem_us_microdata_note.md`
+- First U.S. GEM microdata read:
+  - among weighted U.S. early-stage entrepreneurs, the `jobs are scarce` motive share is about:
+    - `40.9%` in `2019`,
+    - `49.6%` in `2020`,
+    - `45.7%` in `2021`.
+  - high-income or wealth motives remain common at the same time:
+    - `68.3%` in `2019`,
+    - `64.7%` in `2020`,
+    - `73.4%` in `2021`.
+- Interpretation lock from the microdata:
+  - necessity-style motives are quantitatively important in the U.S.,
+  - but motive categories are not mutually exclusive,
+  - so GEM sharpens the paper's measurement problem rather than solving it completely.
+- Updated the transplant introduction again:
+  - it now includes the new U.S. GEM APS microdata evidence directly, not only report-level GEM references.
+- Writing pass on the transplant introduction:
+  - rewrote the opening around the identification problem rather than recession evidence,
+  - tightened the prose to read more like a paper section and less like a memo,
+  - kept the structural definition, GEM motive evidence, and business-cycle motivation integrated in one argument.
+- Added figure placement directly inside the transplant snippet:
+  - inserted the size-bin business-count figure immediately after the recession stock discussion,
+  - inserted the business-applications figure immediately after the formation-flow discussion,
+  - rebuilt the preview PDF so the sidecar now shows where the figures would sit in the introduction.
+- Refined the sidecar introduction using the local academic-paper-writer skill guidance:
+  - strengthened the opening around the paper's core question,
+  - moved the paper's framework and contribution forward slightly,
+  - kept the draft as a transplant fragment in `data_laptop/` rather than touching the main paper.
+- Fixed figure x-axis presentation in the sidecar chart scripts:
+  - forced integer year ticks for business-size, business-applications, and self-employment figures,
+  - regenerated the exported PNG files in `data_laptop/`.
+- Corrected the Chivers supporting citation in the sidecar bibliography and literature note:
+  - updated the title to `Success, Survive or Escape? Aspirations and Poverty Traps`,
+  - kept it as a supporting cross-country motive/aspirations citation rather than a core recession-business-cycle anchor.
+- Added a deferred sidecar task in `data_laptop/README.md`:
+  - literature review verification check to re-check exact title, journal, year, and fit for sidecar citations before anything is promoted into the main draft.
+- Wrapped the sidecar into a handoff-ready state:
+  - added `handover_note.md` inside `data_laptop/`,
+  - recorded the current recommended figure pair, the GEM-as-prose decision, the remaining literature-check task, and the compile route for the preview.

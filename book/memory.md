@@ -21,23 +21,23 @@ Most recent session first.
 
 ### Session: 2026-02-20 (project initialization)
 - Created project scaffold:
-  - `projects/BOOK/code/`
-  - `projects/BOOK/data/`
-  - `projects/BOOK/figures/`
-  - `projects/BOOK/literature/`
-  - `projects/BOOK/notes/`
-  - `projects/BOOK/referee/`
-  - `projects/BOOK/slides/`
-  - `projects/BOOK/old/`
-- Added project entry to `projects/README.md`.
+  - `book/code/`
+  - `book/data/`
+  - `book/figures/`
+  - `book/literature/`
+  - `book/notes/`
+  - `book/referee/`
+  - `book/slides/`
+  - `book/old/`
+- Added project entry to `README.md`.
 - Added baseline `README.md` and `memory.md`.
 
 ## Key files
 
 | Role | Path |
 |---|---|
-| Project overview | `projects/BOOK/README.md` |
-| Session memory | `projects/BOOK/memory.md` |
+| Project overview | `book/README.md` |
+| Session memory | `book/memory.md` |
 
 ## Current status
 Scaffold only. No paper/code/data artifacts yet.
@@ -59,17 +59,17 @@ Scaffold only. No paper/code/data artifacts yet.
 - Created `Chapters/` folder structure with one subfolder and README per chapter (Ch 1–16)
 - Workflow confirmed: David drafts → chat → Tom rewrites → David comments → Tom resolves
 - Google Drive stays as .docx only; MD files live in repo only (not synced to Drive)
-- Added `projects/book/literature/*.pdf` to `.gitignore`
+- Added `book/literature/*.pdf` to `.gitignore`
 
 ---
 
 ### Session: 2026-02-20 (book-mode reset + collaboration intent)
 - Reframed project from research-paper template to popular-science book workflow.
 - Added book-specific folders:
-  - `projects/BOOK/Manuscript/`
-  - `projects/BOOK/Chapters/`
-  - `projects/BOOK/sources/`
-  - `projects/BOOK/googledrive/`
+  - `book/Manuscript/`
+  - `book/Chapters/`
+  - `book/sources/`
+  - `book/googledrive/`
 - Recorded author/collaborator context:
   - David Chivers (academic economics author context).
   - Tom Chivers (journalist collaborator context).
@@ -77,12 +77,12 @@ Scaffold only. No paper/code/data artifacts yet.
 - Located Google Drive folder path:
   - `G:\My Drive\The Target Trap (Book Project)`
 - Added Google Drive index tooling:
-  - `projects/BOOK/googledrive/refresh_drive_index.ps1`
-  - `projects/BOOK/googledrive/INDEX.md`
+  - `book/googledrive/refresh_drive_index.ps1`
+  - `book/googledrive/INDEX.md`
 - Current indexed Google Docs in folder:
   - `Book Master Plan.gdoc`
   - `01 - Draft - Introduction.gdoc`
   - `02 - Draft - Offside Law.gdoc`
   - `Book Proposal.gdoc`
   - `To Do List.gdoc`
-- Attempt to create a direct filesystem link into `projects/BOOK/googledrive/` failed due Windows privilege restrictions for symlink creation in this shell session.
+- Attempt to create a direct filesystem link into `book/googledrive/` failed due Windows privilege restrictions for symlink creation in this shell session.

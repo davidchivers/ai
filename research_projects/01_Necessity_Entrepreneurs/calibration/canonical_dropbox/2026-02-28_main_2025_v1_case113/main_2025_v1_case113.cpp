@@ -586,7 +586,6 @@ double v_func(DP x)
 	return prob_work_rate * u_v_1 + (1 - prob_work_rate) * u_v_2;
 }
 
-
 void solve_opt(double x_xx, double& x_a0, double& x_x0,
 	double& x_i_occp, double en_i_occp,
 	double& k_opt_in, double n_opt_in, double& rev_opt_in, double prob_rho, double prob_theta_u)
@@ -2134,7 +2133,6 @@ void assign_value()
 			edu_rho[i_rho] = base_edu_rho[i_rho];
 		}
 	}
-	
 	//========================================================================
 	// PART A: ENDOGENOUS TAX EXPERIMENTS
 	// Tax rate adjusts to balance budget
@@ -3126,11 +3124,15 @@ int main(void)
 	// Special run mode: compute CASE 113 only using homotopy
 	// If the user sets cases_to_run = {113}, we automatically:
 	//   (1) run a baseline 101 warmup (in a separate folder, not overwriting prior results)
-	//   (2) run case 113 along a continuation path for lowerincome_b: 0.40 -> 0.10
+	//   (2) run case 113 along a continuation path for lowerincome_b: 0.40 -> target_b
 	//       keeping value/policy functions as initial guesses between steps
-	//   (3) write the FINAL (b=0.10) results into the normal case 113 folder
+	//   (3) write the final target step into the normal case 113 folder only when
+	//       target_b == 0.10; otherwise keep it in a dedicated target folder
 	//=====================================================
 	if (cases_to_run.size() == 1 && cases_to_run[0] == 113) {
+		const double target_b = env_override_lowerincome_b
+			? std::max(0.0, std::min(0.40, env_lowerincome_b))
+			: 0.05;
 		// -------------------------
 		// 1) Warmup: baseline 101
 		// -------------------------
@@ -3151,10 +3153,8 @@ int main(void)
 			}
 		#endif
 
-		override_lowerincome_b = env_override_lowerincome_b;
-		if (env_override_lowerincome_b) {
-			lowerincome_b_override = env_lowerincome_b;
-		}
+		// Always warm up from the true baseline before moving along the fixed-tax path.
+		override_lowerincome_b = false;
 		assign_value();
 		initialize_value();
 
@@ -3171,12 +3171,24 @@ int main(void)
 		calibra();
 		tau_y_baseline = tau_y0;
 		cout << "[homotopy] Baseline (101) warmup done. tau_y_baseline = " << tau_y_baseline << endl;
+		cout << "[homotopy] Target lowerincome_b for case 113 = " << target_b << endl;
 
 		// -------------------------
 		// 2) Homotopy path for case 113
 		// -------------------------
-		//std::vector<double> b_path = { 0.40, 0.35, 0.325, 0.30, 0.275, 0.25, 0.225, 0.20, 0.175 };
-		std::vector<double> b_path = { 0.40, 0.35, 0.30, 0.275, 0.25, 0.225, 0.20, 0.175, 0.15, 0.125, 0.10, 0.075, 0.05 };
+		std::vector<double> b_candidates = {
+			0.40, 0.35, 0.30, 0.275, 0.25, 0.225, 0.20,
+			0.175, 0.15, 0.125, 0.10, 0.075, 0.05, 0.025, 0.00
+		};
+		std::vector<double> b_path;
+		for (double b_candidate : b_candidates) {
+			if (b_candidate + 1e-12 >= target_b) {
+				b_path.push_back(b_candidate);
+			}
+		}
+		if (b_path.empty() || fabs(b_path.back() - target_b) > 1e-12) {
+			b_path.push_back(target_b);
+		}
 		bool first_step = true;
 
 		for (double b_val : b_path) {
@@ -3188,14 +3200,18 @@ int main(void)
 
 			// Folder handling:
 			//  - intermediate steps go to dedicated homotopy folders
-			//  - final step (b=0.10) goes to the standard case 113 folder
+			//  - final step goes to the standard case 113 folder only for the
+			//    legacy/default target (b=0.10)
 			std::ostringstream oss;
 			oss << std::fixed << std::setprecision(2) << b_val;
 			std::string b_tag = oss.str();
 			std::replace(b_tag.begin(), b_tag.end(), '.', 'p');
 
-			if (fabs(b_val - 0.10) < 1e-12) {
+			const bool is_target_step = fabs(b_val - target_b) < 1e-12;
+			if (is_target_step && fabs(target_b - 0.10) < 1e-12) {
 				workingpath_new = workingpath + "data/Output/case_test_new_113/";
+			} else if (is_target_step) {
+				workingpath_new = workingpath + "data/Output/case_test_new_113_target_b" + b_tag + "/";
 			} else {
 				workingpath_new = workingpath + "data/Output/case_test_new_113_homotopy_b" + b_tag + "/";
 			}
@@ -3265,9 +3281,67 @@ int main(void)
 			}
 		#endif
 
-		override_lowerincome_b = false;
+		// Apply runtime UI override in standard case loop (non-homotopy runs).
+		override_lowerincome_b = env_override_lowerincome_b;
+		if (env_override_lowerincome_b) {
+			lowerincome_b_override = env_lowerincome_b;
+		}
 		assign_value();
-		initialize_value();
+		bool ran_fixed_tax_warmup = false;
+		if (use_fixed_tax_rate && tau_y_baseline <= 0.0) {
+			const int target_case = i_case_ind;
+			const string target_workingpath_new = workingpath_new;
+
+			cout << "[fixed-tax warmup] tau_y_baseline not yet available; running baseline 101 first." << endl;
+
+			i_case = 101;
+			workingpath_new = workingpath + "data/Output/case_test_new_101_warmup_for_fixed_" + path_add_case + "/";
+
+			int warmup_mode_exist_path = 0;
+			#ifdef _WIN32
+				if (_access(workingpath_new.c_str(), warmup_mode_exist_path))
+				{
+					_mkdir(workingpath_new.c_str());
+				}
+			#else
+				if (access(workingpath_new.c_str(), F_OK) != 0)
+				{
+					mkdir(workingpath_new.c_str(), 0755);
+				}
+			#endif
+
+			override_lowerincome_b = false;
+			assign_value();
+			initialize_value();
+
+			gn_decompose = 0.0;
+			gn_exp = 0.0;
+			r_decompose = 0.0;
+			r_wedge_decompose = 0.0;
+			r_wedge_exp = 0.0;
+
+			ind_policy = 0;
+			update_step1 = update_value;
+			var_pE = 0.0;
+			dummy_UI = 0.0;
+
+			calibra();
+			tau_y_baseline = tau_y0;
+			cout << "[fixed-tax warmup] Baseline equilibrium tau_y = " << tau_y_baseline << endl;
+
+			i_case = target_case;
+			workingpath_new = target_workingpath_new;
+			override_lowerincome_b = env_override_lowerincome_b;
+			if (env_override_lowerincome_b) {
+				lowerincome_b_override = env_lowerincome_b;
+			}
+			assign_value();
+			ran_fixed_tax_warmup = true;
+		}
+
+		if (!ran_fixed_tax_warmup) {
+			initialize_value();
+		}
 
 		gn_decompose = 0.0;
 		gn_exp = 0.0;

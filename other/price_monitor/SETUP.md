@@ -18,7 +18,7 @@ pip install requests beautifulsoup4
 ## 3. Configure .env
 
 ```bash
-cd C:/Users/Dave_/OneDrive/Desktop/Economics/other/price_monitor
+cd C:/Users/Dave_/AI/other/price_monitor
 cp .env.example .env
 ```
 
@@ -42,7 +42,7 @@ Check `monitor.log` for output and your inbox for any alerts.
 Open PowerShell **as Administrator** and run:
 
 ```powershell
-$action = New-ScheduledTaskAction -Execute "python" -Argument "C:\Users\Dave_\OneDrive\Desktop\Economics\other\price_monitor\price_monitor.py" -WorkingDirectory "C:\Users\Dave_\OneDrive\Desktop\Economics\other\price_monitor"
+$action = New-ScheduledTaskAction -Execute "python" -Argument "C:\Users\Dave_\AI\other\price_monitor\price_monitor.py" -WorkingDirectory "C:\Users\Dave_\AI\other\price_monitor"
 $trigger = New-ScheduledTaskTrigger -Daily -At 9:00AM
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -DontStopIfGoingOnBatteries -AllowStartIfOnBatteries
 Register-ScheduledTask -TaskName "PriceMonitor" -Action $action -Trigger $trigger -Settings $settings -Description "Daily price monitor for Tikamoon and Dreams"

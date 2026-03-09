@@ -126,7 +126,7 @@ def _default_drive_root_candidates(interviews_root: Path) -> List[Path]:
         interviews_root / "interview_raw",
         Path(r"G:/My Drive/The Target Trap (Book Project)"),
         Path(r"G:/My Drive"),
-        Path(r"C:/Users/Dave_/OneDrive/Desktop/Economics/projects/book"),
+        interviews_root.parent,
     ]
 
 

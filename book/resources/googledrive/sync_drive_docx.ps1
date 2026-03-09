@@ -1,9 +1,14 @@
 param(
   [string]$DriveRoot = 'G:\My Drive\The Target Trap (Book Project)',
-  [string]$LocalRoot = 'C:\Users\Dave_\OneDrive\Desktop\Economics\projects\book'
+  [string]$LocalRoot = ''
 )
 
 $ErrorActionPreference = 'Stop'
+
+if (-not $LocalRoot) {
+  $RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..\..')).Path
+  $LocalRoot = Join-Path $RepoRoot 'book'
+}
 
 function Get-RelativePath([string]$base, [string]$full) {
   $basePath = [System.IO.Path]::GetFullPath($base)
