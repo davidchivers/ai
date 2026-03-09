@@ -2,7 +2,7 @@
 
 ## 2026-03-08
 
-- Created isolated `data_laptop/` sidecar folder to avoid interfering with the canonical project status pipeline.
+- Created isolated `data/` sidecar folder to avoid interfering with the canonical project status pipeline.
 - Locked the first-pass measurement choice for the motivation figure:
   - `0 employees`: Census Nonemployer Statistics (`NESTAB`) for total US nonemployer establishments.
   - `1-4`, `5-19`, `20+ employees`: Census Business Dynamics Statistics establishment counts (`ESTAB`) by establishment employment size.
@@ -107,7 +107,7 @@
   - `necessity_entrepreneurship_intro_transplant_preview.pdf`
 - Preview note:
   - the transplant snippet now has a standalone PDF preview without touching the main paper,
-  - build artifacts are kept in `data_laptop/build/`, while the finished preview PDF is copied back to `data_laptop/`.
+  - build artifacts are kept in `data/build/`, while the finished preview PDF is copied back to `data/`.
 - Expanded literature integration in the transplant snippet:
   - added or elevated citations tied directly to business creation over the cycle and startup composition:
     - `fairlie_2013`
@@ -174,15 +174,26 @@
 - Refined the sidecar introduction using the local academic-paper-writer skill guidance:
   - strengthened the opening around the paper's core question,
   - moved the paper's framework and contribution forward slightly,
-  - kept the draft as a transplant fragment in `data_laptop/` rather than touching the main paper.
+  - kept the draft as a transplant fragment in `data/` rather than touching the main paper.
 - Fixed figure x-axis presentation in the sidecar chart scripts:
   - forced integer year ticks for business-size, business-applications, and self-employment figures,
-  - regenerated the exported PNG files in `data_laptop/`.
+  - regenerated the exported PNG files in `data/`.
 - Corrected the Chivers supporting citation in the sidecar bibliography and literature note:
   - updated the title to `Success, Survive or Escape? Aspirations and Poverty Traps`,
   - kept it as a supporting cross-country motive/aspirations citation rather than a core recession-business-cycle anchor.
-- Added a deferred sidecar task in `data_laptop/README.md`:
+- Added a deferred sidecar task in `data/README.md`:
   - literature review verification check to re-check exact title, journal, year, and fit for sidecar citations before anything is promoted into the main draft.
 - Wrapped the sidecar into a handoff-ready state:
-  - added `handover_note.md` inside `data_laptop/`,
+  - added `handover_note.md` inside `data/`,
   - recorded the current recommended figure pair, the GEM-as-prose decision, the remaining literature-check task, and the compile route for the preview.
+- Added a standalone data-section fragment:
+  - `data_section_transplant.tex`
+- Data-section lock:
+  - it documents the four empirical objects separately rather than forcing them into one entrepreneurship measure,
+  - it keeps the main paper-facing data pair as:
+    - `us_business_counts_by_size_indexed.png`
+    - `us_business_applications_indexed.png`
+  - it keeps CPS self-employment and GEM in companion roles to clarify measurement rather than to serve as the headline figures.
+- Promoted the data workflow toward final paper figures:
+  - rough PNG outputs remain in `data/`,
+  - the main pull scripts now also write paper-facing `pgfplots` figure `.tex` files into `../figures/`.

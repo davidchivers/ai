@@ -1,6 +1,6 @@
 # old computer migration note
 
-Purpose: move `data_laptop/` safely to the old computer without relying on sync conflict handling.
+Purpose: move `data/` safely to the old computer without relying on sync conflict handling.
 
 ## Source of truth
 
@@ -14,9 +14,9 @@ Purpose: move `data_laptop/` safely to the old computer without relying on sync 
 
 ## Old computer procedure
 
-1. Before opening any files, check whether an older `data_laptop/` already exists.
-2. If it exists, rename it first to `data_laptop_oldpc_premerge_2026_03_08/`.
-3. Bring over the current `data_laptop/` folder from the source machine.
+1. Before opening any files, check whether an older `data/` already exists.
+2. If it exists, rename it first to `data_oldpc_premerge_2026_03_08/`.
+3. Bring over the current `data/` folder from the source machine.
 4. Open the brought-over copy first and continue work there only.
 5. Compare against the renamed old-computer copy later, file by file, if needed.
 

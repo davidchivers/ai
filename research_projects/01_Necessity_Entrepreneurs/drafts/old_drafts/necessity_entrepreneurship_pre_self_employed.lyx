@@ -143,7 +143,7 @@ graphicboxes
 \begin_body
 
 \begin_layout Title
-Necessity Entrepreneurship: Self-Employment,
+Necessity Entrepreneurs,
 \begin_inset Foot
 status collapsed
 
@@ -658,24 +658,9 @@ The timing of events can be summarized below.
 \begin_inset Formula $t.$
 \end_inset
 
- Those choosing to become entrepreneurs run projects and choose capital and hired labor each period.
- If hired labor satisfies 
-\begin_inset Formula $n_{h}=0$
-\end_inset
-
- the business is nonemployer self-employment,
- while 
-\begin_inset Formula $n_{h}>0$
-\end_inset
-
- corresponds to employer entrepreneurship.
- Entrepreneurial businesses face closure risk 
-\begin_inset Formula $\rho_{e}(h)$
-\end_inset
-
- .
- In the benchmark,
- closure moves the household out of business and into non-employment without automatic regular unemployment insurance eligibility.
+ Those choosing to become entrepreneurs run projects and hire workers on on rolling contracts (i.e.
+ contracts,
+ will be reassessed each period).
  Those who were previously employed within a project can decide to carry on working but carry a risk of separation with probability 
 \begin_inset Formula $\rho$
 \end_inset
@@ -864,27 +849,16 @@ Firms use labor
 \end_inset
 
 .
-Managers can operate only one project.
-The functional form of the production function is:
+ Managers can operate only one project.
+ The functional form of the production function is:
  
 \begin_inset Formula 
 \begin{equation}
-y=xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}\ \ \mbox{where}\ \alpha,\gamma>0.\ \label{eq:firm_prod}
+y=xk^{\alpha}(zn){}^{\gamma}\ \ \mbox{where}\ \alpha,\gamma>0.\ \label{eq:firm_prod}
 \end{equation}
 
 \end_inset
 
- so self-employment is feasible at 
-\begin_inset Formula $n_{h}=0$
-\end_inset
-
- ,
- while employer entrepreneurship corresponds to 
-\begin_inset Formula $n_{h}>0$
-\end_inset
-
- .
- 
 Managerial talent 
 \begin_inset Formula $x$
 \end_inset
@@ -1157,37 +1131,22 @@ Firms are distinguished by their productivity realization
 \end_inset
 
 .
- In the self-employment version,
- entrepreneurs choose capital and hired labor while also supplying owner labor to the business.
- Let 
-\begin_inset Formula $n_{h}$
-\end_inset
-
- denote hired labor and 
-\begin_inset Formula $\ell_{e}$
-\end_inset
-
- denote owner labor.
- When 
-\begin_inset Formula $n_{h}=0$
-\end_inset
-
- the entrepreneur is self-employed;
- when 
-\begin_inset Formula $n_{h}>0$
-\end_inset
-
- the entrepreneur is an employer.
- The static problem for a manager with talent 
+ Agents with sufficient ability to become managers choose the level of capital and the number of employees to maximize profit subject to a technological constraint.
+ In order to simplify the exposition,
+ first consider the problem of a manager with talent 
 \begin_inset Formula $x^{i}$
 \end_inset
 
- is
- 
+ for a given level of capital 
+\begin_inset Formula $k$
+\end_inset
+
+ (i.e.,
+ labor input choice only):
  
 \begin_inset Formula 
 \begin{equation}
-\max_{k,n_{h}\geq0}xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-zw(1+\psi\tau)n_{h}-rk-\kappa\frac{\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\label{maxP}
+\max_{zn}xk^{\alpha}(zn){}^{\gamma}-zw(1+\psi\tau)n-rk-\kappa\frac{\rho zn}{q(\theta)}\label{maxP}
 \end{equation}
 
 \end_inset
@@ -1196,24 +1155,13 @@ Firms are distinguished by their productivity realization
 \end_layout
 
 \begin_layout Standard
-Self-employment is therefore the corner 
-\begin_inset Formula $n_{h}=0$
-\end_inset
-
- ,
- while employer entrepreneurship corresponds to 
-\begin_inset Formula $n_{h}>0$
-\end_inset
-
- .
- For an interior employer choice,
- the first-order condition for hired labor is:
+The first order conditions are:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\gamma xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma-1}\xi z=w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}\label{maxP-1}
+\gamma xk^{\alpha}(zn)^{\gamma-1}=w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}\label{maxP-1}
 \end{equation}
 
 \end_inset
@@ -1224,7 +1172,7 @@ Self-employment is therefore the corner
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-n_{h}^{*}(k,x,\widetilde{w})=\max\left\{ 0,\frac{1}{\xi z}\left[\left(\frac{\gamma xk^{\alpha}\xi z}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right)^{\frac{1}{1-\gamma}}-\ell_{e}\right]\right\} \label{FOC}
+n^{*}(k,x,\widetilde{w})=\left[\frac{\gamma xk^{\alpha}}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right]^{\frac{1}{1-\gamma}}\label{FOC}
 \end{equation}
 
 \end_inset
@@ -1255,11 +1203,11 @@ nolink "false"
 
 \end_inset
 
-) yields the entrepreneur's profit function:
+) yields the manager's profit function for a given level of capital:
  
 \begin_inset Formula 
 \begin{equation}
-\pi(k,n_{h}^{*},x;\widetilde{w})=xk^{\alpha}\left(\ell_{e}+\xi zn_{h}^{*}\right)^{\gamma}-zn_{h}^{*}w(1+\psi\tau)-rk-\kappa\frac{\rho zn_{h}^{*}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}^{*}>0\}\label{profitj}
+y(k,x,\widetilde{w})=xk^{\alpha}(zn^{*})^{\gamma}-zn^{*}w(1+\psi\tau)-\kappa\frac{\rho zn^{*}}{q(\theta)}\label{profitj}
 \end{equation}
 
 \end_inset
@@ -1272,15 +1220,7 @@ Capital
 \end_layout
 
 \begin_layout Standard
-Initially we assume capital markets function perfectly,
- so the interior capital choice satisfies
-\begin_inset Formula 
-\[
-\alpha xk^{\alpha-1}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}=r.
-\]
-
-\end_inset
-
+Initially we assume capital markets function perfectly.
 \end_layout
 
 \begin_layout Subsection
@@ -1291,14 +1231,7 @@ Entrepreneurs
 Entrepreneurs maximize expected discounted utility of consumption 
 \begin_inset Formula 
 \[
-\text{with }n_{h}=0\text{ denoting nonemployer self-employment and }n_{h}>0\text{ denoting employer entrepreneurship.}
-\]
-
-\end_inset
-
-\begin_inset Formula 
-\[
-\max_{\{c_{t},a_{t+1},k_{t},n_{h,t}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
 \]
 
 \end_inset
@@ -1307,7 +1240,7 @@ subject to the following budget constraint:
  
 \begin_inset Formula 
 \begin{align}
-c+a' & \leq(1+r-\delta)a+\pi(k,n_{h},x;\tilde{r},w,\tau)-\tau_{\pi}\label{eq:c_worker-3}
+c+a' & \leq(1+r-\delta)a+\nu-\tau_{\pi}\label{eq:c_worker-3}
 \end{align}
 
 \end_inset
@@ -1459,32 +1392,34 @@ Let
 \end_layout
 
 \begin_layout Standard
-Let 
-\begin_inset Formula $\mathbb{E}_{\rho(h)}$
+Let denote 
+\begin_inset Formula $\mathbb{E}_{\rho}$
 \end_inset
 
- denote the continuation operator for employed workers who face job separation,
- let 
+ the expected value considering the possibility of being separated from the job as employed;
+ 
 \begin_inset Formula $\mathbb{E}_{p(\theta)}$
 \end_inset
 
- denote the continuation operator for households searching for work,
- and let 
-\begin_inset Formula $\mathbb{E}_{\rho_{e}(h)}$
+ the expected value considering the possibility of finding new job if previously unmatched with a firm (unemployed former entrepreneurs).
+ 
+\begin_inset Formula $V_{w}$
 \end_inset
 
- denote the continuation operator for entrepreneurs facing business closure.
- We write 
-\begin_inset Formula $\mathbf{V}_{0}$
+ is the contemporary utility as a worker,
+ which varies with the employment status.
+ 
+\begin_inset Formula $\iota_{i_{w}=1}$
 \end_inset
 
- for the continuation value after business closure;
- in the benchmark this state does not automatically receive regular unemployment insurance.
+ is an indicator function.
+ We can write the household's problem recursively as follows.
  More specifically,
  
 \begin_inset Formula 
 \begin{align*}
-\mathbb{E}_{p(\theta)}\mathbf{V}(a',h,x',i'_{w}) & =p(\theta)\mathbf{V}(a',h,x',i'_{w}=1)+(1-p(\theta))\mathbf{V}(a',h,x',i'_{w}=0)
+\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =p(\theta)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)\\
+ & +(1-p(\theta))\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)
 \end{align*}
 
 \end_inset
@@ -1495,29 +1430,23 @@ Let
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\mathbb{E}_{\rho(h)}\mathbf{V}(a',h,x',i'_{w}) & =(1-\rho(h))\mathbf{V}(a',h,x',i'_{w}=1)+\rho(h)\mathbf{V}(a',h,x',i'_{w}=0)
+\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =\rho\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\\
+ & +(1-\rho)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)
 \end{align*}
 
 \end_inset
 
+Notice that for agents who recently separated from the firm cannot rematch with a new firm in the current period.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\mathbb{E}_{\rho_{e}(h)}\mathbf{V}(a',h,x',i'_{w}) & =(1-\rho_{e}(h))\mathbf{V}(a',h,x',i'_{w}=2)+\rho_{e}(h)\mathbf{V}_{0}(a',h,x',i'_{w}=0)
-\end{align*}
-
-\end_inset
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align*}
-\mathbf{V}(a,h,x,i_{w}) & =\max\left\{ V^{w}(a,h,x,i_{w}),V^{e}(a,h,x)\right\} \\
-V^{w}(a,h,x,i_{w}) & =\max_{\left\{ a',c\right\} }\left\{ u(c)+\iota_{i_{w}=1}\beta\mathbb{E}_{\rho(h)}\mathbf{V}(a',h,x',i'_{w})+\iota_{i_{w}\neq1}\beta\mathbb{E}_{p(\theta)}\mathbf{V}(a',h,x',i'_{w})\right\} \\
-V^{e}(a,h,x) & =\max_{\left\{ a',c,k,n_{h}\geq0\right\} }\left\{ u(c)+\chi_{se}\mathbf{1}\{n_{h}=0\}+\chi_{emp}\mathbf{1}\{n_{h}>0\}+\beta\mathbb{E}_{\rho_{e}(h)}\mathbf{V}(a',h,x',i'_{w})\right\}
+\mathbf{V}(a,h,i_{w}) & =\max_{\left\{ a',c,\mathcal{I}_{e}\right\} }\left\{ \begin{array}{c}
+\iota_{i_{w}=0}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
+\iota_{i_{w}=1}\left[(1-\mathcal{I}_{e})\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
+\iota_{i_{w}=2}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]
+\end{array}\right\} 
 \end{align*}
 
 \end_inset
@@ -1539,7 +1468,7 @@ c+a' & \leq(1-\tilde{{r}}-\delta)a+inc\label{eq:c_worker-1}
 inc & =\begin{cases}
 ra+\widetilde{w}_{n} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}=1}}\\
 ra+\widetilde{w}_{u} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}\neq1}}\\
-ra+\pi(k,n_{h},x;\tilde{r},w,\tau) & \mbox{ if \ensuremath{\mathcal{I}_{e}=1}}
+ra+\nu(k,x;\tilde{r},w,\tau) & \mbox{ if \ensuremath{\mathcal{I}_{e}=1}}
 \end{cases}
 \end{align*}
 
@@ -1554,15 +1483,6 @@ where
 \end_inset
 
  is the earnings of the worker or entrepreneur,
- with entrepreneurial income coming from either self-employment (
-\begin_inset Formula $n_{h}=0$
-\end_inset
-
- ) or employer entrepreneurship (
-\begin_inset Formula $n_{h}>0$
-\end_inset
-
- ),
  
 \begin_inset Formula $\widetilde{w}_{n}=(1-\rho)\left\{ zw(1-(1-\psi)\tau)\right\} +\rho b$
 \end_inset
@@ -1730,7 +1650,7 @@ status collapsed
 \size small
 
 \begin_inset Tabular
-<lyxtabular version="3" rows="25" columns="4">
+<lyxtabular version="3" rows="23" columns="4">
 <features tabularvalignment="middle">
 <column alignment="center" valignment="top">
 <column alignment="center" valignment="top">
@@ -1777,118 +1697,6 @@ Description
 
 \size small
 Comments/observations/target
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\rho_{e}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\{0.168,0.150,0.144\}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Entrepreneur closure rate by 
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-BLS survival evidence + Grashuis (2021), scaled to mean 0.15; see text
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $f_{hire}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0$
-\end_inset
-
- baseline; 
-\begin_inset Formula $0.25$
-\end_inset
-
- in case 147
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Employer-threshold cost
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Initial experimental choice; motivated by first-worker labor-cost evidence and compliance-cost evidence; see text
 \end_layout
 
 \end_inset
@@ -3058,121 +2866,6 @@ Borrowing constraint
 
 \end_layout
 
-\begin_layout Standard
-In the self-employment extension we introduce an education-specific entrepreneur
- closure risk, 
-\begin_inset Formula $\rho_{e}(h)$
-\end_inset
-
-.
- Direct U.S. estimates by education are limited, so the calibration is constructed
- in two transparent steps.
- First, official U.S. business survival evidence from the BLS and Census implies
- substantial startup exit, so we set a conservative average annual entrepreneur
- closure rate of 0.15, below first-year startup exit because the model includes
- incumbent businesses as well as new entrants.
- Second, we use the competing-risk estimates in Grashuis (2021) for transitions
- from self-employment to unemployment to impose a modest education gradient.
- Mapping the model's three education groups into high school or less, some
- college, and bachelor's or more, and normalizing the relative hazards to
- the model's education shares, yields 
-\begin_inset Formula $\rho_{e}(h)=\{0.168,0.150,0.144\}$
-\end_inset
-
-.
- In the benchmark interpretation, entrepreneur closure moves the household out
- of business but does not automatically confer regular unemployment insurance
- eligibility,
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-This is intended to match regular U.S. unemployment insurance rules rather
- than special temporary programs.
- Regular UI eligibility is generally tied to prior covered wage employment,
- whereas purely self-employed earnings are not automatically covered in the
- same way.
- The institutional benchmark comes from U.S. Department of Labor eligibility
- guidance and IRS treatment of unemployment taxes.
-\end_layout
-
-\end_inset
-
- so
- the closure shock disciplines entrepreneurial survival without mechanically
- expanding UI receipt.
-We treat this as an initial calibration rule rather than a directly estimated
-parameter, and use a modest gradient because the broader literature on education
-and business survival is mixed.
-\end_layout
-
-\begin_layout Standard
-The self-employment branch also allows for an employer-threshold cost, 
-\begin_inset Formula $f_{hire}$
-\end_inset
-
-,
- paid whenever the entrepreneur hires strictly positive labor.
- This is separate from the smooth search-and-matching hiring cost governed by
- 
-\begin_inset Formula $\kappa$
-\end_inset
-
-:
- 
-\begin_inset Formula $\kappa$
-\end_inset
-
- captures proportional vacancy and replacement costs,
- whereas 
-\begin_inset Formula $f_{hire}$
-\end_inset
-
- captures the discrete hurdle of becoming an employer rather than remaining
- self-employed.
- The literature supports this distinction,
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-Recent evidence on the first-worker margin shows that labor costs can strongly
- affect the decision to become an employer.
- Cockx and Desiere (2024) exploit a Belgian reform that reduced the labor cost
- of the first employee by 13 percent and find a 31 percent jump in first-time
- employer entry,
- implying an elasticity of about -2.39.
- In related U.S. evidence,
- Guo and Wallskog (2025) show that even new-employer payroll taxes averaging
- about $350 per worker reduce first-worker hiring,
- while Harju,
- Matikka,
- and Rauhanen (2019) show that entrepreneurs respond strongly to compliance
- costs around tax thresholds.
- These papers motivate an employer-threshold cost,
- but do not pin down a structural dollar-equivalent fixed cost for our model.
-\end_layout
-
-\end_inset
-
- but direct structural calibration of a fixed employer cost remains limited.
- We therefore treat 
-\begin_inset Formula $f_{hire}$
-\end_inset
-
- as a disciplined experimental choice rather than a directly estimated parameter.
- In the current benchmark with closure risk and partial capital loss we set 
-\begin_inset Formula $f_{hire}=0$
-\end_inset
-
-,
- while the first sensitivity run sets 
-\begin_inset Formula $f_{hire}=0.25$
-\end_inset
-
- in model units to test whether a modest employer hurdle improves the
- self-employed versus employer composition.
-\end_layout
-
 \begin_layout Section
 Baseline Results
 \end_layout
@@ -3551,8 +3244,8 @@ Calculate the cutoff values of
  
 \begin_inset Formula 
 \begin{align}
-\widetilde{w}_{u}= & \pi(x_{u}^{*})=\max_{k,n_{h}\geq0}\left\{ x_{u}^{*}k^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa \rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\right\} \label{eq:xstar_u}\\
-\widetilde{w}_{n}= & \pi(x_{n}^{*})=\max_{k,n_{h}\geq0}\left\{ x_{n}^{*}k^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa \rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\right\} \label{eq:xstar_n}
+\widetilde{w}_{u}= & \pi(x_{u}^{*})=\max_{n}\left\{ \left(x_{u}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_u}\\
+\widetilde{w}_{n}= & \pi(x_{n}^{*})=\max_{n}\left\{ \left(x_{n}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_n}
 \end{align}
 
 \end_inset
@@ -3780,7 +3473,7 @@ c_{u}+a'_{u} & \leq(1-\tilde{r}-\delta)a+b,\text{if unemployed}\label{eq:bdg_iw0
  
 \begin_inset Formula 
 \begin{equation}
-\mathbf{V}^{1}(h,z,x\geq x_{u}^{*},a,i_{w}=0)=\max_{a_{e}',k,n_{h}\geq0}\left\{ u(c_{e})+\chi_{se}\mathbf{1}\{n_{h}=0\}+\chi_{emp}\mathbf{1}\{n_{h}>0\}+\beta\left[(1-\rho_{e}(h))\mathbb{E}\mathbf{V}^{0}(h,z',x',a_{e}',i'_{w}=2)+\rho_{e}(h)\mathbb{E}\mathbf{V}_{0}^{0}(h,z',x',a_{e}',i'_{w}=0)\right]\right\} \label{eq:V_iw0_xh}
+\mathbf{V}^{1}(h,z,x\geq x_{u}^{*},a,i_{w}=0)=\max_{a_{e}'}\left\{ u(c_{e})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a_{e}',i'_{w}=w)\right\} \label{eq:V_iw0_xh}
 \end{equation}
 
 \end_inset
@@ -3789,7 +3482,7 @@ s.t.
  
 \begin_inset Formula 
 \begin{equation}
-c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\pi(k,n_{h},x;\tilde{r},w,\tau)\label{eq:bdg_iw0_xh}
+c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\nu(k,x;\tilde{r},w,\tau)\label{eq:bdg_iw0_xh}
 \end{equation}
 
 \end_inset
@@ -3797,7 +3490,7 @@ c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\pi(k,n_{h},x;\tilde{r},w,\tau)\label{eq:b
 where 
 \begin_inset Formula 
 \begin{equation}
-\pi(k,n_{h},x;\tilde{r},w,\tau)=xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}.\label{eq:profit_emtrepreneur}
+\nu(k,x;\tilde{r},w,\tau)=\max_{n}\left\{ x^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa\rho n}{q(\theta)}\right\} .\label{eq:profit_emtrepreneur}
 \end{equation}
 
 \end_inset

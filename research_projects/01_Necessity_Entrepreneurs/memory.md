@@ -4,6 +4,211 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-09 (paper table rebuild, calibration rewrite, and PDF refresh)
+- Preserved the key benchmark outputs in dedicated snapshots so richer paper moments could be extracted without later runs overwriting `case_test_new_147`:
+  - baseline snapshot:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_baseline_snapshot_20260309_144705`
+  - no-unemployment-risk snapshot:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_nourisk_snapshot_20260309_150233`
+  - `UI=0.05` snapshot:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_ui005_snapshot_20260309_151050`
+  - `UI=0.00` snapshot:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_ui000_snapshot_20260309_152411`
+  - downturn steady-state snapshot:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_downturn_lowedu_sep010_snapshot_20260309_153408`
+- Extracted a richer table set for the paper:
+  - entrepreneurship shares by education,
+  - output per household by education,
+  - average entrepreneur size by education,
+  - average employer size by education,
+  - average entrepreneur capital by education in the baseline,
+  - self-employed and employer shares by education.
+- Rebuilt the main paper tables:
+  - `drafts/tables/baseline_results_only.tex`
+  - `drafts/tables/self_employment_case147_ui_ladder.tex`
+  - `drafts/tables/self_employment_case147_no_unemployment_risk.tex`
+  - `drafts/tables/self_employment_case147_downturn_lowedu_sep.tex`
+  - `drafts/tables/self_employment_fhire_robustness.tex`
+- Added a new paper-facing calibration table and section fragment:
+  - `drafts/tables/calibration_parameters_self_employment.tex`
+  - `drafts/sections/calibration_self_employment.tex`
+- Rewrote the paper-facing `.tex` draft:
+  - `drafts/necessity_entrepreneurship.tex`
+  - removed visible internal benchmark labels from the LaTeX prose,
+  - rewrote the calibration section in a more professional paper-facing style,
+  - expanded the baseline table and the no-unemployment-risk / downturn discussion to report output and firm-size moments more clearly.
+- Patched the no-unemployment-risk cutoff figure source so the paper build succeeds with current `pgfplots`:
+  - `figures/case147_no_unemployment_risk_cutoff_panels.tex`
+- Successful PDF build:
+  - `drafts/necessity_entrepreneurship.pdf`
+- Live-source note:
+  - the compiled `.tex` draft is ahead of the editable LyX draft on the calibration rewrite;
+  - tomorrow's first paper task should be syncing the LyX calibration block and checking for any remaining visible internal case labels.
+- Tomorrow's next steps:
+  1. sync `drafts/necessity_entrepreneurship.lyx` to the cleaned calibration rewrite and benchmark-facing language now present in `drafts/necessity_entrepreneurship.tex`;
+  2. build the MIT deterministic transition-path experiment from the low-education separation shock and decide which transition outputs are main text versus appendix;
+  3. run a wealth/credit diagnostic by asset bins and education to see whether the current benchmark already embeds strong wealth-to-scale inequality effects before adding any extra borrowing-friction counterfactual.
+
+### Session: 2026-03-09 (`case 147` UI ladder, no-risk benchmark, and downturn steady state)
+- Cleaned the paper-facing baseline benchmark table:
+  - `drafts/tables/baseline_results_only.tex`
+  - removed solver diagnostics from the main baseline table and kept only economic moments.
+- Completed the missing endogenous-tax `UI=0.05` point for the self-employment benchmark:
+  - `calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_005_se147_ui005_caploss025_fhire025_m40_20260309_120241.log`
+  - final outcomes:
+    - `best_tol = 0.0165639`
+    - `entr_share = 0.28877`
+    - self-employed share among entrepreneurs `= 0.718219`
+    - employer share among entrepreneurs `= 0.281781`
+    - `n_entrepreneur avg = 3.31976`
+    - `k_entrepreneur avg = 63.8887`
+- Added generic self-employment runtime hooks in:
+  - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/main_2025_v1_case113_self_employment.cpp`
+  - `calibration/self_employment_baseline/run_ai_calibration.ps1`
+  - new hooks:
+    - fixed tax for arbitrary single-case runs,
+    - fixed `theta`,
+    - fixed `rho`,
+    - worker separation shock overrides.
+- Fixed-tax no-UI homotopy for `case 147` is now coded but still expensive to run to completion; the direct paper-facing results from this session therefore use the cheaper completed no-risk and downturn steady-state runs first.
+- Completed a no-unemployment-risk upper-bound benchmark under fixed tax:
+  - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_se147_nourisk_fixedtax_theta1_rho0_m40_retry_20260309_135436.log`
+  - implemented shock:
+    - fixed baseline tax `tau_y = 0.00727962`
+    - fixed `theta = 1`
+    - fixed `rho = 0`
+    - worker separations forced to zero
+  - final outcomes:
+    - `best_tol = 0.0137948`
+    - `entr_share = 0.19286`
+    - self-employed share among entrepreneurs `= 0.397127`
+    - employer share among entrepreneurs `= 0.602873`
+    - `n_entrepreneur avg = 5.80694`
+    - `k_entrepreneur avg = 90.4392`
+- Completed the first downturn steady-state comparison for the future MIT-shock section:
+  - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_se147_downturn_lowedu_sep010_m40_20260309_140245.log`
+  - implemented shock:
+    - low-education worker separation increased by `0.10`
+  - final outcomes:
+    - `best_tol = 0.0140382`
+    - `entr_share = 0.18680`
+    - self-employed share among entrepreneurs `= 0.595289`
+    - employer share among entrepreneurs `= 0.404711`
+    - `n_entrepreneur avg = 5.79805`
+    - `k_entrepreneur avg = 93.3981`
+- Added new standalone table fragments so the paper-side merge can happen without touching the live LyX file:
+  - `drafts/tables/self_employment_case147_ui_ladder.tex`
+  - `drafts/tables/self_employment_case147_no_unemployment_risk.tex`
+  - `drafts/tables/self_employment_case147_downturn_lowedu_sep.tex`
+
+### Session: 2026-03-09 (`f_hire = 0.35` upper-side sensitivity)
+- Completed the missing upper-side bracket for the employer-threshold cost:
+  - baseline:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_se147_baseline_caploss025_fhire035_m40_retry_20260309_112751.log`
+  - `UI=0.00`:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_000_se147_ui000_caploss025_fhire035_m40_20260309_110906.log`
+- Final `f_hire = 0.35` outcomes:
+  - baseline:
+    - `best_tol = 0.00774401`
+    - `entr_share = 0.17665`
+    - self-employed share among entrepreneurs `= 0.592584`
+    - employer share among entrepreneurs `= 0.407416`
+    - `n_entrepreneur avg = 6.23355`
+    - `k_entrepreneur avg = 98.8487`
+  - `UI=0.00`:
+    - `best_tol = 0.0174317`
+    - `entr_share = 0.34012`
+    - self-employed share among entrepreneurs `= 0.770963`
+    - employer share among entrepreneurs `= 0.229037`
+    - `n_entrepreneur avg = 2.61377`
+    - `k_entrepreneur avg = 54.7019`
+- Comparison to the `f_hire = 0.25` benchmark candidate:
+  - baseline:
+    - entrepreneurship moves only slightly `0.17805 -> 0.17665`
+    - self-employed share among entrepreneurs rises slightly `0.576804 -> 0.592584`
+  - `UI=0.00`:
+    - entrepreneurship stays close `0.34248 -> 0.34012`
+    - self-employed share among entrepreneurs is almost unchanged `0.766994 -> 0.770963`
+- Interpretation:
+  - the local bracket `f_hire in {0.15, 0.25, 0.35}` is now complete;
+  - the benchmark result is not a knife-edge artifact;
+  - `case 147` at `f_hire = 0.25` is now defensible as the working benchmark.
+
+### Session: 2026-03-09 (`f_hire = 0.15` local sensitivity)
+- Added a runtime override for the self-employment employer-threshold cost so nearby `f_hire` sensitivities can be run without creating new hardcoded cases:
+  - source patch:
+    - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/main_2025_v1_case113_self_employment.cpp`
+  - wrapper patch:
+    - `calibration/self_employment_baseline/run_ai_calibration.ps1`
+  - new runtime env knob:
+    - `CFV_SE_HIRING_FIXED_COST`
+- Completed matched `case 147` sensitivity runs with `f_hire = 0.15`:
+  - baseline:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_se147_baseline_caploss025_fhire015_m40_20260309_104447.log`
+  - `UI=0.00`:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_000_se147_ui000_caploss025_fhire015_m40_20260309_105223.log`
+- Final `f_hire = 0.15` outcomes:
+  - baseline:
+    - `best_tol = 0.00436964`
+    - `entr_share = 0.17860`
+    - self-employed share among entrepreneurs `= 0.567917`
+    - employer share among entrepreneurs `= 0.432083`
+    - `n_entrepreneur avg = 6.12737`
+    - `k_entrepreneur avg = 97.8587`
+  - `UI=0.00`:
+    - `best_tol = 0.0136864`
+    - `entr_share = 0.33477`
+    - self-employed share among entrepreneurs `= 0.732115`
+    - employer share among entrepreneurs `= 0.267885`
+    - `n_entrepreneur avg = 2.65661`
+    - `k_entrepreneur avg = 55.6364`
+- Comparison to the `f_hire = 0.25` benchmark candidate:
+  - baseline composition shifts only modestly back toward employers:
+    - self-employed share among entrepreneurs `0.576804 -> 0.567917`
+  - `UI=0.00` also remains strongly self-employment-heavy:
+    - self-employed share among entrepreneurs `0.766994 -> 0.732115`
+  - entrepreneurship itself stays close:
+    - baseline `0.17805 -> 0.17860`
+    - `UI=0.00` `0.34248 -> 0.33477`
+- Interpretation:
+  - the employer-threshold mechanism is robust to a smaller nearby cost;
+  - `f_hire = 0.25` does not currently look like a knife-edge calibration artifact;
+  - the next judgment call is whether this one-sided local check is enough to lock the benchmark, or whether to add an upper-side `f_hire = 0.35` run before freezing it.
+
+### Session: 2026-03-09 (case 147 no-UI rerun completed)
+- Stayed on the self-employment calibration branch after the interrupted earlier run attempt.
+- Restored missing runtime input `rnd_100k.txt` into the active project tree from the same-day backup copy:
+  - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/rnd_100k.txt`
+  - `calibration/self_employment_baseline/runtime/data/input/CFV/rnd_100k.txt`
+  - `calibration/ai_calibration/runtime/data/input/CFV/rnd_100k.txt`
+- Verified the earlier interrupted `case 147`, `UI=0.00` log was metadata-only:
+  - `calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_000_se147_ui000_caploss025_fhire025_m40_20260309_102614.log`
+- Found and cleared a stale `cfv_red_final_ai.exe` process in `calibration/self_employment_baseline/` that had locked the executable after interruption.
+- Successful rerun executed with `-SkipCompile` from:
+  - `calibration/self_employment_baseline/run_ai_calibration.ps1`
+  - source file:
+    - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/main_2025_v1_case113_self_employment.cpp`
+  - completed log:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_000_se147_ui000_caploss025_fhire025_m40_retry_20260309_103325.log`
+- Final `case 147`, `UI=0.00` outcomes:
+  - `best_tol = 0.0136763`
+  - `entr_share = 0.34248`
+  - self-employed share among entrepreneurs `= 0.766994`
+  - employer share among entrepreneurs `= 0.233006`
+  - `n_entrepreneur avg = 2.55286`
+  - `k_entrepreneur avg = 54.0490`
+  - final `theta_new = 0.60371`
+- Comparison to `case 146`, `UI=0.00`:
+  - entrepreneur share: `0.33784 -> 0.34248`
+  - self-employed share among entrepreneurs: `0.637314 -> 0.766994`
+  - employer share among entrepreneurs: `0.362686 -> 0.233006`
+  - `n_entrepreneur avg`: `2.60280 -> 2.55286`
+  - `k_entrepreneur avg`: `55.2095 -> 54.0490`
+- Interpretation:
+  - the fixed employer-threshold cost remains operative in the no-UI experiment;
+  - `case 147` now looks stronger, not weaker, as the benchmark candidate because it preserves the necessity-entry response while sharply improving self-employed/employer composition;
+  - the next calibration move should be a nearby `f_hire` sensitivity (`0.15` or `0.35`) rather than re-running this point again.
+
 ### Session: 2026-03-06 (self-employment closure benchmark + employer-threshold test)
 - Clarified the self-employment failure benchmark and coded/ran two main self-employment benchmark cases in:
   - `calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/main_2025_v1_case113_self_employment.cpp`

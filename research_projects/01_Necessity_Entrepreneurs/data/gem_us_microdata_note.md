@@ -12,6 +12,8 @@ Last updated: 2026-03-08
 - `us_gem_jobs_income_overlap_2019_2021.csv`: overlap shares for jobs-scarce and high-income motives.
 - `us_gem_jobs_income_overlap_2019_2021_long.csv`: long-format overlap version.
 - `us_gem_jobs_income_overlap_2019_2021.png`: recommended figure for the introduction.
+- `us_gem_jobs_income_overlap_summary_2019_2021.tex`: compact TeX summary table for prose or footnote use.
+- `../figures/us_gem_jobs_income_overlap_2019_2021.tex`: optional paper-facing pgfplots figure.
 
 ## Data construction
 
@@ -39,3 +41,4 @@ Last updated: 2026-03-08
 - This provides direct U.S. motive evidence from microdata rather than only report summaries.
 - It supports opening the paper with the identification problem and then using recession evidence as a complementary, not exclusive, source of motivation.
 - The most informative visual is the overlap between `jobs are scarce` and `high income / wealth`, not a generic four-line time-series chart.
+- The compact TeX table is the easiest object to cite in the main text if we keep GEM as prose rather than as a headline figure.

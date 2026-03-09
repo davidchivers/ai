@@ -1,0 +1,95 @@
+% Transplant-ready data section for the main paper.
+% This is a fragment, not a full LaTeX document.
+
+\section{Data and measurement}
+
+This side evidence uses four public U.S. data objects: business counts by
+employment size, business applications, CPS self-employment rates, and GEM
+motive evidence. We do not collapse them into a single entrepreneurship
+measure because they differ in unit of observation, denominator, and economic
+margin. The main paper should treat the size-bin business counts and the
+business-applications series as the primary motivation pair. The CPS
+self-employment series and GEM evidence are best used as companion objects
+that clarify measurement rather than as the central figures.
+
+\subsection{Business counts by employment size}
+
+Our stock-side series combines Census Nonemployer Statistics and Census
+Business Dynamics Statistics to build annual national establishment counts from
+1997 to 2022. The zero-employee series is total nonemployer establishments
+(`NESTAB`). Positive-employment bins use BDS establishment counts (`ESTAB`) for
+`1--4', `5--19', and `20+' employees, where `5--19' is formed by summing
+`5--9' and `10--19', and `20+' is formed by summing `20--499' and `500+'.
+We use establishment counts rather than firm counts because the zero-employee
+object is naturally available as a nonemployer-establishment total, making
+establishments the cleanest common unit across bins.
+
+Recession timing is added from the FRED `USREC' indicator, aggregated to an
+annual any-recession flag. In the Great Recession window from 2007 to 2010,
+zero-employee establishments rise from 21,708,021 to 22,110,628 (1.85\%),
+while `1--4' employee establishments fall 3.59\%, `5--19' employee
+establishments fall 2.57\%, and `20+' employee establishments fall 5.82\%.
+Employer establishments as a whole fall 3.58\%, while the sum of all tracked
+bins rises only 0.54\%. This object should therefore be read as evidence on
+business composition, not as a direct measure of startup flows or person-level
+self-employment.
+
+\subsection{Business applications}
+
+Our flow-side companion uses Census Business Formation Statistics, accessed via
+the seasonally adjusted FRED series for total business applications and
+high-propensity business applications. Monthly data are available from 2005
+through 2025 in the current pull and are aggregated to annual sums. We track
+total applications and high-propensity applications separately and use the
+high-propensity share as a simple measure of the composition of applicant
+quality or employer orientation.
+
+Over the 2007--2010 window, total applications fall from 2,652,392 to
+2,497,405 (-5.84\%), while high-propensity applications fall from 1,493,428
+to 1,163,075 (-22.12\%). The high-propensity share therefore declines from
+56.30\% to 46.57\%. This flow object complements the size-bin stock evidence by
+showing that business formation becomes weaker on the employer-oriented margin
+even when zero-employee activity is relatively resilient.
+
+\subsection{CPS self-employment companion}
+
+To avoid treating nonemployer business counts as a person-level
+self-employment series, we also build a CPS companion from BLS/FRED monthly
+levels for unincorporated self-employed workers, incorporated self-employed
+workers, and total employment among individuals age 16 and over. We compute
+annual averages for 2000--2022 and report self-employment rates as shares of
+total employment.
+
+In the Great Recession window, the total self-employment rate falls from
+11.06\% to 10.70\%, with both the unincorporated and incorporated components
+also declining. This divergence is useful rather than problematic: it shows
+that an establishment-side nonemployer count and a person-side
+self-employment rate capture different margins and should not be combined
+mechanically in a single headline statistic.
+
+\subsection{GEM motive evidence}
+
+Finally, we use the Global Entrepreneurship Monitor as a motive-based
+companion rather than as a direct measure of the model object. The public U.S.
+APS microdata currently yield a clean weighted TEA sample for 2019--2021, and
+the official 2023--2024 U.S. GEM report provides a later public aggregate
+update. Among weighted U.S. early-stage entrepreneurs in the 2019--2021
+microdata, the share reporting that they started a business because jobs are
+scarce is 40.9\% in 2019, 49.6\% in 2020, and 45.7\% in 2021. Over the same
+years, the share citing wealth or very high income is 68.3\%, 64.7\%, and
+73.4\%.
+
+These shares are not mutually exclusive. That overlap is exactly why GEM is
+useful here: it shows that necessity-type and opportunity-type signals can
+coexist within the same observed entrepreneurial spell. We therefore use GEM
+to motivate the paper's measurement problem, not to claim that survey motives
+map one-for-one into the structural definition of necessity entrepreneurship.
+
+Taken together, these objects imply two practical rules for the paper. First,
+the main empirical motivation should center on the size-bin business-count
+figure and the business-applications figure, because together they show a
+shift toward low-scale activity and away from employer-oriented formation.
+Second, CPS self-employment and GEM should remain companion evidence in prose,
+footnotes, or appendix-style discussion. They sharpen the interpretation of
+the main figures, but they do not collapse the paper's measurement problem
+into a single observed statistic.

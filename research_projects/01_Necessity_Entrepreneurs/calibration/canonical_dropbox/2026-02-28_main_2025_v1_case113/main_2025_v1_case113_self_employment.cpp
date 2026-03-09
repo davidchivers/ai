@@ -196,6 +196,20 @@ bool override_lowerincome_b = false;
 double lowerincome_b_override = 0.0;
 bool env_override_lowerincome_b = false;
 double env_lowerincome_b = 0.0;
+bool env_use_fixed_tax_rate = false;
+bool override_use_fixed_tax_rate = false;
+bool override_fixed_tax_baseline = false;
+double fixed_tax_baseline_override = 0.0;
+bool env_override_fixed_theta = false;
+double env_fixed_theta = 0.0;
+bool env_override_fixed_rho = false;
+double env_fixed_rho = 0.0;
+bool override_self_employment_hiring_fixed_cost = false;
+double self_employment_hiring_fixed_cost_override = 0.0;
+bool env_override_worker_separation_add_all = false;
+double env_worker_separation_add_all = 0.0;
+bool env_override_worker_separation_add_low = false;
+double env_worker_separation_add_low = 0.0;
 int env_max_iter_agg = -1;
 int env_single_case = -1;
 int env_rng_seed = -1;
@@ -446,6 +460,29 @@ void apply_runtime_overrides()
 		cout << "[override] lowerincome_b (env) = " << env_lowerincome_b << endl;
 	}
 
+	int use_fixed_tax_env = 0;
+	if (parse_env_int(getenv("CFV_USE_FIXED_TAX"), use_fixed_tax_env) && use_fixed_tax_env > 0) {
+		env_use_fixed_tax_rate = true;
+		cout << "[override] use_fixed_tax_rate (env) = 1" << endl;
+	}
+
+	double fixed_tax_baseline_env = 0.0;
+	if (parse_env_double(getenv("CFV_FIXED_TAX_BASELINE"), fixed_tax_baseline_env) &&
+		fixed_tax_baseline_env >= 0.0) {
+		override_fixed_tax_baseline = true;
+		fixed_tax_baseline_override = fixed_tax_baseline_env;
+		cout << "[override] fixed_tax_baseline = " << fixed_tax_baseline_override << endl;
+	}
+
+	double self_employment_hiring_fixed_cost_env = 0.0;
+	if (parse_env_double(getenv("CFV_SE_HIRING_FIXED_COST"), self_employment_hiring_fixed_cost_env) &&
+		self_employment_hiring_fixed_cost_env >= 0.0) {
+		override_self_employment_hiring_fixed_cost = true;
+		self_employment_hiring_fixed_cost_override = self_employment_hiring_fixed_cost_env;
+		cout << "[override] self_employment_hiring_fixed_cost = "
+			 << self_employment_hiring_fixed_cost_override << endl;
+	}
+
 	int max_iter_override_value = -1;
 	if (parse_env_int(getenv("CFV_MAX_ITER_AGG"), max_iter_override_value) && max_iter_override_value > 0) {
 		env_max_iter_agg = max_iter_override_value;
@@ -456,6 +493,20 @@ void apply_runtime_overrides()
 	if (parse_env_int(getenv("CFV_SINGLE_CASE"), single_case_override_value) && single_case_override_value > 0) {
 		env_single_case = single_case_override_value;
 		cout << "[override] single_case = " << env_single_case << endl;
+	}
+
+	double fixed_theta_override_value = 0.0;
+	if (parse_env_double(getenv("CFV_FIXED_THETA"), fixed_theta_override_value)) {
+		env_override_fixed_theta = true;
+		env_fixed_theta = fixed_theta_override_value;
+		cout << "[override] fixed_theta = " << env_fixed_theta << endl;
+	}
+
+	double fixed_rho_override_value = 0.0;
+	if (parse_env_double(getenv("CFV_FIXED_RHO"), fixed_rho_override_value)) {
+		env_override_fixed_rho = true;
+		env_fixed_rho = fixed_rho_override_value;
+		cout << "[override] fixed_rho = " << env_fixed_rho << endl;
 	}
 
 	int rng_seed_override_value = -1;
@@ -480,6 +531,20 @@ void apply_runtime_overrides()
 	if (parse_env_double(getenv("CFV_VACANCY_SCALE"), vacancy_scale_override_value) && vacancy_scale_override_value >= 0.0) {
 		env_vacancy_scale = vacancy_scale_override_value;
 		cout << "[override] vacancy_scale = " << env_vacancy_scale << endl;
+	}
+
+	double separation_add_all_env = 0.0;
+	if (parse_env_double(getenv("CFV_WORKER_SEPARATION_ADD_ALL"), separation_add_all_env)) {
+		env_override_worker_separation_add_all = true;
+		env_worker_separation_add_all = separation_add_all_env;
+		cout << "[override] worker_separation_add_all = " << env_worker_separation_add_all << endl;
+	}
+
+	double separation_add_low_env = 0.0;
+	if (parse_env_double(getenv("CFV_WORKER_SEPARATION_ADD_LOW"), separation_add_low_env)) {
+		env_override_worker_separation_add_low = true;
+		env_worker_separation_add_low = separation_add_low_env;
+		cout << "[override] worker_separation_add_low = " << env_worker_separation_add_low << endl;
 	}
 }
 
@@ -1462,13 +1527,23 @@ void simulation()
             if (env_single_case == 51) {
                 theta_raw = std::max(theta_raw, kMinThetaModel51);
             }
-            theta_ut_new = clamp_probability(theta_raw);
+            if (env_override_fixed_theta) {
+                theta_ut_new = clamp_probability(env_fixed_theta);
+            }
+            else {
+                theta_ut_new = clamp_probability(theta_raw);
+            }
 
             double rho_raw = rho_aver;
             if (cacu_1 > 1e-10) {
                 rho_raw = ave_rho / cacu_1;
             }
-            rho_aver_new = clamp_probability(rho_raw);
+            if (env_override_fixed_rho) {
+                rho_aver_new = clamp_probability(env_fixed_rho);
+            }
+            else {
+                rho_aver_new = clamp_probability(rho_raw);
+            }
 
 
             //ave_work_prob = (cacu_2 * theta_ut_new + cacu_1 * (1 - ave_rho)) / (cacu_2 + cacu_1);//the real worker's prob
@@ -3572,6 +3647,38 @@ void assign_value()
 		cout << "[override] lowerincome_b = " << lowerincome_b << endl;
 	}
 
+	if (override_self_employment_hiring_fixed_cost) {
+		self_employment_hiring_fixed_cost = self_employment_hiring_fixed_cost_override;
+		cout << "[override] self_employment_hiring_fixed_cost = "
+			 << self_employment_hiring_fixed_cost << endl;
+	}
+
+	if (override_use_fixed_tax_rate) {
+		use_fixed_tax_rate = true;
+		t_lumpsum_endogenous = 0.0;
+		if (override_fixed_tax_baseline) {
+			tau_y_baseline = fixed_tax_baseline_override;
+		}
+		cout << "[override] use_fixed_tax_rate = 1" << endl;
+		if (override_fixed_tax_baseline) {
+			cout << "[override] tau_y_baseline = " << tau_y_baseline << endl;
+		}
+	}
+
+	if (env_override_worker_separation_add_all) {
+		for (int i_rho = 0; i_rho < Ne; i_rho++) {
+			edu_rho[i_rho] = clamp_probability(edu_rho[i_rho] + env_worker_separation_add_all);
+		}
+		cout << "[override] applied worker separation add-all shock = "
+			 << env_worker_separation_add_all << endl;
+	}
+
+	if (env_override_worker_separation_add_low) {
+		edu_rho[0] = clamp_probability(edu_rho[0] + env_worker_separation_add_low);
+		cout << "[override] applied worker separation add-low shock = "
+			 << env_worker_separation_add_low << endl;
+	}
+
 	for (int i_loop = 0; i_loop < 3; i_loop++) {
 		alpha_edu[i_loop] = k_share * x_share_edu[i_loop];
 		gamma_edu[i_loop] = (1.0 - k_share) * x_share_edu[i_loop];
@@ -3870,10 +3977,7 @@ int main(void)
 		// -------------------------
 		// 2) Homotopy path for case 113
 		// -------------------------
-		std::vector<double> b_candidates = {
-			0.40, 0.35, 0.30, 0.275, 0.25, 0.225, 0.20,
-			0.175, 0.15, 0.125, 0.10, 0.075, 0.05, 0.025, 0.00
-		};
+		std::vector<double> b_candidates = { 0.40, 0.10, 0.05, 0.00 };
 		std::vector<double> b_path;
 		for (double b_candidate : b_candidates) {
 			if (b_candidate + 1e-12 >= target_b) {
@@ -3949,6 +4053,130 @@ int main(void)
 
 		return 0;
 	}
+
+	//=====================================================
+	// Generic fixed-tax homotopy mode for any single case
+	// with a runtime UI override. This is used for the
+	// self-employment benchmark so fixed-tax comparisons can
+	// share the same case definition as the endogenous-tax runs.
+	//=====================================================
+	if (cases_to_run.size() == 1 && env_use_fixed_tax_rate && env_override_lowerincome_b) {
+		const int target_case = cases_to_run[0];
+		const double target_b = std::max(0.0, std::min(0.40, env_lowerincome_b));
+
+		best_check_tol = 10.0;
+		while_stop_value = 0;
+		iter_agg = 0;
+
+		i_case = target_case;
+		workingpath_new = workingpath + "data/Output/case_test_new_" + to_string(target_case) + "_warmup_fixedtax/";
+
+		#ifdef _WIN32
+			if (_access(workingpath_new.c_str(), 0)) {
+				_mkdir(workingpath_new.c_str());
+			}
+		#else
+			if (access(workingpath_new.c_str(), F_OK) != 0) {
+				mkdir(workingpath_new.c_str(), 0755);
+			}
+		#endif
+
+		override_lowerincome_b = false;
+		override_use_fixed_tax_rate = false;
+		override_fixed_tax_baseline = false;
+		assign_value();
+		initialize_value();
+
+		gn_decompose = 0.0;
+		gn_exp = 0.0;
+		r_decompose = 0.0;
+		r_wedge_decompose = 0.0;
+		r_wedge_exp = 0.0;
+		ind_policy = 0;
+		update_step1 = update_value;
+		var_pE = 0.0;
+		dummy_UI = 0.0;
+
+		calibra();
+		const double warmup_tau_y_baseline = tau_y0;
+		cout << "[fixed-tax-homotopy] Warmup for case " << target_case
+			 << " done. tau_y_baseline = " << warmup_tau_y_baseline << endl;
+		cout << "[fixed-tax-homotopy] Target lowerincome_b = " << target_b << endl;
+
+		std::vector<double> b_candidates = { 0.40, 0.10, 0.05, 0.00 };
+		std::vector<double> b_path;
+		for (double b_candidate : b_candidates) {
+			if (b_candidate + 1e-12 >= target_b) {
+				b_path.push_back(b_candidate);
+			}
+		}
+		if (b_path.empty() || fabs(b_path.back() - target_b) > 1e-12) {
+			b_path.push_back(target_b);
+		}
+		bool first_step = true;
+
+		for (double b_val : b_path) {
+			best_check_tol = 10.0;
+			while_stop_value = 0;
+			iter_agg = 0;
+
+			i_case = target_case;
+
+			std::ostringstream oss;
+			oss << std::fixed << std::setprecision(2) << b_val;
+			std::string b_tag = oss.str();
+			std::replace(b_tag.begin(), b_tag.end(), '.', 'p');
+
+			const bool is_target_step = fabs(b_val - target_b) < 1e-12;
+			if (is_target_step) {
+				workingpath_new = workingpath + "data/Output/case_test_new_" + to_string(target_case) +
+					"_fixedtax_target_b" + b_tag + "/";
+			} else {
+				workingpath_new = workingpath + "data/Output/case_test_new_" + to_string(target_case) +
+					"_fixedtax_homotopy_b" + b_tag + "/";
+			}
+
+			#ifdef _WIN32
+				if (_access(workingpath_new.c_str(), 0)) {
+					_mkdir(workingpath_new.c_str());
+				}
+			#else
+				if (access(workingpath_new.c_str(), F_OK) != 0) {
+					mkdir(workingpath_new.c_str(), 0755);
+				}
+			#endif
+
+			override_lowerincome_b = true;
+			lowerincome_b_override = b_val;
+			override_use_fixed_tax_rate = true;
+			override_fixed_tax_baseline = true;
+			fixed_tax_baseline_override = warmup_tau_y_baseline;
+
+			assign_value();
+			if (first_step) {
+				cout << "[fixed-tax-homotopy] Starting case " << target_case
+					 << " from baseline solution at lowerincome_b=" << b_val << endl;
+				first_step = false;
+			} else {
+				cout << "[fixed-tax-homotopy] Continuing case " << target_case
+					 << " at lowerincome_b=" << b_val << endl;
+			}
+
+			gn_decompose = 0.0;
+			gn_exp = 0.0;
+			r_decompose = 0.0;
+			r_wedge_decompose = 0.0;
+			r_wedge_exp = 0.0;
+			ind_policy = 0;
+			update_step1 = update_value;
+			var_pE = 0.0;
+			dummy_UI = 0.0;
+
+			calibra();
+		}
+
+		return 0;
+	}
 	
 	for (int i_case_ind : cases_to_run) {
 	//for (int i_case_ind = 101; i_case_ind < 120; i_case_ind++) {
@@ -3980,6 +4208,7 @@ int main(void)
 		if (env_override_lowerincome_b) {
 			lowerincome_b_override = env_lowerincome_b;
 		}
+		override_use_fixed_tax_rate = env_use_fixed_tax_rate;
 		assign_value();
 		initialize_value();
 

@@ -1,4 +1,4 @@
-# data_laptop
+# data
 
 Purpose: isolated, update-in-place workspace for local motivation-data pulls and related literature notes for `01_Necessity_Entrepreneurs`.
 
@@ -18,12 +18,13 @@ Rules for this folder:
 - do not treat this folder as the canonical project plan or status source,
 - do not edit `STATUS.md` from this workflow unless the main pipeline issue is resolved,
 - prefer official US data sources and save reproducible scripts alongside outputs,
+- keep rough or inspection PNGs here, but write final paper-facing figure `.tex` outputs to `../figures/`,
 - track each material step in `work_log.md`.
 
 Deferred checks to track here:
 - literature review verification check:
   - before any sidecar prose is promoted into the main draft, re-check each literature citation used in the transplant intro and sidecar review for exact title, journal, year, and fit to the paper,
-  - keep this as a `data_laptop/` task for now and do not treat it as completed.
+  - keep this as a `data/` task for now and do not treat it as completed.
 
 Expected artifacts:
 - `pull_us_business_size_cycle_data.py`
@@ -58,6 +59,7 @@ Expected artifacts:
 - `gem_us_microdata_note.md`
 - `necessity_entrepreneurship_intro_motivation_sidecar.lyx`
 - `necessity_entrepreneurship_intro_transplant.tex`
+- `data_section_transplant.tex`
 - `necessity_entrepreneurship_intro_transplant_preview.tex`
 - `necessity_entrepreneurship_intro_transplant_preview_refs.bib`
 - `necessity_entrepreneurship_intro_transplant_preview.pdf`

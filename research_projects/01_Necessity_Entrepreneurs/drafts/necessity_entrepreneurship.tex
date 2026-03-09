@@ -63,6 +63,7 @@
 \usepackage{microtype}
 \usepackage{tikz}
 \usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.18}
 \setlength{\emergencystretch}{2.5em}
 \sloppy
@@ -89,99 +90,50 @@ TO BE COMPLETED.
 
 \section{Introduction}
 
-Why do some households become entrepreneurs only when a viable wage
-job is unavailable, and how does that differ from entrepreneurship
-chosen under strong outside options? Necessity entrepreneurship is
-difficult to identify because the object of interest is counterfactual.
-The same observed business spell can reflect comparative advantage,
-temporary self-employment during job search, insurance against labor-market
-risk, or a response to job loss. These cases are unlikely to have
-the same implications for firm scale, hiring, or welfare.
+Entrepreneurship is often associated with innovation, firm growth,
+and rising wages. But a large share of observed entrepreneurial activity
+is much smaller in scale: many entrepreneurs operate as self-employed
+nonemployers rather than as employer firms. That distinction matters
+for aggregate efficiency. If households enter business ownership mainly
+because viable wage employment is unavailable, a rise in entrepreneurship
+may reflect weak outside options rather than productive entrepreneurial
+dynamism. This paper studies that distinction formally. We define
+opportunity entrepreneurs as households that choose entrepreneurship
+even when a viable employment relationship is available, and necessity
+entrepreneurs as households that choose entrepreneurship only when
+that employment option is absent.
 
-Empirical work usually approaches this problem in two ways. Survey-based
-evidence asks entrepreneurs about their motives, while status-based
-evidence classifies entry by prior labor-market position. Both are
-informative but incomplete. In weighted U.S. GEM APS microdata for
-2019-{}-2021, 40.9, 49.6, and 45.7 percent of early-stage entrepreneurs
-report that they started a business because jobs are scarce, while
-wealth or high-income motives remain common at the same time. The
-latest U.S. GEM report points in the same direction \citep{gem_us_report_2024},
-and global GEM evidence shows that the opportunity-versus-necessity
-mix varies systematically across country groups \citep{kelley_singer_herrington_2016}.
-Related work on entrepreneurial aspirations points in the same direction
-\citep{chivers_2017}. But motive categories can overlap within the
-same entrepreneurial spell, so survey data do not map one-for-one
-into the model object.
+Empirical work usually approaches this distinction in two ways. One
+uses stated motives. In weighted U.S. GEM APS microdata for 2019-{}-2021,
+between 41 and 50 percent of early-stage entrepreneurs report starting
+a business because jobs are scarce, while between 65 and 73 percent
+also report motives tied to building wealth or very high income. Those
+responses are informative, but they do not deliver a clean classification:
+necessity and opportunity signals can overlap within the same entrepreneurial
+spell. A second approach classifies entrepreneurs by prior labor-market
+status. That is also useful, but observed status at entry is not the
+counterfactual object we want. Workers may start a business while
+still employed because they anticipate worse job prospects, while
+some more growth-oriented entrepreneurs may pass through temporary
+non-employment before starting a firm.
 
-Status-based classifications face a related problem. \citet{fairlie_fossen_2019}
-define opportunity entrepreneurship as entry from employment and necessity
-entrepreneurship as entry from non-employment, while business-cycle
-evidence shows that unemployment-driven and unincorporated entry behave
-differently over the cycle \citep{fairlie_2013} \citep{fossen_2021}.
-These objects are useful proxies, but they do not reveal whether a
-household would still choose entrepreneurship if a viable employment
-relationship were available. That counterfactual is central here.
+Our approach takes those empirical margins seriously, but treats them
+as proxies rather than definitions. We instead use a structural, state-contingent
+definition based on occupational choice. In the self-employment framework
+developed below, an entrepreneur can operate either as a self-employed
+nonemployer or as an employer entrepreneur. That lets the model speak
+not only to entry, but also to the composition and scale of entrepreneurial
+activity.
 
-We therefore define opportunity entrepreneurs as households that choose
-entrepreneurship whether they enter the period employed or non-employed,
-and necessity entrepreneurs as households that choose entrepreneurship
-only when they lack an employment relationship. In the self-employment
-version of the model, entrepreneurship also splits into nonemployer
-self-employment and employer entrepreneurship, so a household can
-be an entrepreneur either as a self-employed nonemployer or as an
-employer entrepreneur, allowing the paper to speak not only to entry
-but also to the composition and scale of entrepreneurial activity.
-The framework combines heterogeneous entrepreneurial ability, human
-capital, search frictions, entrepreneur closure risk, and social insurance.
-
-This structure matters for interpretation. A downturn or weaker safety
-net can shift activity toward low-scale business ownership without
-increasing employer-oriented firm creation. Our motivation data therefore
-separate zero-employee business counts, business-application flows,
-person-level self-employment rates, and motive-based survey evidence
-instead of treating them as interchangeable measures of entrepreneurship.
-The model is designed to explain those compositional differences rather
-than a single aggregate entrepreneurship statistic.
-
-The paper makes three contributions. First, it provides a structural
-definition of necessity entrepreneurship that maps directly into state-contingent
-occupational choice. Second, it embeds that definition in a self-employment
-framework with heterogeneous education, entrepreneurial ability, closure
-risk, search frictions, and social insurance, allowing the model to
-speak jointly to entry, employer thresholds, and firm scale. Third,
-it interprets necessity entrepreneurship as a compositional margin:
-weak outside options can push households toward low-scale business
-ownership even when employer-oriented entrepreneurship remains weak.
-
-The rest of the paper proceeds as follows. Section 2 presents the
-empirical motivation and measurement choices. Section 3 discusses
-related literature. Section 4 presents the economic environment. Section
-5 characterizes household behavior and equilibrium. Section 6 discusses
-calibration. Section 7 presents baseline quantitative results. Section
-8 studies policy counterfactuals, and Section 9 concludes.
-
-\section{Empirical motivation and measurement}
-
-We use four public U.S. data objects: business counts by employment
-size, business applications, CPS self-employment rates, and GEM motive
-evidence. We do not collapse them into a single entrepreneurship measure
-because they differ in unit of observation, denominator, and economic
-margin. The main empirical motivation in the paper is the combination
-of business counts by size and business applications. CPS self-employment
-and GEM are treated as companion evidence that clarifies measurement
-rather than as headline figures.
-
-Our stock-side series combines Census Nonemployer Statistics and Census
-Business Dynamics Statistics to build annual national establishment
-counts from 1997 to 2022. The zero-employee series is total nonemployer
-establishments, while positive-employment bins use BDS establishment
-counts for 1-{}-4, 5-{}-19, and 20+ employees. Over the 2007-{}-2010
-Great Recession window, zero-employee establishments rise from 21,708,021
-to 22,110,628 (1.85 percent), while 1-{}-4 employee establishments
-fall 3.59 percent, 5-{}-19 employee establishments fall 2.57 percent,
-and 20+ employee establishments fall 5.82 percent. This object is
-therefore best read as evidence on business composition rather than
-as a direct measure of startup flows or person-level self-employment.
+The distinction is especially relevant when labor-market conditions
+deteriorate. In downturns, weaker outside options can push households
+toward low-scale business ownership even if employer-oriented entrepreneurship
+remains weak. Figure 1 illustrates that pattern in U.S. business counts
+by employment size. During the Great Recession, zero-employee businesses
+were comparatively resilient, while establishments with employees
+fell back. The figure is not best read as evidence of a broad-based
+entrepreneurship boom. Rather, it points to a shift in the composition
+of business activity toward the nonemployer margin.
 
 \begin{figure}[H]
 \begin{centering}
@@ -190,49 +142,35 @@ as a direct measure of startup flows or person-level self-employment.
 \centering{}\input{../figures/us_business_counts_by_size_indexed.tex}
 \end{figure}
 
-Our flow-side companion uses Census Business Formation Statistics,
-accessed through the seasonally adjusted FRED series for total business
-applications and high-propensity business applications. Monthly data
-are aggregated to annual sums. Over the 2007-{}-2010 window, total
-applications fall from 2,652,392 to 2,497,405 (-5.84 percent), while
-high-propensity applications fall from 1,493,428 to 1,163,075 (-22.12
-percent). The high-propensity share correspondingly declines from
-56.30 percent to 46.57 percent. This complements the stock evidence
-by showing that employer-oriented business formation weakens even
-when zero-employee activity is comparatively resilient.
+Figure 2 makes the same point on the flow margin. Using Census Business
+Formation Statistics, overall business applications dip over the recession
+window, but high-propensity applications fall much more sharply and
+their share of total applications declines. Recession conditions therefore
+do not simply raise or lower business creation in the aggregate. They
+tilt new business formation away from the employer-oriented margin.
+Together, the two figures motivate the paper's main measurement point:
+not all entrepreneurship is economically the same object.
 
 \begin{figure}[H]
 \begin{centering}
-\caption{U.S. business applications, indexed to 2005.}
+\caption{U.S. business applications and the high-propensity share.}
 \par\end{centering}
 \centering{}\input{../figures/us_business_applications_indexed.tex}
 \end{figure}
 
-To avoid treating nonemployer business counts as a person-level self-employment
-series, we also build a CPS companion from BLS and FRED monthly levels
-for unincorporated self-employed workers, incorporated self-employed
-workers, and total employment. We compute annual averages for 2000-{}-2022
-and report self-employment rates as shares of total employment. In
-the Great Recession window, the total self-employment rate falls from
-11.06 percent to 10.70 percent, with both the unincorporated and incorporated
-components also declining. This divergence is useful rather than problematic:
-an establishment-side nonemployer count and a person-side self-employment
-rate capture different margins and should not be combined mechanically
-in a single headline statistic.
+The paper makes three contributions. First, it provides a structural
+definition of necessity entrepreneurship that maps directly into state-contingent
+occupational choice. Second, it embeds that definition in a self-employment
+framework with heterogeneous education, entrepreneurial ability, closure
+risk, search frictions, and social insurance, allowing the model to
+speak jointly to entry, employer thresholds, and firm scale. Third,
+it interprets necessity entrepreneurship as a compositional margin:
+weak outside options can raise low-scale business ownership without
+strengthening employer entrepreneurship.
 
-Finally, GEM provides a motive-based companion rather than a direct
-measure of the model object. The public U.S. APS microdata currently
-yield a clean weighted TEA sample for 2019-{}-2021, and the official
-2023-{}-2024 U.S. GEM report provides a later aggregate update \citep{gem_us_report_2024}.
-In the 2019-{}-2021 U.S. microdata, about 41-{}-50 percent of TEA
-respondents cite jobs being scarce, 65-{}-73 percent cite a high-income
-or wealth motive, and roughly 30-{}-38 percent cite both motives at
-once, while only about 8-{}-18 percent cite jobs scarcity alone. The
-key lesson is not that GEM solves the measurement problem, but that
-necessity-type and opportunity-type signals can coexist within the
-same observed entrepreneurial spell. We therefore use GEM to motivate
-the paper's identification problem, not to claim that survey motives
-map one-for-one into the structural definition of necessity entrepreneurship.
+The rest of the paper first reviews the related literature, then presents
+the model and equilibrium, discusses the calibration, reports the
+baseline quantitative results, and finally studies the policy counterfactuals.
 
 \section{Literature Review}
 
@@ -605,177 +543,92 @@ secondary educated, $\hat{h}^{S}_{i_{w}=1}\text{ and }\hat{h}^{S}_{i_{w}\neq1},$
 and two for tertiary educated, $\hat{h}^{T}_{i_{w}=1}\text{ and }\hat{h}^{T}_{i_{w}\neq1}$.
 
 \section{Calibration}
-\begin{center}
-\begin{table}[htbp]
-\caption{Parameter values, baseline economy}
-
-\centering{}\resizebox{\textwidth}{!}{{\small{}%
-\begin{tabular}{cccc}
-\hline 
-{\small Parameters } & {\small Values } & {\small Description } & {\small Comments/observations/target}\tabularnewline
-{\small$\rho_{e}$ } & {\small$\{0.168,0.150,0.144\}$ } & {\small Entrepreneur closure rate by $h$ } & {\small BLS survival evidence + Grashuis (2021), scaled to mean 0.15;
-see text}\tabularnewline
-{\small$f_{hire}$ } & {\small$0$ baseline; $0.25$ in case 147} & {\small Employer-threshold cost} & {\small Initial experimental choice; motivated by first-worker labor-cost
-evidence and compliance-cost evidence; see text}\tabularnewline
-\hline 
-{\small$\beta$ } & {\small$0.94$ } & {\small Discount factor } & \tabularnewline
-{\small$\sigma$ } & {\small$2.0$ } & {\small Risk aversion } & {\small$u(c)=\frac{c^{1-\sigma}}{1-\sigma}$}\tabularnewline
-\hline 
-{\small$\delta$ } & {\small$0.06$ } & {\small Capital depreciation } & \tabularnewline
-{\small$\alpha$ } & {\small$0.3207$ } & {\small Capital share } & \tabularnewline
-{\small$\gamma$ } & {\small$0.4693$ } & {\small Labour Share } & {\small Frac. of entrepreneurs}\tabularnewline
-\hline 
-{\small$h$ } & {\small$\{0.109,0.581,0.310\}$ } & {\small Share of population by $h$ } & {\small Barro and Lee (2013)}\tabularnewline
-{\small$\vartheta_{e}$ } & {\small$\{0.967,1.007,1.156\}$ } & {\small Shape parameter by $h$ } & {\small Mean firm size, Gomez and Kuhen (2017)}\tabularnewline
-{\small$\varsigma$ } & {\small$2.02655$ } & {\small Location parameter } & {\small$F(x)=\left[1+\frac{x-\varsigma}{\xi}\right]^{-\alpha_{i}}$}\tabularnewline
-{\small$\xi$ } & {\small$0.1115$ } & {\small Scale parameter } & {\small Gomez and Kuhen (2017)}\tabularnewline
-{\small$z$ } & {\small$\{1.0,1.31,1.61\}$ } & {\small Wage premium by $h$ } & {\small Goldin and Katz (2009)}\tabularnewline
-{\small$\rho$ } & {\small$\{0.0383,0.0288,0.0136\}$ } & {\small Job separation rate by $h$ } & {\small Cairo and Cajner (2016)}\tabularnewline
-\hline 
-{\small$\bar{m}$ } & {\small$0.8$ } & {\small Matching efficiency } & {\small Lubik, 2013 $p(\theta)=\bar{m}\left(\frac{v}{u}\right)^{1-\mu}$}\tabularnewline
-{\small$\mu$ } & {\small$[0.5,0.7]$ } & {\small Matching elasticity } & {\small Petrongolo and Pissarides (2001)}\tabularnewline
-{\small$\kappa$ } & {\small$[0.03,0.045]\cdot w$ } & {\small Search costs } & {\small (Hagedorn and Manovskii, 2008)}\tabularnewline
-\hline 
-{\small$\tau_{\pi}$ } & {\small$0$ } & {\small Corporation tax } & {\small Set as zero for now}\tabularnewline
-{\small$\tau_{y}$ } & {\small$0.151$ } & {\small Income Tax } & {\small$T(y)=(y-\lambda_{p}y^{1-\tau_{p}})$}\tabularnewline
-{\small$\lambda_{p}$ } &  & {\small Income Tax } & {\small Determined in equm.}\tabularnewline
-{\small$b$ } & {\small$0.40\cdot w$, } & {\small Social security benefits } & {\small Shimmer and Krause and Lubik (2005)}\tabularnewline
-{\small$\psi$ } & {\small$0$ } & {\small Share } & \tabularnewline
-{\small$\Delta$ } & {\small$0$ } & {\small Credit spread } & \tabularnewline
-{\small$\bar{a}$ } & {\small$0$ } & {\small Borrowing constraint } & \tabularnewline
- &  &  & \tabularnewline
-\hline 
-\end{tabular}}} 
-\end{table}
-\par\end{center}
-
-In the self-employment extension we introduce an education-specific
-entrepreneur closure risk, $\rho_{e}(h)$. Direct U.S. estimates by
-education are limited, so the calibration is constructed in two transparent
-steps. First, official U.S. business survival evidence from the BLS
-and Census implies substantial startup exit, so we set a conservative
-average annual entrepreneur closure rate of 0.15, below first-year
-startup exit because the model includes incumbent businesses as well
-as new entrants. Second, we use the competing-risk estimates in Grashuis
-(2021) for transitions from self-employment to unemployment to impose
-a modest education gradient. Mapping the model's three education groups
-into high school or less, some college, and bachelor's or more, and
-normalizing the relative hazards to the model's education shares,
-yields $\rho_{e}(h)=\{0.168,0.150,0.144\}$. In the benchmark interpretation,
-entrepreneur closure moves the household out of business but does
-not automatically confer regular unemployment insurance eligibility,\footnote{This is intended to match regular U.S. unemployment insurance rules
-rather than special temporary programs. Regular UI eligibility is
-generally tied to prior covered wage employment, whereas purely self-employed
-earnings are not automatically covered in the same way. The institutional
-benchmark comes from U.S. Department of Labor eligibility guidance
-and IRS treatment of unemployment taxes.} so the closure shock disciplines entrepreneurial survival without
-mechanically expanding UI receipt.We treat this as an initial calibration
-rule rather than a directly estimatedparameter, and use a modest gradient
-because the broader literature on educationand business survival is
-mixed.
-
-The self-employment branch also allows for an employer-threshold cost,
-$f_{hire}$, paid whenever the entrepreneur hires strictly positive
-labor. This is separate from the smooth search-and-matching hiring
-cost governed by $\kappa$: $\kappa$ captures proportional vacancy
-and replacement costs, whereas $f_{hire}$ captures the discrete hurdle
-of becoming an employer rather than remaining self-employed. The literature
-supports this distinction,\footnote{Recent evidence on the first-worker margin shows that labor costs
-can strongly affect the decision to become an employer. Cockx and
-Desiere (2024) exploit a Belgian reform that reduced the labor cost
-of the first employee by 13 percent and find a 31 percent jump in
-first-time employer entry, implying an elasticity of about -2.39.
-In related U.S. evidence, Guo and Wallskog (2025) show that even new-employer
-payroll taxes averaging about \$350 per worker reduce first-worker
-hiring, while Harju, Matikka, and Rauhanen (2019) show that entrepreneurs
-respond strongly to compliance costs around tax thresholds. These
-papers motivate an employer-threshold cost, but do not pin down a
-structural dollar-equivalent fixed cost for our model.} but direct structural calibration of a fixed employer cost remains
-limited. We therefore treat $f_{hire}$ as a disciplined experimental
-choice rather than a directly estimated parameter. In the current
-benchmark with closure risk and partial capital loss we set $f_{hire}=0$,
-while the first sensitivity run sets $f_{hire}=0.25$ in model units
-to test whether a modest employer hurdle improves the self-employed
-versus employer composition.
+\input{sections/calibration_self_employment.tex}
 
 \section{Baseline Results}
 
-The baseline equilibrium shows moderate entrepreneurship (0.1781 overall),
-and the benchmark self-employment calibration places that margin inside
-entrepreneurship itself. In case 147, 57.7 percent of entrepreneurs
+The benchmark equilibrium delivers entrepreneurship of 17.8 percent
+of households. Within entrepreneurship, 57.7 percent of businesses
 are self-employed nonemployers and 42.3 percent are employer entrepreneurs.
-Throughout the paper, entrepreneur is the broad category, while self-employed
-refers to the nonemployer subset of entrepreneurs. The composition
-differs sharply by education: low-education entrepreneurs are mostly
-self-employed, middle-education entrepreneurs are split more evenly,
-and high-education entrepreneurs are predominantly employer entrepreneurs.
-Average entrepreneur labor demand is 6.1587 workers, so the key object
-in this branch is not a large aggregate entrepreneurship boom but
-the composition of entrepreneurial activity across business types
-and education groups. The self-employment version of the model adds
-a second composition margin within entrepreneurship itself: whether
-entrants remain nonemployer self-employed or cross the threshold into
-employer entrepreneurship. That margin is central for interpreting
-the closure-risk and employer-threshold exercises that follow, even
-when changes in aggregate entry are modest.
+The composition differs sharply by education: low-education entrepreneurs
+are mostly self-employed, middle-education entrepreneurs are more
+balanced, and high-education entrepreneurs are predominantly employers.
+Table \ref{tab:self_employment_benchmark_baseline} also shows strong
+scale heterogeneity. Average entrepreneur labor demand is 6.16 overall,
+but ranges from 1.18 among low-education entrepreneurs to 22.68 among
+high-education entrepreneurs. Conditional on operating as employers,
+firm size remains substantial across all education groups, so the
+main benchmark margin is the composition shift between self-employment
+and employer entrepreneurship rather than the disappearance of employer
+firms.
 
 \input{tables/baseline_results_only.tex}
 
 \section{Quantitative Analysis}
 
-This section evaluates each policy experiment relative to the baseline
-and reports how unemployment insurance design and tax closure affect
-entry, scale, and output. In the self-employment branch, the key additional
-object is the composition of entrepreneurship between nonemployer
-self-employment and employer entrepreneurship, not only the overall
-entrepreneurship rate.
+This section evaluates the policy and benchmark counterfactuals around
+the self-employment calibration. The key object is not only the overall
+entrepreneurship rate, but the composition of entrepreneurship between
+nonemployer self-employment and employer entrepreneurship, together
+with the change in average entrepreneurial scale.
 
-\input{tables/self_employment_case147_baseline_vs_no_ui.tex}
+\subsection{Unemployment insurance ladder}
 
-\FloatBarrier
+The first benchmark experiment lowers unemployment insurance while
+holding the benchmark self-employment calibration fixed. The main
+pattern is monotone: lower UI raises entrepreneurship, shifts entrepreneurs
+toward self-employment, and reduces average entrepreneurial scale.
+This is the central necessity-entrepreneurship result in the benchmark
+self-employment model.
 
-\subsection{Low unemployment insurance with endogenous tax}
-
-This subsection reports the low-UI endogenous-tax experiment against
-the baseline.
-
-\input{tables/baseline_vs_low_ui_endogenous.tex}
-
-With the post-fix case-101 run at UI=0.05, entrepreneurship increases
-only slightly relative to baseline, while tax rates and transfers
-fall sharply. Average firm size is close to baseline, with most of
-the scale reduction concentrated in low- and medium-education entrepreneurs.
+\input{tables/self_employment_case147_ui_ladder.tex}
 
 \FloatBarrier
 
-\subsection{No unemployment insurance with endogenous tax}
+\subsection{No unemployment risk}
 
-This subsection reports the no-UI endogenous-tax experiment against
-the baseline.
+This counterfactual removes worker unemployment risk by fixing job
+finding at one and worker separation at zero, while holding the benchmark
+tax rate fixed. It is useful as an upper-bound labor-market benchmark,
+but it is not a full frictionless efficient allocation: entrepreneurial
+risk, borrowing limits, the employer-threshold cost, and occupational
+heterogeneity remain in place. For that reason, we interpret it as
+a worker-side wedge comparison rather than as a complete misallocation
+accounting exercise.
 
-\input{tables/baseline_vs_no_ui_endogenous.tex}
+\input{tables/self_employment_case147_no_unemployment_risk.tex}
 
-\input{tables/firm_size_by_education_postfix_case101.tex}
+\input{../figures/case147_no_unemployment_risk_cutoff_panels.tex}
 
-Removing UI under endogenous tax raises entry relative to baseline,
-but the mechanism is not only a pure risk effect. In this post-fix
-run, eliminating UI collapses transfers and pushes the endogenous
-tax rate close to zero, while the matching tightness remains nearly
-unchanged under the vacancy-floor rule. Firm-size losses are concentrated
-in low- and medium-education entrepreneurs, with high-education firm
-size nearly unchanged.
+Relative to the benchmark, removing worker unemployment risk shifts
+the composition of entrepreneurship sharply toward employer firms.
+The self-employed share falls from 57.7 percent to 39.7 percent, while
+the employer share rises from 42.3 percent to 60.3 percent. Output
+per household also rises from 1288.2 to 1462.5. That makes the exercise
+useful for showing that the baseline self-employment mass is tightly
+linked to worker-side labor-market risk rather than only to the employer-threshold
+cost.
 
 \FloatBarrier
 
-\subsection{No unemployment insurance with fixed tax}
+\section{MIT Shock}
 
-This subsection reports the no-UI fixed-tax experiment against the
-baseline.
+The next step is a recession-style MIT shock built around a labor-market
+deterioration rather than a firm-side productivity collapse. As a
+first steady-state precursor, we increase low-education worker separation
+and compare the new stationary equilibrium with the benchmark. This
+is the right shock for the mechanism in the paper because it weakens
+worker outside options directly and can therefore raise broad entrepreneurship
+even while employer-oriented activity weakens.
 
-\input{tables/baseline_vs_no_ui_fixed.tex}
+\input{tables/self_employment_case147_downturn_lowedu_sep.tex}
 
-With fixed tax and no UI, entry rises modestly, per-capita output
-is roughly unchanged, and productivity per entrepreneur declines.
+The downturn steady state has the intended sign pattern. Broad entrepreneurship
+rises slightly from 0.1781 to 0.1868, the self-employed share rises
+from 0.5768 to 0.5953, and average entrepreneur labor demand falls
+from 6.1587 to 5.7981. Output per household declines modestly from
+1288.2 to 1260.8. This gives a disciplined starting point for the
+transition-path MIT-shock section that follows in the next draft.
 
 \FloatBarrier
 
@@ -797,16 +650,33 @@ entrepreneurship are modest. These results support evaluating entrepreneurship
 policy through composition, not levels alone.
 
 Several extensions remain important for the next draft. First, the
-credit friction wedge and job-market experiments should be fully completed
-and integrated into a unified welfare comparison. Second, calibration
-choices that are still open should be aligned with the code implementation
-and reported transparently. Third, the literature discussion can be
-broadened further once the project-specific verified PDF library is
-restored.
+MIT-shock section should be completed with a deterministic transition
+path built from the downturn steady-state comparison reported here.
+Second, the fixed-tax and hiring-cost robustness checks belong in
+the appendix once the remaining fixed-tax benchmark run is completed
+cleanly. Third, the role of wealth and borrowing constraints should
+be examined more directly, because the current asset-dependent scale
+block likely already embeds important wealth-to-scale effects even
+before an explicit credit-friction wedge is added.
 
 \section*{\newpage}
 
 \section*{Appendix}
+
+\section*{Robustness}
+
+The employer-threshold benchmark is disciplined locally around $f_{hire}=0.25$
+rather than being treated as a single lucky parameter choice. The
+appendix reports nearby values to show that the main composition result
+is robust within a tight bracket.
+
+\input{tables/self_employment_fhire_robustness.tex}
+
+The fixed-tax no-UI comparison is being kept as appendix material
+rather than as a main-text quantitative table, because the self-employment
+fixed-tax path is coded but still computationally expensive. Once
+that target run is completed cleanly, it can be added here as a fiscal-closure
+robustness check for the benchmark UI experiment.
 
 \section*{Computation}
 

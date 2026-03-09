@@ -1,4 +1,4 @@
-# data_laptop handover note
+# data handover note
 
 Status: ready for sidecar handoff on 2026-03-08.
 
@@ -9,6 +9,7 @@ Status: ready for sidecar handoff on 2026-03-08.
   - `us_business_applications_indexed.png`
 - Main transplant text:
   - `necessity_entrepreneurship_intro_transplant.tex`
+  - `data_section_transplant.tex`
 - Current preview:
   - `necessity_entrepreneurship_intro_transplant_preview.pdf`
 - Main sidecar literature files:
@@ -46,6 +47,9 @@ Status: ready for sidecar handoff on 2026-03-08.
   - it indexes series with very different levels,
   - it combines nonemployer establishments for `0 employees` with BDS employer establishment counts for positive-employment bins.
 - The payoff is interpretability of the recession compositional shift, not exact unit comparability.
+- Output split:
+  - rough PNGs remain in `data/`,
+  - final paper-facing `pgfplots` figure files now belong in `../figures/`.
 
 ## Writing lock
 
@@ -54,6 +58,11 @@ Status: ready for sidecar handoff on 2026-03-08.
   - an identification-first rewrite,
   - a local academic-paper-writer skill pass,
   - insertion of the two recession figures in place.
+- The sidecar now also has a standalone data-section fragment:
+  - `data_section_transplant.tex`
+  - it keeps the current source priorities explicit:
+    - business counts by size and business applications as the primary pair,
+    - CPS self-employment and GEM as companion evidence.
 - Main draft remains untouched.
 
 ## Still deferred

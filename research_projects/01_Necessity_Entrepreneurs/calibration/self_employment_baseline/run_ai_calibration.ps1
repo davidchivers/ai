@@ -19,6 +19,11 @@ param(
     [string]$VacancyMode = '',
     [string]$VacancyFloor = '',
     [string]$VacancyScale = '',
+    [string]$SelfEmploymentHiringFixedCost = '',
+    [switch]$UseFixedTax,
+    [string]$FixedTaxBaseline = '',
+    [string]$WorkerSeparationAddAll = '',
+    [string]$WorkerSeparationAddLow = '',
     [int]$MaxIterAgg = -1,
     [int]$MaxTransitionIter = -1,
     [double]$TransitionTol = -1.0,
@@ -213,6 +218,15 @@ try {
     Set-OrClearEnv -Name 'CFV_VACANCY_MODE' -Value $VacancyMode
     Set-OrClearEnv -Name 'CFV_VACANCY_FLOOR' -Value $VacancyFloor
     Set-OrClearEnv -Name 'CFV_VACANCY_SCALE' -Value $VacancyScale
+    Set-OrClearEnv -Name 'CFV_SE_HIRING_FIXED_COST' -Value $SelfEmploymentHiringFixedCost
+    if ($UseFixedTax) {
+        Set-OrClearEnv -Name 'CFV_USE_FIXED_TAX' -Value '1'
+    } else {
+        Set-OrClearEnv -Name 'CFV_USE_FIXED_TAX' -Value $null
+    }
+    Set-OrClearEnv -Name 'CFV_FIXED_TAX_BASELINE' -Value $FixedTaxBaseline
+    Set-OrClearEnv -Name 'CFV_WORKER_SEPARATION_ADD_ALL' -Value $WorkerSeparationAddAll
+    Set-OrClearEnv -Name 'CFV_WORKER_SEPARATION_ADD_LOW' -Value $WorkerSeparationAddLow
 
     if ($MaxIterAgg -gt 0) {
         Set-OrClearEnv -Name 'CFV_MAX_ITER_AGG' -Value ([string]$MaxIterAgg)
@@ -271,6 +285,11 @@ try {
         "[ABLT] vacancy_mode=$($env:CFV_VACANCY_MODE)",
         "[ABLT] vacancy_floor=$($env:CFV_VACANCY_FLOOR)",
         "[ABLT] vacancy_scale=$($env:CFV_VACANCY_SCALE)",
+        "[ABLT] se_hiring_fixed_cost=$($env:CFV_SE_HIRING_FIXED_COST)",
+        "[ABLT] use_fixed_tax=$($env:CFV_USE_FIXED_TAX)",
+        "[ABLT] fixed_tax_baseline=$($env:CFV_FIXED_TAX_BASELINE)",
+        "[ABLT] worker_separation_add_all=$($env:CFV_WORKER_SEPARATION_ADD_ALL)",
+        "[ABLT] worker_separation_add_low=$($env:CFV_WORKER_SEPARATION_ADD_LOW)",
         "[ABLT] max_iter_agg=$($env:CFV_MAX_ITER_AGG)",
         "[ABLT] max_transition_iter=$($env:CFV_MAX_TRANSITION_ITER)",
         "[ABLT] transition_tol=$($env:CFV_TRANSITION_TOL)",
