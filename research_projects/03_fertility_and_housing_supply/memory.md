@@ -4,6 +4,121 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-09 (live CDC WONDER pull, rebuild, and state-year exploratory bridge)
+- Added direct CDC WONDER puller:
+  - `code/12_pull_cdc_wonder_first_births.py`
+- Ran the live natality pull from official CDC WONDER dataset `D66`:
+  - output: `data/raw/cdc_wonder_first_births_export.csv`
+  - years: `2007-2024`
+  - grouping: county, year, age of mother 10
+  - filter: first births only
+- Fixed two importer issues in `code/11_import_cdc_wonder_first_births.py`:
+  - accepted `Age of Mother 10` as the age column label
+  - fixed county-derived `state_fips` fallback so blank state codes do not become `00`
+- Re-imported fertility:
+  - `data/raw/cdc_fertility_county_year.csv`
+  - rows: `10,890`
+  - years: `2007-2024`
+- Ran ACS nativity backfill:
+  - `code/09_backfill_nativity_from_acs_api.py`
+  - updated `data/raw/population_immigration_county_year.csv`
+- Rebuilt the main panel:
+  - `code/05_build_us_panel_from_sources.ps1`
+  - refreshed:
+    - `data/processed/us_fertility_housing_panel_v1.csv`
+    - `notes/build/us_panel_source_coverage.md`
+    - `notes/build/us_panel_missingness_report.md`
+- Main empirical alignment finding:
+  - fertility now overlaps with population denominators, but not with the legacy housing/control block at local geography because the housing files are metro-year despite county-style filenames
+- Rewrote exploratory regressions around a temporary state-year bridge:
+  - `code/10_exploratory_empirical_regressions.py`
+  - new bridge file: `notes/build/exploratory_state_year_panel.csv`
+  - refreshed outputs:
+    - `notes/build/exploratory_regression_summary.md`
+    - `notes/build/exploratory_regression_results.csv`
+- Current readout from the state-year exploratory pass:
+  - `first_birth_rate_15_44` on rent index: negative but imprecise (`coef -9.31`, `p 0.186`, `2010-2017`)
+  - `mean_age_first_birth` on rent index: positive but imprecise (`coef 1.00`, `p 0.263`, `2007-2017`)
+  - `share_first_birth_30_plus` on rent index: positive but imprecise (`coef 0.0267`, `p 0.652`, `2007-2017`)
+  - permits sample is much thinner and not yet persuasive
+
+### Session: 2026-03-09 (CDC WONDER timing-build scaffold implemented)
+- Added a modern natality importer:
+  - `code/11_import_cdc_wonder_first_births.py`
+- Added pull instructions:
+  - `notes/build/cdc_wonder_first_birth_pull_instructions.md`
+- Extended the fertility schema in:
+  - `code/04_build_us_panel_scaffold.ps1`
+  - `code/05_build_us_panel_from_sources.ps1`
+- New timing fields now supported in the panel schema:
+  - `first_births_total`
+  - `first_birth_rate_15_44`
+  - `mean_age_first_birth`
+  - `median_age_first_birth`
+  - `share_first_birth_15_19`
+  - `share_first_birth_20_24`
+  - `share_first_birth_25_29`
+  - `share_first_birth_30_34`
+  - `share_first_birth_35_44`
+  - `share_first_birth_30_plus`
+- Builder improvement:
+  - `state_fips` can now act as the merge key fallback when county/CBSA ids are absent
+- Verification:
+  - end-to-end temp test passed for WONDER-style county-year input through panel merge
+  - the main repo panel was not rebuilt to completion in-session because the full PowerShell build is slow on the large historical files
+
+### Session: 2026-03-09 (fertility source decision locked)
+- Added source-decision note:
+  - `notes/build/fertility_source_decision.md`
+- Decision:
+  - do not use the historical metro `gfr_15_44` sample as the baseline empirical panel
+  - use a modern natality-based build as the main empirical path
+  - keep the old metro sample only for provisional sign checks
+- Basis for the decision:
+  - current processed panel has zero overlap between historical fertility observations and modern nativity/population observations
+  - legacy Dropbox fertility files only contain aggregate birth-rate series, not maternal-age-at-birth or birth-order variables
+- Updated:
+  - `notes/04_empirical_notes.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+
+### Session: 2026-03-09 (exploratory regressions on current processed panel)
+- Added reproducible regression script:
+  - `code/10_exploratory_empirical_regressions.py`
+- Generated exploratory outputs:
+  - `notes/build/exploratory_regression_summary.md`
+  - `notes/build/exploratory_regression_results.csv`
+- Main empirical finding from this pass:
+  - provisional reduced-form sign checks are possible on the historical metro fertility sample
+  - post-treatment coefficient is negative in metro/year FE regressions
+  - rent coefficient is negative on the small overlap sample
+  - event-study bins show non-flat pre-trends
+  - permits coefficient is imprecise
+- Critical data finding:
+  - current `gfr_15_44` observations run from 1940--1995 at metro-year level
+  - current `female_pop_15_44` observations run from 2010--2018 at county-year level
+  - overlap is zero, so the current merged panel cannot serve as the intended modern nativity-adjusted baseline
+
+### Session: 2026-03-09 (empirical refocus toward first-birth timing)
+- Reframed the near-term empirical agenda around first-birth timing rather than overall fertility alone.
+- Updated `notes/05_research_plan.md` to prioritize:
+  - first-birth timing outcomes
+  - reduced-form event studies
+  - IV exploration that instruments housing supply/cost rather than fertility directly
+- Expanded `notes/04_empirical_notes.md` with:
+  - timing-focused outcome definitions
+  - a recommendation to use age-at-first-birth only alongside first-birth shares/rates
+  - an IV menu with reform exposure as the current preferred path
+- Updated `STATUS.md` so canonical next tasks reflect the timing-first empirical design.
+
+### Session: 2026-03-09 (status review)
+- Reviewed canonical project context in `STATUS.md`, `README.md`, and `memory.md`.
+- No implementation changes yet in this session.
+- Active priorities remain:
+  - structural-model calibration against empirical fertility-price patterns
+  - nativity API backfill and panel rebuild
+  - eventual port of fertility choice into project-02 household VFI block once upstream `.mat` inputs are available
+
 ### Session: 2026-02-25 (global capitalization cleanup applied)
 - Standardized project folders to lowercase naming across this project:
   - `calibration/`, `code/`, `data/`, `exports/`, `figures/`, `literature/`, `notes/`, `referee/`, `drafts/`, `slides/`

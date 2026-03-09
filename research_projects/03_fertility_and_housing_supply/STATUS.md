@@ -2,12 +2,28 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-02 (structural FOC implementation + nativity fix + draft cleanup)
+- Last updated: 2026-03-09 (live CDC pull, rebuild, and exploratory bridge)
+- 2026-03-09 direct natality pull: added `code/12_pull_cdc_wonder_first_births.py`, pulled the official CDC WONDER `D66` natality extract for `2007-2024` by county-year-age, and wrote `data/raw/cdc_wonder_first_births_export.csv`.
+- 2026-03-09 fertility build live: re-imported fertility from the CDC WONDER extract into `data/raw/cdc_fertility_county_year.csv` (`10,890` county-year rows, `2007-2024`), fixed importer parsing for `Age of Mother 10`, and corrected county-derived `state_fips`.
+- 2026-03-09 nativity + panel rebuild: ran `code/09_backfill_nativity_from_acs_api.py` and rebuilt `data/processed/us_fertility_housing_panel_v1.csv` plus refreshed coverage/missingness reports.
+- 2026-03-09 empirical alignment finding: the modern fertility file overlaps cleanly with county population data but still has zero direct overlap with the legacy housing/control block because those files are metro-year despite their county-style filenames.
+- 2026-03-09 exploratory regressions refreshed: rewrote `code/10_exploratory_empirical_regressions.py` to aggregate the raw inputs to state-year, generated `notes/build/exploratory_state_year_panel.csv`, and ran first-birth timing regressions on the feasible overlap sample.
+- 2026-03-09 current reduced-form readout: state/year FE coefficients are directionally consistent with delay for rents and age at first birth but imprecise; permits estimates are especially thin because the permits overlap is short and sparse.
+- 2026-03-09 check-in: user confirmed that the active priority is empirical work for now; model-side work is deferred until updated MATLAB files are available.
+- 2026-03-09 empirical design note: added a candidate pivot from overall fertility to maternal age at first birth / first-birth timing outcomes in `notes/04_empirical_notes.md`; this is written up as an active option, not yet a locked baseline.
+- 2026-03-09 empirical reframing: `notes/05_research_plan.md` now centers the near-term agenda on first-birth timing outcomes, reduced-form event studies, and an IV menu that instruments housing supply/cost rather than fertility directly.
+- 2026-03-09 empirical state: the raw-source ingest and first processed panel are in place, but the current panel still has large coverage gaps in nativity and housing/control fields, so the immediate bottleneck is panel completion and estimation-ready sample design rather than theory.
+- 2026-03-09 exploratory regressions: added `code/10_exploratory_empirical_regressions.py` and generated `notes/build/exploratory_regression_summary.md` plus CSV results; reduced-form sign checks are feasible, but pre-trends are non-flat and permits estimates are imprecise.
+- 2026-03-09 panel-alignment finding: current `gfr_15_44` observations are metro-year data from 1940--1995, while `female_pop_15_44` is county-year data from 2010--2018; overlap is zero, so the current merged panel does not support the intended nativity-adjusted modern baseline.
+- 2026-03-09 source decision: locked the main empirical path to a modern natality-based fertility build and demoted the historical metro `gfr_15_44` panel to archival sign-check status; see `notes/build/fertility_source_decision.md`.
+- 2026-03-09 implementation step: added a CDC WONDER importer (`code/11_import_cdc_wonder_first_births.py`), a direct puller (`code/12_pull_cdc_wonder_first_births.py`), and updated pull instructions in `notes/build/cdc_wonder_first_birth_pull_instructions.md`.
+- 2026-03-09 verification: the new WONDER importer plus panel builder were verified end-to-end on a temporary synthetic county-year sample before the live repo rebuild.
+- 2026-03-09 official source constraint check: CDC WONDER county residence is usable for 2007--2024, but only counties with population >=100,000 are individually identified and sub-national counts 1--9 are suppressed; this makes state-year a realistic first unrestricted fallback.
 - 2026-03-02 check-in: panel baseline outcome and geography-time unit are locked; fertility/housing/controls now contain observed rows in `data/raw/` and are propagated into processed panel build.
 - 2026-03-02 model/data audit: NIMBY-style write-up guidance with explicit project-03 differences is documented; remaining empty source blocks are policy timing and population/immigration.
 - 2026-03-02 drafting update: `drafts/fertility_and_housing_supply.lyx` was rebuilt from latest NIMBY v13 structure, trimmed to model-only sections on request, and updated with blue-highlighted project-03 differences plus simulation evidence.
 - 2026-03-02 coding clarification: current MATLAB prototype includes reduced-form fertility response, lagged-boom political term, and children-at-home demand proxy; full crowding utility is written in the paper but not yet solved as the structural household DP block in code.
-- Overall state: model write-up is now close to target style and transparent about code-vs-theory alignment; main remaining work is full structural code alignment and nativity-source completion.
+- Overall state: empirical infrastructure is built but not yet estimation-ready; main remaining work is nativity completion, panel coverage cleanup, and baseline empirical specification.
 - 2026-02-25 organization update: added standardized `drafts/` and `slides/` latest-file naming with explicit `old_drafts/` and `old_slides/` archive folders.
 - 2026-02-25 capitalization cleanup: folder names standardized to lowercase across the project tree.
 - Canonical tracker: this file is the single source of truth for status and next actions.
@@ -117,6 +133,40 @@
   - `code/05_build_us_panel_from_sources.ps1`
   - input templates in `data/raw/`
   - coverage diagnostics in `notes/build/us_panel_source_coverage.md`
+- Exploratory regression scaffold added and run on current processed panel:
+  - script: `code/10_exploratory_empirical_regressions.py`
+  - outputs:
+    - `notes/build/exploratory_regression_summary.md`
+    - `notes/build/exploratory_regression_results.csv`
+  - main readout:
+    - treated-post coefficient on historical `gfr_15_44` sample is negative
+    - rent coefficient is negative on the small overlap sample
+    - event-study bins show non-flat pre-trends
+    - permits coefficient is imprecise
+- Fertility-source decision note added:
+  - `notes/build/fertility_source_decision.md`
+  - main decision:
+    - use modern natality data for the baseline empirical build
+    - keep legacy historical metro fertility series only for provisional sign checks
+- Modern first-birth timing import scaffold added:
+  - script: `code/11_import_cdc_wonder_first_births.py`
+  - companion instructions: `notes/build/cdc_wonder_first_birth_pull_instructions.md`
+  - builder updates:
+    - `code/05_build_us_panel_from_sources.ps1` now carries first-birth timing fields
+    - `code/05_build_us_panel_from_sources.ps1` now allows `state_fips`-only fallback keys
+    - `first_birth_rate_15_44` can be derived after merge when `female_pop_15_44` is present
+  - verification:
+    - temp end-to-end county-year test passed
+- Direct CDC WONDER pull + refreshed empirical pass completed:
+  - new puller: `code/12_pull_cdc_wonder_first_births.py`
+  - official extract saved: `data/raw/cdc_wonder_first_births_export.csv`
+  - imported fertility file refreshed: `data/raw/cdc_fertility_county_year.csv` (`10,890` rows)
+  - ACS nativity backfill run in place: `data/raw/population_immigration_county_year.csv`
+  - processed panel rebuilt: `data/processed/us_fertility_housing_panel_v1.csv` (`64,194` rows including unmatched source rows)
+  - new exploratory bridge file: `notes/build/exploratory_state_year_panel.csv`
+  - updated regression outputs:
+    - `notes/build/exploratory_regression_summary.md`
+    - `notes/build/exploratory_regression_results.csv`
 - Ingestion pipeline aligned with project-02 (NIMBY) identifier style:
   - supports canonical ids plus aliases (`STCOU`, `CBSA`, `statefips`, `met2013`, `YEAR`)
   - includes `metarea` and `metareano` compatibility columns in panel schema
@@ -127,28 +177,36 @@
 
 ## In Progress
 
-- Calibration tuning of structural FOC parameters (chi, eta_child, lambda_crowd, psi_crowd) against empirical fertility-price relationships.
-- Running nativity backfill script against Census API and rebuilding panel with `code/05_build_us_panel_from_sources.ps1`.
-- Data plan and panel design for fertility + housing + immigration integration.
+- Auditing geography alignment after the live CDC pull: fertility and population now align at county-year, but the housing/policy block is still metro-year.
+- Deciding whether the first empirical baseline should be a state-year bridge, a county-to-metro aggregation using a crosswalk, or a replacement housing source with county/CBSA identifiers.
+- Tightening the first regression-ready specification around first-birth timing outcomes rather than the deprecated `gfr_15_44` path.
+- Evaluating IV feasibility, with current preference for a reform-exposure instrument targeting housing outcomes.
+- Treating the state-year exploratory panel as a temporary bridge rather than the final paper design.
 
 ## Next 3 Tasks
 
-1. Run the updated MATLAB experiments (`01_run_experiments_matlab.m`) to generate structural-vs-reduced-form comparison outputs; calibrate structural parameters to match empirical fertility-price semi-elasticity.
-2. Run nativity backfill (`code/09_backfill_nativity_from_acs_api.py`) and rebuild panel (`code/05_build_us_panel_from_sources.ps1`); refresh coverage and missingness reports.
-3. Extend the structural model toward heterogeneous agents: port the FOC-based fertility choice into the project-02 value-function-iteration household block once upstream `.mat` inputs are available.
+1. Resolve geography mismatch on the housing side: either build a county-to-metro/CBSA crosswalk for the CDC fertility sample or replace the legacy metro housing source with a county/CBSA-compatible panel.
+2. Use the temporary state-year bridge in `notes/build/exploratory_state_year_panel.csv` to expand timing regressions, weighting choices, and specification checks while the local-geometry fix is being built.
+3. Decide whether the baseline empirical design is temporarily state-year or whether the paper waits for a cleaner county/CBSA housing merge.
 
 ## Blockers
 
 - Upstream project-02 steady-state MATLAB inputs (for example `nl_zbl.mat` / `TransitionMatrix.mat`) are not present in this repo copy.
+- Updated MATLAB files for the next model iteration are still pending from the user; model integration work is paused until those files arrive.
 - Direct fertility-specific causal evidence remains thinner than broader housing-supply evidence.
 - Legacy NIMBY fertility inputs exist locally in Dropbox but are outside this git repo, so reproducibility currently depends on local external paths.
-- ACS nativity backfill script (`code/09_backfill_nativity_from_acs_api.py`) now handles 2010-2013 via B06001+B06003 fallback; minor approximation (ages 18-44 not 15-44) for those years. Needs to be run against the API and panel rebuilt.
+- ACS nativity backfill script (`code/09_backfill_nativity_from_acs_api.py`) now handles 2010-2013 via B06001+B06003 fallback; minor approximation remains (ages 18-44 not 15-44) for those years.
+- The current housing and policy raw files are metro-year rather than county-year, so they do not directly merge to the new county fertility file.
+- The legacy permits series has much thinner overlap than rents in the temporary state-year bridge.
 
 ## Open Decisions
 
-- Baseline partner-formation treatment (agnostic baseline vs endogenous extension timing).
-- Preferred leave-home target in baseline (`A_leave = 18` vs `19`).
-- Minimal mechanism set for first paper draft.
+- County-cell suppression threshold for fallback aggregation to `cbsa`-year.
+- Exact treatment of zero-birth or near-zero cells in transformed outcomes such as `ln_gfr_15_44`.
+- Whether policy timing is coded purely at state level first and then mapped into local exposure intensity.
+- Whether maternal age at first birth should be the headline timing summary or a supporting summary behind age-bin first-birth shares/rates.
+- Whether the first unrestricted implementation should begin with large-county county-year or directly at state-year in CDC WONDER.
+- Which IV path, if any, is credible enough for the first empirical paper: reform exposure, close-election politics, or supply-elasticity interactions.
 
 ## References
 

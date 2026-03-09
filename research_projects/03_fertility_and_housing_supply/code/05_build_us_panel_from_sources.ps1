@@ -24,7 +24,9 @@ $missingPath = Join-Path $notesBuildDir "us_panel_missingness_report.md"
 $finalColumns = @(
     "fips","cbsa","metarea","metareano","state_fips","year",
     "asfr_15_19","asfr_20_24","asfr_25_29","asfr_30_34","asfr_35_39","asfr_40_44","gfr_15_44",
-    "first_birth_proxy","completed_fertility_proxy",
+    "first_birth_proxy","first_births_total","first_birth_rate_15_44","mean_age_first_birth","median_age_first_birth",
+    "share_first_birth_15_19","share_first_birth_20_24","share_first_birth_25_29","share_first_birth_30_34","share_first_birth_35_44","share_first_birth_30_plus",
+    "completed_fertility_proxy",
     "permits_total_pc","permits_mf_pc","permits_sf_pc","housing_stock_growth","real_house_price_index","real_rent_index","price_to_income",
     "reform_date","event_time","treated","exposure_intensity",
     "female_pop_15_44","native_female_pop_15_44","foreign_born_female_pop_15_44","foreign_born_share_15_44","net_migration_rate","international_migration_rate",
@@ -36,7 +38,7 @@ $sourceSpecs = @(
     @{
         name = "fertility"
         file = Join-Path $rawDir "cdc_fertility_county_year.csv"
-        cols = @("fips","cbsa","metarea","metareano","state_fips","year","asfr_15_19","asfr_20_24","asfr_25_29","asfr_30_34","asfr_35_39","asfr_40_44","gfr_15_44","first_birth_proxy","completed_fertility_proxy")
+        cols = @("fips","cbsa","metarea","metareano","state_fips","year","asfr_15_19","asfr_20_24","asfr_25_29","asfr_30_34","asfr_35_39","asfr_40_44","gfr_15_44","first_birth_proxy","first_births_total","mean_age_first_birth","median_age_first_birth","share_first_birth_15_19","share_first_birth_20_24","share_first_birth_25_29","share_first_birth_30_34","share_first_birth_35_44","share_first_birth_30_plus","completed_fertility_proxy")
         sourceCol = "source_fertility"
         sourceVal = "cdc"
     },
@@ -183,7 +185,8 @@ foreach ($src in $sourceLoads) {
         $rowYear = Get-FieldFromRow -Row $row -Canonical "year"
 
         if ([string]::IsNullOrWhiteSpace($rowYear)) { continue }
-        if ([string]::IsNullOrWhiteSpace($rowFips) -and [string]::IsNullOrWhiteSpace($rowCbsa) -and [string]::IsNullOrWhiteSpace($rowMetarea) -and [string]::IsNullOrWhiteSpace($rowMetareano)) {
+        $rowState = Get-FieldFromRow -Row $row -Canonical "state_fips"
+        if ([string]::IsNullOrWhiteSpace($rowFips) -and [string]::IsNullOrWhiteSpace($rowCbsa) -and [string]::IsNullOrWhiteSpace($rowMetarea) -and [string]::IsNullOrWhiteSpace($rowMetareano) -and [string]::IsNullOrWhiteSpace($rowState)) {
             continue
         }
 
@@ -194,6 +197,8 @@ foreach ($src in $sourceLoads) {
             $geoKey = "cbsa:$rowCbsa"
         } elseif (-not [string]::IsNullOrWhiteSpace($rowMetarea)) {
             $geoKey = "metarea:$rowMetarea"
+        } elseif (-not [string]::IsNullOrWhiteSpace($rowState)) {
+            $geoKey = "state_fips:$rowState"
         } else {
             $geoKey = "metareano:$rowMetareano"
         }
@@ -206,7 +211,6 @@ foreach ($src in $sourceLoads) {
         if (-not [string]::IsNullOrWhiteSpace($rowMetarea)) { $rec["metarea"] = $rowMetarea }
         if (-not [string]::IsNullOrWhiteSpace($rowMetareano)) { $rec["metareano"] = $rowMetareano }
         if (-not [string]::IsNullOrWhiteSpace($rowYear)) { $rec["year"] = $rowYear }
-        $rowState = Get-FieldFromRow -Row $row -Canonical "state_fips"
         if (-not [string]::IsNullOrWhiteSpace($rowState)) { $rec["state_fips"] = $rowState }
 
         foreach ($c in $src.cols) {
@@ -225,8 +229,40 @@ foreach ($src in $sourceLoads) {
 foreach ($k in $panelMap.Keys) {
     $r = $panelMap[$k]
     $hasGeo = (-not [string]::IsNullOrWhiteSpace($r.fips)) -or (-not [string]::IsNullOrWhiteSpace($r.cbsa)) -or (-not [string]::IsNullOrWhiteSpace($r.metarea)) -or (-not [string]::IsNullOrWhiteSpace($r.metareano))
-    $hasId = $hasGeo -and (-not [string]::IsNullOrWhiteSpace($r.year))
-    $hasFertility = -not [string]::IsNullOrWhiteSpace($r.gfr_15_44)
+    $hasStateOnly = -not [string]::IsNullOrWhiteSpace($r.state_fips)
+    $hasId = ($hasGeo -or $hasStateOnly) -and (-not [string]::IsNullOrWhiteSpace($r.year))
+
+    if ([string]::IsNullOrWhiteSpace($r.first_birth_rate_15_44) -and `
+        -not [string]::IsNullOrWhiteSpace($r.first_births_total) -and `
+        -not [string]::IsNullOrWhiteSpace($r.female_pop_15_44)) {
+        try {
+            $firstBirths = [double]$r.first_births_total
+            $femalePop = [double]$r.female_pop_15_44
+            if ($femalePop -gt 0) {
+                $r.first_birth_rate_15_44 = [string]([math]::Round((1000.0 * $firstBirths / $femalePop), 6))
+            }
+        } catch {
+            $null = $null
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($r.share_first_birth_30_plus) -and `
+        -not [string]::IsNullOrWhiteSpace($r.share_first_birth_30_34) -and `
+        -not [string]::IsNullOrWhiteSpace($r.share_first_birth_35_44)) {
+        try {
+            $share30 = [double]$r.share_first_birth_30_34
+            $share35 = [double]$r.share_first_birth_35_44
+            $r.share_first_birth_30_plus = [string]([math]::Round(($share30 + $share35), 6))
+        } catch {
+            $null = $null
+        }
+    }
+
+    $hasFertility = `
+        (-not [string]::IsNullOrWhiteSpace($r.gfr_15_44)) -or `
+        (-not [string]::IsNullOrWhiteSpace($r.mean_age_first_birth)) -or `
+        (-not [string]::IsNullOrWhiteSpace($r.first_births_total)) -or `
+        (-not [string]::IsNullOrWhiteSpace($r.share_first_birth_30_plus))
     $hasHousing = -not [string]::IsNullOrWhiteSpace($r.real_house_price_index)
     $hasPop = -not [string]::IsNullOrWhiteSpace($r.female_pop_15_44)
     if ($hasId -and $hasFertility -and $hasHousing -and $hasPop) {
@@ -236,14 +272,22 @@ foreach ($k in $panelMap.Keys) {
     }
 }
 
-$records = @()
+$records = New-Object System.Collections.Generic.List[object]
+$missingCounts = @{}
+foreach ($c in $finalColumns) {
+    $missingCounts[$c] = 0
+}
 foreach ($k in ($panelMap.Keys | Sort-Object)) {
     $r = $panelMap[$k]
-    $obj = [pscustomobject]([ordered]@{})
+    $rowValues = [ordered]@{}
     foreach ($c in $finalColumns) {
-        Add-Member -InputObject $obj -NotePropertyName $c -NotePropertyValue $r[$c]
+        $value = $r[$c]
+        $rowValues[$c] = $value
+        if ([string]::IsNullOrWhiteSpace([string]$value)) {
+            $missingCounts[$c]++
+        }
     }
-    $records += $obj
+    $records.Add([pscustomobject]$rowValues)
 }
 
 if ($records.Count -eq 0) {
@@ -290,11 +334,7 @@ if ($rowCount -eq 0) {
     $missLines += "| variable | missing_count | missing_pct |"
     $missLines += "| --- | ---: | ---: |"
     foreach ($c in $finalColumns) {
-        $missingCount = 0
-        foreach ($r in $records) {
-            $v = $r.$c
-            if ([string]::IsNullOrWhiteSpace([string]$v)) { $missingCount++ }
-        }
+        $missingCount = [int]$missingCounts[$c]
         $pct = [math]::Round((100.0 * $missingCount / $rowCount), 2)
         $missLines += "| $c | $missingCount | $pct |"
     }
