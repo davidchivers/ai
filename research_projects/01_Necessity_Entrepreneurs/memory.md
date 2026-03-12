@@ -4,6 +4,185 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-12 (MIT vacancy-rule control check and Econometrica report)
+- Continued the MIT/recession-object debugging on the promising incumbent-scaled vacancy rule rather than the legacy replacement-vacancy block.
+- Confirmed the incumbent-scaled baseline for `case 147`:
+  - run log:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_baseline_20260312_20260312_165351.log`
+  - key baseline outcomes:
+    - `theta = 0.658451`
+    - entrepreneur share `= 0.17638`
+    - self-employed share among entrepreneurs `= 0.57104`
+    - average entrepreneur size `n = 6.22822`
+    - average entrepreneur capital `k = 99.3024`
+- Froze the matched baseline transition start state for clean MIT comparisons in:
+  - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_vrule4s10_baseline_transition_init_20260312_170043/`
+- Ran the matched recession bundle under the same vacancy rule with:
+  - `VacancySourceRule = 4`
+  - `VacancyScale = 0.10`
+  - `OutputDemandWedge = 0.95`
+  - `WorkerSeparationAddLow = 0.10`
+  - log:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_outw095_sep010_mit_20260312_20260312_170751.log`
+  - MIT transition output:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147/mit_vrule4s10_outw095_sep010_from_vrule4s10_baseline_20260312/transition_path.csv`
+- Steady-state comparison versus the confirmed incumbent-scaled baseline:
+  - `theta: 0.658451 -> 0.653936`
+  - entrepreneur share: `0.17638 -> 0.18775`
+  - self-employed share among entrepreneurs: `0.57104 -> 0.60101`
+  - average entrepreneur size `n: 6.22822 -> 5.76434`
+  - average entrepreneur capital `k: 99.3024 -> 86.5464`
+- Important dynamic follow-up:
+  - the matched recession path still showed an early positive `theta` spike, so the steady-state improvement alone was not enough to call the MIT issue fixed.
+- Ran a matched baseline-control MIT export from the exact same frozen cross section:
+  - log:
+    - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_baseline_control_mit_20260312_20260312_171644.log`
+  - control transition output:
+    - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147/mit_vrule4s10_baseline_control_from_vrule4s10_baseline_20260312/transition_path.csv`
+- Shock-minus-control read:
+  - the recession bundle still raises entrepreneurship and self-employment relative to the matched control,
+  - lowers entrepreneur size and capital relative to the matched control,
+  - raises low-education unemployment by about `1.6` to `2.7` percentage points over periods `0-24`,
+  - but `theta` still overshoots early, peaking at roughly `+8.5` percentage points relative to the matched control path before settling down.
+- Practical conclusion:
+  - `VacancySourceRule = 4`, `VacancyScale = 0.10` is the best recession candidate so far,
+  - it genuinely improves the steady-state recession mapping,
+  - but it is not yet a complete fix to the MIT-tightness problem because the early transition dynamics remain too expansionary.
+- Also wrote a full external-style paper report for the current manuscript:
+  - `referee/ECONOMETRICA_REFEREE_REPORT.tex`
+  - `referee/ECONOMETRICA_REFEREE_REPORT.pdf`
+- Bottom-line review judgment recorded in that report:
+  - real idea,
+  - materially improved draft,
+  - not currently `Econometrica`-publishable,
+  - best path forward is sharper framing, cleaner empirical bridge, cleaner policy decomposition, and a more convincing recession object.
+
+### Session: 2026-03-12 (benchmark cutoff presentation alternatives)
+- Built two benchmark-only alternatives so the cutoff object can be judged as a paper figure rather than only as a raw diagnostic:
+  - `figures/case147_benchmark_necessity_entry_regions.tex`
+  - `figures/case147_benchmark_cutoff_gap_figure.tex`
+- Added dedicated generators and preview wrappers:
+  - `figures/cutoff_figure_utils.js`
+  - `figures/generate_case147_benchmark_necessity_entry_regions.js`
+  - `figures/generate_case147_benchmark_cutoff_gap_figure.js`
+  - `figures/case147_benchmark_necessity_entry_regions_preview.tex`
+  - `figures/case147_benchmark_cutoff_gap_figure_preview.tex`
+- Preview PDFs compiled successfully:
+  - `figures/case147_benchmark_necessity_entry_regions_preview.pdf`
+  - `figures/case147_benchmark_cutoff_gap_figure_preview.pdf`
+- Practical read after visual comparison:
+  - the shaded necessity-entry-region figure communicates the mechanism more clearly,
+  - the gap-by-asset figure is sharper for diagnosis of where the unemployed-employed wedge opens up, but it looks less like a natural main-text cutoff graph.
+- Added an R/`ggplot2` renderer so the same benchmark cutoff objects can be rebuilt outside TikZ:
+  - `figures/generate_case147_benchmark_cutoff_figures.R`
+- Environment update:
+  - installed base R `4.5.2` to the default `C:` location through `winget`,
+  - installed `ggplot2` to the user library at `C:\Users\Dave_\AppData\Local\R\win-library\4.5`,
+  - executed the R renderer successfully and wrote:
+    - `figures/case147_benchmark_necessity_entry_regions_r.pdf`
+    - `figures/case147_benchmark_necessity_entry_regions_r.png`
+    - `figures/case147_benchmark_cutoff_gap_figure_r.pdf`
+    - `figures/case147_benchmark_cutoff_gap_figure_r.png`
+- Promoted the shaded necessity-entry figure from diagnostic candidate to live draft/slide content:
+  - inserted the figure after the benchmark table in:
+    - `drafts/necessity_entrepreneurship.tex`
+    - `drafts/necessity_entrepreneurship.lyx`
+  - added a short economic-intuition paragraph emphasizing that the unemployed-employed wedge opens most at intermediate asset levels and shifts right with education.
+- Added a rerunnable slide-safe output path to the TikZ generator:
+  - `figures/generate_case147_benchmark_necessity_entry_regions.js`
+  - it now writes both:
+    - `figures/case147_benchmark_necessity_entry_regions.tex`
+    - `figures/case147_benchmark_necessity_entry_regions_slide.tex`
+- Updated the slide deck to use the no-caption/no-legend fragment:
+  - `slides/necessity_entrepreneurship_slides.tex`
+- Verification:
+  - rebuilt `drafts/necessity_entrepreneurship.pdf`
+  - rebuilt `slides/necessity_entrepreneurship_slides.pdf`
+  - removed the large overflow that had come from importing the full paper figure environment into Beamer;
+  - one smaller pre-existing overflow remains on the MIT IRF slide later in the deck.
+
+### Session: 2026-03-12 (three-panel cutoff presentation lock)
+- Confirmed that the retained benchmark cutoff asset should stay as a three-panel entrepreneurship-entry-by-education figure rather than the old combined entry/employer-threshold display.
+- Tightened the benchmark figure wording:
+  - `figures/generate_case147_benchmark_cutoff_panels.js`
+  - education-row labels now read `Low education`, `Middle education`, and `High education`.
+- Updated the supporting review-pack language:
+  - `notes/19_transition_and_cutoff_review_pack.tex`
+  - `notes/cutoff_diagnostics_inventory.md`
+- Practical result:
+  - the active cutoff diagnostic set now describes the benchmark figure consistently as the retained three-panel entrepreneurship cutoff object.
+
+### Session: 2026-03-12 (benchmark-only cutoff cleanup)
+- Reduced the cutoff diagnostic set to the benchmark model only at the user's request.
+- Removed the non-benchmark cutoff comparison fragments from `figures/`:
+  - no-unemployment-risk,
+  - downturn low-education separation shock,
+  - no-UI.
+- Trimmed the diagnostic review pack:
+  - `notes/19_transition_and_cutoff_review_pack.tex`
+  - it now keeps the MIT transition figure and the benchmark cutoff panel only.
+- Updated the inventory note:
+  - `notes/cutoff_diagnostics_inventory.md`
+  - it now lists only the retained benchmark cutoff asset.
+
+### Session: 2026-03-12 (cutoff parser repair for the six-panel graph)
+- Traced the bad employer-threshold panels to a parsing bug in the figure generators:
+  - `credit_const_v18.txt` is written in `education -> productivity -> asset` order,
+  - the generators had been assigning education via `line_index % 3`, which scrambled the employer-threshold side of the six-panel graph.
+- Patched the cutoff generators to reconstruct the education blocks from `choose_state_next.txt` and then walk `credit_const_v18.txt` in the correct grid order:
+  - `figures/generate_case147_benchmark_cutoff_panels.js`
+  - `figures/generate_case147_cutoff_comparison_figure.js`
+  - `figures/generate_case147_no_unemployment_cutoff_figure.js`
+- Regenerated the benchmark and comparison cutoff assets:
+  - `figures/case147_benchmark_cutoff_panels.tex`
+  - `figures/case147_no_unemployment_risk_cutoff_panels.tex`
+  - `figures/case147_no_unemployment_risk_entry_cutoffs.tex`
+  - `figures/case147_no_unemployment_risk_employer_cutoffs.tex`
+  - `figures/case147_downturn_lowedu_sep010_entry_cutoffs.tex`
+  - `figures/case147_downturn_lowedu_sep010_employer_cutoffs.tex`
+  - `figures/case147_ui000_entry_cutoffs.tex`
+  - `figures/case147_ui000_employer_cutoffs.tex`
+- Fixed a separate preview-only LaTeX issue in the benchmark six-panel wrapper by simplifying the y-axis labels so the benchmark preview compiles cleanly.
+- Verification:
+  - rebuilt `figures/case147_benchmark_cutoff_panels_preview.pdf`
+  - rebuilt `notes/19_transition_and_cutoff_review_pack.pdf`
+- Practical result:
+  - the six-panel benchmark graph is now based on the correctly parsed employer-threshold data,
+  - the figures are again usable for review/diagnostics, but they remain out of the active manuscript until the paper-side presentation decision is revisited.
+
+### Session: 2026-03-11 (slides switched to TeX-plus-PDF only)
+- Dropped the placeholder slides LyX source at the user's request:
+  - removed `slides/necessity_entrepreneurship_slides.lyx`
+- Promoted the real slide source to the canonical slides folder:
+  - `slides/necessity_entrepreneurship_slides.tex`
+- Updated figure paths in the slide source so it now compiles directly from `slides/` using the project-level `figures/` folder.
+- Rebuilt the canonical slide deck successfully:
+  - `slides/necessity_entrepreneurship_slides.pdf`
+- Practical rule going forward:
+  - maintain slides in TeX plus PDF only unless a new LyX source is explicitly requested later.
+
+### Session: 2026-03-11 (LyX calibration sync and paper rebuild)
+- Synced the live LyX draft to the cleaned paper-facing calibration rewrite:
+  - replaced the old inline calibration block in `drafts/necessity_entrepreneurship.lyx` with an authoritative include of:
+    - `drafts/sections/calibration_self_employment.tex`
+- Updated the benchmark calibration table fragment:
+  - `drafts/tables/calibration_parameters_self_employment.tex`
+  - added the code-consistent asset lower bound row:
+    - `a_l = 0.01`
+- Updated the main draft TeX to match the cleaned calibration path:
+  - `drafts/necessity_entrepreneurship.tex`
+  - calibration section now inputs the standalone fragment rather than carrying the stale inline table.
+- Removed stale paper prose that still said the fixed-tax self-employment ladder was incomplete:
+  - conclusion now points to the next paper task as a clean endogenous-tax versus fixed-tax comparison object;
+  - appendix robustness text now states that the matched fixed-tax ladder is complete and confirms the benchmark pattern.
+- Rebuilt the canonical paper PDF successfully:
+  - `drafts/necessity_entrepreneurship.pdf`
+- Refreshed the archived LyX-to-TeX companion export:
+  - `drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
+- Practical result:
+  - the paper PDF is no longer behind the edited source for this calibration-sync pass;
+  - the main remaining paper-side quantitative task is now the matched endogenous-tax versus fixed-tax comparison object.
+
 ### Session: 2026-03-09 (paper table rebuild, calibration rewrite, and PDF refresh)
 - Preserved the key benchmark outputs in dedicated snapshots so richer paper moments could be extracted without later runs overwriting `case_test_new_147`:
   - baseline snapshot:

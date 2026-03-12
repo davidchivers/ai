@@ -2,8 +2,108 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-10
-- Overall state: the self-employment benchmark is now numerically locked, the main paper tables have been rebuilt around the benchmark UI ladder / no-unemployment-risk / downturn-steady-state package, and a compiled paper PDF is available while the live LyX calibration section still needs a final paper-facing sync pass.
+- Last updated: 2026-03-12
+- Overall state: the self-employment benchmark is now numerically locked, the main paper tables have been rebuilt around the benchmark UI ladder / no-unemployment-risk / downturn-steady-state package, and the live LyX/TeX calibration block has now been synced to the cleaned paper-facing fragment; the new MIT follow-up shows that the incumbent-scaled vacancy rule improves the recession steady-state object but does not yet eliminate the early transition spike in `theta`, and the next paper-side tasks are the fixed-tax versus endogenous-tax comparison object plus a sharper general-interest framing.
+- 2026-03-12 MIT vacancy-rule confirmation and control check:
+  - reran the promising incumbent-scaled vacancy specification (`VacancySourceRule = 4`, `VacancyScale = 0.10`) for the active `case 147` benchmark:
+    - confirmed baseline log:
+      - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_baseline_20260312_20260312_165351.log`
+    - saved matched baseline transition start state in:
+      - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147_vrule4s10_baseline_transition_init_20260312_170043/transition_init_cross_section.txt`
+  - matched recession bundle with output wedge plus low-education separation shock completed with MIT export:
+    - steady-state plus MIT log:
+      - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_outw095_sep010_mit_20260312_20260312_170751.log`
+    - transition path:
+      - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147/mit_vrule4s10_outw095_sep010_from_vrule4s10_baseline_20260312/transition_path.csv`
+  - matched baseline-control MIT export completed:
+    - control log:
+      - `calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_confirm_vrule4s10_baseline_control_mit_20260312_20260312_171644.log`
+    - control transition path:
+      - `calibration/self_employment_baseline/runtime/data/Output/case_test_new_147/mit_vrule4s10_baseline_control_from_vrule4s10_baseline_20260312/transition_path.csv`
+  - steady-state read:
+    - baseline `theta = 0.658451`,
+    - recession bundle `theta = 0.653936`,
+    - entrepreneur share rises `0.17638 -> 0.18775`,
+    - self-employed share among entrepreneurs rises `0.57104 -> 0.60101`,
+    - average entrepreneur size falls `6.22822 -> 5.76434`.
+  - transition read:
+    - relative to the matched control path, the recession bundle still raises entrepreneurship, self-employment, and low-education unemployment while lowering entrepreneur size and capital,
+    - but the early transition still contains a sizable positive `theta` overshoot (peak roughly `+8.5` percentage points relative to the control path in the first 25 periods),
+    - so this is a better recession object than the legacy bundle, but not yet a paper-ready fix to the MIT-tightness problem.
+- 2026-03-12 Econometrica referee report completed:
+  - created a full external-style referee report in:
+    - `referee/ECONOMETRICA_REFEREE_REPORT.tex`
+    - `referee/ECONOMETRICA_REFEREE_REPORT.pdf`
+  - bottom-line assessment:
+    - the paper has a real idea and is materially improved,
+    - but it is not currently publishable at `Econometrica`,
+    - the main weaknesses are the still-diffuse top-line question, the loose empirical bridge to the structural object, the incomplete policy decomposition, and the not-yet-convincing recession exercise.
+- 2026-03-12 benchmark-only cutoff cleanup:
+  - removed the non-benchmark cutoff comparison fragments from `figures/` so the active cutoff set is benchmark-only;
+  - trimmed `notes/19_transition_and_cutoff_review_pack.tex` to keep the MIT transition figure plus the benchmark cutoff panel only;
+  - retained benchmark cutoff diagnostics in:
+    - `figures/case147_benchmark_cutoff_panels.tex`
+    - `figures/case147_benchmark_cutoff_panels_preview.pdf`
+- 2026-03-12 cutoff presentation decision:
+  - lock the retained benchmark cutoff diagnostic to a three-panel entrepreneurship-entry-by-education figure;
+  - do not carry forward the old combined entry-plus-employer-threshold presentation in the active review pack;
+  - supporting notes now describe the retained asset accordingly.
+- 2026-03-12 benchmark cutoff presentation alternatives:
+  - generated two benchmark-only alternatives from the same saved `case 147` benchmark output:
+    - `figures/case147_benchmark_necessity_entry_regions.tex`
+    - `figures/case147_benchmark_cutoff_gap_figure.tex`
+  - preview PDFs built successfully:
+    - `figures/case147_benchmark_necessity_entry_regions_preview.pdf`
+    - `figures/case147_benchmark_cutoff_gap_figure_preview.pdf`
+  - current read:
+    - the shaded necessity-entry-region version is the stronger paper candidate,
+    - the direct gap figure is useful for diagnosis but less natural as a main-text span-of-control figure.
+- 2026-03-12 R figure renderer installed and executed:
+  - installed base R `4.5.2` on this machine and installed `ggplot2` into the user library at `C:\Users\Dave_\AppData\Local\R\win-library\4.5`;
+  - added an R/`ggplot2` benchmark cutoff renderer:
+    - `figures/generate_case147_benchmark_cutoff_figures.R`
+  - generated benchmark-only R outputs:
+    - `figures/case147_benchmark_necessity_entry_regions_r.pdf`
+    - `figures/case147_benchmark_necessity_entry_regions_r.png`
+    - `figures/case147_benchmark_cutoff_gap_figure_r.pdf`
+    - `figures/case147_benchmark_cutoff_gap_figure_r.png`
+- 2026-03-12 benchmark cutoff figure integrated into paper and slides:
+  - inserted the shaded benchmark necessity-entry figure directly after the benchmark table in:
+    - `drafts/necessity_entrepreneurship.tex`
+    - `drafts/necessity_entrepreneurship.lyx`
+  - added a short interpretation paragraph stressing that:
+    - the necessity-entry band is small at very low assets,
+    - widens at intermediate assets,
+    - and shifts right with education because education raises both entrepreneurial potential and the value of staying employed.
+  - added a slide-safe TikZ fragment with no caption or bottom legend:
+    - `figures/case147_benchmark_necessity_entry_regions_slide.tex`
+  - updated the benchmark cutoff slide to use the slide-safe fragment:
+    - `slides/necessity_entrepreneurship_slides.tex`
+  - verification:
+    - `drafts/necessity_entrepreneurship.pdf` rebuilt successfully,
+    - `slides/necessity_entrepreneurship_slides.pdf` rebuilt successfully,
+    - the previous large overflow on the new benchmark cutoff slide is resolved,
+    - the remaining slide overflow is the pre-existing MIT IRF frame later in the deck.
+- 2026-03-12 cutoff-figure parser repair:
+  - fixed the six-panel cutoff generators to recover education blocks in `credit_const_v18.txt` from `choose_state_next.txt` rather than using a brittle `line mod 3` rule;
+  - regenerated the benchmark six-panel figure and the no-risk / downturn / no-UI cutoff fragments in `figures/`;
+  - verification:
+    - `figures/case147_benchmark_cutoff_panels_preview.pdf` now builds successfully,
+    - `notes/19_transition_and_cutoff_review_pack.pdf` rebuilds successfully with the refreshed split cutoff figures;
+  - interpretation:
+    - the old employer-threshold sawtooth pattern was a parser artifact rather than a model result,
+    - the cutoff figures remain diagnostic assets for now and are still not restored to the active manuscript.
+- 2026-03-11 draft-sync update:
+  - the live calibration block in `drafts/necessity_entrepreneurship.lyx` now calls the cleaned paper-facing fragment:
+    - `drafts/sections/calibration_self_employment.tex`
+  - the stale inline calibration table has been removed from the main LyX/TeX draft path and replaced by the standalone benchmark table fragment:
+    - `drafts/tables/calibration_parameters_self_employment.tex`
+  - the benchmark calibration table now also reports the code-consistent asset lower bound:
+    - `a_l = 0.01`
+  - stale prose claiming the fixed-tax ladder was still incomplete has been removed from the conclusion and appendix.
+  - refreshed draft outputs built successfully:
+    - `drafts/necessity_entrepreneurship.pdf`
+    - `drafts/old_drafts/source_tex/necessity_entrepreneurship.tex`
 - 2026-03-06 self-employment benchmark update:
   - `case 146` is now the active closure-risk benchmark branch for the self-employment model:
     - end-of-period entrepreneur closure,
@@ -251,6 +351,18 @@
     - `notes/20_code_table_consistency_audit.md`
   - implication:
     - tomorrow's project discussion can now start from a ranked empirical strategy list and a precise calibration-table fix list rather than a loose queue.
+- 2026-03-11 empirical option-1 narrowing:
+  - the empirical project has now explicitly chosen option 1, the displacement-based worker-to-business design, as the preferred route;
+  - added a ranked data-source note for that design in:
+    - `emperical/10_displacement_design_data_options.md`
+  - current ranking:
+    - `1.` Census FSRDC linked worker-business package,
+    - `2.` one-state or few-state administrative linkage,
+    - `3.` SIPP worker panel,
+    - `4.` NES-D wage-work tables plus the existing public sidecar;
+  - implication:
+    - the immediate empirical task is no longer "linked versus public";
+    - it is now to scope the FSRDC path precisely and keep a state-admin fallback alive.
 - 2026-03-05 post-fix case-101 endogenous-tax comparison (proper UI experiment set):
   - completed runs (`MaxIterAgg=40`, `RngSeed=12345`, `SingleCase=101`) at:
     - `UI=0.40`: `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_endog101_baseline_m40_uioverridefix_20260305_20260305_145040.log`
@@ -487,6 +599,9 @@
   - `research_projects/01_Necessity_Entrepreneurs/calibration/self_employment_baseline/runtime/data/output/case_1/run_baseline_se147_fixedtax_ui040_caploss025_fhire025_m40_20260310_153848.log`
   - `research_projects/01_Necessity_Entrepreneurs/calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_005_se147_fixedtax_ui005_caploss025_fhire025_m40_20260310_154608.log`
   - `research_projects/01_Necessity_Entrepreneurs/calibration/self_employment_baseline/runtime/data/output/case_1/run_ui_000_se147_fixedtax_ui000_caploss025_fhire025_m40_20260310_161010.log`
+- 2026-03-12 full external-style paper review completed:
+  - `research_projects/01_Necessity_Entrepreneurs/referee/ECONOMETRICA_REFEREE_REPORT.tex`
+  - `research_projects/01_Necessity_Entrepreneurs/referee/ECONOMETRICA_REFEREE_REPORT.pdf`
 
 ## In Progress
 
@@ -505,24 +620,32 @@
   - first downturn steady-state comparison completed using a low-education separation shock,
   - literature/provenance note for `f_hire` drafted in `notes/13_employer_threshold_cost.md`,
   - self-employed paper tables rewritten around the benchmark self-employment specification, with longer baseline/policy tables and output reporting in the no-unemployment-risk and downturn sections,
-  - live LyX draft partly updated, but the calibration block still needs one final synchronization pass against the cleaned `.tex` draft.
+  - live LyX calibration block is now synchronized to the cleaned paper-facing fragment and no longer carries the stale inline calibration rows.
 - Integrated data-section build in `data/`, with the goal of moving validated motivation/data outputs into the main project workflow rather than maintaining a separate sidecar track.
+- Empirical option-1 buildout:
+  - linked worker-business design is now the chosen empirical route,
+  - ranked data options have been written up in `emperical/10_displacement_design_data_options.md`,
+  - next step is to convert that note into a concrete FSRDC scoping memo plus a one-state fallback wish list.
 - Case-51 (model 5.1) corner-regime diagnosis remains open in parallel.
 - Slide-paper graph/table alignment to ensure the draft reflects the new post-fix experiment set.
-- Rerunnable cutoff-figure rebuild for the self-employment benchmark:
-  - target placement is directly under the relevant paper tables,
-  - figures should be based on the new saved results rather than legacy draft cases,
-  - current design preference is to separate self-employment entry cutoffs from employer-threshold cutoffs if the combined version is visually too busy.
+- Cutoff figures are removed from the active manuscript for now:
+  - the current cutoff construction is not reliable enough for paper use,
+  - only the benchmark cutoff figure is retained in `figures/` as a diagnostic asset,
+  - do not restore cutoff panels to the draft until the employer-threshold side is rebuilt and validated.
 - Separate downturn-composition extension planning is now active in parallel:
   - use the self-employment branch as the core framework,
   - finish the benchmark case first,
   - then run downturn steady-state and transition experiments as a distinct extension rather than folding them into the current benchmark-repair task list.
+- Matched incumbent-scaled recession diagnostics remain open:
+  - the `VacancySourceRule = 4`, `VacancyScale = 0.10` bundle improves the steady-state recession mapping,
+  - but the MIT transition still shows an early `theta` overshoot relative to the matched baseline-control path,
+  - so the next step is a local vacancy-scale / transition-specification check rather than immediate promotion into the paper.
 
 ## Next 3 Tasks
 
-1. Sync the live LyX draft to the cleaned paper-facing calibration rewrite and use `notes/20_code_table_consistency_audit.md` to remove the stale inline calibration rows.
+1. Run a local follow-up around the incumbent-scaled recession object (starting with nearby `VacancyScale` values or an alternative transition comparison rule) to eliminate or explain the early MIT `theta` overshoot relative to the matched baseline-control path.
 2. Build the matched endogenous-tax versus fixed-tax UI comparison table or figure for `case 147`, so the insurance channel and the fiscal-closure channel are transparent in the paper.
-3. Decide whether the next empirical step is the public-data local-labor-demand panel or a linked worker-business data request, using `emperical/09_channel_measurement_deep_dive.md` as the decision note.
+3. Use `referee/ECONOMETRICA_REFEREE_REPORT.pdf` to rewrite the abstract and opening framing around one general-interest question, and sharpen the empirical-bridge language before any submission conversation.
 
 ## Blockers
 
@@ -551,6 +674,7 @@
 - Cleanup review note: `research_projects/01_Necessity_Entrepreneurs/notes/cleanup_candidates_2026-02-28.md`
 - Citation verification report: `research_projects/01_Necessity_Entrepreneurs/notes/legacy_literature_citation_verification.md`
 - Empirical channel note: `research_projects/01_Necessity_Entrepreneurs/emperical/09_channel_measurement_deep_dive.md`
+- Option-1 data note: `research_projects/01_Necessity_Entrepreneurs/emperical/10_displacement_design_data_options.md`
 - Calibration consistency audit: `research_projects/01_Necessity_Entrepreneurs/notes/20_code_table_consistency_audit.md`
 - Reference checklist (single Excel-editable file): `research_projects/01_Necessity_Entrepreneurs/literature/checklist/reference_checklist.csv`
 - Canonical Dropbox snapshot: `research_projects/01_Necessity_Entrepreneurs/calibration/canonical_dropbox/2026-02-28_main_2025_v1_case113/`
