@@ -2315,7 +2315,7 @@ medskip
 \backslash
 footnotesize
  \backslash
-emph{Note:} Panels report percentage-point deviations from the benchmark transition start state after a low-education separation shock. The top-left panel shows the overall entrepreneur share, the top-right the low-education entrepreneur share, the bottom-left the self-employment share, and the bottom-right the low-education unemployment share.
+emph{Note:} Panels report percentage-point deviations from the benchmark transition start state.
 \backslash
 end{figure}
 \end_layout
