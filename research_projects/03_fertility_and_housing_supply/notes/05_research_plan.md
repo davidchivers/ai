@@ -1,7 +1,9 @@
 # 05 research plan
 
-Last updated: 2026-03-09
-Status: active (live natality build complete; current exploratory bridge is state-year while county-versus-metro geography is being resolved)
+Last updated: 2026-03-13
+Status: active empirical build; live natality panel and state-year bridge are in place, legacy
+source imports are now portable across `D:` and Dropbox roots, and the refreshed structural
+comparison remains diagnostic rather than a reason to delay empirical cleanup
 
 ## A. Chosen question and estimand
 
@@ -43,7 +45,9 @@ Current stance:
 
 1. Keep the project-02 political housing-supply model in the background as motivation.
 2. Do not make further model integration the binding constraint for the empirical paper design.
-3. Wait for updated MATLAB files before revisiting model-code alignment.
+3. Treat the refreshed reduced-form versus old-proxy versus structural-FOC comparison as a
+   diagnostic note, and wait for updated MATLAB files before revisiting deeper model-code
+   alignment.
 
 Reason:
 The immediate value is in establishing a credible empirical design for delay in family

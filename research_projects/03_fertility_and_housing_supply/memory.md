@@ -4,6 +4,32 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-13 (path portability pass and three-way comparison refresh)
+- Updated the three legacy-source import scripts so they can find the project-02 data roots
+  without hard-coding Dropbox as the only location:
+  - `code/06_import_nimby_birthrates_to_raw.py`
+  - `code/07_import_nimby_housing_controls_to_raw.py`
+  - `code/08_import_nimby_population_policy_to_raw.py`
+- New source-root rule:
+  - use `ZAC_DAVID_DATA_DIR` if present
+  - otherwise prefer `D:\research_data\zac_and_david\Data`
+  - otherwise fall back to `C:\Users\Dave_\Dropbox\Zac and David\Data`
+- Refreshed the MATLAB comparison write-up so the current reduced-form, old-proxy, and
+  structural-FOC objects are all captured in one updated report:
+  - `notes/build/old_vs_new_model_comparison_report.md`
+  - `notes/build/comparison_summary_old_vs_new.csv`
+  - `notes/build/comparison_phase_summary.csv`
+  - `notes/build/old_vs_new_paths.png`
+  - `notes/build/old_vs_new_policy_effects.png`
+  - `notes/build/model_experiment_paths.png`
+- Practical read after the refresh:
+  - the structural FOC version remains much more fertility- and price-responsive than the
+    reduced-form or old-proxy variants
+  - empirical cleanup still dominates the near-term agenda, so this remains a diagnostic
+    comparison rather than the main current workstream
+
+---
+
 ### Session: 2026-03-09 (live CDC WONDER pull, rebuild, and state-year exploratory bridge)
 - Added direct CDC WONDER puller:
   - `code/12_pull_cdc_wonder_first_births.py`

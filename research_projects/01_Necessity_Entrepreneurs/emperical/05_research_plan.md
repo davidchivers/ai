@@ -1,5 +1,9 @@
 # Research plan
 
+Last updated: 2026-03-13
+Status: preferred empirical route locked to the displacement-based worker-to-business design;
+next deliverables are the FSRDC scoping memo and fallback data wish list
+
 ## Chosen research question and estimand
 
 The best empirical question is not "Which entrepreneurs are necessity entrepreneurs in a full
@@ -33,9 +37,18 @@ first empirical pillar unless a particularly sharp policy discontinuity becomes 
 
 ## Data access decision and fallback
 
+Current design decision:
+proceed with option 1, the displacement-based worker-to-business design, as the preferred
+empirical route.
+
 Preferred data path:
-restricted worker-business linked records that separate nonemployer and employer entry and allow
-early payroll and survival outcomes.
+a Census FSRDC linked worker-business package centered on LEHD plus the startup and business
+history files needed to separate nonemployer and employer entry and to follow first payroll and
+early survival. The ranked shortlist is in `10_displacement_design_data_options.md`.
+
+Backup within option 1:
+if the FSRDC route is blocked, fall back to a one-state or few-state administrative linkage that
+combines worker wage records with employer files and business-start records.
 
 Fallback path:
 public local-area panels combining business applications, high-propensity application shares,
@@ -73,9 +86,10 @@ Retained:
 
 ## Next 3 tasks
 
-- Dave: decide whether the near-term empirical route is restricted linked microdata or the public-
-  data fallback, because the note pack is now developed enough to narrow the project.
-- Codex: if the public-data fallback is chosen, sketch the actual panel build around local labor-
-  demand shocks, business applications, and nonemployer versus employer outcomes.
-- Dave and Codex: if the linked-data route is chosen, write the exact data request or wish list
-  needed to observe worker status, business start type, first payroll, and early survival.
+- Codex: draft the short FSRDC scoping memo that asks for the exact worker, startup-type, first-
+  payroll, and survival files needed for the displacement design.
+- Dave and Codex: confirm whether the preferred nonemployer-owner linkage layer is currently
+  requestable through the FSRDC route, or whether the project should be framed around the stable
+  LEHD plus startup-panel package first.
+- Codex: write the one-state fallback wish list so the worker-level design can continue if the
+  FSRDC route is blocked.

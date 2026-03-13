@@ -1,36 +1,34 @@
-# Learning by Viewing (Project 05)
+# Learning by viewing
 
-**Canonical status tracker**: `projects/05_learning_by_viewing/STATUS.md`
+Canonical status tracker: `research_ideas/learning_by_viewing/STATUS.md`
 
-## One-line objective
-Estimate whether scalable video demonstration (learning by viewing) causally increases skill acquisition, and quantify welfare/distributional effects versus alternative learning modes.
+## Current role
+This folder is again the active umbrella project. It keeps one shared tracker plus two
+empirical branches inside the same idea:
 
-## Workflow (current)
-- Use Markdown notes in `notes/` for active drafting and design work.
-- Do not start LaTeX paper drafting or paper PDF generation until explicitly requested by the user.
-- Keep `paper/` content dormant until paper-writing phase begins.
+- `research_ideas/learning_by_viewing/education/`
+- `research_ideas/learning_by_viewing/music/`
+
+## Why this structure
+The education and music paths are not separate projects. They are two empirical branches of
+the same learning-by-viewing idea, so they should live under one parent folder and one
+canonical status file.
+
+## Working rule
+Use the parent `STATUS.md` for project-level priorities and comparisons across branches. Keep
+branch-specific build details in each branch folder's `README.md`, `branch_status.md`, and
+`memory.md`.
 
 ## Current status
-Kickoff rebuilt from scratch in notes format; project remains in pre-paper design phase.
 
-## Key files
-- `notes/README.md`
-- `notes/01_project_overview.md`
-- `notes/02_literature_and_synthesis.md`
-- `notes/03_model_notes.md`
-- `notes/04_empirical_notes.md`
-- `notes/05_research_plan.md`
-- `STATUS.md`
-- `memory.md`
+Education remains the default lead branch because it still has the cleanest first-paper path.
+Music is no longer an empty side idea: the MusicBrainz validation panel is now built, matched
+to treatment countries, and usable as a first non-zero benchmark while the manual Metallum pull
+is still pending.
 
-## Legacy artifacts (not active drafting source)
-- `paper/drafts/learning_by_viewing_kickoff.tex`
-- `paper/output/2026-02-23_learning_by_viewing_kickoff.pdf`
-
-## Next 3 concrete tasks
-1. Finalize priority rankings in `notes/02_literature_and_synthesis.md`, `notes/03_model_notes.md`, and `notes/04_empirical_notes.md`.
-2. Commit the selected top 1-2 models and top 1-2 empirical designs to `notes/05_research_plan.md`.
-3. Sync the chosen plan and immediate execution steps in `STATUS.md`.
+## Legacy contents
+The parent `notes/`, `data/`, and legacy draft files remain useful as umbrella materials from
+the earlier mixed stage of the project.
 
 
 

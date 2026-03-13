@@ -4,6 +4,17 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-13 (extension workspace, coalition direction, and portability pass)
+- Created extension workspace at `extensions/re_no_politics/`.
+- Added `implementation_plan.md` and `run_re_no_politics_extension.m` to separate the no-politics RE path from the published baseline code.
+- Added `political_coalition_extension.md` and `compute_coalition_vote.m` for a first political-side extension that makes NIMBYism stronger via coalition-weighted voting rather than equal vote weights.
+- Added `ensure_external_matlab_data_paths.m` in both `code/steadystate/` and
+  `code/codes_abb/`, and updated the main MATLAB entry files to call the helper before loading
+  external `.mat` assets.
+- Updated `code/data/merge data.do` to try `D:\research_data\zac_and_david\Data` first and
+  then fall back to `C:\Users\Dave_\Dropbox\Zac and David\Data`.
+- Practical next step if coding continues: wire `compute_coalition_vote.m` into an extension copy of `code/steadystate/SolveSS_iter.m`, replacing `sum(dens4.*pref4,'all')` with a weighted aggregator while keeping baseline files unchanged.
+
 ### Session: 2026-02-23 (single canonical status tracker)
 - Added canonical tracker: `projects/02_nimbyism_and_housing_supply/STATUS.md`
 - Set rule that "where are we" and to-do updates should be made in `STATUS.md` first.

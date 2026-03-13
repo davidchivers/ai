@@ -2,8 +2,9 @@
 
 ## Snapshot
 
-- Last updated: 2026-02-23
-- Overall state: published paper; now maintained as an upstream base for project 03.
+- Last updated: 2026-03-13
+- Overall state: published paper; now maintained as an upstream base for project 03, with a
+  first portability pass and extension workspace scaffold now added.
 - Canonical tracker: this file is the single source of truth for status and next actions.
 
 ## Completed
@@ -11,21 +12,29 @@
 - Paper published in Journal of Monetary Economics (2025).
 - Codebase migrated into repository (MATLAB steady-state, Stata pipeline, figures, literature, submission materials).
 - Upstream relationship documented for syncing fixes into project 03.
+- Added external-path portability helpers so the MATLAB and Stata code can prefer
+  `D:\research_data\zac_and_david\...` with Dropbox fallback.
+- Added a first post-publication extension workspace under `extensions/re_no_politics/`.
 
 ## In Progress
 
 - Post-publication maintenance workflow setup (PowerShell-first; optional WSL utilities for PDF-heavy tasks).
 - Preparation for first structured code review pass of MATLAB model folders.
+- Low-risk design work for the no-politics rational-expectations extension, without editing the
+  published baseline solver files directly.
 
 ## Next 3 Tasks
 
-1. Run code review of `code/steadystate/` (and then `code/codes_abb/`) against published paper objects.
-2. Log any model-relevant fixes in `UPSTREAM_FIX_LOG.md` with date and rationale.
-3. Evaluate each upstream fix for porting into `projects/03_fertility_and_housing_supply/UPSTREAM_SYNC_LOG.md`.
+1. Validate the new `D:`-first external path helper on the actual MATLAB/Stata runtime and log
+   any remaining missing-path failures.
+2. Run code review of `code/steadystate/` (and then `code/codes_abb/`) against published paper objects.
+3. Start the first copied no-politics extension solver only after the portability pass is confirmed stable.
 
 ## Blockers
 
 - No formal code-review output document yet in the project.
+- The large external MATLAB `.mat` inputs still live outside this git repo, so portability
+  improvements reduce friction but do not make the project fully self-contained.
 
 ## Open Decisions
 

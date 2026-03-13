@@ -2,7 +2,15 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-09 (live CDC pull, rebuild, and exploratory bridge)
+- Last updated: 2026-03-13 (three-way MATLAB comparison refreshed; import scripts now prefer D: with Dropbox fallback)
+- 2026-03-13 path portability pass: `code/06_import_nimby_birthrates_to_raw.py`,
+  `code/07_import_nimby_housing_controls_to_raw.py`, and
+  `code/08_import_nimby_population_policy_to_raw.py` now accept `ZAC_DAVID_DATA_DIR`, prefer
+  `D:\research_data\zac_and_david\Data`, and fall back to the Dropbox path.
+- 2026-03-13 model-comparison refresh: regenerated `notes/build/old_vs_new_model_comparison_report.md`,
+  `notes/build/comparison_summary_old_vs_new.csv`, `notes/build/comparison_phase_summary.csv`,
+  and the companion comparison plots so the reduced-form, old-proxy, and structural-FOC paths
+  are written up in one place.
 - 2026-03-09 direct natality pull: added `code/12_pull_cdc_wonder_first_births.py`, pulled the official CDC WONDER `D66` natality extract for `2007-2024` by county-year-age, and wrote `data/raw/cdc_wonder_first_births_export.csv`.
 - 2026-03-09 fertility build live: re-imported fertility from the CDC WONDER extract into `data/raw/cdc_fertility_county_year.csv` (`10,890` county-year rows, `2007-2024`), fixed importer parsing for `Age of Mother 10`, and corrected county-derived `state_fips`.
 - 2026-03-09 nativity + panel rebuild: ran `code/09_backfill_nativity_from_acs_api.py` and rebuilt `data/processed/us_fertility_housing_panel_v1.csv` plus refreshed coverage/missingness reports.
@@ -96,6 +104,17 @@
   - bisection solver in `solve_fertility_foc()` and `foc_residual()`
   - runs alongside reduced-form and old-proxy for three-way comparison
   - plots and phase-delta tables updated to include structural model
+- Refreshed the three-way MATLAB comparison write-up after rerunning the comparison bundle:
+  - `notes/build/old_vs_new_model_comparison_report.md`
+  - `notes/build/comparison_summary_old_vs_new.csv`
+  - `notes/build/comparison_phase_summary.csv`
+  - `notes/build/old_vs_new_paths.png`
+  - `notes/build/old_vs_new_policy_effects.png`
+  - `notes/build/model_experiment_paths.png`
+- Import scripts for legacy project-02 source files now use a portable root-selection rule:
+  - explicit environment variable `ZAC_DAVID_DATA_DIR` if set
+  - otherwise `D:\research_data\zac_and_david\Data`
+  - otherwise Dropbox fallback
 - ACS nativity backfill script fixed for 2010-2013:
   - `code/09_backfill_nativity_from_acs_api.py` now uses B06001+B06003 fallback for years where B05013 is unavailable
   - 2014+ still uses B05013 directly
@@ -182,6 +201,8 @@
 - Tightening the first regression-ready specification around first-birth timing outcomes rather than the deprecated `gfr_15_44` path.
 - Evaluating IV feasibility, with current preference for a reform-exposure instrument targeting housing outcomes.
 - Treating the state-year exploratory panel as a temporary bridge rather than the final paper design.
+- Keeping the refreshed structural crowding-FOC comparison as a diagnostic/model note, not as
+  the current binding workstream while empirical cleanup remains the priority.
 
 ## Next 3 Tasks
 

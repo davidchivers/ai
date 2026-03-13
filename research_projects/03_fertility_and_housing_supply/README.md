@@ -6,6 +6,15 @@ Canonical status tracker: `projects/03_fertility_and_housing_supply/STATUS.md`
 
 Pre-paper phase (Markdown-first notes), with planned transition to paper-phase drafting.
 
+## Current status
+
+Empirical work remains the active priority. The live CDC first-birth build and temporary
+state-year bridge are in place, and the current bottleneck is still local geography alignment
+between county fertility data and the legacy metro-year housing block. On the model side, the
+three-way MATLAB comparison has now been refreshed so the reduced-form, old-proxy, and
+structural crowding-FOC variants are written up together, but that comparison remains
+diagnostic until the empirical baseline is cleaner.
+
 ## Current working folders
 
 - `notes/`: active research notes and contribution framing.

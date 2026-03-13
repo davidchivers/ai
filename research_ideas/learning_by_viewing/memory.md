@@ -4,6 +4,44 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-13 (umbrella tracker sync after music validation analysis)
+- Synced the umbrella README/status language to reflect the current branch comparison:
+  - education remains the default first-paper lead,
+  - music now has a built and analyzed MusicBrainz validation panel rather than an empty pilot.
+- Updated the parent research plan so the next-step language explicitly uses the validation
+  panel as the benchmark for the pending manual Metallum pull.
+
+---
+
+### Session: 2026-03-13 (music validation panel)
+- Continued the music branch by adding
+  `research_ideas/learning_by_viewing/music/code/05_build_musicbrainz_validation_panel.py`.
+- The branch now has a treatment-comparable MusicBrainz validation panel in:
+  - `research_ideas/learning_by_viewing/music/data/strategy_8_music_pilot/processed/musicbrainz/technical_death_metal_groups_country_year_panel.csv`
+- This gives the umbrella project a non-zero music-side benchmark before the first manual
+  Metallum export is collected.
+
+---
+
+### Session: 2026-03-12 (umbrella restored)
+- Moved the temporary split folders back inside the umbrella project:
+  - `research_ideas/learning_by_viewing/education/`
+  - `research_ideas/learning_by_viewing/music/`
+- Restored `research_ideas/learning_by_viewing/STATUS.md` as the single canonical tracker for
+  the full project.
+- Renamed branch-level status logs to:
+  - `education/branch_status.md`
+  - `music/branch_status.md`
+- Continued the music branch with an official MusicBrainz validation-download workflow.
+
+---
+
+### Session: 2026-03-11 (project split)
+- Split the mixed `learning_by_viewing` idea into two separate folders:
+  - `research_ideas/learning_by_viewing/education/`
+  - `research_ideas/learning_by_viewing/music/`
+- Those branches now sit inside the umbrella folder rather than next to it at the top level.
+
 ### Session note: next session focus
 - Improve the math component in `notes/03_model_notes.md` only where helpful.
 - Keep explanation-first style and define variables immediately where equations appear.
@@ -57,13 +95,13 @@ Most recent session first.
 Video demonstration platforms may increase skill acquisition by lowering information frictions for procedural/tacit tasks.
 
 ## Canonical files
-- Status tracker: `projects/05_learning_by_viewing/STATUS.md`
-- Notes index: `projects/05_learning_by_viewing/notes/README.md`
-- Active kickoff source: `projects/05_learning_by_viewing/notes/01_project_overview.md`
+- Status tracker: `research_ideas/learning_by_viewing/STATUS.md`
+- Notes index: `research_ideas/learning_by_viewing/notes/README.md`
+- Active kickoff source: `research_ideas/learning_by_viewing/notes/01_project_overview.md`
 
 ## Legacy files (inactive unless reactivated)
-- `projects/05_learning_by_viewing/paper/drafts/learning_by_viewing_kickoff.tex`
-- `projects/05_learning_by_viewing/paper/output/2026-02-23_learning_by_viewing_kickoff.pdf`
+- `research_ideas/learning_by_viewing/drafts/learning_by_viewing_kickoff.tex`
+- `research_ideas/learning_by_viewing/drafts/old_drafts/2026-02-23_learning_by_viewing_kickoff.pdf`
 
 ## Working conventions
 - Do not invent references; use verified papers only.
