@@ -13,8 +13,17 @@ Most recent session first.
   can call them without relying on script execution in a function workspace.
 - Updated the extension README plus project `STATUS.md` to reflect that the solver copies exist and
   the immediate next step is runtime validation rather than initial implementation.
-- Static review only: no MATLAB or Octave executable was available in the shell environment, so the
-  extension runners were not executed in this session.
+- Runtime note: `TransitionMatrix.mat` for this project does exist on `D:\research_data\zac_and_david\Code\SteadyState\TransitionMatrix.mat`.
+  The first Matlab failure came from path precedence: Matlab loaded another `TransitionMatrix.mat`
+  lacking `initialdist`, so the extension now needs to resolve the steady-state file explicitly.
+- Runtime verification result: `run_re_no_politics_extension` completed successfully once the loader
+  was changed to resolve a usable transition bundle explicitly. On this machine, the working source
+  file for `transitionmatrix`, `y_mid`, and `z_lifecycle` is
+  `C:\Users\Dave_\Dropbox\Zac and David\Code\Codes_ABB\TransitionMatrix.mat`; `initialdist` is then
+  sourced separately (or reconstructed if needed). The imported `D:\research_data\zac_and_david\Code\SteadyState\TransitionMatrix.mat`
+  alone is not sufficient because it lacks `y_mid` and `z_lifecycle`.
+- Matlab became callable later in the session via the full executable path, and the no-politics
+  extension runner was executed successfully after the transition-matrix loader fix.
 
 ### Session: 2026-03-13 (extension workspace, coalition direction, and portability pass)
 - Created extension workspace at `extensions/re_no_politics/`.

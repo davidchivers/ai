@@ -72,12 +72,11 @@ zmax=2;
 z=linspace(zmin,zmax,K);
 dz=z(2)-z(1);
 else
-    load TransitionMatrix transitionmatrix y_mid z_lifecycle initialdist
-    z = y_mid;
+    [transitionmatrix, z, Zlifecycle, initialdist, transition_matrix_path] = load_transition_matrix_data();
     zmin=min(z);
     zmax=max(z);
     K=size(z,2);
-    Zlifecycle=z_lifecycle./z_lifecycle(1);
+    disp(['Using TransitionMatrix from ', transition_matrix_path])
 end
 
 %Housing
