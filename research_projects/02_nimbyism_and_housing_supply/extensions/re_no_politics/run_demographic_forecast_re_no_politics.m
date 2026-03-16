@@ -43,7 +43,7 @@ params.max_iter = 1;
 params.tol = 1e-4;
 params.damping = 0.25;
 params.max_update_frac = 0.10;
-params.smoothing_weight = 0.50;
+params.smoothing_weight = 5.00;
 params.terminal_anchor_weight = 0.50;
 params.terminal_price_rule = 'flat_tail';
 

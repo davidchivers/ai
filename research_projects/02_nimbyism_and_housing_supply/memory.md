@@ -48,6 +48,15 @@ Most recent session first.
 - A 3-iteration test with the smoothed bounded update still did not converge, but it no longer
   blows up immediately. The final test path stayed in a bounded range of roughly `1.90` to `2.00`,
   while the largest residuals shifted into middle/late periods rather than the terminal date alone.
+- Replaced the local smoother with a regularized whole-path log-price update. The solver now
+  smooths in log space and solves for the updated path with a curvature penalty plus a terminal
+  anchor, which is a materially better approximation to a real transition-path fixed-point step.
+- Runtime verification result after the regularized log update: a 3-iteration test remained bounded
+  with final prices roughly `1.917` to `1.991`, and the smoothed log residuals became much more
+  coherent than under the previous level-smoothing scheme.
+- A 5-iteration test still did not converge in residual space, but the path stayed numerically
+  stable and close to the original level range rather than exploding. That suggests the remaining
+  issue is localized bad residual periods, not total failure of the transition solver.
 - Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
   reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:
