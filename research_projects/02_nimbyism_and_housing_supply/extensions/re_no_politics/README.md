@@ -77,6 +77,10 @@ That means the current equilibrium object is a political fixed point in price sp
 - `run_re_no_politics_extension.m`: entry point for the no-politics extension
 - `solve_ss_no_politics.m`: copied steady-state solver with housing clearing replacing voting
 - `ClearMarkets_no_politics.m`: function driver for the no-politics price grid
+- `run_demographic_forecast_re_no_politics.m`: entry point for the transition-path RE scaffold
+- `build_demographic_path_from_age_state_csv.m`: maps `code/data/age state.csv` into model age bins
+- `solve_transition_re_no_politics.m`: transition-path solver interface and diagnostics scaffold
+- `update_price_path_re_no_politics.m`: damped price-path update helper for RE iteration
 - `political_coalition_extension.md`: extension note for making NIMBY politics stronger
 - `compute_coalition_vote.m`: coalition-weighted replacement for the equal-weight vote aggregator
 - `solve_ss_coalition.m`: copied steady-state solver with coalition-weighted vote aggregation
@@ -89,6 +93,11 @@ From MATLAB:
 
 - `run_re_no_politics_extension`
 - `run_political_coalition_extension`
+- `run_demographic_forecast_re_no_politics`
+
+The transition runner is currently a scaffold. It validates paths, loads the transition matrix through the robust resolver, builds a real demographic-path object from `code/data/age state.csv`, defines the RE input contract, and saves a placeholder result object for the real RE iteration.
+
+Verified on this machine: `run_demographic_forecast_re_no_politics` runs successfully and saves `transition_re_no_politics_scaffold.mat`.
 
 ## Guardrails
 

@@ -9,6 +9,17 @@ Most recent session first.
   steady-state no-politics closure. The main target is a demographic forecast with rational
   expectations over house prices along the transition path, under the simplification of no voting
   coalitions.
+- Added the first transition-path RE scaffold files:
+  `run_demographic_forecast_re_no_politics.m`,
+  `build_demographic_path_from_age_state_csv.m`,
+  `solve_transition_re_no_politics.m`, and
+  `update_price_path_re_no_politics.m`.
+- Verified that the transition scaffold runner executes in MATLAB, resolves the transition matrix
+  correctly, and saves `transition_re_no_politics_scaffold.mat`. The remaining missing piece is the
+  actual household transition solve and forward distribution update inside the placeholder solver.
+- The scaffold now uses a real demographic path from `code/data/age state.csv` rather than a fake
+  placeholder path. On the current mapping, the aggregate cohort-scale path over 2010-2018 is
+  approximately `[1.000, 1.014, 1.031, 1.046, 1.063, 1.080, 1.097, 1.116, 1.133]`.
 - Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
   reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:

@@ -123,7 +123,14 @@ The extension should own these copies under this folder once implementation star
 4. `update_price_path_re_no_politics.m`
 5. `run_demographic_forecast_re_no_politics.m`
 
-The steady-state files now exist. The next work should start on the transition-path files, not on further steady-state variants.
+The steady-state files now exist. A first transition scaffold now also exists for:
+
+- the demographic-path input contract
+- a real demographic path built from `code/data/age state.csv`
+- the RE price-path update helper
+- the transition runner entry point
+
+The next work should implement the actual household transition and forward distribution logic inside `solve_transition_re_no_politics.m`.
 
 ## Success criteria for the main milestone
 
