@@ -19,6 +19,8 @@ if ~isfield(params, 'smoothing_weight'), params.smoothing_weight = 5.00; end
 if ~isfield(params, 'terminal_anchor_weight'), params.terminal_anchor_weight = 0.50; end
 if ~isfield(params, 'targeted_correction_weight'), params.targeted_correction_weight = 0.35; end
 if ~isfield(params, 'max_targeted_periods'), params.max_targeted_periods = 3; end
+if ~isfield(params, 'target_block_half_width'), params.target_block_half_width = 1; end
+if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.10, 0.05, 0.02, 0.01]; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -60,48 +62,57 @@ initial_density = build_initial_density(initial_reference.dens4, target_age_mass
 
 current_price_path = price_path_guess;
 iteration_log = repmat(struct( ...
+    'residual_norm', NaN, ...
     'max_abs_gap', NaN, ...
     'max_abs_update', NaN, ...
+    'accepted_update', "", ...
     'worst_gap_period', NaN, ...
     'worst_excess_demand_period', NaN, ...
     'worst_excess_demand', NaN), params.max_iter, 1);
 last_run = struct();
 
 for iter = 1:params.max_iter
-    terminal_reference = load_ss_reference(current_price_path(end), params.rbPos, params.supply_params);
+    base_run = run_transition_pass(current_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params);
+    [updated_price_path, diagnostics] = update_price_path_re_no_politics( ...
+        current_price_path, base_run.implied_price_path, params);
 
-    [policy_idx_b, policy_idx_a, valuefunctions] = solve_backward_transition( ...
-        current_price_path, terminal_reference.age_valuefunctions, transitionmatrix, model);
+    current_run = base_run;
+    current_run.label = "current_path";
 
-    sim = simulate_forward_transition(policy_idx_b, policy_idx_a, initial_density, ...
-        target_age_masses, initialdist, transitionmatrix, model, params.save_period_details);
+    selected_run = current_run;
+    selected_price_path = current_price_path;
 
-    implied_price_path = invert_supply_path(sim.Hdemand_path, params.supply_params);
-    sim.Hsupply_guess_path = compute_supply_path(current_price_path, params.supply_params);
-    sim.excess_demand_guess_path = sim.Hdemand_path - sim.Hsupply_guess_path;
-    sim.log_price_residual_raw = log(implied_price_path) - log(current_price_path);
-    [updated_price_path, diagnostics] = update_price_path_re_no_politics(current_price_path, implied_price_path, params);
-    sim.Hsupply_updated_path = compute_supply_path(updated_price_path, params.supply_params);
-    sim.excess_demand_updated_path = sim.Hdemand_path - sim.Hsupply_updated_path;
-    sim.log_price_residual_smoothed = log(diagnostics.smoothed_implied_price_path) - log(current_price_path);
+    [selected_run, selected_price_path] = try_line_search_candidates( ...
+        current_price_path, diagnostics.log_update_step, diagnostics.targeted_blocks, ...
+        initial_density, target_age_masses, initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
 
-    iteration_log(iter).max_abs_gap = diagnostics.max_abs_gap;
-    iteration_log(iter).max_abs_update = diagnostics.max_abs_update;
-    [~, iteration_log(iter).worst_gap_period] = max(abs(sim.log_price_residual_raw));
+    selected_run.sim.Hsupply_updated_path = compute_supply_path(selected_price_path, params.supply_params);
+    selected_run.sim.excess_demand_updated_path = selected_run.sim.Hdemand_path - selected_run.sim.Hsupply_updated_path;
+    selected_run.sim.log_price_residual_smoothed = log(diagnostics.smoothed_implied_price_path) - log(current_price_path);
+
+    iteration_log(iter).residual_norm = selected_run.residual_norm;
+    iteration_log(iter).max_abs_gap = selected_run.max_abs_gap;
+    iteration_log(iter).max_abs_update = max(abs(selected_price_path - current_price_path));
+    iteration_log(iter).accepted_update = selected_run.label;
+    [~, iteration_log(iter).worst_gap_period] = max(abs(selected_run.sim.log_price_residual_raw));
     [iteration_log(iter).worst_excess_demand, iteration_log(iter).worst_excess_demand_period] = ...
-        max(abs(sim.excess_demand_guess_path));
+        max(abs(selected_run.sim.excess_demand_guess_path));
 
     last_run = struct();
-    last_run.policy_idx_b = policy_idx_b;
-    last_run.policy_idx_a = policy_idx_a;
-    last_run.valuefunctions = valuefunctions;
-    last_run.sim = sim;
-    last_run.implied_price_path = implied_price_path;
-    last_run.updated_price_path = updated_price_path;
+    last_run.policy_idx_b = selected_run.policy_idx_b;
+    last_run.policy_idx_a = selected_run.policy_idx_a;
+    last_run.valuefunctions = selected_run.valuefunctions;
+    last_run.sim = selected_run.sim;
+    last_run.implied_price_path = selected_run.implied_price_path;
+    last_run.updated_price_path = selected_price_path;
     last_run.update_diagnostics = diagnostics;
+    last_run.update_diagnostics.max_abs_gap = selected_run.max_abs_gap;
+    last_run.update_diagnostics.max_abs_smoothed_gap = selected_run.max_abs_gap;
+    last_run.update_diagnostics.accepted_update = selected_run.label;
 
-    current_price_path = updated_price_path;
-    if diagnostics.max_abs_gap < params.tol
+    current_price_path = selected_price_path;
+    if selected_run.max_abs_gap < params.tol
         break;
     end
 end
@@ -141,9 +152,86 @@ results.period_diagnostics = struct( ...
     'implied_price_path_smoothed', last_run.update_diagnostics.smoothed_implied_price_path, ...
     'log_price_residual_raw', last_run.sim.log_price_residual_raw, ...
     'log_price_residual_smoothed', last_run.sim.log_price_residual_smoothed, ...
-    'targeted_periods', last_run.update_diagnostics.targeted_periods);
+    'targeted_periods', last_run.update_diagnostics.targeted_periods, ...
+    'targeted_blocks', last_run.update_diagnostics.targeted_blocks);
 if params.save_period_details
     results.density_by_period_age = last_run.sim.density_by_period_age;
+end
+
+function run = run_transition_pass(price_path, initial_density, target_age_masses, initialdist, transitionmatrix, model, params)
+terminal_reference = load_ss_reference(price_path(end), params.rbPos, params.supply_params);
+
+[policy_idx_b, policy_idx_a, valuefunctions] = solve_backward_transition( ...
+    price_path, terminal_reference.age_valuefunctions, transitionmatrix, model);
+
+sim = simulate_forward_transition(policy_idx_b, policy_idx_a, initial_density, ...
+    target_age_masses, initialdist, transitionmatrix, model, params.save_period_details);
+
+implied_price_path = invert_supply_path(sim.Hdemand_path, params.supply_params);
+sim.Hsupply_guess_path = compute_supply_path(price_path, params.supply_params);
+sim.excess_demand_guess_path = sim.Hdemand_path - sim.Hsupply_guess_path;
+sim.log_price_residual_raw = log(implied_price_path) - log(price_path);
+
+run = struct();
+run.policy_idx_b = policy_idx_b;
+run.policy_idx_a = policy_idx_a;
+run.valuefunctions = valuefunctions;
+run.sim = sim;
+run.implied_price_path = implied_price_path;
+run.max_abs_gap = max(abs(implied_price_path - price_path));
+run.residual_norm = norm(log(implied_price_path) - log(price_path));
+end
+
+function [best_run, best_price_path] = try_line_search_candidates(current_price_path, log_update_step, targeted_blocks, ...
+    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path)
+
+log_current = log(current_price_path);
+scales = params.line_search_scales(:)';
+
+for scale = scales
+    full_candidate_price_path = exp(log_current + scale .* log_update_step);
+    full_candidate_run = run_transition_pass(full_candidate_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params);
+    full_candidate_run.label = sprintf('full_path_%.2f', scale);
+
+    if is_better_candidate(full_candidate_run, best_run)
+        best_run = full_candidate_run;
+        best_price_path = full_candidate_price_path;
+    end
+
+    if isempty(targeted_blocks)
+        continue;
+    end
+
+    block_candidate_price_path = current_price_path;
+    scaled_candidate_price_path = full_candidate_price_path;
+    for block_idx = 1:size(targeted_blocks, 1)
+        left = targeted_blocks(block_idx, 1);
+        right = targeted_blocks(block_idx, 2);
+        block_candidate_price_path(left:right) = scaled_candidate_price_path(left:right);
+    end
+
+    block_candidate_run = run_transition_pass(block_candidate_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params);
+    block_candidate_run.label = sprintf('targeted_block_%.2f', scale);
+
+    if is_better_candidate(block_candidate_run, best_run)
+        best_run = block_candidate_run;
+        best_price_path = block_candidate_price_path;
+    end
+end
+end
+
+function tf = is_better_candidate(candidate_run, incumbent_run)
+tolerance = 1e-8;
+if candidate_run.residual_norm < incumbent_run.residual_norm - tolerance
+    tf = true;
+elseif abs(candidate_run.residual_norm - incumbent_run.residual_norm) <= tolerance && ...
+        candidate_run.max_abs_gap < incumbent_run.max_abs_gap
+    tf = true;
+else
+    tf = false;
+end
 end
 end
 
