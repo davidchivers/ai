@@ -99,7 +99,8 @@ The transition runner now does a real first-pass backward-forward transition sol
 
 Verified on this machine: `run_demographic_forecast_re_no_politics` runs successfully and saves `transition_re_no_politics_results.mat`.
 The transition supply curve is now auto-anchored to the baseline household demand scale at the initial reference price, so the default one-step RE update no longer mechanically collapses prices toward zero.
-The current implementation is still a first-pass solver, not a finished quantitative result. A single damped update behaves sensibly, but multi-iteration convergence remains unstable and still needs a more robust fixed-point scheme.
+The runner now also saves period-by-period diagnostics for housing demand, supply, excess demand, and raw/smoothed log-price residuals.
+The current implementation is still a first-pass solver, not a finished quantitative result. A single damped update behaves sensibly, and a smoothed bounded update now keeps short multi-iteration tests from exploding immediately, but full multi-iteration convergence remains unresolved.
 
 ## Guardrails
 

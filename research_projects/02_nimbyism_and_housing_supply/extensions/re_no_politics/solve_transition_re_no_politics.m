@@ -14,6 +14,9 @@ if ~isfield(params, 'terminal_price_rule'), params.terminal_price_rule = 'flat_t
 if ~isfield(params, 'rbPos'), params.rbPos = 0.03; end
 if ~isfield(params, 'supply_params'), params.supply_params = struct(); end
 if ~isfield(params.supply_params, 'eta_s'), params.supply_params.eta_s = 1.0; end
+if ~isfield(params, 'max_update_frac'), params.max_update_frac = 0.10; end
+if ~isfield(params, 'smoothing_weight'), params.smoothing_weight = 0.50; end
+if ~isfield(params, 'terminal_anchor_weight'), params.terminal_anchor_weight = 0.50; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -67,7 +70,13 @@ for iter = 1:params.max_iter
         target_age_masses, initialdist, transitionmatrix, model, params.save_period_details);
 
     implied_price_path = invert_supply_path(sim.Hdemand_path, params.supply_params);
+    sim.Hsupply_guess_path = compute_supply_path(current_price_path, params.supply_params);
+    sim.excess_demand_guess_path = sim.Hdemand_path - sim.Hsupply_guess_path;
+    sim.log_price_residual_raw = log(implied_price_path) - log(current_price_path);
     [updated_price_path, diagnostics] = update_price_path_re_no_politics(current_price_path, implied_price_path, params);
+    sim.Hsupply_updated_path = compute_supply_path(updated_price_path, params.supply_params);
+    sim.excess_demand_updated_path = sim.Hdemand_path - sim.Hsupply_updated_path;
+    sim.log_price_residual_smoothed = log(diagnostics.smoothed_implied_price_path) - log(current_price_path);
 
     iteration_log(iter).max_abs_gap = diagnostics.max_abs_gap;
     iteration_log(iter).max_abs_update = diagnostics.max_abs_update;
@@ -105,9 +114,23 @@ results.message = 'Transition solver completed a backward-forward pass and updat
 results.update_diagnostics = last_run.update_diagnostics;
 results.iteration_log = iteration_log(1:results.iterations);
 results.Hdemand_path = last_run.sim.Hdemand_path;
-results.Hsupply_path = params.supply_params.Hbar .* (results.final_price_path ./ params.supply_params.Pbar) .^ params.supply_params.eta_s;
+results.Hsupply_path = last_run.sim.Hsupply_updated_path;
+results.excess_demand_path = last_run.sim.excess_demand_updated_path;
+results.excess_demand_guess_path = last_run.sim.excess_demand_guess_path;
+results.log_price_residual_raw = last_run.sim.log_price_residual_raw;
+results.log_price_residual_smoothed = last_run.sim.log_price_residual_smoothed;
 results.debt_path = last_run.sim.debt_path;
 results.rent_share_path = last_run.sim.rent_share_path;
+results.period_diagnostics = struct( ...
+    'Hdemand_path', last_run.sim.Hdemand_path, ...
+    'Hsupply_guess_path', last_run.sim.Hsupply_guess_path, ...
+    'Hsupply_updated_path', last_run.sim.Hsupply_updated_path, ...
+    'excess_demand_guess_path', last_run.sim.excess_demand_guess_path, ...
+    'excess_demand_updated_path', last_run.sim.excess_demand_updated_path, ...
+    'implied_price_path_raw', last_run.implied_price_path, ...
+    'implied_price_path_smoothed', last_run.update_diagnostics.smoothed_implied_price_path, ...
+    'log_price_residual_raw', last_run.sim.log_price_residual_raw, ...
+    'log_price_residual_smoothed', last_run.sim.log_price_residual_smoothed);
 if params.save_period_details
     results.density_by_period_age = last_run.sim.density_by_period_age;
 end
@@ -454,4 +477,8 @@ end
 
 implied_price_path = supply_params.Pbar .* max(Hdemand_path ./ supply_params.Hbar, 1e-8) .^ (1 ./ supply_params.eta_s);
 implied_price_path = implied_price_path(:);
+end
+
+function Hsupply_path = compute_supply_path(price_path, supply_params)
+Hsupply_path = supply_params.Hbar .* (price_path(:) ./ supply_params.Pbar) .^ supply_params.eta_s;
 end

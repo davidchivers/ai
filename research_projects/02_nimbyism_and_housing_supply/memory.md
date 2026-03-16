@@ -39,6 +39,15 @@ Most recent session first.
 - Added a bounded log-price update to prevent multi-iteration blowups. This keeps iterates from
   exploding mechanically, but a 3-iteration test still did not converge, so the next hard step is a
   more robust fixed-point/update scheme rather than more scaffolding.
+- Added period-by-period transition diagnostics to the saved results object: housing demand,
+  housing supply at the guessed and updated price paths, excess demand, and raw/smoothed log-price
+  residuals by period.
+- Added smoothing and a terminal anchor inside the price-path update. On this machine, the default
+  one-step run now reports max smoothed RE price gap about `0.1518`, and the worst excess-demand
+  period in the first pass is `t = 3` with excess demand about `0.003223`.
+- A 3-iteration test with the smoothed bounded update still did not converge, but it no longer
+  blows up immediately. The final test path stayed in a bounded range of roughly `1.90` to `2.00`,
+  while the largest residuals shifted into middle/late periods rather than the terminal date alone.
 - Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
   reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:
