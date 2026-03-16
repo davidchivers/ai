@@ -5,6 +5,12 @@ Most recent session first.
 ---
 
 ### Session: 2026-03-16 (extension completion cleanup)
+- Clarified project intent after runtime validation: the interesting experiment is not the current
+  steady-state no-politics closure. The main target is a demographic forecast with rational
+  expectations over house prices along the transition path, under the simplification of no voting
+  coalitions.
+- Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
+  reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:
   `solve_ss_no_politics.m` / `ClearMarkets_no_politics.m` / `run_re_no_politics_extension.m` and
   `solve_ss_coalition.m` / `compute_coalition_vote.m` / `ClearMarkets_coalition.m` /

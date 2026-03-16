@@ -8,6 +8,14 @@ This subfolder is the implementation workspace for the no-politics rational-expe
 - Extension A now has a copied steady-state solver, grid-search driver, and runnable entry point.
 - Extension B now has a copied steady-state solver, coalition vote helper, grid-search driver, and runnable entry point.
 - Both extension drivers are MATLAB functions so they can be called safely from the entry-point wrappers.
+- The current no-politics object is a steady-state benchmark only. It is not the main experiment.
+
+## What this is and is not
+
+- This workspace currently contains a useful side benchmark: a no-politics steady-state object with housing-clearing prices.
+- It is not the main rational-expectations experiment the project now wants.
+- The main target is a transition-path forecast with future demographic changes and model-consistent house-price expectations, while abstracting from coalition formation.
+- In other words, the interesting object is not "new steady state under a different closure". It is "forecasting under RE house prices along a demographic transition path".
 
 ## Recommended code base
 
@@ -33,7 +41,7 @@ In `SolveSS_iter.m`, the code computes:
 
 That means the current equilibrium object is a political fixed point in price space, not a rational-expectations housing-clearing fixed point.
 
-## Implemented extensions
+## Implemented side benchmarks
 
 ### Extension A: no-politics RE steady state
 
@@ -52,6 +60,16 @@ That means the current equilibrium object is a political fixed point in price sp
 - Runner: `run_political_coalition_extension.m`
 - Equilibrium condition: `distance = stats.weighted_vote^2`
 - Output file: `SS_coalition_iter.mat`
+
+## Main experiment still to build
+
+- Keep the baseline transition structure rather than collapsing to a new steady state.
+- Feed in an exogenous demographic path.
+- Replace the ad hoc house-price expectation rule with a guessed future price path.
+- Solve household decisions using that full expected path.
+- Simulate the cross-sectional distribution forward.
+- Update the price path until it is consistent with the model's own implied future prices.
+- Do this without coalition voting if the no-coalition political assumption remains the target simplification.
 
 ## Files in this workspace
 

@@ -7,6 +7,17 @@ Build a deterministic rational-expectations extension of the NIMBY model in two 
 1. steady-state no-politics equilibrium
 2. transition-path rational-expectations equilibrium under an exogenous demographic path
 
+## Current interpretation
+
+The stage-1 steady-state object has now been implemented and run, but it is only a side benchmark.
+
+The main experiment is stage 2:
+
+- forecast over future demographics,
+- keep the model's transition structure,
+- introduce rational expectations over the future house-price path,
+- and abstract from coalition formation rather than replacing the transition problem with a new steady-state closure.
+
 ## Baseline file map
 
 ### Directly relevant
@@ -66,15 +77,15 @@ Pick one of these and keep the others for robustness:
 3. fixed rent rule with endogenous asset price:
    keep rent simple in the first pass only if it materially reduces coding complexity
 
-### Recommendation
+### Status
 
-Start with fixed housing stock. It is the lowest-risk way to prove that a non-political equilibrium can be computed.
+Implemented as a benchmark only. This stage is not the main object of interest.
 
 ## Stage 2: deterministic RE transition path
 
 ### Goal
 
-Given a path for demographics, solve for a price path consistent with household expectations and market clearing.
+Given a path for demographics, solve for a price path consistent with household expectations and the model's own transition logic.
 
 ### Minimal algorithm
 
@@ -90,7 +101,8 @@ Given a path for demographics, solve for a price path consistent with household 
 
 - deterministic only
 - finite horizon transition
-- fixed supply or simple elastic supply
+- no coalition formation
+- keep the political structure only to the extent needed for the baseline transition object
 - hold rent rule fixed if needed for the first run
 
 ## Required refactor before real coding
@@ -107,14 +119,15 @@ The extension should own these copies under this folder once implementation star
 
 1. `run_re_no_politics_extension.m`
 2. `solve_ss_no_politics.m`
-3. `aggregate_housing_no_politics.m`
-4. `solve_transition_re_no_politics.m`
+3. `solve_transition_re_no_politics.m`
+4. `update_price_path_re_no_politics.m`
+5. `run_demographic_forecast_re_no_politics.m`
 
-Only the first file exists now. The others should be added when implementation begins.
+The steady-state files now exist. The next work should start on the transition-path files, not on further steady-state variants.
 
-## Success criteria for the first milestone
+## Success criteria for the main milestone
 
-- MATLAB scaffold runs without touching published baseline files
-- baseline path detection works on this machine
-- extension objective and file map are explicit
-- first copied solver file can be created without ambiguity about where the political target lives
+- household decisions can be solved given a full expected future price path
+- the demographic path feeds through the transition code without breaking path resolution
+- the guessed price path converges to the model-implied path
+- the resulting forecast can be compared against the baseline random-walk-style expectation setup
