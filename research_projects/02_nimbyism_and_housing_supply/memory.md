@@ -22,6 +22,9 @@ Most recent session first.
   `C:\Users\Dave_\Dropbox\Zac and David\Code\Codes_ABB\TransitionMatrix.mat`; `initialdist` is then
   sourced separately (or reconstructed if needed). The imported `D:\research_data\zac_and_david\Code\SteadyState\TransitionMatrix.mat`
   alone is not sufficient because it lacks `y_mid` and `z_lifecycle`.
+- Runtime verification result: `run_political_coalition_extension` also completed successfully with
+  the same transition-matrix loader. On the current 30-point price grid, the best coalition result
+  was at price `1.8276` with weighted vote `-0.4875` and distance `0.2376`.
 - Matlab became callable later in the session via the full executable path, and the no-politics
   extension runner was executed successfully after the transition-matrix loader fix.
 
