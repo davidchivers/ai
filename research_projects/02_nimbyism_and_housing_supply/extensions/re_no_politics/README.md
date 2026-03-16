@@ -101,7 +101,8 @@ Verified on this machine: `run_demographic_forecast_re_no_politics` runs success
 The transition supply curve is now auto-anchored to the baseline household demand scale at the initial reference price, so the default one-step RE update no longer mechanically collapses prices toward zero.
 The runner now also saves period-by-period diagnostics for housing demand, supply, excess demand, and raw/smoothed log-price residuals.
 The price updater now works in log prices and applies a regularized whole-path update rather than a purely local ad hoc smoother. This materially improves stability in multi-iteration tests.
-The current implementation is still not a finished quantitative result. Multi-iteration paths now stay numerically bounded, but some period residuals can still spike sharply, so full RE convergence remains unresolved.
+The updater now also applies a targeted local correction to the worst residual periods, and the iteration log records which periods are driving the current error.
+The current implementation is still not a finished quantitative result. Multi-iteration paths now stay numerically bounded and the bad periods are easier to diagnose, but some period residuals still spike sharply, so full RE convergence remains unresolved.
 
 ## Guardrails
 

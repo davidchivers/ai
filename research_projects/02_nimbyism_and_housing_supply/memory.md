@@ -57,6 +57,13 @@ Most recent session first.
 - A 5-iteration test still did not converge in residual space, but the path stayed numerically
   stable and close to the original level range rather than exploding. That suggests the remaining
   issue is localized bad residual periods, not total failure of the transition solver.
+- Added targeted residual correction to the price updater and expanded `iteration_log` to track the
+  worst gap period and worst excess-demand period each iteration.
+- Runtime note after targeted correction: the default one-step run now identifies periods `2-4` as
+  the main first-pass problem area, with period `3` still the worst excess-demand date.
+- A 5-iteration run still did not converge, but the new iteration log shows the problematic dates
+  migrating across the path rather than remaining fixed at the terminal period. That is useful for
+  the next stage, which should likely move from whole-path heuristics to block or sequential solves.
 - Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
   reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:

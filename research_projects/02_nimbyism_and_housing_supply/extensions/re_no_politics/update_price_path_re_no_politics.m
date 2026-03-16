@@ -8,6 +8,8 @@ if ~isfield(params, 'damping'), params.damping = 0.25; end
 if ~isfield(params, 'max_update_frac'), params.max_update_frac = 0.10; end
 if ~isfield(params, 'smoothing_weight'), params.smoothing_weight = 5.00; end
 if ~isfield(params, 'terminal_anchor_weight'), params.terminal_anchor_weight = 0.50; end
+if ~isfield(params, 'targeted_correction_weight'), params.targeted_correction_weight = 0.35; end
+if ~isfield(params, 'max_targeted_periods'), params.max_targeted_periods = 3; end
 
 validateattributes(current_price_path, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'current_price_path');
 validateattributes(implied_price_path, {'double'}, {'vector', 'numel', numel(current_price_path), 'finite', 'real', 'positive'}, mfilename, 'implied_price_path');
@@ -15,6 +17,8 @@ validateattributes(params.damping, {'double'}, {'scalar', '>', 0, '<=', 1}, mfil
 validateattributes(params.max_update_frac, {'double'}, {'scalar', '>', 0, '<', 1}, mfilename, 'params.max_update_frac');
 validateattributes(params.smoothing_weight, {'double'}, {'scalar', '>=', 0}, mfilename, 'params.smoothing_weight');
 validateattributes(params.terminal_anchor_weight, {'double'}, {'scalar', '>=', 0, '<=', 1}, mfilename, 'params.terminal_anchor_weight');
+validateattributes(params.targeted_correction_weight, {'double'}, {'scalar', '>=', 0, '<=', 1}, mfilename, 'params.targeted_correction_weight');
+validateattributes(params.max_targeted_periods, {'double'}, {'scalar', 'integer', '>=', 0}, mfilename, 'params.max_targeted_periods');
 
 current_price_path = current_price_path(:);
 implied_price_path = implied_price_path(:);
@@ -25,7 +29,9 @@ log_smoothed_implied = log(smoothed_implied_price_path);
 log_gap = log_smoothed_implied - log_current_price_path;
 max_log_step = log(1 + params.max_update_frac);
 clipped_log_gap = min(max(log_gap, -max_log_step), max_log_step);
+target_log_path = log_current_price_path + params.damping .* clipped_log_gap;
 proposed_log_path = solve_regularized_log_update(log_current_price_path, clipped_log_gap, params);
+proposed_log_path = apply_targeted_residual_correction(proposed_log_path, target_log_path, clipped_log_gap, params);
 updated_price_path = exp(proposed_log_path);
 
 diagnostics = struct();
@@ -41,6 +47,8 @@ diagnostics.raw_implied_price_path = implied_price_path;
 diagnostics.smoothing_weight = params.smoothing_weight;
 diagnostics.terminal_anchor_weight = params.terminal_anchor_weight;
 diagnostics.log_update_step = proposed_log_path - log_current_price_path;
+diagnostics.targeted_periods = find_targeted_periods(clipped_log_gap, params.max_targeted_periods);
+diagnostics.targeted_correction_weight = params.targeted_correction_weight;
 end
 
 function smoothed_path = smooth_price_path(raw_path, current_path, params)
@@ -88,4 +96,30 @@ if params.terminal_anchor_weight > 0
 end
 
 updated_log_path = full(system_matrix \ rhs);
+end
+
+function adjusted_log_path = apply_targeted_residual_correction(updated_log_path, target_log_path, clipped_log_gap, params)
+adjusted_log_path = updated_log_path;
+targeted_periods = find_targeted_periods(clipped_log_gap, params.max_targeted_periods);
+
+for idx = 1:numel(targeted_periods)
+    t = targeted_periods(idx);
+    left = max(1, t - 1);
+    right = min(numel(updated_log_path), t + 1);
+    local_anchor = mean(updated_log_path(left:right));
+    blended_target = (1 - params.targeted_correction_weight) .* updated_log_path(t) + ...
+        params.targeted_correction_weight .* (0.5 .* target_log_path(t) + 0.5 .* local_anchor);
+    adjusted_log_path(t) = blended_target;
+end
+end
+
+function targeted_periods = find_targeted_periods(clipped_log_gap, max_targeted_periods)
+if max_targeted_periods == 0
+    targeted_periods = zeros(0, 1);
+    return;
+end
+
+[~, order] = sort(abs(clipped_log_gap), 'descend');
+num_keep = min(max_targeted_periods, numel(order));
+targeted_periods = sort(order(1:num_keep));
 end

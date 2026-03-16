@@ -45,6 +45,8 @@ params.damping = 0.25;
 params.max_update_frac = 0.10;
 params.smoothing_weight = 5.00;
 params.terminal_anchor_weight = 0.50;
+params.targeted_correction_weight = 0.35;
+params.max_targeted_periods = 3;
 params.terminal_price_rule = 'flat_tail';
 
 price_path_guess = 2.0 .* ones(numel(demographic_path.periods), 1);
@@ -64,5 +66,6 @@ fprintf('Max abs smoothed RE price gap: %.4f\n', results.update_diagnostics.max_
 [~, worst_t] = max(abs(results.period_diagnostics.excess_demand_guess_path));
 fprintf('Worst excess-demand period: t = %d, excess demand = %.6f\n', ...
     worst_t, results.period_diagnostics.excess_demand_guess_path(worst_t));
+fprintf('Targeted correction periods: %s\n', mat2str(results.period_diagnostics.targeted_periods(:)'));
 fprintf('Results saved in transition_re_no_politics_results.mat\n');
 end

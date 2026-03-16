@@ -15,8 +15,10 @@ if ~isfield(params, 'rbPos'), params.rbPos = 0.03; end
 if ~isfield(params, 'supply_params'), params.supply_params = struct(); end
 if ~isfield(params.supply_params, 'eta_s'), params.supply_params.eta_s = 1.0; end
 if ~isfield(params, 'max_update_frac'), params.max_update_frac = 0.10; end
-if ~isfield(params, 'smoothing_weight'), params.smoothing_weight = 0.50; end
+if ~isfield(params, 'smoothing_weight'), params.smoothing_weight = 5.00; end
 if ~isfield(params, 'terminal_anchor_weight'), params.terminal_anchor_weight = 0.50; end
+if ~isfield(params, 'targeted_correction_weight'), params.targeted_correction_weight = 0.35; end
+if ~isfield(params, 'max_targeted_periods'), params.max_targeted_periods = 3; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -57,7 +59,12 @@ params.supply_params = normalize_supply_params(params.supply_params, price_path_
 initial_density = build_initial_density(initial_reference.dens4, target_age_masses(1, :));
 
 current_price_path = price_path_guess;
-iteration_log = repmat(struct('max_abs_gap', NaN, 'max_abs_update', NaN), params.max_iter, 1);
+iteration_log = repmat(struct( ...
+    'max_abs_gap', NaN, ...
+    'max_abs_update', NaN, ...
+    'worst_gap_period', NaN, ...
+    'worst_excess_demand_period', NaN, ...
+    'worst_excess_demand', NaN), params.max_iter, 1);
 last_run = struct();
 
 for iter = 1:params.max_iter
@@ -80,6 +87,9 @@ for iter = 1:params.max_iter
 
     iteration_log(iter).max_abs_gap = diagnostics.max_abs_gap;
     iteration_log(iter).max_abs_update = diagnostics.max_abs_update;
+    [~, iteration_log(iter).worst_gap_period] = max(abs(sim.log_price_residual_raw));
+    [iteration_log(iter).worst_excess_demand, iteration_log(iter).worst_excess_demand_period] = ...
+        max(abs(sim.excess_demand_guess_path));
 
     last_run = struct();
     last_run.policy_idx_b = policy_idx_b;
@@ -130,7 +140,8 @@ results.period_diagnostics = struct( ...
     'implied_price_path_raw', last_run.implied_price_path, ...
     'implied_price_path_smoothed', last_run.update_diagnostics.smoothed_implied_price_path, ...
     'log_price_residual_raw', last_run.sim.log_price_residual_raw, ...
-    'log_price_residual_smoothed', last_run.sim.log_price_residual_smoothed);
+    'log_price_residual_smoothed', last_run.sim.log_price_residual_smoothed, ...
+    'targeted_periods', last_run.update_diagnostics.targeted_periods);
 if params.save_period_details
     results.density_by_period_age = last_run.sim.density_by_period_age;
 end
