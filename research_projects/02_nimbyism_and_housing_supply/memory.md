@@ -4,6 +4,18 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-16 (extension completion cleanup)
+- Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:
+  `solve_ss_no_politics.m` / `ClearMarkets_no_politics.m` / `run_re_no_politics_extension.m` and
+  `solve_ss_coalition.m` / `compute_coalition_vote.m` / `ClearMarkets_coalition.m` /
+  `run_political_coalition_extension.m`.
+- Converted both `ClearMarkets_*` drivers from scripts into MATLAB functions so the runner wrappers
+  can call them without relying on script execution in a function workspace.
+- Updated the extension README plus project `STATUS.md` to reflect that the solver copies exist and
+  the immediate next step is runtime validation rather than initial implementation.
+- Static review only: no MATLAB or Octave executable was available in the shell environment, so the
+  extension runners were not executed in this session.
+
 ### Session: 2026-03-13 (extension workspace, coalition direction, and portability pass)
 - Created extension workspace at `extensions/re_no_politics/`.
 - Added `implementation_plan.md` and `run_re_no_politics_extension.m` to separate the no-politics RE path from the published baseline code.
@@ -13,7 +25,8 @@ Most recent session first.
   external `.mat` assets.
 - Updated `code/data/merge data.do` to try `D:\research_data\zac_and_david\Data` first and
   then fall back to `C:\Users\Dave_\Dropbox\Zac and David\Data`.
-- Practical next step if coding continues: wire `compute_coalition_vote.m` into an extension copy of `code/steadystate/SolveSS_iter.m`, replacing `sum(dens4.*pref4,'all')` with a weighted aggregator while keeping baseline files unchanged.
+- Practical next step if coding continues: validate the extension entry points in MATLAB and decide
+  whether the baseline `d_a_price` rent leak should be fixed upstream or left as an extension-only correction.
 
 ### Session: 2026-02-23 (single canonical status tracker)
 - Added canonical tracker: `projects/02_nimbyism_and_housing_supply/STATUS.md`

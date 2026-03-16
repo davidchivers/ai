@@ -2,7 +2,7 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-13
+- Last updated: 2026-03-16
 - Overall state: published paper; now maintained as an upstream base for project 03, with a
   first portability pass and extension workspace scaffold now added.
 - Canonical tracker: this file is the single source of truth for status and next actions.
@@ -15,26 +15,30 @@
 - Added external-path portability helpers so the MATLAB and Stata code can prefer
   `D:\research_data\zac_and_david\...` with Dropbox fallback.
 - Added a first post-publication extension workspace under `extensions/re_no_politics/`.
+- Added runnable extension copies for a no-politics housing-clearing steady state and a
+  coalition-weighted voting steady state.
 
 ## In Progress
 
 - Post-publication maintenance workflow setup (PowerShell-first; optional WSL utilities for PDF-heavy tasks).
 - Preparation for first structured code review pass of MATLAB model folders.
-- Low-risk design work for the no-politics rational-expectations extension, without editing the
-  published baseline solver files directly.
+- First-pass verification of the new extension entry points and documentation cleanup.
 
 ## Next 3 Tasks
 
-1. Validate the new `D:`-first external path helper on the actual MATLAB/Stata runtime and log
-   any remaining missing-path failures.
+1. Validate the `extensions/re_no_politics/` runners on the actual MATLAB runtime and log any
+   remaining missing data/path failures from external `.mat` dependencies.
 2. Run code review of `code/steadystate/` (and then `code/codes_abb/`) against published paper objects.
-3. Start the first copied no-politics extension solver only after the portability pass is confirmed stable.
+3. Decide whether the younger-age rent-price perturbation leak identified in baseline steady-state
+   files should be fixed upstream or only carried in extension copies.
 
 ## Blockers
 
 - No formal code-review output document yet in the project.
 - The large external MATLAB `.mat` inputs still live outside this git repo, so portability
   improvements reduce friction but do not make the project fully self-contained.
+- MATLAB runtime verification is still pending in this workspace, so the extension code has only
+  been reviewed statically in-repo.
 
 ## Open Decisions
 
