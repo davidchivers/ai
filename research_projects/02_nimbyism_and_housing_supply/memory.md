@@ -20,6 +20,25 @@ Most recent session first.
 - The scaffold now uses a real demographic path from `code/data/age state.csv` rather than a fake
   placeholder path. On the current mapping, the aggregate cohort-scale path over 2010-2018 is
   approximately `[1.000, 1.014, 1.031, 1.046, 1.063, 1.080, 1.097, 1.116, 1.133]`.
+- Upgraded the transition scaffold into a real first-pass backward-forward transition solver.
+  `run_demographic_forecast_re_no_politics` now performs one RE update step: solve given a guessed
+  price path, simulate demand forward, and compute an implied next price path. Runtime on this
+  machine is long (about 20 minutes for the 2010-2018 path), and the first-pass update is not yet
+  stable enough to claim convergence.
+- Fixed a timing bug in the forward transition pass: the extension now applies period-`t` policy
+  rules before aging households and applying the `z` transition, matching the baseline steady-state
+  logic rather than incorrectly using `t+1` policy indices.
+- Fixed a scaling problem in the transition supply block: instead of carrying over the arbitrary
+  steady-state benchmark value `Hbar = 5`, the transition experiment now auto-anchors `Hbar` to the
+  household block's baseline housing demand at the initial reference price. On this machine, that
+  anchor is `Hbar = 0.038416` at `Pbar = 2.0`.
+- Runtime verification result after the supply normalization fix: the default one-step RE update no
+  longer collapses prices. Starting from a flat path at `2.0`, the implied path moves roughly in
+  the range `1.91` to `2.17`, and the damped updated path moves to roughly `1.98` to `2.04`, with
+  max absolute gap about `0.1678`.
+- Added a bounded log-price update to prevent multi-iteration blowups. This keeps iterates from
+  exploding mechanically, but a 3-iteration test still did not converge, so the next hard step is a
+  more robust fixed-point/update scheme rather than more scaffolding.
 - Reclassified the current no-politics steady-state object as a side benchmark worth keeping for
   reference/debugging, but not the main quantitative exercise.
 - Confirmed that `extensions/re_no_politics/` now contains both completed first-pass extensions:

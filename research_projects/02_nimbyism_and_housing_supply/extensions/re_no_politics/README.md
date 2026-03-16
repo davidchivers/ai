@@ -95,9 +95,11 @@ From MATLAB:
 - `run_political_coalition_extension`
 - `run_demographic_forecast_re_no_politics`
 
-The transition runner is currently a scaffold. It validates paths, loads the transition matrix through the robust resolver, builds a real demographic-path object from `code/data/age state.csv`, defines the RE input contract, and saves a placeholder result object for the real RE iteration.
+The transition runner now does a real first-pass backward-forward transition solve. It loads the transition matrix through the robust resolver, builds a demographic-path object from `code/data/age state.csv`, solves the household problem for a guessed finite price path, simulates the distribution forward, and returns an implied price path for the next RE update.
 
-Verified on this machine: `run_demographic_forecast_re_no_politics` runs successfully and saves `transition_re_no_politics_scaffold.mat`.
+Verified on this machine: `run_demographic_forecast_re_no_politics` runs successfully and saves `transition_re_no_politics_results.mat`.
+The transition supply curve is now auto-anchored to the baseline household demand scale at the initial reference price, so the default one-step RE update no longer mechanically collapses prices toward zero.
+The current implementation is still a first-pass solver, not a finished quantitative result. A single damped update behaves sensibly, but multi-iteration convergence remains unstable and still needs a more robust fixed-point scheme.
 
 ## Guardrails
 
