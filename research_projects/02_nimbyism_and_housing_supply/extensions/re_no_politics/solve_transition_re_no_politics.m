@@ -23,6 +23,7 @@ if ~isfield(params, 'target_block_half_width'), params.target_block_half_width =
 if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.10, 0.05, 0.02, 0.01]; end
 if ~isfield(params, 'update_scheme'), params.update_scheme = 'sequential_blocks'; end
 if ~isfield(params, 'sequential_block_size'), params.sequential_block_size = 3; end
+if ~isfield(params, 'block_sweep_passes'), params.block_sweep_passes = 2; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -235,37 +236,62 @@ function [best_run, best_price_path] = try_sequential_block_candidates(current_p
 
 T = numel(current_price_path);
 block_size = min(params.sequential_block_size, T);
-block_starts = 1:block_size:T;
-log_current = log(current_price_path);
-log_target = log(base_run.implied_price_path);
-
-% Try windows around the currently worst periods first.
-priority_starts = [];
-for i = 1:numel(diagnostics.targeted_periods)
-    start_idx = max(1, min(T - block_size + 1, diagnostics.targeted_periods(i) - floor((block_size - 1) / 2)));
-    priority_starts(end + 1) = start_idx; %#ok<AGROW>
+current_candidate_price_path = current_price_path;
+current_candidate_run = base_run;
+if ~isfield(current_candidate_run, 'label')
+    current_candidate_run.label = "current_path";
 end
-block_starts = unique([priority_starts, block_starts], 'stable');
 
-for start_idx = block_starts
-    stop_idx = min(T, start_idx + block_size - 1);
-    block = start_idx:stop_idx;
+for pass = 1:params.block_sweep_passes
+    block_starts = build_block_start_order(diagnostics.targeted_periods, T, block_size);
+    log_current = log(current_candidate_price_path);
+    log_target = log(current_candidate_run.implied_price_path);
 
-    for scale = params.line_search_scales(:)'
-        candidate_price_path = current_price_path;
-        candidate_log_block = log_current(block) + scale .* (log_target(block) - log_current(block));
-        candidate_price_path(block) = exp(candidate_log_block);
+    pass_best_run = current_candidate_run;
+    pass_best_price_path = current_candidate_price_path;
 
-        candidate_run = run_transition_pass(candidate_price_path, initial_density, target_age_masses, ...
-            initialdist, transitionmatrix, model, params);
-        candidate_run.label = sprintf('sequential_block_%d_%d_%.2f', start_idx, stop_idx, scale);
+    for start_idx = block_starts
+        stop_idx = min(T, start_idx + block_size - 1);
+        block = start_idx:stop_idx;
 
-        if is_better_candidate(candidate_run, best_run)
-            best_run = candidate_run;
-            best_price_path = candidate_price_path;
+        for scale = params.line_search_scales(:)'
+            candidate_price_path = current_candidate_price_path;
+            candidate_log_block = log_current(block) + scale .* (log_target(block) - log_current(block));
+            candidate_price_path(block) = exp(candidate_log_block);
+
+            candidate_run = run_transition_pass(candidate_price_path, initial_density, target_age_masses, ...
+                initialdist, transitionmatrix, model, params);
+            candidate_run.label = sprintf('sequential_block_p%d_%d_%d_%.2f', pass, start_idx, stop_idx, scale);
+
+            if is_better_candidate(candidate_run, pass_best_run)
+                pass_best_run = candidate_run;
+                pass_best_price_path = candidate_price_path;
+            end
         end
     end
+
+    if is_better_candidate(pass_best_run, best_run)
+        best_run = pass_best_run;
+        best_price_path = pass_best_price_path;
+    end
+
+    if strcmp(pass_best_run.label, current_candidate_run.label)
+        break;
+    end
+
+    current_candidate_run = pass_best_run;
+    current_candidate_price_path = pass_best_price_path;
 end
+end
+
+function block_starts = build_block_start_order(targeted_periods, T, block_size)
+block_starts = 1:block_size:T;
+priority_starts = zeros(0, 1);
+for i = 1:numel(targeted_periods)
+    start_idx = max(1, min(T - block_size + 1, targeted_periods(i) - floor((block_size - 1) / 2)));
+    priority_starts(end + 1, 1) = start_idx; %#ok<AGROW>
+end
+block_starts = unique([priority_starts; block_starts(:)], 'stable')';
 end
 
 function tf = is_better_candidate(candidate_run, incumbent_run)
