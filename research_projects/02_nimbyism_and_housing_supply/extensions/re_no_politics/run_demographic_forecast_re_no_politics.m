@@ -52,6 +52,7 @@ params.line_search_scales = [0.10, 0.05, 0.02, 0.01];
 params.update_scheme = 'sequential_blocks';
 params.sequential_block_size = 3;
 params.block_sweep_passes = 2;
+params.max_blocks_per_pass = 4;
 params.terminal_price_rule = 'flat_tail';
 
 price_path_guess = 2.0 .* ones(numel(demographic_path.periods), 1);

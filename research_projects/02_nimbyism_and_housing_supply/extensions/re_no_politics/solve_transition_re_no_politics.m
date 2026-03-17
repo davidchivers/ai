@@ -24,6 +24,7 @@ if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.10, 0.
 if ~isfield(params, 'update_scheme'), params.update_scheme = 'sequential_blocks'; end
 if ~isfield(params, 'sequential_block_size'), params.sequential_block_size = 3; end
 if ~isfield(params, 'block_sweep_passes'), params.block_sweep_passes = 2; end
+if ~isfield(params, 'max_blocks_per_pass'), params.max_blocks_per_pass = 4; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -243,7 +244,8 @@ if ~isfield(current_candidate_run, 'label')
 end
 
 for pass = 1:params.block_sweep_passes
-    block_starts = build_block_start_order(diagnostics.targeted_periods, T, block_size);
+    focus_periods = find_focus_periods(current_candidate_run, diagnostics);
+    block_starts = build_block_start_order(focus_periods, T, block_size, params.max_blocks_per_pass);
     log_current = log(current_candidate_price_path);
     log_target = log(current_candidate_run.implied_price_path);
 
@@ -284,14 +286,37 @@ for pass = 1:params.block_sweep_passes
 end
 end
 
-function block_starts = build_block_start_order(targeted_periods, T, block_size)
-block_starts = 1:block_size:T;
-priority_starts = zeros(0, 1);
+function focus_periods = find_focus_periods(current_candidate_run, diagnostics)
+[~, worst_gap_period] = max(abs(current_candidate_run.sim.log_price_residual_raw));
+[~, worst_excess_period] = max(abs(current_candidate_run.sim.excess_demand_guess_path));
+
+focus_periods = unique([ ...
+    diagnostics.targeted_periods(:); ...
+    worst_gap_period; ...
+    worst_excess_period], 'stable');
+end
+
+function block_starts = build_block_start_order(targeted_periods, T, block_size, max_blocks_per_pass)
+base_starts = 1:block_size:T;
+core_starts = zeros(0, 1);
+neighbor_starts = zeros(0, 1);
 for i = 1:numel(targeted_periods)
     start_idx = max(1, min(T - block_size + 1, targeted_periods(i) - floor((block_size - 1) / 2)));
-    priority_starts(end + 1, 1) = start_idx; %#ok<AGROW>
+    core_starts(end + 1, 1) = start_idx; %#ok<AGROW>
+    if start_idx - block_size >= 1
+        neighbor_starts(end + 1, 1) = start_idx - block_size; %#ok<AGROW>
+    end
+    if start_idx + block_size <= T - block_size + 1
+        neighbor_starts(end + 1, 1) = start_idx + block_size; %#ok<AGROW>
+    end
 end
-block_starts = unique([priority_starts; block_starts(:)], 'stable')';
+
+core_starts = unique(sort(core_starts), 'stable');
+neighbor_starts = unique(sort(neighbor_starts), 'stable');
+block_starts = unique([core_starts; neighbor_starts; base_starts(:)], 'stable')';
+if nargin >= 4 && max_blocks_per_pass > 0 && numel(block_starts) > max_blocks_per_pass
+    block_starts = block_starts(1:max_blocks_per_pass);
+end
 end
 
 function tf = is_better_candidate(candidate_run, incumbent_run)
@@ -360,6 +385,34 @@ end
 end
 
 function reference = load_ss_reference(price, rbPos, supply_params)
+persistent reference_cache
+if isempty(reference_cache)
+    reference_cache = containers.Map('KeyType', 'char', 'ValueType', 'any');
+end
+
+if isfield(supply_params, 'Hbar')
+    cache_Hbar = supply_params.Hbar;
+else
+    cache_Hbar = NaN;
+end
+if isfield(supply_params, 'Pbar')
+    cache_Pbar = supply_params.Pbar;
+else
+    cache_Pbar = NaN;
+end
+if isfield(supply_params, 'eta_s')
+    cache_eta = supply_params.eta_s;
+else
+    cache_eta = NaN;
+end
+
+cache_key = sprintf('p%.6f_rb%.6f_h%.12f_pb%.6f_eta%.6f', ...
+    price, rbPos, cache_Hbar, cache_Pbar, cache_eta);
+if isKey(reference_cache, cache_key)
+    reference = reference_cache(cache_key);
+    return;
+end
+
 solve_ss_no_politics([price, rbPos], supply_params); %#ok<NASGU>
 ss = load('SS_no_politics_iter.mat');
 
@@ -372,6 +425,7 @@ for age_idx = 1:size(ss.dens4, 4)
     field_name = sprintf('valuefunction_%d', age);
     reference.age_valuefunctions{age_idx} = ss.(field_name);
 end
+reference_cache(cache_key) = reference;
 end
 
 function supply_params = normalize_supply_params(supply_params, reference_price, reference_Hdemand)
