@@ -18,7 +18,7 @@ const distribution = {
   oneDriveFolderUrlAdvanced: '',
   vscodeProfileUrl: 'https://vscode.dev/editor/profile/github/0cf6696b0aa251846a9b1ed761267f88',
   cursorProfileUrl: 'cursor://profile/github/0cf6696b0aa251846a9b1ed761267f88',
-  teachingSlidesUrl: 'https://1drv.ms/p/c/34def9d130aed1a9/IQBwHWaK-I16T7yC88Wf80p5AdKUKL3gW8454f3iwOOWwCk?e=lDNPKN',
+  teachingSlidesUrl: '/ai_install/slides/ai_coding_agents_workshop_slides.pptx',
   githubEducationUrl: 'https://education.github.com/pack'
 };
 
