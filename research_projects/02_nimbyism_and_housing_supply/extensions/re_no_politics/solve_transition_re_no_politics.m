@@ -21,6 +21,8 @@ if ~isfield(params, 'targeted_correction_weight'), params.targeted_correction_we
 if ~isfield(params, 'max_targeted_periods'), params.max_targeted_periods = 3; end
 if ~isfield(params, 'target_block_half_width'), params.target_block_half_width = 1; end
 if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.10, 0.05, 0.02, 0.01]; end
+if ~isfield(params, 'update_scheme'), params.update_scheme = 'sequential_blocks'; end
+if ~isfield(params, 'sequential_block_size'), params.sequential_block_size = 3; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -83,9 +85,15 @@ for iter = 1:params.max_iter
     selected_run = current_run;
     selected_price_path = current_price_path;
 
-    [selected_run, selected_price_path] = try_line_search_candidates( ...
-        current_price_path, diagnostics.log_update_step, diagnostics.targeted_blocks, ...
-        initial_density, target_age_masses, initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
+    if strcmp(params.update_scheme, 'sequential_blocks')
+        [selected_run, selected_price_path] = try_sequential_block_candidates( ...
+            current_price_path, diagnostics, base_run, initial_density, target_age_masses, ...
+            initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
+    else
+        [selected_run, selected_price_path] = try_line_search_candidates( ...
+            current_price_path, diagnostics.log_update_step, diagnostics.targeted_blocks, ...
+            initial_density, target_age_masses, initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
+    end
 
     selected_run.sim.Hsupply_updated_path = compute_supply_path(selected_price_path, params.supply_params);
     selected_run.sim.excess_demand_updated_path = selected_run.sim.Hdemand_path - selected_run.sim.Hsupply_updated_path;
@@ -218,6 +226,44 @@ for scale = scales
     if is_better_candidate(block_candidate_run, best_run)
         best_run = block_candidate_run;
         best_price_path = block_candidate_price_path;
+    end
+end
+end
+
+function [best_run, best_price_path] = try_sequential_block_candidates(current_price_path, diagnostics, base_run, ...
+    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path)
+
+T = numel(current_price_path);
+block_size = min(params.sequential_block_size, T);
+block_starts = 1:block_size:T;
+log_current = log(current_price_path);
+log_target = log(base_run.implied_price_path);
+
+% Try windows around the currently worst periods first.
+priority_starts = [];
+for i = 1:numel(diagnostics.targeted_periods)
+    start_idx = max(1, min(T - block_size + 1, diagnostics.targeted_periods(i) - floor((block_size - 1) / 2)));
+    priority_starts(end + 1) = start_idx; %#ok<AGROW>
+end
+block_starts = unique([priority_starts, block_starts], 'stable');
+
+for start_idx = block_starts
+    stop_idx = min(T, start_idx + block_size - 1);
+    block = start_idx:stop_idx;
+
+    for scale = params.line_search_scales(:)'
+        candidate_price_path = current_price_path;
+        candidate_log_block = log_current(block) + scale .* (log_target(block) - log_current(block));
+        candidate_price_path(block) = exp(candidate_log_block);
+
+        candidate_run = run_transition_pass(candidate_price_path, initial_density, target_age_masses, ...
+            initialdist, transitionmatrix, model, params);
+        candidate_run.label = sprintf('sequential_block_%d_%d_%.2f', start_idx, stop_idx, scale);
+
+        if is_better_candidate(candidate_run, best_run)
+            best_run = candidate_run;
+            best_price_path = candidate_price_path;
+        end
     end
 end
 end
