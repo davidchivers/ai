@@ -129,7 +129,7 @@ function hasConfiguredUrl(url) {
 function chooseOsStep() {
   const hasSlides = hasConfiguredUrl(distribution.teachingSlidesUrl);
   const slidesLink = hasSlides
-    ? `<p><a href="${distribution.teachingSlidesUrl}" target="_blank">Open powerpoint slides for Agentic Coding Introduction</a></p>`
+    ? `<p><a href="${distribution.teachingSlidesUrl}" target="_blank">Open workshop slides</a></p>`
     : '';
   const hasGithubEdu = hasConfiguredUrl(distribution.githubEducationUrl);
   const githubEduLink = hasGithubEdu
