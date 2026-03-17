@@ -18,7 +18,8 @@ const distribution = {
   oneDriveFolderUrlAdvanced: '',
   vscodeProfileUrl: 'https://vscode.dev/editor/profile/github/0cf6696b0aa251846a9b1ed761267f88',
   cursorProfileUrl: 'cursor://profile/github/0cf6696b0aa251846a9b1ed761267f88',
-  teachingSlidesUrl: 'https://1drv.ms/p/c/34def9d130aed1a9/IQBwHWaK-I16T7yC88Wf80p5AdKUKL3gW8454f3iwOOWwCk?e=lDNPKN'
+  teachingSlidesUrl: 'https://1drv.ms/p/c/34def9d130aed1a9/IQBwHWaK-I16T7yC88Wf80p5AdKUKL3gW8454f3iwOOWwCk?e=lDNPKN',
+  githubEducationUrl: 'https://education.github.com/pack'
 };
 
 const nav = document.getElementById('stepNav');
@@ -89,7 +90,7 @@ function osLabel(os) {
 function toolLabel(tool) {
   if (tool === 'codex') return 'Codex';
   if (tool === 'claude') return 'Claude Code';
-  if (tool === 'both') return 'Codex + Claude Code';
+  if (tool === 'gemini') return 'Gemini CLI';
   return 'Not selected';
 }
 
@@ -130,6 +131,10 @@ function chooseOsStep() {
   const slidesLink = hasSlides
     ? `<p><a href="${distribution.teachingSlidesUrl}" target="_blank">Open powerpoint slides for Agentic Coding Introduction</a></p>`
     : '';
+  const hasGithubEdu = hasConfiguredUrl(distribution.githubEducationUrl);
+  const githubEduLink = hasGithubEdu
+    ? `<p><a href="${distribution.githubEducationUrl}" target="_blank">Free AI models for students/teachers (GitHub Education Pack)</a></p>`
+    : '';
 
   return {
     id: 'choose-os',
@@ -145,6 +150,7 @@ function chooseOsStep() {
       <p class="small">Current selection: <strong>${osLabel(state.os)}</strong></p>
       ${learnBlock('Learn more', '<p>This wizard combines quick actions with optional explanation. You can expand only what you need.</p>')}
       ${slidesLink}
+      ${githubEduLink}
     `,
     onRender: () => {
       document.querySelectorAll('[data-os]').forEach(btn => {
@@ -165,15 +171,15 @@ function chooseToolStep() {
     title: 'Choose AI Agent',
     html: `
       <h2>Page 2: Choose your AI agent</h2>
-      <p>Next, install one AI agent: Codex, Claude Code, or both.</p>
-      <p><strong>Paid accounts needed:</strong> <a href="https://chatgpt.com/" target="_blank">ChatGPT (OpenAI)</a> and/or <a href="https://claude.ai/" target="_blank">Claude (Anthropic)</a>, depending on whether you install Codex and/or Claude Code.</p>
+      <p>Pick one AI coding tool to install first.</p>
+      <p><strong>Accounts:</strong> Codex uses ChatGPT, Claude Code uses Anthropic/Claude, and Gemini CLI uses Google AI Studio.</p>
       <div class="choice-grid">
-        <button class="btn choice ${state.tool === 'codex' ? 'is-selected' : ''}" data-tool="codex">Codex only</button>
-        <button class="btn choice ${state.tool === 'claude' ? 'is-selected' : ''}" data-tool="claude">Claude only</button>
-        <button class="btn choice ${state.tool === 'both' ? 'is-selected' : ''}" data-tool="both">Both</button>
+        <button class="btn choice ${state.tool === 'codex' ? 'is-selected' : ''}" data-tool="codex">Codex</button>
+        <button class="btn choice ${state.tool === 'claude' ? 'is-selected' : ''}" data-tool="claude">Claude Code</button>
+        <button class="btn choice ${state.tool === 'gemini' ? 'is-selected' : ''}" data-tool="gemini">Gemini CLI</button>
       </div>
       <p class="small">Current selection: <strong>${toolLabel(state.tool)}</strong></p>
-      ${learnBlock('Learn more', '<p>Codex and Claude can both help in terminal workflows. You can install one now and add the other later.</p>')}
+      ${learnBlock('Learn more', '<p>Install one now and add the others later if you want.</p>')}
     `,
     onRender: () => {
       document.querySelectorAll('[data-tool]').forEach(btn => {
@@ -292,14 +298,22 @@ function restartTerminalStep() {
 
 function installAgentStep() {
   const editorName = editorLabel(state.editor) || 'your editor';
-  let agentCommands = '';
+  let installCommand = '';
+  let nextStepCopy = '';
+  let note = '';
 
   if (state.tool === 'codex') {
-    agentCommands = 'npm install -g @openai/codex\ncodex --login\ncodex';
+    installCommand = 'npm install -g @openai/codex';
+    nextStepCopy = 'sign in to Codex and start it.';
+    note = 'This installs the latest Codex CLI.';
   } else if (state.tool === 'claude') {
-    agentCommands = 'npm install -g @anthropic-ai/claude-code\nclaude';
+    installCommand = 'npm install -g @anthropic-ai/claude-code';
+    nextStepCopy = 'sign in to Claude Code and start it.';
+    note = 'This installs the latest Claude Code CLI.';
   } else {
-    agentCommands = 'npm install -g @openai/codex\nnpm install -g @anthropic-ai/claude-code\ncodex --login\nclaude';
+    installCommand = 'npm install -g @google/gemini-cli@latest';
+    nextStepCopy = 'set your Gemini API key permanently, then run Gemini.';
+    note = 'This installs or updates Gemini CLI to the latest version.';
   }
 
   return {
@@ -307,10 +321,66 @@ function installAgentStep() {
     title: 'Install AI agent',
     html: `
       <h2>Page 5: Install ${toolLabel(state.tool)}</h2>
-      <p>Step 3 installed prerequisites and step 4 restarted your terminal. Now install your AI agent.</p>
+      <p>Step 3 installed prerequisites and step 4 restarted your terminal. Now install ${toolLabel(state.tool)}.</p>
       <p>Open <strong>${editorName}</strong>, then open <strong>Terminal → New Terminal</strong> and run:</p>
-      <div class="code">${agentCommands}</div>
-      <p>If a command fails, paste the full error message into chat and ask for the exact next command.</p>
+      <div class="code">${installCommand}</div>
+      <p class="small">${note}</p>
+      <p><strong>Next page:</strong> ${nextStepCopy}</p>
+    `
+  };
+}
+
+function authStep() {
+  if (state.tool === 'codex') {
+    return {
+      id: 'auth-step',
+      title: 'Sign in to Codex',
+      html: `
+        <h2>Page 6: Sign in to Codex</h2>
+        <p>Run this in terminal, then complete the login flow in your browser:</p>
+        <div class="code">codex --login</div>
+        <p>Start Codex:</p>
+        <div class="code">codex</div>
+      `
+    };
+  }
+
+  if (state.tool === 'claude') {
+    return {
+      id: 'auth-step',
+      title: 'Sign in to Claude Code',
+      html: `
+        <h2>Page 6: Sign in to Claude Code</h2>
+        <p>Run Claude Code and follow the sign-in prompts:</p>
+        <div class="code">claude</div>
+      `
+    };
+  }
+
+  const isMac = state.os === 'mac';
+  const setPersistentKey = isMac
+    ? "echo 'export GEMINI_API_KEY=\"PASTE_KEY_HERE\"' >> ~/.zshrc\nsource ~/.zshrc"
+    : 'setx GEMINI_API_KEY "PASTE_KEY_HERE"';
+
+  return {
+    id: 'auth-step',
+    title: 'Set Gemini API key',
+    html: `
+      <h2>Page 6: Set your Gemini API key (permanent)</h2>
+      <ol>
+        <li>Open <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio API keys</a>.</li>
+        <li>Sign in with your Google account.</li>
+        <li>Click <strong>Create API key</strong>.</li>
+        <li>Copy the new key.</li>
+      </ol>
+      <p>Back in terminal, set it permanently (single copy command):</p>
+      <div class="code">${setPersistentKey}</div>
+      <p>Then close and reopen terminal, and start Gemini:</p>
+      <div class="code">gemini</div>
+      <div class="callout callout--warn">
+        <strong>Important:</strong> never paste API keys into GitHub commits or shared files.
+      </div>
+      ${learnBlock('Learn more', '<p>Gemini has a free tier for light usage and paid usage for higher limits. If you need more usage, upgrade later.</p>')}
     `
   };
 }
@@ -337,23 +407,25 @@ function templateStep() {
 
   return {
     id: 'template',
-      title: 'Basic Starter Folder Setup (Optional)',
+      title: 'Starter Folder Setup (Optional)',
       html: `
-      <h2>Page 6: Basic starter folder setup (optional)</h2>
+      <h2>Page 7: Starter folder setup (optional)</h2>
       <p>Start with Basic if you are new. You can try both.</p>
 
       <h3>Basic starter folder</h3>
-      <p>This includes a folder with core <code>agents/</code> and <code>skills/</code>, plus a simple project template.</p>
+      <p>Best if you want fewer moving parts. Open <code>README.md</code> first, then <code>memory/README.md</code>.</p>
+      <p class="small">Includes core <code>agents/</code>, core <code>skills/</code>, a simple project template, and referee-response templates.</p>
       ${basicZipBlock}
       ${basicOneDriveBlock}
 
       <h3>Full starter folder</h3>
-      <p>This includes everything in Basic plus profile-style preferences and workflow settings that may be helpful.</p>
+      <p>Best if you want stronger defaults and more structure. Open <code>README.md</code> first, then <code>memory/global_notes.md</code>.</p>
+      <p class="small">Includes everything in Basic plus more agents/skills, standards, numbered notes, and workflow preferences.</p>
       <div class="callout callout--warn">
         <p><strong>Warning for Full starter terminal presets:</strong></p>
         <ul>
-          <li><strong>Claude (bypass):</strong> fewer confirmation checks. Use only in trusted project folders.</li>
-          <li><strong>Codex (bypass):</strong> can move quickly and make larger changes. Review commands and file edits before approving.</li>
+          <li><strong>AI terminal tools can run commands and edit files quickly.</strong></li>
+          <li><strong>Always review commands and file edits before approving.</strong></li>
         </ul>
       </div>
       ${advancedZipBlock}
@@ -362,8 +434,9 @@ function templateStep() {
 
       <ol>
         <li>Download and extract the pack you want to test.</li>
-        <li>Open the folder in your IDE (for example: <strong>File > Open Folder</strong> in ${editor}).</li>
-        <li>Select the extracted starter folder.</li>
+        <li>Open the extracted folder in your IDE (for example: <strong>File > Open Folder</strong> in ${editor}).</li>
+        <li>Read the root <code>README.md</code>.</li>
+        <li>Copy <code>projects/_project_template/</code> to start a real project.</li>
       </ol>
       ${learnBlock('Learn more', '<p>Once you have loaded a starter folder, ask your AI: "Please give me a quick overview of these folders and what each one is for."</p>')}
     `
@@ -387,7 +460,7 @@ function profileStep() {
     id: 'profile',
     title: 'Import Profile',
     html: `
-      <h2>Page 7: Import ${editorName} profile (optional)</h2>
+      <h2>Page 8: Import ${editorName} profile (optional)</h2>
       <p>This step is optional. Use it to quickly load the same settings as the workshop.</p>
       ${profileLink}
       <ol>
@@ -403,15 +476,17 @@ function profileStep() {
 }
 
 function githubStep() {
+  const assistantName = state.tool === 'claude' ? 'Claude' : state.tool === 'gemini' ? 'Gemini' : 'Codex';
+
   return {
     id: 'github',
     title: 'Pair with GitHub',
     html: `
-      <h2>Page 8: Pair with GitHub (beginner backup)</h2>
+      <h2>Page 9: Pair with GitHub (beginner backup)</h2>
       <p>GitHub is a free backup for your project files and gives you version history.</p>
-      <p>If you are new, ask Claude or Codex to guide you step-by-step.</p>
+      <p>If you are new, ask ${toolLabel(state.tool)} to guide you step-by-step.</p>
       <p><a href="https://github.com/" target="_blank">Create or sign in to GitHub</a></p>
-      <p><strong>Try pasting this into Claude/Codex chat:</strong></p>
+      <p><strong>Try pasting this into ${assistantName}:</strong></p>
       <div class="code">I want to back up and pair my folders with Git. I am a beginner. Please explain each step, why it matters, and give me the exact commands for my computer.</div>
       <p><strong>If you want direct commands:</strong></p>
       <div class="code">git init\ngit add .\ngit commit -m "Initial backup"\ngit branch -M main\ngit remote add origin https://github.com/YOUR_USER/YOUR_REPO.git\ngit push -u origin main</div>
@@ -425,7 +500,7 @@ function appendixStep() {
     id: 'appendix',
     title: 'Glossary',
     html: `
-      <h2>Page 9: Quick glossary</h2>
+      <h2>Page 10: Quick glossary</h2>
       <ul>
         <li><strong>IDE:</strong> The app where you edit code (for example VS Code or Cursor).</li>
         <li><strong>Terminal:</strong> Text window where you run commands.</li>
@@ -444,6 +519,8 @@ function appendixStep() {
 }
 
 function doneStep() {
+  const assistantName = state.tool === 'claude' ? 'Claude' : state.tool === 'gemini' ? 'Gemini' : 'Codex';
+
   return {
     id: 'done',
     title: 'Done',
@@ -451,7 +528,7 @@ function doneStep() {
       <h2>Setup complete</h2>
       <p>You finished the <strong>${osLabel(state.os)}</strong> path with <strong>${toolLabel(state.tool)}</strong> in <strong>${editorLabel(state.editor)}</strong>.</p>
       <p class="small">Press <strong>Restart</strong> to run the wizard again.</p>
-      ${learnBlock('Learn more', '<p>Next step: open your project folder and ask Codex or Claude for one small task to get comfortable.</p>')}
+      ${learnBlock('Learn more', `<p>Next step: open your project folder and ask ${assistantName} for one small task to get comfortable.</p>`)}
     `
   };
 }
@@ -463,6 +540,7 @@ function buildSteps() {
     installEverythingStep(),
     restartTerminalStep(),
     installAgentStep(),
+    authStep(),
     templateStep(),
     profileStep(),
     githubStep(),
@@ -521,7 +599,7 @@ nextBtn.addEventListener('click', () => {
     return;
   }
   if (step.id === 'choose-tool' && !state.tool) {
-    alert('Select Codex, Claude, or Both first.');
+    alert('Select Codex, Claude Code, or Gemini CLI first.');
     return;
   }
   if (step.id === 'install-prereqs' && !state.editor) {

@@ -26,7 +26,8 @@ Use this from a clean local clone of `davidchivers/ai_install`.
 ## 5. Update workflow
 
 1. Edit local source folders in this workspace:
-   - `projects/teaching/ai_teaching_starter/starter_basic/`
-   - `projects/teaching/ai_teaching_starter/starter_advanced/`
+   - `teaching/ai_teaching_starter/starter_basic/`
+   - `teaching/ai_teaching_starter/starter_advanced/`
 2. Sync each folder to its matching GitHub branch.
 3. Keep branch names stable so workshop links never change.
+4. Before publishing, open each root `README.md` and make sure the handover text still matches what you want workshop participants to see first.

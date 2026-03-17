@@ -3,6 +3,8 @@
 Audience: beginners
 Topic: how to use Claude code/Codex effectively
 
+Path note: historical handoff sections below still mention older `projects/teaching/...` paths. The current paths in this repo are `teaching/install_ai/...`, `teaching/ai_teaching_starter/...`, and `teaching/ai_workshop/...`.
+
 ## Slide plan
 1. Welcome + goals (2 min)
 2. What Claude code/Codex is (2 min)
