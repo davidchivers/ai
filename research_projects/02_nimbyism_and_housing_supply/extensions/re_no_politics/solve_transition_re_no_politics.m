@@ -65,6 +65,7 @@ params.supply_params = normalize_supply_params(params.supply_params, price_path_
 initial_density = build_initial_density(initial_reference.dens4, target_age_masses(1, :));
 
 current_price_path = price_path_guess;
+run_cache = containers.Map('KeyType', 'char', 'ValueType', 'any');
 iteration_log = repmat(struct( ...
     'residual_norm', NaN, ...
     'max_abs_gap', NaN, ...
@@ -76,8 +77,8 @@ iteration_log = repmat(struct( ...
 last_run = struct();
 
 for iter = 1:params.max_iter
-    base_run = run_transition_pass(current_price_path, initial_density, target_age_masses, ...
-        initialdist, transitionmatrix, model, params);
+    [base_run, run_cache] = run_transition_pass(current_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params, run_cache);
     [updated_price_path, diagnostics] = update_price_path_re_no_politics( ...
         current_price_path, base_run.implied_price_path, params);
 
@@ -90,11 +91,11 @@ for iter = 1:params.max_iter
     if strcmp(params.update_scheme, 'sequential_blocks')
         [selected_run, selected_price_path] = try_sequential_block_candidates( ...
             current_price_path, diagnostics, base_run, initial_density, target_age_masses, ...
-            initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
+            initialdist, transitionmatrix, model, params, selected_run, selected_price_path, run_cache);
     else
         [selected_run, selected_price_path] = try_line_search_candidates( ...
             current_price_path, diagnostics.log_update_step, diagnostics.targeted_blocks, ...
-            initial_density, target_age_masses, initialdist, transitionmatrix, model, params, selected_run, selected_price_path);
+            initial_density, target_age_masses, initialdist, transitionmatrix, model, params, selected_run, selected_price_path, run_cache);
     end
 
     selected_run.sim.Hsupply_updated_path = compute_supply_path(selected_price_path, params.supply_params);
@@ -168,7 +169,13 @@ if params.save_period_details
     results.density_by_period_age = last_run.sim.density_by_period_age;
 end
 
-function run = run_transition_pass(price_path, initial_density, target_age_masses, initialdist, transitionmatrix, model, params)
+function [run, run_cache] = run_transition_pass(price_path, initial_density, target_age_masses, initialdist, transitionmatrix, model, params, run_cache)
+cache_key = sprintf('%.8f_', price_path);
+if isKey(run_cache, cache_key)
+    run = run_cache(cache_key);
+    return;
+end
+
 terminal_reference = load_ss_reference(price_path(end), params.rbPos, params.supply_params);
 
 [policy_idx_b, policy_idx_a, valuefunctions] = solve_backward_transition( ...
@@ -190,18 +197,19 @@ run.sim = sim;
 run.implied_price_path = implied_price_path;
 run.max_abs_gap = max(abs(implied_price_path - price_path));
 run.residual_norm = norm(log(implied_price_path) - log(price_path));
+run_cache(cache_key) = run;
 end
 
 function [best_run, best_price_path] = try_line_search_candidates(current_price_path, log_update_step, targeted_blocks, ...
-    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path)
+    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path, run_cache)
 
 log_current = log(current_price_path);
 scales = params.line_search_scales(:)';
 
 for scale = scales
     full_candidate_price_path = exp(log_current + scale .* log_update_step);
-    full_candidate_run = run_transition_pass(full_candidate_price_path, initial_density, target_age_masses, ...
-        initialdist, transitionmatrix, model, params);
+    [full_candidate_run, run_cache] = run_transition_pass(full_candidate_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params, run_cache);
     full_candidate_run.label = sprintf('full_path_%.2f', scale);
 
     if is_better_candidate(full_candidate_run, best_run)
@@ -221,8 +229,8 @@ for scale = scales
         block_candidate_price_path(left:right) = scaled_candidate_price_path(left:right);
     end
 
-    block_candidate_run = run_transition_pass(block_candidate_price_path, initial_density, target_age_masses, ...
-        initialdist, transitionmatrix, model, params);
+    [block_candidate_run, run_cache] = run_transition_pass(block_candidate_price_path, initial_density, target_age_masses, ...
+        initialdist, transitionmatrix, model, params, run_cache);
     block_candidate_run.label = sprintf('targeted_block_%.2f', scale);
 
     if is_better_candidate(block_candidate_run, best_run)
@@ -233,7 +241,7 @@ end
 end
 
 function [best_run, best_price_path] = try_sequential_block_candidates(current_price_path, diagnostics, base_run, ...
-    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path)
+    initial_density, target_age_masses, initialdist, transitionmatrix, model, params, best_run, best_price_path, run_cache)
 
 T = numel(current_price_path);
 block_size = min(params.sequential_block_size, T);
@@ -261,8 +269,8 @@ for pass = 1:params.block_sweep_passes
             candidate_log_block = log_current(block) + scale .* (log_target(block) - log_current(block));
             candidate_price_path(block) = exp(candidate_log_block);
 
-            candidate_run = run_transition_pass(candidate_price_path, initial_density, target_age_masses, ...
-                initialdist, transitionmatrix, model, params);
+            [candidate_run, run_cache] = run_transition_pass(candidate_price_path, initial_density, target_age_masses, ...
+                initialdist, transitionmatrix, model, params, run_cache);
             candidate_run.label = sprintf('sequential_block_p%d_%d_%d_%.2f', pass, start_idx, stop_idx, scale);
 
             if is_better_candidate(candidate_run, pass_best_run)
