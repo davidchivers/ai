@@ -20,11 +20,13 @@ if ~isfield(params, 'terminal_anchor_weight'), params.terminal_anchor_weight = 0
 if ~isfield(params, 'targeted_correction_weight'), params.targeted_correction_weight = 0.35; end
 if ~isfield(params, 'max_targeted_periods'), params.max_targeted_periods = 3; end
 if ~isfield(params, 'target_block_half_width'), params.target_block_half_width = 1; end
-if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.10, 0.05, 0.02, 0.01]; end
+if ~isfield(params, 'line_search_scales'), params.line_search_scales = [0.01, 0.02, 0.05, 0.10]; end
 if ~isfield(params, 'update_scheme'), params.update_scheme = 'sequential_blocks'; end
 if ~isfield(params, 'sequential_block_size'), params.sequential_block_size = 3; end
 if ~isfield(params, 'block_sweep_passes'), params.block_sweep_passes = 2; end
 if ~isfield(params, 'max_blocks_per_pass'), params.max_blocks_per_pass = 4; end
+if ~isfield(params, 'greedy_block_accept'), params.greedy_block_accept = true; end
+if ~isfield(params, 'candidate_improvement_tol'), params.candidate_improvement_tol = 1e-6; end
 if ~isfield(params, 'save_period_details'), params.save_period_details = false; end
 
 validateattributes(price_path_guess, {'double'}, {'vector', 'nonempty', 'finite', 'real', 'positive'}, mfilename, 'price_path_guess');
@@ -259,6 +261,7 @@ for pass = 1:params.block_sweep_passes
 
     pass_best_run = current_candidate_run;
     pass_best_price_path = current_candidate_price_path;
+    accepted_in_pass = false;
 
     for start_idx = block_starts
         stop_idx = min(T, start_idx + block_size - 1);
@@ -276,7 +279,15 @@ for pass = 1:params.block_sweep_passes
             if is_better_candidate(candidate_run, pass_best_run)
                 pass_best_run = candidate_run;
                 pass_best_price_path = candidate_price_path;
+                if params.greedy_block_accept && improves_enough(candidate_run, current_candidate_run, params.candidate_improvement_tol)
+                    accepted_in_pass = true;
+                    break;
+                end
             end
+        end
+
+        if accepted_in_pass
+            break;
         end
     end
 
@@ -337,6 +348,10 @@ elseif abs(candidate_run.residual_norm - incumbent_run.residual_norm) <= toleran
 else
     tf = false;
 end
+end
+
+function tf = improves_enough(candidate_run, incumbent_run, tol)
+tf = candidate_run.residual_norm < incumbent_run.residual_norm - tol;
 end
 end
 
