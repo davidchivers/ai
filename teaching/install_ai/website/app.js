@@ -375,7 +375,7 @@ function authStep() {
       </ol>
       <p>Back in terminal, set it permanently (single copy command):</p>
       <div class="code">${setPersistentKey}</div>
-      <p>Then close and reopen terminal, and start Gemini:</p>
+      <p>Then close and reopen terminal. If you are using the IDE terminal and it still cannot find the key, fully quit and reopen the IDE. Then start Gemini:</p>
       <div class="code">gemini</div>
       <div class="callout callout--warn">
         <strong>Important:</strong> never paste API keys into GitHub commits or shared files.

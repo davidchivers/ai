@@ -38,3 +38,8 @@ It includes reusable skills, agent instructions, and templates.
 ## Sharing notes
 
 If you share this with others, share the entire folder as a single package (zip or folder download) so paths stay intact.
+
+## IDE setup notes
+
+- Keep reusable editor and profile guidance in `memory/` when it should be shared across projects.
+- The current Codex, Claude, and Gemini terminal launcher setup is documented in `memory/global_ide_terminal_profiles.md`.

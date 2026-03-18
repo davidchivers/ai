@@ -20,7 +20,7 @@ Wizard flow:
 6. Sign in / auth step:
    - Codex: `codex --login`
    - Claude Code: `claude`
-   - Gemini CLI: set API key, then run `gemini`
+   - Gemini CLI: set API key, then run `gemini` after reopening terminal; if the integrated terminal still misses the key, fully restart the IDE
 7. Starter folder setup (optional).
 8. Optional profile import.
 9. Pair with GitHub.
