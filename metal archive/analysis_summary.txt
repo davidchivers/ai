@@ -1,0 +1,77 @@
+=== Metal Archive – Summary Analysis ===
+
+Total bands:       196,095
+Countries covered: 158
+Unique genres:     3,267
+Bands with release year: 107,605
+
+--- Top 15 Countries by Band Count ---
+  United States                  44,737
+  Germany                        14,565
+  Brazil                         8,950
+  Italy                          8,453
+  United Kingdom                 8,056
+  France                         7,104
+  Canada                         6,853
+  Russia                         6,793
+  Sweden                         6,256
+  Finland                        5,834
+  Spain                          5,540
+  Poland                         4,753
+  Mexico                         4,752
+  Australia                      4,019
+  Argentina                      3,816
+
+--- Top 15 Primary Genres ---
+  Black Metal                         25,586
+  Death Metal                         19,810
+  Heavy Metal                         14,640
+  Thrash Metal                        13,454
+  Death                               8,456
+  Black                               8,272
+  Heavy                               7,303
+  Melodic Death Metal                 6,133
+  Thrash                              6,096
+  Brutal Death Metal                  4,551
+  Progressive Metal                   3,866
+  Raw Black Metal                     3,289
+  Doom                                3,037
+  Sludge                              2,538
+  Melodic Death                       2,411
+
+--- Band Status Breakdown ---
+  Active                    108,561
+  Split-up                  59,163
+  Unknown                   16,557
+  Changed name              7,663
+  On hold                   4,119
+  Disputed                  32
+
+--- Band Formations by Decade ---
+  1960s  15
+  1970s  537
+  1980s  9,464
+  1990s  26,043
+  2000s  53,012
+  2010s  45,938
+  2020s  16,354
+
+--- United Kingdom Deep-Dive (8,056 bands) ---
+  Top genres:
+    Black Metal                         828
+    Death Metal                         719
+    Heavy Metal                         527
+    Thrash Metal                        514
+    NWOBHM                              406
+    Death                               296
+    Thrash                              262
+    Black                               252
+    Heavy                               233
+    Sludge                              232
+  Status:
+    Active                    4,084
+    Split-up                  2,666
+    Unknown                   782
+    Changed name              358
+    On hold                   164
+    Disputed                  2
