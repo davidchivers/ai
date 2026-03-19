@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Email App Instructions - Build new email app</title>
+  <link rel="stylesheet" href="instructions.css" />
+</head>
+<body>
+  <main>
+    <a class="toplink" href="workflow.html">Back to Email App Instructions</a>
+    <h1>Build this app from scratch</h1>
+    <p>This page is for the first build. It is written for someone with limited IT training who needs to set up the app from the beginning and get it working.</p>
+
+    <section class="step">
+      <h2>Step 1. Decide the four basic details</h2>
+      <p>Before you start clicking around Microsoft 365, decide these four things.</p>
+      <ol>
+        <li>Choose which account will own the Microsoft Form.</li>
+        <li>Choose which inbox will receive the staff emails first.</li>
+        <li>Choose which shared mailbox will be used later.</li>
+        <li>Choose where the Excel lookup workbook will live.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 2. Create the Microsoft Form</h2>
+      <p>The easiest way to do this first build is not to type every question in by hand. Use the prepared Word file below. This is the file to edit if needed, and then upload into Microsoft Forms.</p>
+      <ol>
+        <li><a class="inline-file" href="https://forms.microsoft.com/" target="_blank" rel="noreferrer">Open Microsoft Forms</a>.</li>
+        <li>Select <code>Quick Import</code>.</li>
+        <li>Select <code>Upload from this device</code>.</li>
+        <li>If you need to change the wording first, edit <a class="inline-file" href="templates/student_enquiry_form_import.docx">student_enquiry_form_import.docx</a>.</li>
+        <li>Choose <a class="inline-file" href="templates/student_enquiry_form_import.docx">student_enquiry_form_import.docx</a> from the local folder.</li>
+        <li>When Forms asks, select <code>Form</code>.</li>
+        <li>Wait for the import to finish, then select <code>Start review</code>.</li>
+        <li>Check that the imported form contains the title, introduction text, and the expected questions.</li>
+        <li>Make sure the introduction tells students they must be signed in and do not need to type username or email.</li>
+        <li>Do not add a separate <code>University username</code> question in the preferred build.</li>
+        <li>Do not add a separate <code>forgot username</code> question in version 1.</li>
+        <li>Do not add a separate university email question unless testing later shows the flow cannot access the responder's email.</li>
+        <li>Rename or tidy any question that imported imperfectly.</li>
+        <li>After the questions are in place, go to the <code>Stage of study</code> question, open <code>More settings for question</code>, and select <code>Add branching</code>.</li>
+        <li>Set the <code>Undergraduate</code> branch to go to <code>Year of study</code>.</li>
+        <li>Set the <code>Taught postgraduate</code> branch to skip forward to <code>Programme of study</code>.</li>
+        <li>Go to the <code>Enquiry type</code> question, open <code>More settings for question</code>, and select <code>Add branching</code>.</li>
+        <li>Set the <code>Other</code> branch to go to <code>Other enquiry type</code>.</li>
+        <li>Set all other enquiry-type options to skip forward to <code>Message</code>.</li>
+        <li>Keep the branching moving forward only. Microsoft Forms branching works to later questions, not back to earlier ones.</li>
+        <li>Open the form settings and set the form so only people in the organization can respond.</li>
+        <li>In the same settings area, turn on recorded responder identity because that is what lets the flow use the responder's email for acknowledgements and verification.</li>
+        <li>Set the thank-you message so it tells the student they will receive an acknowledgement email.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 3. Create the Excel lookup file</h2>
+      <p>This workbook is used only to look up student details. It is not the main workflow tool.</p>
+      <ol>
+        <li>Open <a class="inline-file" href="templates/student_lookup_template.xlsx">student_lookup_template.xlsx</a>.</li>
+        <li>Upload or save that workbook into OneDrive or SharePoint where the flow account can reach it.</li>
+        <li><a class="inline-file" href="https://www.office.com/launch/excel" target="_blank" rel="noreferrer">Open Excel Online</a> and open that workbook.</li>
+        <li>Confirm the workbook contains a table named <code>StudentLookup</code>.</li>
+        <li>Confirm the first row contains the lookup columns.</li>
+        <li>Add a small number of real or test rows first.</li>
+        <li>Make sure <code>UniversityEmailNormalized</code> stays lowercase and unique.</li>
+        <li>Make sure the Power Automate connection account can access the workbook.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 4. Start the Power Automate flow</h2>
+      <p>This creates the automation that joins everything together.</p>
+      <ol>
+        <li><a class="inline-file" href="https://make.powerautomate.com/" target="_blank" rel="noreferrer">Open Power Automate</a>.</li>
+        <li>Select <code>Create</code>.</li>
+        <li>Select <code>Automated cloud flow</code>.</li>
+        <li>Name the flow <code>Student enquiry intake - v1</code>.</li>
+        <li>In the trigger search box, search for <code>Microsoft Forms</code>.</li>
+        <li>Select the trigger <code>When a new response is submitted</code>.</li>
+        <li>Select <code>Create</code>.</li>
+        <li>In the trigger card, choose the department form in the <code>Form Id</code> field.</li>
+        <li>Select <code>+ New step</code>.</li>
+        <li>Search for <code>Microsoft Forms</code> and add <code>Get response details</code>.</li>
+        <li>In <code>Form Id</code>, choose the same form again.</li>
+        <li>In <code>Response Id</code>, select the dynamic value from the trigger.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 5. Add the student email and reference number</h2>
+      <p>This part picks up the recorded responder email, derives the CIS username if needed, and creates the enquiry number.</p>
+      <ol>
+        <li>Select <code>+ New step</code> and add a <code>Compose</code> action.</li>
+        <li>Name it <code>Compose_RecordedResponderEmail</code>.</li>
+        <li>In that compose action, use the Forms dynamic value for the responder's email.</li>
+        <li>Select <code>+ New step</code> and add another <code>Compose</code> action.</li>
+        <li>Name it <code>Compose_NormalizedResponderEmail</code>.</li>
+        <li>Use the local expression to convert that email to lowercase and trim spaces.</li>
+        <li>If that responder email dynamic value does not appear, stop and decide whether to add a separate required <code>University email address</code> field before final testing.</li>
+        <li>Select <code>+ New step</code> and add a <code>Compose</code> action for the username.</li>
+        <li>Name it <code>Compose_SelectedUsername</code>.</li>
+        <li>Use the local expression so the flow keeps only the part before <code>@</code>.</li>
+        <li>Select <code>+ New step</code> and add a <code>Compose</code> action for the best email address.</li>
+        <li>Name it <code>Compose_SelectedStudentEmail</code>.</li>
+        <li>Use the local expression so the flow uses the recorded responder email as the student email.</li>
+        <li>Select <code>+ New step</code> and add a <code>Compose</code> action for the response ID.</li>
+        <li>Name it <code>Compose_ResponseId</code>.</li>
+        <li>Select <code>+ New step</code> and add a <code>Compose</code> action for the reference number.</li>
+        <li>Name it <code>Compose_ReferenceNumber</code>.</li>
+        <li>Use the expressions in <a class="inline-file" href="flows/power_automate_expressions.html">power_automate_expressions.html</a> so the username, email, and reference number are all created correctly.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 6. Add the Excel lookup</h2>
+      <p>This part asks Excel whether the recorded university email matches a known student record.</p>
+      <ol>
+        <li>Select <code>+ New step</code> and search for <code>Excel Online (Business)</code>.</li>
+        <li>Add the action <code>Get a row</code>.</li>
+        <li>Point it at the workbook you uploaded in Step 3.</li>
+        <li>Choose the table <code>StudentLookup</code>.</li>
+        <li>Set the key column to <code>UniversityEmailNormalized</code>.</li>
+        <li>Set the key value to the normalized responder email compose output.</li>
+        <li>Use <a class="inline-file" href="flows/version_1_flow_logic.html">version_1_flow_logic.html</a> for the remaining lookup handling and fallback logic.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 7. Add the staff and student emails</h2>
+      <p>This part sends one email to staff and one acknowledgement email to the student.</p>
+      <ol>
+        <li>Add the subject-line tags and suggested owner logic using <a class="inline-file" href="flows/version_1_flow_logic.html">version_1_flow_logic.html</a>.</li>
+        <li>Search for <code>Office 365 Outlook</code> and add <code>Send an email (V2)</code> for the staff email.</li>
+        <li>Use <a class="inline-file" href="templates/staff_email_template.txt">staff_email_template.txt</a> for the staff email subject and body layout.</li>
+        <li>Add a second Outlook email action for the student acknowledgement.</li>
+        <li>Use <a class="inline-file" href="templates/student_acknowledgement_email.txt">student_acknowledgement_email.txt</a> for that message.</li>
+        <li>Paste the local template wording into the Outlook actions inside Power Automate.</li>
+        <li>Keep the wording simple and professional.</li>
+        <li>Do not promise response times unless the department is ready to meet them.</li>
+        <li>Save the flow.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 8. Test the app</h2>
+      <p>Do not skip this. Test before moving the app into a shared mailbox.</p>
+      <ol>
+        <li>Submit a test response through the form and check the run history in Power Automate.</li>
+        <li>Test a matched undergraduate enquiry.</li>
+        <li>Test a matched taught postgraduate enquiry.</li>
+        <li>Test an unmatched university email.</li>
+        <li>Test an <code>Other</code> enquiry type.</li>
+        <li>Test an extension or mitigating circumstances enquiry.</li>
+        <li>Check that the reference number appears, the emails send, and the flow still works when lookup fails.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 9. Move to the shared mailbox</h2>
+      <p>Only do this after the pilot inbox version is working properly.</p>
+      <ol>
+        <li>After the pilot works, change the recipient from the pilot inbox to the shared mailbox.</li>
+        <li>If needed, change the send action to <code>Send an email from a shared mailbox</code>.</li>
+        <li>Confirm mailbox permissions.</li>
+        <li>Run the tests again.</li>
+      </ol>
+    </section>
+
+    <section class="step">
+      <h2>Step 10. Stop here for version 1</h2>
+      <p>Version 1 is ready once students can submit the form, staff receive one clear structured email, the student receives an acknowledgement with a reference number, and matched and unmatched lookups both behave properly.</p>
+      <p>Do not add case management, hard routing, or deep Banner integration yet.</p>
+      <p>After this first build is working, you can create a more reusable version for other teams to copy and edit.</p>
+    </section>
+  </main>
+</body>
+</html>
