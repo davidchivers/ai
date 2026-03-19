@@ -1,0 +1,10 @@
+column,n_missing,pct_missing,n_present
+band_id,0,0.0,196095
+band_name,3,0.0,196092
+country,0,0.0,196095
+genre,0,0.0,196095
+status,0,0.0,196095
+label,0,0.0,196095
+year_creation,44732,22.81,151363
+years_active,43591,22.23,152504
+first_release,3854,1.97,192241
