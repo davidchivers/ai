@@ -10,6 +10,7 @@ Track design decisions and practical conventions for the student enquiry email w
 - Automation layer: Power Automate cloud flow.
 - Lookup source for version 1: Excel Online table stored in OneDrive or SharePoint.
 - Main lookup key: normalized university email address.
+- Identity capture model: signed-in Forms users with recorded responder identity; do not ask for username or email in the preferred build.
 - Staff handling model: inbox/shared mailbox, not a case-management app.
 - Routing model in version 1: advisory tags and suggested owner only.
 - Banner integration in version 1: identifiers and deep links only, no live transactional integration.
@@ -26,9 +27,10 @@ Track design decisions and practical conventions for the student enquiry email w
 
 - Final department mailbox addresses.
 - Final suggested-owner mapping by enquiry type.
-- Whether the form will rely on recorded responder identity, manual email entry, or both during pilot.
 - Whether mitigating circumstances and extension enquiries should stay on this form or be redirected to formal university processes.
+- Website publishing under `davidshivers.co.uk/email_app` is handled by Tom Shutt / David Chivers, not by this repo rollout.
 
 ## Session notes
 
 - 2026-03-18: Created the initial prototype pack under `other/email_app` with specification, build plan, flow notes, templates, and sample lookup schema.
+- 2026-03-19: Shifted the preferred build to signed-in Forms users with recorded responder email as the primary lookup key, and noted that website deployment is handled separately by Tom Shutt / David Chivers.
