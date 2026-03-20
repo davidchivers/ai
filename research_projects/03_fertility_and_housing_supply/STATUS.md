@@ -2,7 +2,156 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-13 (three-way MATLAB comparison refreshed; import scripts now prefer D: with Dropbox fallback)
+- Last updated: 2026-03-20 (standalone manuscript draft written and compiled)
+- 2026-03-20 standalone manuscript draft added:
+  - `drafts/fertility_and_housing_supply.tex`
+  - `drafts/fertility_and_housing_supply.pdf`
+  The comparison note has now been turned into a paper draft. The draft is written as a
+  standalone fertility-and-housing paper rather than as a code memo or a project-03 delta note.
+  It keeps the exact benchmark comparison, the baby-boom section, the historical validation, the
+  bounded robustness pass, and the future demographic-projection bridge, while labeling the
+  projection object honestly as a matched bridge rather than the full project-02 forecast solver.
+- Last updated: 2026-03-20 (robustness and future-projection bridge added)
+- 2026-03-20 robustness and future-projection bridge added:
+  - `code/nimby_fertility_transition_bridge.py`
+  - `code/build_nimby_vs_fertility_transition_robustness.py`
+  - `code/export_nimby_forecast_reference_main.m`
+  - `code/build_nimby_vs_fertility_projection_comparison.py`
+  - `notes/build/nimby_vs_fertility_transition_robustness.png`
+  - `notes/build/nimby_vs_fertility_transition_robustness.pdf`
+  - `notes/build/nimby_vs_fertility_transition_robustness.csv`
+  - `notes/build/nimby_vs_fertility_projection_comparison.png`
+  - `notes/build/nimby_vs_fertility_projection_comparison.pdf`
+  - `notes/build/nimby_vs_fertility_projection_summary.csv`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  The comparison note now includes a bounded baby-boom robustness section and a future
+  demographic-projection bridge. The robustness bridge reproduces the MATLAB benchmark policy
+  runs to machine precision before varying shock size, price sensitivity, and family-demand
+  strength. The projection section uses the upstream forecast age weights but compares a matched
+  NIMBY proxy against the fertility bridge rather than the full project-02 forecast solver.
+- Last updated: 2026-03-20 (transition tenure and cohort proxy comparison added)
+- 2026-03-20 transition tenure and cohort proxy comparison added:
+  - updated `code/run_experiments_matlab_main.m`
+  - updated `code/plot_nimby_vs_fertility_transition_figures.py`
+  - `notes/build/nimby_vs_fertility_generation_homeownership.png`
+  - `notes/build/nimby_vs_fertility_generation_homeownership.pdf`
+  - `notes/build/nimby_vs_fertility_transition_proxy_series.csv`
+  - updated `notes/build/nimby_vs_fertility_baby_boom_transition.png`
+  - updated `notes/build/nimby_vs_fertility_baby_boom_summary.csv`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  The baby-boom comparison note now includes NIMBY-style tenure-access panels and a cohort
+  homeownership-access comparison. On the fertility side these are explicitly reduced-form proxy
+  objects, not structural tenure choices, because the current transition block still has no
+  savings or tenure state. Even so, the new panels show a materially larger young-homeownership
+  decline in the fertility transition and a stronger hit to the later child generation than to the
+  parent generation.
+- Last updated: 2026-03-20 (historical validation and projection input bridge added)
+- 2026-03-20 historical validation and projection input bridge added:
+  - `notes/build/nimby_vs_fertility_historical_validation.png`
+  - `notes/build/nimby_vs_fertility_historical_validation.pdf`
+  - `notes/build/nimby_vs_fertility_historical_validation.md`
+  - `notes/build/nimby_vs_fertility_historical_validation_summary.csv`
+  - `notes/build/nimby_vs_fertility_historical_validation_series.csv`
+  - `notes/build/nimby_projection_age_groups.png`
+  - `notes/build/nimby_projection_age_groups.pdf`
+  - `notes/build/nimby_projection_age_groups.md`
+  - `notes/build/nimby_projection_age_groups.csv`
+  - `notes/build/nimby_baby_boom_reference_full.csv`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  The comparison note now includes a historical postwar fertility validation section. Using the
+  aggregate legacy fertility series and aligning the decline from `1956` onward to model period
+  `t >= 10`, the fertility extension fits the post-boom decline modestly better than the NIMBY
+  path at each checked horizon (`10`, `20`, `30`, `40` years). The upstream NIMBY transition
+  export now also includes the richer homeownership and generational objects needed for the next
+  comparison pass, and the NIMBY paper's age-share projection input has been localized into the
+  project-03 build folder.
+- Last updated: 2026-03-20 (baby-boom transition comparison added to model note)
+- 2026-03-20 baby-boom transition comparison added:
+  - `notes/build/nimby_baby_boom_reference.csv`
+  - `notes/build/nimby_baby_boom_reference_source.txt`
+  - `notes/build/nimby_vs_fertility_baby_boom_transition.png`
+  - `notes/build/nimby_vs_fertility_baby_boom_transition.pdf`
+  - `notes/build/nimby_vs_fertility_baby_boom_summary.csv`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  The comparison note now includes a direct temporary-birthrate-increase section using the
+  upstream NIMBY smoothed IRF object from Dropbox and a matched fertility transition run under
+  the same `+10%` shock for 10 periods. In normalized units, the average post-window price
+  response is about `0.020` in the NIMBY transition versus about `0.051` in the fertility
+  transition.
+- Last updated: 2026-03-20 (NIMBY-style model comparison note compiled)
+- 2026-03-20 NIMBY-style model comparison note added:
+  - `notes/build/nimby_vs_fertility_model_comparison.tex`
+  - `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  - `notes/build/nimby_vs_fertility_household_support.png`
+  - `notes/build/nimby_vs_fertility_household_support.pdf`
+  - `notes/build/nimby_vs_fertility_benchmark_objects.png`
+  - `notes/build/nimby_vs_fertility_benchmark_objects.pdf`
+  This note follows the Gross and Chivers model-section order, keeps the main text at the model
+  level rather than the implementation level, moves solver details to an appendix, and replaces
+  the copied NIMBY figure placeholders with genuine steady-state redraws from the current NIMBY
+  and fertility benchmark objects.
+- Last updated: 2026-03-20 (corrected calibration sweep confirmed benchmark; comparison refresh completed)
+- 2026-03-20 comparison refresh completed:
+  - `notes/build/fertility_vs_nimby_benchmark_report.md`
+  - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
+  - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+  - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+  - `notes/build/fertility_vs_nimby_benchmark_panels.png`
+  - `notes/build/fertility_vs_nimby_benchmark_panels.pdf`
+  The public-facing comparison bundle now reflects both raw `totalvote` and normalized
+  `vote_per_mass`, plus stationary mass, debt, and family-state diagnostics under the corrected
+  benchmark.
+- 2026-03-19 corrected calibration sweep completed after the forward-pass mass fix:
+  - `notes/build/fertility_calibration_report.md`
+  - `notes/build/fertility_calibration_sweep.csv`
+  - `notes/build/fertility_calibration_market_checks.csv`
+  The sweep confirms that the current solver defaults remain both the best full demographic
+  candidate and the best full benchmark candidate under the corrected code.
+- 2026-03-19 benchmark confirmation:
+  - candidate `1` and current defaults are the same object
+  - benchmark remains `I = 60`, `J = 14`
+  - unique market crossing remains at approximately `a_price = 1.751853`
+  - age-50 completed fertility remains `[0.2237, 0.2556, 0.2927, 0.2280]`
+- 2026-03-19 comparison-layer refresh prepared:
+  - `code/write_fertility_vs_nimby_benchmark_main.m` now reports both raw `totalvote`
+    and normalized `vote_per_mass`, plus stationary mass
+  - `code/plot_fertility_vs_nimby_benchmark.py` now builds a six-panel figure
+    separating raw vote, normalized vote, debt, mass, and family outcomes
+  - `code/refresh_corrected_benchmark_outputs.ps1` now reruns the benchmark reports,
+    figure build, and PDF compile in one step
+- 2026-03-19 stale-job cleanup:
+  duplicate timed-out MATLAB calibration jobs were killed so they could not overwrite the
+  same benchmark output files.
+- 2026-03-18 benchmark freeze: added `code/fertility_benchmark_config.m` as the single source
+  of truth for the corrected-code household benchmark, and updated
+  `code/run_ge_fertility_main.m` plus `code/calibrate_fertility_block_main.m` to read from it.
+- 2026-03-18 model verification: the reproduction check is now a real comparison against the
+  upstream `SolveSS_function.m`; the corrected solver reproduces distance, vote, and debt
+  exactly in the `C = 1` shutoff case.
+- 2026-03-18 corrected-code benchmark: on the active `I = 60`, `J = 14` grid, the benchmark
+  calibration
+  - `birth_utility_by_parity = [0.85, 1.10, 1.20]`
+  - `child_utility = 0.02`
+  - `birth_cost = 0.06`
+  - `birth_price_coeff = 0.24`
+  - `lambda_crowd = 0.18`
+  yields a unique vote crossing between `a_price = 1.75` and `2.00`, with refined equilibrium
+  price `1.774665`.
+- 2026-03-18 numerical-resolution finding: the old `I = 50`, `J = 10` household grid created
+  vote wiggles on the market-clearing grid. Moving to `I = 60`, `J = 14` removes that wiggle
+  for the promoted benchmark candidate and is now the active benchmark resolution.
+- 2026-03-18 model interpretation lock: parity (`children ever born`) is treated as a permanent
+  household state, while children-at-home is a temporary housing-demand state disciplined by a
+  reduced-form leave-home calibration.
+- 2026-03-18 benchmark comparison note added:
+  - `code/write_fertility_vs_nimby_benchmark_main.m`
+  - `notes/build/fertility_vs_nimby_benchmark_report.md`
+  - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
+  - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+  - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+  - `notes/build/fertility_vs_nimby_benchmark_panels.png`
+  - `notes/build/fertility_vs_nimby_benchmark_panels.pdf`
+  This now gives a direct side-by-side comparison against the upstream NIMBY benchmark.
 - 2026-03-13 path portability pass: `code/06_import_nimby_birthrates_to_raw.py`,
   `code/07_import_nimby_housing_controls_to_raw.py`, and
   `code/08_import_nimby_population_policy_to_raw.py` now accept `ZAC_DAVID_DATA_DIR`, prefer
@@ -17,7 +166,9 @@
 - 2026-03-09 empirical alignment finding: the modern fertility file overlaps cleanly with county population data but still has zero direct overlap with the legacy housing/control block because those files are metro-year despite their county-style filenames.
 - 2026-03-09 exploratory regressions refreshed: rewrote `code/10_exploratory_empirical_regressions.py` to aggregate the raw inputs to state-year, generated `notes/build/exploratory_state_year_panel.csv`, and ran first-birth timing regressions on the feasible overlap sample.
 - 2026-03-09 current reduced-form readout: state/year FE coefficients are directionally consistent with delay for rents and age at first birth but imprecise; permits estimates are especially thin because the permits overlap is short and sparse.
-- 2026-03-09 check-in: user confirmed that the active priority is empirical work for now; model-side work is deferred until updated MATLAB files are available.
+- 2026-03-09 check-in: empirical work became the active priority while the model block was still
+  unsettled; that model-side pause has now been lifted because the household benchmark is
+  running again under corrected code.
 - 2026-03-09 empirical design note: added a candidate pivot from overall fertility to maternal age at first birth / first-birth timing outcomes in `notes/04_empirical_notes.md`; this is written up as an active option, not yet a locked baseline.
 - 2026-03-09 empirical reframing: `notes/05_research_plan.md` now centers the near-term agenda on first-birth timing outcomes, reduced-form event studies, and an IV menu that instruments housing supply/cost rather than fertility directly.
 - 2026-03-09 empirical state: the raw-source ingest and first processed panel are in place, but the current panel still has large coverage gaps in nativity and housing/control fields, so the immediate bottleneck is panel completion and estimation-ready sample design rather than theory.
@@ -31,13 +182,42 @@
 - 2026-03-02 model/data audit: NIMBY-style write-up guidance with explicit project-03 differences is documented; remaining empty source blocks are policy timing and population/immigration.
 - 2026-03-02 drafting update: `drafts/fertility_and_housing_supply.lyx` was rebuilt from latest NIMBY v13 structure, trimmed to model-only sections on request, and updated with blue-highlighted project-03 differences plus simulation evidence.
 - 2026-03-02 coding clarification: current MATLAB prototype includes reduced-form fertility response, lagged-boom political term, and children-at-home demand proxy; full crowding utility is written in the paper but not yet solved as the structural household DP block in code.
-- Overall state: empirical infrastructure is built but not yet estimation-ready; main remaining work is nativity completion, panel coverage cleanup, and baseline empirical specification.
+- Overall state: the household model block is benchmarked, the corrected calibration sweep has
+  confirmed the active benchmark, the refreshed NIMBY-versus-fertility comparison bundle is in
+  place, and the model-comparison note now contains the exact steady-state comparison, a direct
+  baby-boom transition comparison, tenure-access and cohort-access proxy panels, and a historical
+  fertility-validation section, a bounded robustness section, and a future demographic-projection
+  bridge. The main remaining model-side gap is no longer the comparison pack itself but the
+  absence of savings/net-worth objects and the lack of the full project-02 forecast solver on the
+  fertility side.
 - 2026-02-25 organization update: added standardized `drafts/` and `slides/` latest-file naming with explicit `old_drafts/` and `old_slides/` archive folders.
 - 2026-02-25 capitalization cleanup: folder names standardized to lowercase across the project tree.
 - Canonical tracker: this file is the single source of truth for status and next actions.
 
 ## Completed
 
+- Corrected-code household fertility block implemented in MATLAB:
+  - `code/SolveSS_fertility.m`
+  - permanent parity state (`children ever born`) separated from temporary
+    children-at-home state
+  - corrected newborn utility accounting on the birth branch
+  - age-mass-weighted diagnostics saved to `SS_fertility.mat`
+- Market-clearing and benchmark runners added and stabilized:
+  - `code/ClearMarkets_fertility.m`
+  - `code/run_ge_fertility_main.m`
+  - `code/calibrate_fertility_block_main.m`
+  - `code/fertility_benchmark_config.m`
+- Household benchmark documentation generated:
+  - `notes/build/fertility_run_ge_report.md`
+  - `notes/build/fertility_calibration_report.md`
+  - `notes/build/fertility_reproduction_check.csv`
+  - `notes/build/fertility_price_sweep.csv`
+  - `notes/build/fertility_market_clearing_grid.csv`
+  - `notes/build/fertility_local_benchmark_search.csv`
+  - `notes/build/fertility_household_equation_summary.pdf`
+- One-page household-equation summary created:
+  - `notes/build/fertility_household_equation_summary.pdf`
+  - `notes/build/fertility_household_equation_summary.tex`
 - Initial utility and fertility-extension notes created from project 02 foundations.
 - Empirical literature pack assembled in `literature/` with verified core PDFs.
 - Prototype experiment script and convergence diagnostics generated.
@@ -50,12 +230,12 @@
 - Pre-consolidation standalone notes archived under:
   - `_playground/backups/2026-02-25_notes_flattening/03_fertility_and_housing_supply/Notes_old`
 - Folder structure scaffolding for paper transition created:
-  - `projects/03_fertility_and_housing_supply/drafts/README.md`
-  - `projects/03_fertility_and_housing_supply/calibration/README.md`
-  - `projects/03_fertility_and_housing_supply/code/README.md`
-  - `projects/03_fertility_and_housing_supply/slides/README.md`
-  - canonical latest paper files: `projects/03_fertility_and_housing_supply/drafts/fertility_and_housing_supply.{lyx,pdf}`
-  - canonical latest slides files: `projects/03_fertility_and_housing_supply/slides/fertility_and_housing_supply_slides.{lyx,pdf}`
+  - `drafts/README.md`
+  - `calibration/README.md`
+  - `code/README.md`
+  - `slides/README.md`
+  - canonical latest paper files: `drafts/fertility_and_housing_supply.{lyx,pdf}`
+  - canonical latest slides files: `slides/fertility_and_housing_supply_slides.{lyx,pdf}`
   - tex exports archived in `drafts/old_drafts/source_tex/` and `slides/old_slides/source_tex/`
 - MATLAB experiment runner added in `code/` and latest outputs regenerated under `notes/build/`.
 - Model note rewritten with explicit equations, calibration interpretation limits, and baby-boom experiment design:
@@ -196,29 +376,34 @@
 
 ## In Progress
 
-- Auditing geography alignment after the live CDC pull: fertility and population now align at county-year, but the housing/policy block is still metro-year.
-- Deciding whether the first empirical baseline should be a state-year bridge, a county-to-metro aggregation using a crosswalk, or a replacement housing source with county/CBSA identifiers.
-- Tightening the first regression-ready specification around first-birth timing outcomes rather than the deprecated `gfr_15_44` path.
-- Evaluating IV feasibility, with current preference for a reform-exposure instrument targeting housing outcomes.
-- Treating the state-year exploratory panel as a temporary bridge rather than the final paper design.
-- Keeping the refreshed structural crowding-FOC comparison as a diagnostic/model note, not as
-  the current binding workstream while empirical cleanup remains the priority.
+- Deciding whether the current bridge objects are sufficient for the first full draft or whether
+  a true savings / balance-sheet block is needed before circulating the paper more widely.
+- Deciding whether the future demographic section should stay as a bridge result in the main text
+  or move to an appendix until the full project-02 forecast solver is ported.
+- Keeping the empirical geography mismatch in view, but not treating it as the active task while
+  the manuscript framing and model results are being stabilized.
 
 ## Next 3 Tasks
 
-1. Resolve geography mismatch on the housing side: either build a county-to-metro/CBSA crosswalk for the CDC fertility sample or replace the legacy metro housing source with a county/CBSA-compatible panel.
-2. Use the temporary state-year bridge in `notes/build/exploratory_state_year_panel.csv` to expand timing regressions, weighting choices, and specification checks while the local-geometry fix is being built.
-3. Decide whether the baseline empirical design is temporarily state-year or whether the paper waits for a cleaner county/CBSA housing merge.
+1. Tighten `drafts/fertility_and_housing_supply.tex` so the projection and proxy language is concise, precise, and paper-ready rather than note-like.
+2. Decide whether to build a true savings / balance-sheet block for exact net-worth and tenure comparisons or to keep the current access-proxy comparison as the dynamic object for this paper.
+3. Decide whether to port the upstream future-demographic forecast runner into project 03 or to keep the current projection bridge as the final forecast object.
 
 ## Blockers
 
-- Upstream project-02 steady-state MATLAB inputs (for example `nl_zbl.mat` / `TransitionMatrix.mat`) are not present in this repo copy.
-- Updated MATLAB files for the next model iteration are still pending from the user; model integration work is paused until those files arrive.
+- Upstream project-02 transition files needed for the baby-boom comparison live in Dropbox rather
+  than this repo copy, so the transition section is reproducible locally but not yet repo-self-contained.
 - Direct fertility-specific causal evidence remains thinner than broader housing-supply evidence.
 - Legacy NIMBY fertility inputs exist locally in Dropbox but are outside this git repo, so reproducibility currently depends on local external paths.
 - ACS nativity backfill script (`code/09_backfill_nativity_from_acs_api.py`) now handles 2010-2013 via B06001+B06003 fallback; minor approximation remains (ages 18-44 not 15-44) for those years.
 - The current housing and policy raw files are metro-year rather than county-year, so they do not directly merge to the new county fertility file.
 - The legacy permits series has much thinner overlap than rents in the temporary state-year bridge.
+- The equilibrium-clean benchmark fits completed fertility less tightly than the stronger
+  demographic-fit candidate, so benchmark choice is still a model-side presentation decision.
+- The current project-03 transition prototype now emits directly comparable homeownership-access
+  proxies, but it still does not emit net-worth or future-forecast objects, so a full
+  figure-by-figure replication of the NIMBY transition and projection sections remains blocked on
+  transition-side implementation rather than on missing upstream NIMBY data.
 
 ## Open Decisions
 
@@ -228,15 +413,24 @@
 - Whether maternal age at first birth should be the headline timing summary or a supporting summary behind age-bin first-birth shares/rates.
 - Whether the first unrestricted implementation should begin with large-county county-year or directly at state-year in CDC WONDER.
 - Which IV path, if any, is credible enough for the first empirical paper: reform exposure, close-election politics, or supply-elasticity interactions.
+- Whether the paper benchmark should prioritize the unique-crossing corrected-code equilibrium
+  (`I = 60`, `J = 14`) or present the stronger demographic-fit calibration as the main
+  robustness case.
+- How prominently the benchmark comparison should emphasize normalized vote-per-mass relative to
+  raw aggregate vote in the main text.
 
 ## References
 
-- Project overview: `projects/03_fertility_and_housing_supply/README.md`
-- Session log: `projects/03_fertility_and_housing_supply/memory.md`
-- Project plan: `projects/03_fertility_and_housing_supply/PROJECT_PLAN.md`
-- Upstream sync log: `projects/03_fertility_and_housing_supply/UPSTREAM_SYNC_LOG.md`
-- Notes index: `projects/03_fertility_and_housing_supply/notes/README.md`
-- Canonical latest paper/slide folders: `projects/03_fertility_and_housing_supply/drafts/` and `projects/03_fertility_and_housing_supply/slides/`
+- Project overview: `README.md`
+- Session log: `memory.md`
+- Model notes: `notes/03_model_notes.md`
+- Benchmark config: `code/fertility_benchmark_config.m`
+- Benchmark runner: `code/run_ge_fertility_main.m`
+- Calibration runner: `code/calibrate_fertility_block_main.m`
+- Benchmark refresh runner: `code/refresh_corrected_benchmark_outputs.ps1`
+- Latest GE benchmark report: `notes/build/fertility_run_ge_report.md`
+- Latest calibration report: `notes/build/fertility_calibration_report.md`
+- Canonical latest paper/slide folders: `drafts/` and `slides/`
 - Shared structure standard: `_shared/standards/paper_project_structure_standard.md`
 - Shared code/calibration standard: `_shared/standards/code_calibration_standard.md`
 

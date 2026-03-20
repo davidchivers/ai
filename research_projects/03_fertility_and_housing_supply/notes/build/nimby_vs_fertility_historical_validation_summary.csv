@@ -1,0 +1,12 @@
+metric,series,value,horizon_years
+actual_peak_year,metro_aggregate,1947.0,
+actual_peak_index,metro_aggregate,1.2108260991242321,
+state_average_peak_index,state_average,1.2228220633743863,
+rmse_postboom,nimby,0.11852769021178362,10.0
+rmse_postboom,fertility_extension,0.10430344335397591,10.0
+rmse_postboom,nimby,0.18329687913175588,20.0
+rmse_postboom,fertility_extension,0.17745487372076157,20.0
+rmse_postboom,nimby,0.22570873025769594,30.0
+rmse_postboom,fertility_extension,0.2177495600442623,30.0
+rmse_postboom,nimby,0.24330596920688352,40.0
+rmse_postboom,fertility_extension,0.23293819481356254,40.0

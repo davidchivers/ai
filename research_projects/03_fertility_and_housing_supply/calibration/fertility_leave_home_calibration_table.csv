@@ -1,0 +1,28 @@
+component,current_value,role_in_code,status
+fertility_ages,"25;30;35;40","ages when births can occur",active
+model_period_years,5,"converts child ages into model periods",active
+leave_home_age_bins,"20;25;30","leave-by bins for child departure",active
+leave_home_bin_probs,"0.588;0.147;0.265","mixture over leave-home bins",active_us_targeted
+birth_age_weights,"0.25;0.25;0.25;0.25","mixture over fertility ages",placeholder
+implied_leave_prob_age_25,0.0000,"effective leave probability at parent age 25",active
+implied_leave_prob_age_30,0.0000,"effective leave probability at parent age 30",active
+implied_leave_prob_age_35,0.0000,"effective leave probability at parent age 35",active
+implied_leave_prob_age_40,0.0833,"effective leave probability at parent age 40",active
+implied_leave_prob_age_45,0.1818,"effective leave probability at parent age 45",active
+implied_leave_prob_age_50,0.3333,"effective leave probability at parent age 50",active
+implied_leave_prob_age_55,0.5000,"effective leave probability at parent age 55",active
+implied_leave_prob_age_60,0.6667,"effective leave probability at parent age 60",active
+implied_leave_prob_age_65,1.0000,"effective leave probability at parent age 65",active
+implied_leave_prob_age_70,1.0000,"effective leave probability at parent age 70",active
+implied_leave_prob_age_75,1.0000,"effective leave probability at parent age 75",active
+implied_leave_prob_age_80,1.0000,"effective leave probability at parent age 80",active
+implied_leave_prob_age_85,1.0000,"effective leave probability at parent age 85",active
+implied_leave_prob_age_90,1.0000,"effective leave probability at parent age 90",active
+interpretation_note,"reduced_form_placeholder","leave-home timing is calibrated, not structurally derived",active
+target_share_parental_home_2025_age_18_24,0.58,"official Census CPS ASEC target moment","active_target"
+target_share_parental_home_2025_age_25_34,0.16,"official Census CPS ASEC target moment","active_target"
+target_share_parental_home_2023_age_18_24,0.56,"official Census CPS ASEC target moment","reference_target"
+target_share_parental_home_2023_age_25_34,0.16,"official Census CPS ASEC target moment","reference_target"
+implemented_weight_leave_by_20,0.588,"inferred from 2025 Census targets under leave-by-bin interpretation","active_us_targeted"
+implemented_weight_leave_by_25,0.147,"inferred from 2025 Census targets under leave-by-bin interpretation","active_us_targeted"
+implemented_weight_leave_by_30,0.265,"inferred from 2025 Census targets under leave-by-bin interpretation","active_us_targeted"

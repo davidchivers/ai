@@ -9,9 +9,9 @@ end
 
 p = default_params();
 cfg.damping = 0.25;
-cfg.boom_amp = 0.60;      % 60% temporary increase in births
-cfg.boom_start = 15;      % shock starts at t=15
-cfg.boom_end = 24;        % shock ends at t=24
+cfg.boom_amp = 0.10;      % 10% temporary increase in births to match the NIMBY transition
+cfg.boom_start = 0;       % shock starts at t=0 to match the NIMBY transition
+cfg.boom_end = 9;         % shock lasts for 10 periods
 cfg.post_start = 40;      % evaluate medium-run after shock fades
 
 new_baseline = simulate_new_model(p, cfg.damping, 0.0, cfg.boom_start, cfg.boom_end);
@@ -154,6 +154,10 @@ p.d_young = 1.00;
 p.d_birth = 0.30;
 p.s0 = 1.00;
 p.price_gain = 0.35;
+p.age_grid = [15, 25, 35, 45, 55, 65, 75, 85];
+p.homeownership_base = [0.02, 0.35, 0.42, 0.48, 0.70, 0.76, 0.73, 0.55];
+p.homeownership_price_beta = [0.05, 0.60, 0.50, 0.35, 0.15, 0.05, 0.02, 0.00];
+p.family_age_exposure = [0.00, 0.25, 1.00, 0.75, 0.15, 0.00, 0.00, 0.00];
 % structural crowding-utility parameters (project-03 extension)
 p.zeta = 0.20;        % housing share in Cobb-Douglas utility
 p.gamma_risk = 2.0;   % risk aversion / IES
@@ -175,6 +179,9 @@ fert = zeros(p.T, 1);
 theta = zeros(p.T, 1);
 young = zeros(p.T, 1);
 old = zeros(p.T, 1);
+average_age = zeros(p.T, 1);
+n_home_series = zeros(p.T, 1);
+age_shares = zeros(p.T, p.J);
 lagged_births = zeros(p.leave_home_lag + 1, 1);
 nimby_birth_hist = zeros(p.nimby_lag + p.nimby_window, 1);
 
@@ -182,8 +189,11 @@ for t = 1:p.T
     tt = t - 1;
     young(t) = M(t,1) + M(t,2);
     old(t) = M(t,6) + M(t,7) + M(t,8);
+    average_age(t) = sum(M(t, :) .* p.age_grid);
+    age_shares(t, :) = M(t, :);
 
     n_home_proxy = sum(lagged_births(1:end-1));
+    n_home_series(t) = n_home_proxy;
     fertile_mass = max(sum(M(t, p.fertile_idx)), 1e-9);
 
     f_arg = max(-20.0, min(20.0, -p.f_price_semi_elasticity * prices(t)));
@@ -228,6 +238,9 @@ out.fertility_rate = fert;
 out.young_share = young;
 out.old_share = old;
 out.theta = theta;
+out.average_age = average_age;
+out.n_home = n_home_series;
+out = attach_transition_proxies(p, out, age_shares, boom_start, boom_end);
 end
 
 function out = simulate_old_proxy(p, damping, boom_amp, boom_start, boom_end)
@@ -241,6 +254,10 @@ fert = zeros(p.T, 1);
 theta = zeros(p.T, 1);
 young = zeros(p.T, 1);
 old = zeros(p.T, 1);
+average_age = zeros(p.T, 1);
+lagged_births = zeros(p.leave_home_lag + 1, 1);
+n_home_series = zeros(p.T, 1);
+age_shares = zeros(p.T, p.J);
 nimby_birth_hist = zeros(p.nimby_lag + p.nimby_window, 1);
 
 fertile0 = max(sum(M(1, p.fertile_idx)), 1e-9);
@@ -250,7 +267,10 @@ for t = 1:p.T
     tt = t - 1;
     young(t) = M(t,1) + M(t,2);
     old(t) = M(t,6) + M(t,7) + M(t,8);
+    average_age(t) = sum(M(t, :) .* p.age_grid);
+    age_shares(t, :) = M(t, :);
     fertile_mass = max(sum(M(t, p.fertile_idx)), 1e-9);
+    n_home_series(t) = sum(lagged_births(1:end-1));
 
     if tt >= boom_start && tt <= boom_end
         boom_mult = 1.0 + boom_amp;
@@ -279,6 +299,7 @@ for t = 1:p.T
     if row_sum > 0
         M(t + 1, :) = M(t + 1, :) / row_sum;
     end
+    lagged_births = [births(t); lagged_births(1:end-1)];
     nimby_birth_hist = [births(t); nimby_birth_hist(1:end-1)];
 end
 
@@ -289,6 +310,9 @@ out.fertility_rate = fert;
 out.young_share = young;
 out.old_share = old;
 out.theta = theta;
+out.average_age = average_age;
+out.n_home = n_home_series;
+out = attach_transition_proxies(p, out, age_shares, boom_start, boom_end);
 end
 
 function out = simulate_structural_model(p, damping, boom_amp, boom_start, boom_end)
@@ -309,7 +333,9 @@ fert = zeros(p.T, 1);
 theta = zeros(p.T, 1);
 young = zeros(p.T, 1);
 old = zeros(p.T, 1);
+average_age = zeros(p.T, 1);
 n_home_series = zeros(p.T, 1);
+age_shares = zeros(p.T, p.J);
 lagged_births = zeros(p.leave_home_lag + 1, 1);
 nimby_birth_hist = zeros(p.nimby_lag + p.nimby_window, 1);
 
@@ -317,6 +343,8 @@ for t = 1:p.T
     tt = t - 1;
     young(t) = M(t,1) + M(t,2);
     old(t) = M(t,6) + M(t,7) + M(t,8);
+    average_age(t) = sum(M(t, :) .* p.age_grid);
+    age_shares(t, :) = M(t, :);
 
     n_home_proxy = sum(lagged_births(1:end-1));
     n_home_series(t) = n_home_proxy;
@@ -375,7 +403,96 @@ out.fertility_rate = fert;
 out.young_share = young;
 out.old_share = old;
 out.theta = theta;
+out.average_age = average_age;
 out.n_home = n_home_series;
+out = attach_transition_proxies(p, out, age_shares, boom_start, boom_end);
+end
+
+function out = attach_transition_proxies(p, out, age_shares, boom_start, boom_end)
+T = numel(out.t);
+price_gap = out.price - out.price(1);
+group_idx.young = 2:3;
+group_idx.old = 5:6;
+
+out.young_homeownership_proxy = zeros(T, 1);
+out.old_homeownership_proxy = zeros(T, 1);
+out.aggregate_homeownership_proxy = zeros(T, 1);
+
+for j = 1:p.J
+    field = sprintf('age_share_%d', round(p.age_grid(j)));
+    out.(field) = age_shares(:, j);
+end
+
+for t = 1:T
+    age_ownership = zeros(1, p.J);
+    for j = 1:p.J
+        age_ownership(j) = age_homeownership_proxy(p, p.age_grid(j), price_gap(t));
+    end
+    out.young_homeownership_proxy(t) = weighted_mean(age_shares(t, group_idx.young), age_ownership(group_idx.young));
+    out.old_homeownership_proxy(t) = weighted_mean(age_shares(t, group_idx.old), age_ownership(group_idx.old));
+    out.aggregate_homeownership_proxy(t) = weighted_mean(age_shares(t, :), age_ownership);
+end
+
+boom_birth_year = 0.5 * (boom_start + boom_end);
+parent_birth_year = boom_birth_year - 25.0;
+child_birth_year = boom_birth_year + 25.0;
+
+out.boom_generation_age = zeros(T, 1);
+out.parent_generation_age = zeros(T, 1);
+out.child_generation_age = zeros(T, 1);
+out.boom_generation_homeownership_proxy_level = nan(T, 1);
+out.parent_generation_homeownership_proxy_level = nan(T, 1);
+out.child_generation_homeownership_proxy_level = nan(T, 1);
+out.boom_generation_housing_burden_proxy_level = nan(T, 1);
+out.parent_generation_housing_burden_proxy_level = nan(T, 1);
+out.child_generation_housing_burden_proxy_level = nan(T, 1);
+
+for t = 1:T
+    current_time = out.t(t);
+    out.boom_generation_age(t) = current_time - boom_birth_year;
+    out.parent_generation_age(t) = current_time - parent_birth_year;
+    out.child_generation_age(t) = current_time - child_birth_year;
+
+    out.boom_generation_homeownership_proxy_level(t) = age_homeownership_proxy(p, out.boom_generation_age(t), price_gap(t));
+    out.parent_generation_homeownership_proxy_level(t) = age_homeownership_proxy(p, out.parent_generation_age(t), price_gap(t));
+    out.child_generation_homeownership_proxy_level(t) = age_homeownership_proxy(p, out.child_generation_age(t), price_gap(t));
+
+    out.boom_generation_housing_burden_proxy_level(t) = age_housing_burden_proxy(p, out.boom_generation_age(t), price_gap(t), out.n_home(t));
+    out.parent_generation_housing_burden_proxy_level(t) = age_housing_burden_proxy(p, out.parent_generation_age(t), price_gap(t), out.n_home(t));
+    out.child_generation_housing_burden_proxy_level(t) = age_housing_burden_proxy(p, out.child_generation_age(t), price_gap(t), out.n_home(t));
+end
+end
+
+function value = age_homeownership_proxy(p, age, price_gap)
+if age < p.age_grid(1) || age > p.age_grid(end)
+    value = NaN;
+    return;
+end
+base_level = interp1(p.age_grid, p.homeownership_base, age, 'linear');
+price_beta = interp1(p.age_grid, p.homeownership_price_beta, age, 'linear');
+base_logit = log(base_level / (1.0 - base_level));
+value = 1.0 / (1.0 + exp(-(base_logit - price_beta * price_gap)));
+end
+
+function value = age_housing_burden_proxy(p, age, price_gap, n_home)
+if age < p.age_grid(1) || age > p.age_grid(end)
+    value = NaN;
+    return;
+end
+family_exposure = interp1(p.age_grid, p.family_age_exposure, age, 'linear');
+value = exp(price_gap) * (1.0 + p.lambda_crowd * family_exposure * n_home)^p.psi_crowd;
+end
+
+function value = weighted_mean(weights, values)
+mask = ~isnan(values);
+weights = weights(mask);
+values = values(mask);
+weight_sum = sum(weights);
+if weight_sum <= 0
+    value = NaN;
+else
+    value = sum(weights .* values) / weight_sum;
+end
 end
 
 function n_star = solve_fertility_foc(p, c, h, n_home_current)

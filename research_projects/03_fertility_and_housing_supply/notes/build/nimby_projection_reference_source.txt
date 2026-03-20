@@ -1,0 +1,3 @@
+Source MAT file: C:/Users/Dave_/Dropbox/Zac and David/Code/SteadyState/Mod_DynamicForecast/loopoutput_forecast.mat
+Price paths exported from Price_Trend.Forecast1/2/3.
+Age weights exported from forecast_lower/median/upper over ages 25:80.

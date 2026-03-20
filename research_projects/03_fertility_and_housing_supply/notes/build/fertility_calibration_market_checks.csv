@@ -1,0 +1,5 @@
+candidate_id,benchmark_score,demo_score,market_cross_exists,market_is_unique,market_sign_changes,market_refined_price,market_refined_vote,market_method
+1,-4.17298191864821,-7.13069492238073,1,1,1,1.75185276610359,0,linear_interpolation
+3,-4.17298191864821,-7.13069492238073,1,1,1,1.75185276610359,0,linear_interpolation
+0,-4.17298191864821,-7.13069492238073,1,1,1,1.75185276610359,0,linear_interpolation
+12,-4.44155535488945,-7.59398345037335,1,1,1,1.56664841808916,0,linear_interpolation
