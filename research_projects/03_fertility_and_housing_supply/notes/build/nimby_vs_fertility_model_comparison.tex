@@ -351,42 +351,43 @@ strengths. The bottom row reports the corresponding young-homeownership troughs.
 are the project-03 NIMBY proxy; the red lines are the fertility extension.}
 \end{figure}
 
-\section{Future demographic projections}
+\section{A persistent NIMBY shock}
 
-The NIMBY paper also asks what future aging implies for house prices. The accessible upstream
-forecast files contain the age-weight scenarios used for that exercise, so Figure 7 feeds those
-same projected age weights into the current bridge model. The black lines shut off the
-fertility-demand channel and therefore play the role of the NIMBY side of the comparison. The red
-lines keep births and children at home in the demand block. This is still a bridge object rather
-than the full project-02 forecast solver, but it is the correct next comparison with the files
-currently available.
+The more direct question for this project is not whether exogenous aging alone changes the sign of
+the fertility channel. It is whether persistent housing-supply restriction can itself generate
+lower future fertility. Figure 7 therefore replaces the earlier aging-only bridge with a simple
+supply-tightening counterfactual: starting from a shared baseline, baseline political tightness is
+raised permanently by `0.05` from the first post-baseline period onward.
 
-The projected-age results go in the opposite direction from the baby-boom impulse response. Under
-all three immigration scenarios, projected aging raises the NIMBY proxy price path but leaves the
-fertility path much flatter. In the medium-immigration scenario, the NIMBY proxy reaches a house
-price index of about 1.093 by 2050 and about 1.067 by 2100, while the fertility bridge is almost
-flat in 2050 at about 1.000 and slightly below its 2020 level by 2100 at about 0.976. The
-interpretation is that the family channel pushes in different directions in the short run and the
-long run. In the baby-boom experiment, a temporary wave of children at home raises contemporaneous
-space demand. In the long projection, aging lowers the mass of family-forming households, so the
-fertility channel dampens the aging-driven rise in NIMBY pressure rather than amplifying it.
+This object is much closer to the intended mechanism. The top row shows a stylized endogenous
+transition with no baby-boom shock. The bottom row feeds the medium-immigration age-share path
+into a forward recursive bridge, but now the NIMBY shift starts after the shared 2020 baseline.
+In the stylized transition, the house-price index rises from about `0.549` in baseline to about
+`0.761` under the NIMBY shock by horizon `t = 40`, while the fertility rate falls from about
+`0.248` to about `0.232`. By horizon `t = 79`, the same comparison is about `0.747` versus
+`1.192` for house prices and about `0.233` versus `0.212` for fertility.
 
-Panel D of Figure 7 shows that the family-side projection objects remain quantitatively modest in
-the medium scenario. Relative to 2020, the fertility-rate index rises by roughly 2 percent in the
-2020s, then settles close to one, while the young-homeownership proxy ends slightly above its 2020
-level. So the main forecast message is not a future fertility collapse. It is that once the
-projected demographic path is dominated by population aging rather than a transitory child wave,
-the fertility extension tempers the long-run house-price increase implied by the baseline NIMBY
-mechanism.
+The forward bridge tells the same story in calendar time. In the medium-immigration scenario, the
+projected house-price index rises from about `1.066` in baseline to about `1.163` under the NIMBY
+shock by `2050`, while the fertility rate falls from about `0.194` to about `0.190`. By `2100`,
+the same comparison is about `1.254` versus `1.767` for house prices and about `0.188` versus
+`0.175` for fertility. So once housing scarcity is made persistent, the model does exactly what
+the intended mechanism says: households still value children, but realized fertility falls because
+high housing costs and crowding make family formation harder.
+
+The result is also monotone in the size of the NIMBY shift. In the medium-immigration forward
+bridge, moving from `theta0 + 0.03` to `theta0 + 0.10` lowers the projected 2100 fertility rate
+from about `0.180` to about `0.167`, while the projected 2100 house-price index rises from about
+`1.562` to about `2.281`, against a baseline of about `1.254`. Nearby changes in the price
+sensitivity of fertility and the family-demand block leave the sign of that long-run result
+unchanged.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{nimby_vs_fertility_projection_comparison.png}
-\caption{Future demographic projections. Panels A--C use the low-, medium-, and high-immigration
-age-weight scenarios from the upstream forecast files and compare the NIMBY proxy against the
-fertility bridge. Panel D reports the medium-scenario fertility-rate index and young-homeownership
-proxy. This is a matched projection bridge rather than the full project-02 forecast solver, but it
-uses the same upstream age scenarios on both sides of the comparison.}
+\includegraphics[width=\textwidth]{nimby_shock_fertility_counterfactual.png}
+\caption{Persistent NIMBY shock. Starting from a shared baseline, a permanent increase in
+political tightness raises housing pressure and lowers fertility. The top row shows a stylized
+endogenous transition; the bottom row shows the medium-immigration forward projection bridge.}
 \end{figure}
 
 \section{Summary}
@@ -399,12 +400,13 @@ the political support schedule shifts toward lower house prices in the steady-st
 amplifies the medium-run house-price response to a temporary baby boom. That price-amplification
 result is robust in the current bridge model. The historical validation exercise shows that the
 same fertility margin also moves the post-boom fertility path closer to the long decline in the
-aggregate US data, although the fit improvement is modest. The future-projection bridge adds one
-final contrast: when the demographic change is long-run aging rather than a temporary child wave,
-the fertility channel dampens the rise in projected house prices relative to the NIMBY proxy. The
+aggregate US data, although the fit improvement is modest. The persistent NIMBY-shock
+counterfactual then shows the other side of the mechanism: when housing scarcity itself is made
+more persistent, future house prices rise and realized fertility falls. The
 current transition and forecast blocks still omit the savings and net-worth objects behind the
 richer NIMBY cohort-incidence panels, but the basic comparison now covers steady states, baby-boom
-transitions, historical validation, bounded robustness, and forward demographic projections.
+transitions, historical validation, bounded robustness, and a forward supply-tightening
+counterfactual.
 
 \appendix
 
@@ -456,11 +458,12 @@ MATLAB policy runs to machine precision before varying the shock size, price sen
 family-demand strength. The NIMBY side of that sweep is the project-03 proxy rather than a fresh
 set of upstream IRFs.
 
-Seventh, the future-demographic projection comparison uses the upstream forecast age weights from
+Seventh, the forward NIMBY-shock counterfactual uses the upstream forecast age weights from
 \path{C:/Users/Dave_/Dropbox/Zac and David/Code/SteadyState/Mod_DynamicForecast/loopoutput_forecast.mat}
-but the reported comparison is a matched bridge exercise rather than the full project-02 forecast
-solver. The black line in Figure 7 is the NIMBY proxy with the fertility-demand channel shut off;
-the red line adds births and children-at-home demand under the same projected age path.
+but applies a permanent increase in baseline political tightness from the first post-baseline year
+onward. The reported comparison is still a bridge rather than the full project-02 forecast solver,
+but it starts both lines from the same baseline and therefore speaks directly to the question of
+whether persistent housing scarcity can lower future fertility.
 
 Finally, the transition comparison should be read as dynamic mechanism evidence rather than as a
 fully unified household-DP transition benchmark. The steady-state comparison is the exact

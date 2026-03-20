@@ -4,6 +4,66 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-20 (persistent NIMBY-shock scenario grid)
+- Added a scenario-grid builder for the long-run NIMBY counterfactual:
+  - `code/build_nimby_shock_scenarios.py`
+- New outputs:
+  - `notes/build/nimby_shock_scenario_grid.csv`
+  - `notes/build/nimby_shock_calibration_sensitivity.csv`
+  - `notes/build/nimby_shock_scenarios.md`
+  - `notes/build/nimby_shock_scenarios.png`
+  - `notes/build/nimby_shock_scenarios.pdf`
+- Main quantitative lock:
+  - medium-immigration `2100` fertility falls monotonically with persistent NIMBY intensity:
+    - `theta0 + 0.03`: `0.180`
+    - `theta0 + 0.05`: `0.175`
+    - `theta0 + 0.08`: `0.170`
+    - `theta0 + 0.10`: `0.167`
+    - baseline: `0.188`
+  - corresponding medium-immigration `2100` house-price indices are:
+    - `1.562`, `1.767`, `2.075`, `2.281`
+    - baseline: `1.254`
+- Calibration lock after the grid:
+  - the sign of the long-run fertility result survives nearby changes in fertility-price
+    sensitivity and family-demand strength
+  - `lambda_crowd` itself does not move the current forward bridge because that object's fertility
+    decision depends on prices, not directly on the housing-burden proxy
+- Writing lock after this pass:
+  - the paper can now describe the long-run result as monotone in persistent NIMBY intensity, not
+    as a single benchmark counterfactual
+
+---
+
+### Session: 2026-03-20 (persistent NIMBY-shock counterfactual)
+- Added a direct supply-tightening counterfactual builder:
+  - `code/build_nimby_shock_fertility_counterfactual.py`
+- Extended the bridge library with two new utilities:
+  - persistent NIMBY-shock transition from a shared initial state
+  - forward age-scenario projection under a shared initial state plus persistent NIMBY shock
+  - file: `code/nimby_fertility_transition_bridge.py`
+- New outputs:
+  - `notes/build/nimby_shock_transition_series.csv`
+  - `notes/build/nimby_shock_projection_series.csv`
+  - `notes/build/nimby_shock_fertility_counterfactual_summary.csv`
+  - `notes/build/nimby_shock_fertility_counterfactual.md`
+  - `notes/build/nimby_shock_fertility_counterfactual.png`
+  - `notes/build/nimby_shock_fertility_counterfactual.pdf`
+- Main result:
+  - a persistent NIMBY shift now gives the long-run object the project actually needs
+  - under a permanent `theta0 + 0.05` shift, house prices rise and fertility falls both in the
+    stylized transition and in the forward age-scenario bridge
+  - medium-immigration projection:
+    - `2050` price index `1.163` versus `1.066` baseline
+    - `2050` fertility `0.190` versus `0.194` baseline
+    - `2100` price index `1.767` versus `1.254` baseline
+    - `2100` fertility `0.175` versus `0.188` baseline
+- Writing lock after this pass:
+  - the old aging-only projection is not the core long-run result anymore
+  - the manuscript and the model-comparison note should both center the long-run section on
+    persistent housing scarcity lowering realized fertility
+
+---
+
 ### Session: 2026-03-20 (standalone manuscript draft)
 - Wrote a standalone manuscript draft in LaTeX:
   - `drafts/fertility_and_housing_supply.tex`

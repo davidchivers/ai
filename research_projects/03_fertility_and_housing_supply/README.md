@@ -52,6 +52,15 @@ proxy with the fertility-demand channel shut off, and the fertility bridge with 
 children-at-home in the demand block. The richer wealth and exact forecast-solver objects used in
 the NIMBY paper are still not available on the fertility side.
 
+The main long-run counterfactual is now a persistent NIMBY shock rather than the earlier
+aging-only bridge. A new note in `notes/build/`:
+`nimby_shock_fertility_counterfactual.md` and
+`nimby_shock_fertility_counterfactual.png`
+starts both paths from the same baseline, imposes a permanent increase in baseline political
+tightness, and shows that sustained housing scarcity raises future house prices and lowers
+realized fertility. That counterfactual has also replaced the weaker aging-only section in both
+the manuscript draft and the model-comparison note.
+
 ## Current working folders
 
 - `notes/`: active research notes and contribution framing.

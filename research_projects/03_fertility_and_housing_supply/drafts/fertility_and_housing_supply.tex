@@ -30,10 +30,10 @@ toward lower house prices: the equilibrium crossing falls from 2.326 in the NIMB
 price response in the fertility model than in the NIMBY benchmark because children at home raise
 current housing-space demand. Third, the same fertility margin improves the fit to the postwar
 decline in aggregate fertility after the baby boom, although the improvement is modest. Fourth,
-when the demographic change comes from projected long-run aging rather than a temporary child
-wave, the fertility channel dampens the rise in house prices relative to the NIMBY proxy. The
-paper is therefore not ``NIMBY plus one more block.'' It is a model of how family formation
-changes both the short-run and long-run political economy of housing supply.
+when housing supply is persistently tightened through a permanent NIMBY shift, future house prices
+rise and realized fertility falls. The paper is therefore not ``NIMBY plus one more block.'' It
+is a model of how family formation changes both the short-run and long-run political economy of
+housing supply.
 \end{abstract}
 
 \section{Introduction}
@@ -55,16 +55,15 @@ The central claim is simple. Adding fertility changes the sign and timing of dem
 in the housing market. In the steady state, the fertility channel makes high house prices less
 politically acceptable because family-forming households care about both housing costs and
 crowding. In a temporary baby boom, however, the same fertility channel raises current demand for
-space and amplifies the medium-run house-price response. Under projected long-run aging, by
-contrast, the family channel works in the opposite direction: as the mass of family-forming
-households falls, the fertility extension tempers the aging-driven rise in house prices implied by
-the baseline NIMBY mechanism.
+space and amplifies the medium-run house-price response. Under a persistent NIMBY shift, the same
+family margin works through the other side of the model: housing stays scarce, prices remain high,
+and realized fertility is pushed down over time.
 
 The paper is organized around that comparison. Section 2 sets out the model and isolates exactly
 what changes relative to the NIMBY benchmark. Section 3 reports the steady-state benchmark.
 Section 4 studies a temporary baby boom. Section 5 compares the model's post-boom fertility path
 to the postwar decline in US fertility. Section 6 shows that the short-run price result is robust
-to a bounded set of parameter changes. Section 7 turns to projected demographic aging. Section 8
+to a bounded set of parameter changes. Section 7 turns to a persistent NIMBY shock. Section 8
 concludes.
 
 \section{Model}
@@ -294,36 +293,51 @@ bounded sweep.}
 \label{fig:robustness}
 \end{figure}
 
-\section{Future Demographic Projections}
+\section{A Persistent NIMBY Shock}
 
-The NIMBY paper also studies long-run population aging. The natural question is whether the
-fertility extension strengthens or weakens that forecast.
+The more direct long-run question is not whether exogenous aging changes the sign of the fertility
+channel. It is whether persistent housing-supply restriction can itself generate lower future
+fertility. To study that question, I replace the earlier aging-only bridge with a simple supply
+tightening counterfactual. Starting from the same initial state, I impose a permanent increase in
+baseline political tightness of `0.05` from the first post-baseline period onward. In the model,
+that is a persistent NIMBY shift: for a given demographic composition, less housing is built and
+housing pressure rises.
 
-Figure \ref{fig:projection} feeds the same upstream projected age-weight scenarios into a matched
-bridge exercise. The black line shuts off the fertility-demand channel and therefore plays the
-role of the NIMBY side of the comparison. The red line keeps births and children at home in the
-demand block. This is not yet the full project-02 forecast solver. It is a matched projection
-bridge built from the forecast age scenarios. But it is still informative about the sign of the
-fertility channel under projected aging.
+Figure \ref{fig:nimby_shock} reports two versions of that counterfactual. The top row is a
+stylized endogenous transition with no baby-boom shock. The bottom row feeds the upstream
+age-share scenarios into a forward recursive bridge, but now the NIMBY shift starts after the
+shared 2020 baseline. That matters. Unlike the earlier matched-aging bridge, this object answers
+the question the paper is really about: if housing remains too tight for a long time, does
+fertility fall?
 
-The result goes in the opposite direction from the baby-boom impulse response. Under all three
-immigration scenarios, projected aging raises the NIMBY proxy price path but leaves the fertility
-path much flatter. In the medium-immigration scenario, the NIMBY proxy reaches a house-price
-index of about 1.093 by 2050 and about 1.067 by 2100, while the fertility bridge is essentially
-flat in 2050 and slightly below its 2020 level by 2100.
+The answer is yes. In the stylized transition, the NIMBY shock raises the house-price index from
+0.549 to 0.761 by horizon `t = 40` and lowers the fertility rate from 0.248 to 0.232. By horizon
+`t = 79`, the same comparison is 0.747 versus 1.192 for house prices and 0.233 versus 0.212 for
+fertility. The medium-immigration projection shows the same mechanism on calendar time. By 2050,
+the projected house-price index is 1.163 under the NIMBY shock versus 1.066 in baseline, while
+the fertility rate is 0.190 versus 0.194. By 2100, the same comparison is 1.767 versus 1.254 for
+house prices and 0.175 versus 0.188 for fertility.
 
-The interpretation is again economic rather than mechanical. In the baby-boom experiment, the key
-family object is a temporary wave of children at home, which raises current space demand. In the
-long-run aging exercise, the key family object is the shrinking mass of family-forming households.
-That reduces the importance of the crowding channel. So the fertility extension dampens the
-aging-driven rise in house prices rather than amplifying it.
+That long-run result is not a one-point artifact. In the medium-immigration projection, a smaller
+persistent shift of `theta0 + 0.03` still lowers fertility to about 0.180 by 2100, while larger
+shifts of `theta0 + 0.08` and `theta0 + 0.10` lower it further to about 0.170 and 0.167. Over the
+same grid, the projected 2100 house-price index rises monotonically from about 1.562 to about
+2.281, against a baseline of about 1.254. Nearby changes in the price sensitivity of fertility and
+the family-demand channel leave the sign of the result unchanged.
+
+This is still a bridge rather than the full forecast solver from project 02. But economically it
+is much more informative than the earlier aging-only object. It says that once housing scarcity is
+made persistent, the fertility model does exactly what it was built to do: the desire for
+children remains, but realized fertility falls because high housing costs and crowding make family
+formation harder.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{nimby_vs_fertility_projection_comparison.png}
-\caption{Future demographic projections from the matched bridge. The fertility channel amplifies
-the short-run child-wave experiment but tempers the long-run aging-driven rise in house prices.}
-\label{fig:projection}
+\includegraphics[width=\textwidth]{nimby_shock_fertility_counterfactual.png}
+\caption{Persistent NIMBY shock. Starting from a shared baseline, a permanent increase in baseline
+political tightness raises housing pressure and lowers fertility. The top row shows a stylized
+endogenous transition; the bottom row shows the medium-immigration forward projection bridge.}
+\label{fig:nimby_shock}
 \end{figure}
 
 \section{Conclusion}
@@ -336,13 +350,14 @@ That one change is enough to alter both the steady state and the transition dyna
 steady state, the fertility channel shifts political support toward lower house prices. In a
 temporary baby boom, it amplifies the medium-run house-price response because children at home
 raise current housing demand. In the historical data, it improves the fit to the post-boom
-fertility decline, though modestly. Under long-run projected aging, it works in the opposite
-direction and dampens the rise in house prices relative to the NIMBY proxy.
+fertility decline, though modestly. Under a persistent NIMBY shift, it also turns housing
+scarcity into lower realized fertility over time.
 
 Those results are enough to support a standalone model paper. The remaining missing objects are not
 the basic comparison itself, but the richer savings, net-worth, and full forecast-solver layers
 that would permit an exact one-for-one replication of every NIMBY figure. For the current paper,
 the central model result is already clear: family formation changes the political economy of
-housing supply in ways that the original NIMBY benchmark cannot capture.
+housing supply in ways that the original NIMBY benchmark cannot capture, and persistent housing
+supply restriction can translate directly into lower realized fertility.
 
 \end{document}

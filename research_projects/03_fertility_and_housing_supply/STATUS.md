@@ -2,6 +2,37 @@
 
 ## Snapshot
 
+- Last updated: 2026-03-20 (persistent NIMBY-shock scenario grid and calibration sensitivity added)
+- 2026-03-20 persistent NIMBY-shock scenario grid added:
+  - `code/build_nimby_shock_scenarios.py`
+  - `notes/build/nimby_shock_scenario_grid.csv`
+  - `notes/build/nimby_shock_calibration_sensitivity.csv`
+  - `notes/build/nimby_shock_scenarios.md`
+  - `notes/build/nimby_shock_scenarios.png`
+  - `notes/build/nimby_shock_scenarios.pdf`
+  The long-run fertility result is now shown to be monotone in persistent NIMBY intensity. In the
+  medium-immigration projection, moving from `theta0 + 0.03` to `theta0 + 0.10` lowers projected
+  `2100` fertility from about `0.180` to about `0.167` against a baseline of about `0.188`, while
+  the projected `2100` house-price index rises from about `1.562` to about `2.281` against a
+  baseline of about `1.254`. Nearby changes in fertility-price sensitivity and family-demand
+  strength leave the sign of the result unchanged.
+- Last updated: 2026-03-20 (persistent NIMBY-shock fertility counterfactual added)
+- 2026-03-20 persistent NIMBY-shock counterfactual added:
+  - `code/build_nimby_shock_fertility_counterfactual.py`
+  - updated `code/nimby_fertility_transition_bridge.py`
+  - `notes/build/nimby_shock_transition_series.csv`
+  - `notes/build/nimby_shock_projection_series.csv`
+  - `notes/build/nimby_shock_fertility_counterfactual_summary.csv`
+  - `notes/build/nimby_shock_fertility_counterfactual.md`
+  - `notes/build/nimby_shock_fertility_counterfactual.png`
+  - `notes/build/nimby_shock_fertility_counterfactual.pdf`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  - updated `drafts/fertility_and_housing_supply.pdf`
+  The long-run dynamic object has been redirected away from the aging-only bridge and toward a
+  more relevant supply-tightening counterfactual. Starting from a shared baseline and imposing a
+  permanent increase in baseline political tightness, the model now delivers the paper's intended
+  mechanism directly: sustained housing scarcity raises future house prices and lowers realized
+  fertility.
 - Last updated: 2026-03-20 (standalone manuscript draft written and compiled)
 - 2026-03-20 standalone manuscript draft added:
   - `drafts/fertility_and_housing_supply.tex`
@@ -376,18 +407,18 @@
 
 ## In Progress
 
+- Deciding whether the current supply-tightening counterfactual is sufficient for the long-run
+  section or whether it should be extended into a richer housing-regime comparison.
 - Deciding whether the current bridge objects are sufficient for the first full draft or whether
   a true savings / balance-sheet block is needed before circulating the paper more widely.
-- Deciding whether the future demographic section should stay as a bridge result in the main text
-  or move to an appendix until the full project-02 forecast solver is ported.
 - Keeping the empirical geography mismatch in view, but not treating it as the active task while
   the manuscript framing and model results are being stabilized.
 
 ## Next 3 Tasks
 
-1. Tighten `drafts/fertility_and_housing_supply.tex` so the projection and proxy language is concise, precise, and paper-ready rather than note-like.
-2. Decide whether to build a true savings / balance-sheet block for exact net-worth and tenure comparisons or to keep the current access-proxy comparison as the dynamic object for this paper.
-3. Decide whether to port the upstream future-demographic forecast runner into project 03 or to keep the current projection bridge as the final forecast object.
+1. Decide which persistent NIMBY shift should be the paper's benchmark long-run counterfactual: `theta0 + 0.03`, `+0.05`, or a low/medium/high regime table.
+2. Tighten `drafts/fertility_and_housing_supply.tex` so the new persistent-NIMBY-shock section reads cleanly and the old aging-only framing is fully gone.
+3. Decide whether to build a true savings / balance-sheet block for exact net-worth and tenure comparisons or to keep the current access-proxy comparison as the dynamic object for this paper.
 
 ## Blockers
 
