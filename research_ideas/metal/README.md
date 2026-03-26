@@ -90,7 +90,15 @@ undetected. The broad-case review packets now give a first actual manual-validat
 `Patras` now look topology-fragile; and `Manchester` looks locally real but has only a `1`-year
 lead. That means the branch still looks interesting, but not as a broad clean main design. Right
 now it looks more promising as a bounded descriptive or mechanism branch unless the mixed cases
-hold up under deeper historical validation.
+hold up under deeper historical validation. That branch decision is now explicit in
+`data/processed/scene_networks/scene_branch_decision_memo.md`: the scene branch stays secondary.
+The main workflow has therefore moved back to the domestic-success redesign. A new cleanup pass
+keeps only `Rammstein`, `Nightwish`, and provisional `Sepultura` in
+`data/processed/country_genre_analysis/domestic_success_pilot_cases_shock_clean.csv`. That cleaned
+subset improves the full-set static FE sign on `all` starts to about `+2.8`, but the stricter
+`source_a + tier_1` subset remains negative at about `-4.3`, so the positive read still depends
+on the weakest-source row. The immediate project bottleneck is therefore to add earlier
+source-strong domestic breakthroughs rather than to keep widening the scene branch.
 
 The key scope choice is now settled: this is an all-metal Metallum project, not a technical-death
 project. The current outcome build is in `data/processed/`, anchored by
@@ -219,15 +227,18 @@ Current pilot read:
 - `data/processed/scene_networks/community_vs_label_results.md`
 - `data/processed/scene_networks/region_like_scene_candidates.md`
 - `data/processed/scene_networks/broad_city_case_review_packets.md`
+- `data/processed/scene_networks/scene_branch_decision_memo.md`
+- `data/processed/country_genre_analysis/domestic_success_cleanup_priority.md`
+- `data/processed/country_genre_analysis/domestic_success_pilot_fe_summary_shock_clean.md`
 - `STATUS.md`
 - `memory.md`
 
 ## Next 3 concrete tasks
-1. Make the branch decision explicitly:
-   decide whether the scene-network branch is a main-design candidate, a mechanism section, or a
-   bounded descriptive appendix after the broad-case review packets.
-2. Audit the `3` mid-scene cases only if needed:
-   use the same packet workflow on `Chico`, `Fulda`, and `Wollongong` only if the broad-case set
-   still feels too thin.
-3. If the scene branch stays secondary, return to the domestic-success redesign:
-   clean the weak pilot rows and rerun the residualized country-genre pass.
+1. Expand the `shock_clean` domestic-success file:
+   add earlier source-`A` domestic breakthroughs so the baseline does not hinge on provisional
+   `Sepultura`.
+2. Replace or redate the mixed late-coded rows:
+   start with `Lacuna Coil`, `Powerwolf`, and `Iron Maiden`.
+3. Keep the scene branch bounded:
+   audit the `3` mid-scene cases only if later mechanism work needs more examples beyond the
+   current strong-city subset.

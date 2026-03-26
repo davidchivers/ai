@@ -1,7 +1,7 @@
 # 05 Research plan
 
-Last updated: 2026-03-21
-Status: country-year baseline locked; home-vs-foreign split added; Brazil supplement partly hardened; Italy official cleanup added; broader visibility-vs-certification-vs-top10 memo written; country-genre family prototype added; language-spillover market ranking added; seed refresh completed; Australia extension built; United States certification extension built; domestic-success pilot expanded; first FE pass built
+Last updated: 2026-03-26
+Status: scene branch explicitly downgraded to bounded mechanism/descriptive fork; shock-clean domestic-success subset built and rerun; current main bottleneck is finding earlier source-strong domestic breakthroughs
 
 ## Chosen question and estimand
 Primary question: do blockbuster metal albums in a country or shared-language market induce later
@@ -200,6 +200,35 @@ Fallback path:
   - practical implication:
     - the next pass should use both quantitative and qualitative evidence to prune or re-date the
       shock-treatment file
+- After the broad-case scene review and explicit branch decision, recorded that:
+  - the scene-network branch survives only as a bounded mechanism or descriptive fork
+  - it does not have enough robustness to replace the domestic-success design
+  - the strongest scene cases now look like:
+    - `Pittsburgh`
+    - `Bilbao`
+    - `Brussels`
+  - practical implication:
+    - return the main workflow to domestic-success cleanup rather than spending the next block of
+      time widening the scene branch
+- After building the domestic-success cleanup priority and shock-clean reruns, recorded that:
+  - the current shock-clean keep set is only:
+    - `Rammstein`
+    - `Nightwish`
+    - provisional `Sepultura`
+  - obvious mature-scene or deep-complements rows should be dropped from the shock baseline:
+    - `Dimmu Borgir`
+    - `Rhapsody`
+    - `Metallica`
+    - `Pantera`
+  - mixed late-coded rows should be replaced or re-dated:
+    - `Lacuna Coil`
+    - `Powerwolf`
+    - `Iron Maiden`
+  - the shock-clean rerun improves the full-sample static sign on all starts to about `+2.8`
+    but the strict `source_a + tier_1` subset remains negative at about `-4.3`
+  - practical implication:
+    - the next domestic-success move is to widen the shock-clean file with earlier source-`A`
+      rows, not to defend the current tiny subset as sufficient
 
 ## Design lock criteria
 Keep the current baseline if:
@@ -284,15 +313,14 @@ This is the concrete build order for the stronger version of the project.
    widening the data build just to save the project.
 
 ## Next 3 tasks
-1. Re-date or replace the weakest pilot rows, especially cases that already look mature before the
-   coded breakthrough year.
+1. Expand the `shock_clean` file with earlier source-`A` domestic breakthroughs so the baseline
+   does not hinge on provisional `Sepultura`.
    Owner: Codex
-   Deliverable: `data/processed/country_genre_analysis/domestic_success_pilot_cases.csv`
-2. Decide whether to build a broader breakout-prediction risk file for the scene-complements fork.
+   Deliverable: `data/processed/country_genre_analysis/domestic_success_pilot_cases_shock_clean.csv`
+2. Replace or redate the mixed late-coded rows, starting with `Lacuna Coil`, `Powerwolf`, and
+   `Iron Maiden`.
    Owner: Codex
-   Deliverable: `data/processed/country_genre_analysis/domestic_success_pilot_scene_complements_summary.md`
-3. Expand the domestic-success treatment file only with earlier and higher-confidence
-   `country x genre_family` rows, using the qualitative scene memo as a pruning aid, then rerun
-   the FE pass.
+   Deliverable: `data/processed/country_genre_analysis/domestic_success_cleanup_priority.md`
+3. Keep the scene branch bounded and only extend it if later mechanism work needs more examples.
    Owner: Codex
-   Deliverable: `data/processed/country_genre_analysis/domestic_success_pilot_fe_summary.md`
+   Deliverable: `data/processed/scene_networks/scene_branch_decision_memo.md`

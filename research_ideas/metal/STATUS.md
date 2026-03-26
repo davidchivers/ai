@@ -2,27 +2,27 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-26 (broad-case review packets built)
-- Current phase: the six-market domestic-success branch remains fully built, but the parallel
-  scene-network branch now has both the full lagged timing object and a materially cleaner
-  geography filter. The first full pass wrote `34,645` city-year snapshots and `5,756`
-  city-genre timing rows, with `529` `community_precedes_label` cases. After adding a reusable
-  geography-audit exclusion file and rerunning under stricter thresholds
-  (`min_bands = 10`, `community_min_genre_bands = 4`, `genre_share_threshold = 0.67`), the
-  current strict city-baseline read is `32,684` snapshots, `5,429` timing rows, `21`
-  `community_precedes_label` cases, `86` same-year cases, and `5,322` undetected cases. Repeated
-  geography tightening has kept the precedes count at `21` while mostly trimming the undetected
-  tail. The region-like sidecar adds only one extra precedes case, `Utrecht Province, Netherlands`
-  in `black_metal`, so the clean city baseline is not hiding a large region-only signal. A
-  surviving-case audit splits the `21` city-baseline precedes cases into `8` broad-scene cases,
-  `3` mid-scene cases, and `10` fragile cases. The critical robustness read is that all `21`
-  surviving cases are supported by exactly `4` same-genre bands: raising the genre-share threshold
-  from `0.67` to `0.75` leaves the count at `21`, but requiring `5` same-genre bands collapses
-  precedes to `0`. The new broad-case review packets sharpen that further: `4` of the `8` broad
-  cases show clear `multi_bridge_support`, `2` are `hub_bridge_mixed`, and `2` are
-  `single_bridge_risk`. The live bottleneck is therefore no longer "can the lagged test be built?"
-  but whether the best-supported subset is strong enough to keep the scene-network branch ahead of
-  the domestic-success redesign.
+- Last updated: 2026-03-26 (scene branch decision locked; shock-clean domestic rerun completed)
+- Current phase: the project has now made an explicit branch choice. The scene-network branch stays
+  alive, but as a bounded mechanism or descriptive fork rather than the headline design. The clean
+  city-baseline scene read remains `32,684` snapshots, `5,429` timing rows, `21`
+  `community_precedes_label` cases, `86` same-year cases, and `5,322` undetected cases. The
+  region-like sidecar adds only one extra precedes case, `Utrecht Province, Netherlands` in
+  `black_metal`, so relabeling wider units does not rescue a large hidden region-only signal. The
+  crucial robustness fact also remains unchanged: all `21` surviving city-baseline precedes cases
+  are supported by exactly `4` same-genre bands, and requiring `5` same-genre bands collapses the
+  count to `0`. The broad-case review packets narrow that to a still-interesting but small core:
+  `4` of `8` broad cases show `multi_bridge_support`, `2` are `hub_bridge_mixed`, and `2` are
+  `single_bridge_risk`. That is enough to keep scenes in the project, but not enough to carry the
+  whole design. The main workflow therefore returns to the domestic-success redesign, where a new
+  cleanup pass drops `4` obvious mature-scene rows, flags `3` more for replacement or re-dating,
+  and keeps only a `3`-case `shock_clean` subset:
+  `Rammstein`, `Nightwish`, and provisional `Sepultura`. That cleaned subset improves the full-set
+  static FE sign on `all` starts from about `-7.5` in the old `10`-case pilot to about `+2.8`, but
+  the stricter `source_a + tier_1` subset remains negative at about `-4.3`, so the positive read
+  still depends on the weakest-source row. The live bottleneck is now to expand the shock-clean
+  domestic-success file with earlier source-strong cases rather than to keep debating whether the
+  scene branch should fully replace it.
 - Canonical tracker: this file is the single source of truth for current status.
 
 ## Completed
@@ -672,30 +672,81 @@
     - the broad-city audit keeps the scene branch alive, but not yet as the headline design
     - the branch now looks strongest as a bounded mechanism or descriptive fork unless the mixed
       cases survive deeper historical validation
+- Locked the branch decision explicitly and returned the critical path to the domestic-success
+  redesign:
+  - added:
+    - `data/processed/scene_networks/scene_branch_decision_memo.md`
+    - `code/14_build_domestic_success_cleanup_priority.py`
+  - current domestic cleanup outputs:
+    - `data/processed/country_genre_analysis/domestic_success_cleanup_priority.csv`
+    - `data/processed/country_genre_analysis/domestic_success_cleanup_priority.md`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_cases_shock_clean.csv`
+  - current cleanup read:
+    - `keep_in_shock_clean`: `2`
+    - `provisional_keep_in_shock_clean`: `1`
+    - `replace_or_redate_before_use`: `3`
+    - `drop_from_shock_baseline`: `4`
+    - shock-clean keep set:
+      - `Rammstein`
+      - `Nightwish`
+      - provisional `Sepultura`
+  - practical implication:
+    - the mature-scene and deep-complements rows should stay in the project only as scene evidence
+      or contrast cases, not as the domestic-shock baseline
+- Generalized the domestic-success rerun scripts so they can estimate alternative case files
+  without forking the workflow:
+  - `code/11_build_domestic_success_pilot_event_pass.py` now accepts:
+    - `--pilot-cases-file`
+    - `--output-token`
+  - `code/12_estimate_domestic_success_pilot_fe.py` now accepts:
+    - `--pilot-cases-file`
+    - `--output-token`
+  - current shock-clean rerun outputs:
+    - `data/processed/country_genre_analysis/domestic_success_pilot_case_years_shock_clean.csv`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_event_windows_shock_clean.csv`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_event_study_shock_clean.csv`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_event_pass_summary_shock_clean.md`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_fe_static_shock_clean.csv`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_fe_event_study_shock_clean.csv`
+    - `data/processed/country_genre_analysis/domestic_success_pilot_fe_summary_shock_clean.md`
+  - current shock-clean read:
+    - descriptive event pass:
+      - `2` of `3` cases improve on the all-band share-gap margin
+      - pooled all-band share gap rises from about `0.1` percentage points pre-period mean to
+        about `1.5` post-period mean
+    - FE pass:
+      - full `3`-case static coefficient on all starts:
+        about `+2.8` with clustered SE `5.7`
+      - strict `2`-case `source_a + tier_1` static coefficient on all starts:
+        about `-4.3` with clustered SE `2.0`
+  - practical implication:
+    - pruning clearly weak rows helps, but the positive read still depends on the provisional
+      Brazil `Sepultura` row
+    - the next domestic-success move is to add earlier source-`A` keep candidates, not to treat
+      the current tiny subset as persuasive on its own
 
 ## In Progress
 
-- Writing the branch-decision memo from the first packet-based case review:
-  - current broad-case read points toward a bounded scene branch rather than a full pivot
-- Deciding whether the `3` mid-scene cases are worth auditing:
-  - this now matters only if we still need more plausible positive cases after the broad-case pass
-- Deciding whether the scene-network branch should remain a mechanism/descriptive fork or still
-  attempt to outrank the domestic-success branch
-- Replacing or re-dating pilot domestic-success rows that already look mature before the coded
-  breakthrough year if the shock design remains live
-- Building a cleaner second-wave domestic-success file with earlier and higher-confidence rows
-  before rerunning the fixed-effects specification
+- Rebuilding the domestic-success branch around the `shock_clean` logic:
+  - current keep set is too small, so the next task is expansion with earlier source-`A` rows
+- Deciding which replacements should enter first for the mixed late-coded rows:
+  - immediate weak rows are `Lacuna Coil`, `Powerwolf`, and `Iron Maiden`
+- Deciding whether the `3` mid-scene cases are worth auditing for the bounded scene fork:
+  - this no longer affects the main branch choice
+- Keeping the strongest scene cases organized for later mechanism use:
+  - current front-runners are `Pittsburgh`, `Bilbao`, and `Brussels`
 
 ## Next 3 Tasks
 
-1. Write the branch-decision memo:
-   decide explicitly whether the scene-network branch is now a main-design candidate, a mechanism
-   section, or a bounded descriptive appendix after the broad-case review packets.
-2. Audit the `3` mid-scene cases only if needed:
-   use the same packet workflow on `Chico`, `Fulda`, and `Wollongong` only if we need more live
-   candidates beyond the broad-case subset.
-3. If the scene branch stays secondary, return to the domestic-success redesign:
-   clean the weak pilot rows and rerun the residualized country-genre pass.
+1. Expand the shock-clean domestic-success file:
+   add earlier source-`A` domestic breakthroughs so the redesigned baseline does not depend on
+   provisional `Sepultura`.
+2. Replace or redate the mixed late-coded rows:
+   start with `Lacuna Coil`, `Powerwolf`, and `Iron Maiden`, which are currently too late to keep
+   as shock rows.
+3. Keep the scene branch bounded:
+   audit the `3` mid-scene cases only if we need more mechanism examples after the current strong
+   city subset.
 
 ## Open Decisions
 

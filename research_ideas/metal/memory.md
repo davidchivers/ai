@@ -4,6 +4,78 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-26 (scene decision locked; shock-clean domestic rerun built)
+- Wrote the explicit scene-branch decision memo:
+  - `data/processed/scene_networks/scene_branch_decision_memo.md`
+- Current scene-branch decision:
+  - keep the scene-network branch as a bounded mechanism or descriptive fork
+  - do not promote it to the main paper design
+- Current reason:
+  - clean city baseline still shows only `21` precedes cases
+  - region-like relabeling adds only `1` extra precedes case
+  - all surviving city-baseline precedes cases depend on exactly `4` same-genre bands
+  - requiring `5` same-genre bands collapses the count to `0`
+  - broad-case review packets leave a small but real core:
+    - `4` `multi_bridge_support`
+    - `2` `hub_bridge_mixed`
+    - `2` `single_bridge_risk`
+  - strongest scene cases remain:
+    - `Pittsburgh`
+    - `Bilbao`
+    - `Brussels`
+- Added `code/14_build_domestic_success_cleanup_priority.py`.
+- Current domestic cleanup outputs:
+  - `data/processed/country_genre_analysis/domestic_success_cleanup_priority.csv`
+  - `data/processed/country_genre_analysis/domestic_success_cleanup_priority.md`
+  - `data/processed/country_genre_analysis/domestic_success_pilot_cases_shock_clean.csv`
+- Current cleanup read:
+  - `keep_in_shock_clean`: `2`
+  - `provisional_keep_in_shock_clean`: `1`
+  - `replace_or_redate_before_use`: `3`
+  - `drop_from_shock_baseline`: `4`
+  - shock-clean keep set:
+    - `Rammstein`
+    - `Nightwish`
+    - provisional `Sepultura`
+  - drop set:
+    - `Dimmu Borgir`
+    - `Rhapsody`
+    - `Metallica`
+    - `Pantera`
+  - replace-or-redate set:
+    - `Lacuna Coil`
+    - `Powerwolf`
+    - `Iron Maiden`
+- Generalized the domestic-success rerun scripts so they can use arbitrary case files:
+  - `code/11_build_domestic_success_pilot_event_pass.py` now accepts:
+    - `--pilot-cases-file`
+    - `--output-token`
+  - `code/12_estimate_domestic_success_pilot_fe.py` now accepts:
+    - `--pilot-cases-file`
+    - `--output-token`
+- Ran the shock-clean reruns and wrote:
+  - `data/processed/country_genre_analysis/domestic_success_pilot_event_pass_summary_shock_clean.md`
+  - `data/processed/country_genre_analysis/domestic_success_pilot_fe_summary_shock_clean.md`
+- Current shock-clean read:
+  - descriptive event pass:
+    - `2` of `3` cases improve on the all-band share-gap margin
+    - pooled all-band share gap rises from about `0.1` percentage points pre-period mean to
+      about `1.5` post-period mean
+  - FE pass:
+    - full `3`-case static coefficient on all starts:
+      about `+2.8` with clustered SE `5.7`
+    - full `3`-case static coefficient on unsigned starts:
+      about `+2.5` with clustered SE `4.8`
+    - strict `2`-case `source_a + tier_1` static coefficient on all starts:
+      about `-4.3` with clustered SE `2.0`
+- Current interpretation:
+  - pruning clearly weak rows helps relative to the old `10`-case negative pilot
+  - but the positive read currently depends on the provisional `Sepultura` row
+  - the right next move is to find earlier source-`A` domestic breakthroughs, not to treat the
+    current tiny subset as persuasive
+
+---
+
 ### Session: 2026-03-26 (region-like sidecar and broad-case review packets)
 - Refined the geography-clean scene workflow so region-like labels are retained as a separate side
   object rather than mixed into the city baseline.

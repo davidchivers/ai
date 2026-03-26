@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -13,13 +14,13 @@ OUTPUT_DIR = PROCESSED_DIR / "country_genre_analysis"
 
 FAMILY_PANEL_PATH = OUTPUT_DIR / "country_genre_family_year_panel.csv"
 COUNTRY_YEAR_PATH = PROCESSED_DIR / "metal_archives_all_metal_country_year_panel.csv"
-PILOT_CASES_PATH = OUTPUT_DIR / "domestic_success_pilot_cases.csv"
+DEFAULT_PILOT_CASES_PATH = OUTPUT_DIR / "domestic_success_pilot_cases.csv"
 
-CASE_YEARS_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_case_years.csv"
-WINDOWS_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_windows.csv"
-EVENT_STUDY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_study.csv"
-SUMMARY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_pass_summary.md"
-FIGURE_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_share_gap_event_study.png"
+DEFAULT_CASE_YEARS_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_case_years.csv"
+DEFAULT_WINDOWS_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_windows.csv"
+DEFAULT_EVENT_STUDY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_study.csv"
+DEFAULT_SUMMARY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_event_pass_summary.md"
+DEFAULT_FIGURE_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_share_gap_event_study.png"
 
 PRE_WINDOW_YEARS = 3
 POST_WINDOW_YEARS = 3
@@ -54,10 +55,16 @@ def safe_share(numerator: pd.Series, denominator: pd.Series) -> pd.Series:
     )
 
 
-def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def path_with_token(path: Path, token: str) -> Path:
+    if not token:
+        return path
+    return path.with_name(f"{path.stem}_{token}{path.suffix}")
+
+
+def load_inputs(pilot_cases_path: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     family_panel = pd.read_csv(FAMILY_PANEL_PATH).fillna(pd.NA)
     country_year = pd.read_csv(COUNTRY_YEAR_PATH).fillna(pd.NA)
-    pilot_cases = pd.read_csv(PILOT_CASES_PATH).fillna(pd.NA)
+    pilot_cases = pd.read_csv(pilot_cases_path).fillna(pd.NA)
 
     family_numeric_columns = [
         "entry_year",
@@ -305,7 +312,7 @@ def build_event_study(case_years: pd.DataFrame) -> pd.DataFrame:
     return event_study.sort_values("relative_year").reset_index(drop=True)
 
 
-def plot_event_study(event_study: pd.DataFrame) -> None:
+def plot_event_study(event_study: pd.DataFrame, figure_output_path: Path) -> None:
     fig, ax = plt.subplots(figsize=(11, 6))
     color_map = {"all": "#0b7285", "unsigned": "#e67700", "signed": "#5c940d"}
     for outcome_key, spec in OUTCOME_SPECS.items():
@@ -334,7 +341,7 @@ def plot_event_study(event_study: pd.DataFrame) -> None:
     )
     fig.text(0.01, 0.01, note, ha="left", va="bottom", fontsize=9)
     fig.tight_layout(rect=(0, 0.06, 1, 1))
-    fig.savefig(FIGURE_OUTPUT_PATH, dpi=200)
+    fig.savefig(figure_output_path, dpi=200)
     plt.close(fig)
 
 
@@ -344,7 +351,16 @@ def pct_point_text(value: object) -> str:
     return f"{float(value) * 100:.1f}"
 
 
-def build_summary(case_years: pd.DataFrame, event_windows: pd.DataFrame, event_study: pd.DataFrame) -> str:
+def build_summary(
+    case_years: pd.DataFrame,
+    event_windows: pd.DataFrame,
+    event_study: pd.DataFrame,
+    run_label: str,
+    case_years_output_path: Path,
+    windows_output_path: Path,
+    event_study_output_path: Path,
+    figure_output_path: Path,
+) -> str:
     case_table = event_windows[
         [
             "country_name",
@@ -395,7 +411,10 @@ def build_summary(case_years: pd.DataFrame, event_windows: pd.DataFrame, event_s
     pooled_post_all = event_study.loc[event_study["relative_year"] >= 0, "mean_share_gap_all"].mean()
 
     lines: list[str] = []
-    lines.append("# Domestic-success pilot event pass")
+    heading = "Domestic-success pilot event pass"
+    if run_label:
+        heading = f"Domestic-success {run_label} event pass"
+    lines.append(f"# {heading}")
     lines.append("")
     lines.append("## Locked pilot choices")
     lines.append("")
@@ -451,10 +470,10 @@ def build_summary(case_years: pd.DataFrame, event_windows: pd.DataFrame, event_s
     lines.append("")
     lines.append("## Outputs")
     lines.append("")
-    lines.append("- `domestic_success_pilot_case_years.csv`")
-    lines.append("- `domestic_success_pilot_event_windows.csv`")
-    lines.append("- `domestic_success_pilot_event_study.csv`")
-    lines.append("- `domestic_success_pilot_share_gap_event_study.png`")
+    lines.append(f"- `{case_years_output_path.name}`")
+    lines.append(f"- `{windows_output_path.name}`")
+    lines.append(f"- `{event_study_output_path.name}`")
+    lines.append(f"- `{figure_output_path.name}`")
     lines.append("")
     lines.append("## Interpretation")
     lines.append("")
@@ -468,9 +487,29 @@ def build_summary(case_years: pd.DataFrame, event_windows: pd.DataFrame, event_s
 
 
 def main() -> None:
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--pilot-cases-file",
+        default=str(DEFAULT_PILOT_CASES_PATH),
+        help="Path to the domestic-success case CSV to use",
+    )
+    parser.add_argument(
+        "--output-token",
+        default="",
+        help="Optional token appended to output filenames before the extension",
+    )
+    args = parser.parse_args()
 
-    family_panel, country_year, pilot_cases = load_inputs()
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    pilot_cases_path = Path(args.pilot_cases_file)
+    output_token = args.output_token.strip()
+    case_years_output_path = path_with_token(DEFAULT_CASE_YEARS_OUTPUT_PATH, output_token)
+    windows_output_path = path_with_token(DEFAULT_WINDOWS_OUTPUT_PATH, output_token)
+    event_study_output_path = path_with_token(DEFAULT_EVENT_STUDY_OUTPUT_PATH, output_token)
+    summary_output_path = path_with_token(DEFAULT_SUMMARY_OUTPUT_PATH, output_token)
+    figure_output_path = path_with_token(DEFAULT_FIGURE_OUTPUT_PATH, output_token)
+
+    family_panel, country_year, pilot_cases = load_inputs(pilot_cases_path=pilot_cases_path)
     case_years = build_case_years(
         family_panel=family_panel,
         country_year=country_year,
@@ -478,21 +517,30 @@ def main() -> None:
     )
     event_windows = build_event_windows(case_years=case_years)
     event_study = build_event_study(case_years=case_years)
-    plot_event_study(event_study=event_study)
-    summary = build_summary(case_years=case_years, event_windows=event_windows, event_study=event_study)
+    plot_event_study(event_study=event_study, figure_output_path=figure_output_path)
+    summary = build_summary(
+        case_years=case_years,
+        event_windows=event_windows,
+        event_study=event_study,
+        run_label=output_token or "pilot",
+        case_years_output_path=case_years_output_path,
+        windows_output_path=windows_output_path,
+        event_study_output_path=event_study_output_path,
+        figure_output_path=figure_output_path,
+    )
 
-    case_years.to_csv(CASE_YEARS_OUTPUT_PATH, index=False)
-    event_windows.to_csv(WINDOWS_OUTPUT_PATH, index=False)
-    event_study.to_csv(EVENT_STUDY_OUTPUT_PATH, index=False)
-    SUMMARY_OUTPUT_PATH.write_text(summary, encoding="utf-8")
+    case_years.to_csv(case_years_output_path, index=False)
+    event_windows.to_csv(windows_output_path, index=False)
+    event_study.to_csv(event_study_output_path, index=False)
+    summary_output_path.write_text(summary, encoding="utf-8")
 
     print(f"Pilot cases: {pilot_cases['pilot_case_id'].nunique()}")
     print(f"Case-year rows: {len(case_years)}")
-    print(f"Wrote: {CASE_YEARS_OUTPUT_PATH}")
-    print(f"Wrote: {WINDOWS_OUTPUT_PATH}")
-    print(f"Wrote: {EVENT_STUDY_OUTPUT_PATH}")
-    print(f"Wrote: {SUMMARY_OUTPUT_PATH}")
-    print(f"Wrote: {FIGURE_OUTPUT_PATH}")
+    print(f"Wrote: {case_years_output_path}")
+    print(f"Wrote: {windows_output_path}")
+    print(f"Wrote: {event_study_output_path}")
+    print(f"Wrote: {summary_output_path}")
+    print(f"Wrote: {figure_output_path}")
 
 
 if __name__ == "__main__":

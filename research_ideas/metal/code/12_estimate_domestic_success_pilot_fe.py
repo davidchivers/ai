@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -13,12 +14,12 @@ OUTPUT_DIR = PROCESSED_DIR / "country_genre_analysis"
 
 FAMILY_PANEL_PATH = OUTPUT_DIR / "country_genre_family_year_panel.csv"
 COUNTRY_YEAR_PATH = PROCESSED_DIR / "metal_archives_all_metal_country_year_panel.csv"
-PILOT_CASES_PATH = OUTPUT_DIR / "domestic_success_pilot_cases.csv"
+DEFAULT_PILOT_CASES_PATH = OUTPUT_DIR / "domestic_success_pilot_cases.csv"
 
-STATIC_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_static.csv"
-DYNAMIC_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_event_study.csv"
-SUMMARY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_summary.md"
-FIGURE_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_event_study.png"
+DEFAULT_STATIC_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_static.csv"
+DEFAULT_DYNAMIC_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_event_study.csv"
+DEFAULT_SUMMARY_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_summary.md"
+DEFAULT_FIGURE_OUTPUT_PATH = OUTPUT_DIR / "domestic_success_pilot_fe_event_study.png"
 
 SAMPLE_START_YEAR = 1990
 SAMPLE_END_YEAR = 2022
@@ -41,10 +42,16 @@ CASE_SET_RULES = {
 }
 
 
-def load_inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+def path_with_token(path: Path, token: str) -> Path:
+    if not token:
+        return path
+    return path.with_name(f"{path.stem}_{token}{path.suffix}")
+
+
+def load_inputs(pilot_cases_path: Path) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     family_panel = pd.read_csv(FAMILY_PANEL_PATH).fillna(pd.NA)
     country_year = pd.read_csv(COUNTRY_YEAR_PATH).fillna(pd.NA)
-    pilot_cases = pd.read_csv(PILOT_CASES_PATH).fillna(pd.NA)
+    pilot_cases = pd.read_csv(pilot_cases_path).fillna(pd.NA)
 
     family_panel["entry_year"] = pd.to_numeric(family_panel["entry_year"], errors="coerce").astype(int)
     for column in OUTCOME_SPECS.values():
@@ -266,7 +273,7 @@ def build_case_sets(panel: pd.DataFrame, pilot_cases: pd.DataFrame) -> dict[str,
     return case_sets
 
 
-def plot_dynamic(dynamic_results: pd.DataFrame) -> None:
+def plot_dynamic(dynamic_results: pd.DataFrame, figure_output_path: Path) -> None:
     case_set_order = ["all_pilot_cases", "strict_source_a_tier1"]
     outcome_order = ["all", "unsigned", "signed"]
     label_map = {
@@ -305,11 +312,19 @@ def plot_dynamic(dynamic_results: pd.DataFrame) -> None:
     )
     fig.text(0.01, 0.01, note, ha="left", va="bottom", fontsize=9)
     fig.tight_layout(rect=(0, 0.07, 1, 1))
-    fig.savefig(FIGURE_OUTPUT_PATH, dpi=200)
+    fig.savefig(figure_output_path, dpi=200)
     plt.close(fig)
 
 
-def build_summary(static_results: pd.DataFrame, dynamic_results: pd.DataFrame, pilot_cases: pd.DataFrame) -> str:
+def build_summary(
+    static_results: pd.DataFrame,
+    dynamic_results: pd.DataFrame,
+    pilot_cases: pd.DataFrame,
+    run_label: str,
+    static_output_path: Path,
+    dynamic_output_path: Path,
+    figure_output_path: Path,
+) -> str:
     static_table = static_results.copy()
     for column in ["coef_post_treatment", "se_cluster_country_genre", "t_stat"]:
         static_table[column] = static_table[column].astype(float).round(3)
@@ -340,7 +355,10 @@ def build_summary(static_results: pd.DataFrame, dynamic_results: pd.DataFrame, p
     ].copy()
 
     lines: list[str] = []
-    lines.append("# Domestic-success pilot FE summary")
+    heading = "Domestic-success pilot FE summary"
+    if run_label:
+        heading = f"Domestic-success {run_label} FE summary"
+    lines.append(f"# {heading}")
     lines.append("")
     lines.append("## Specification")
     lines.append("")
@@ -359,8 +377,15 @@ def build_summary(static_results: pd.DataFrame, dynamic_results: pd.DataFrame, p
     lines.append(
         "- Event-study regressors: relative years `-3`, `-2`, `0`, `1`, and `2`, with `-1` omitted as the baseline year."
     )
+    full_case_ct = int(pilot_cases["pilot_case_id"].nunique())
+    strict_case_ct = int(
+        pilot_cases.loc[
+            pilot_cases["source_tier"].eq("source_a") & pilot_cases["event_tier"].eq("tier_1"),
+            "pilot_case_id",
+        ].nunique()
+    )
     lines.append(
-        "- Case sets: full `10`-case pilot and a stricter `6`-case `source_a + tier_1` subset."
+        f"- Case sets: full `{full_case_ct}`-case pilot and a stricter `{strict_case_ct}`-case `source_a + tier_1` subset."
     )
     lines.append("")
     lines.append("## First read")
@@ -403,15 +428,35 @@ def build_summary(static_results: pd.DataFrame, dynamic_results: pd.DataFrame, p
     lines.append("")
     lines.append("## Outputs")
     lines.append("")
-    lines.append("- `domestic_success_pilot_fe_static.csv`")
-    lines.append("- `domestic_success_pilot_fe_event_study.csv`")
-    lines.append("- `domestic_success_pilot_fe_event_study.png`")
+    lines.append(f"- `{static_output_path.name}`")
+    lines.append(f"- `{dynamic_output_path.name}`")
+    lines.append(f"- `{figure_output_path.name}`")
     return "\n".join(lines) + "\n"
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--pilot-cases-file",
+        default=str(DEFAULT_PILOT_CASES_PATH),
+        help="Path to the domestic-success case CSV to use",
+    )
+    parser.add_argument(
+        "--output-token",
+        default="",
+        help="Optional token appended to output filenames before the extension",
+    )
+    args = parser.parse_args()
+
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    family_panel, country_year, pilot_cases = load_inputs()
+    pilot_cases_path = Path(args.pilot_cases_file)
+    output_token = args.output_token.strip()
+    static_output_path = path_with_token(DEFAULT_STATIC_OUTPUT_PATH, output_token)
+    dynamic_output_path = path_with_token(DEFAULT_DYNAMIC_OUTPUT_PATH, output_token)
+    summary_output_path = path_with_token(DEFAULT_SUMMARY_OUTPUT_PATH, output_token)
+    figure_output_path = path_with_token(DEFAULT_FIGURE_OUTPUT_PATH, output_token)
+
+    family_panel, country_year, pilot_cases = load_inputs(pilot_cases_path=pilot_cases_path)
     full_panel = build_full_panel(family_panel=family_panel, country_year=country_year)
     case_sets = build_case_sets(panel=full_panel, pilot_cases=pilot_cases)
 
@@ -423,19 +468,27 @@ def main() -> None:
 
     static_results = pd.concat(static_frames, ignore_index=True)
     dynamic_results = pd.concat(dynamic_frames, ignore_index=True)
-    summary = build_summary(static_results=static_results, dynamic_results=dynamic_results, pilot_cases=pilot_cases)
+    summary = build_summary(
+        static_results=static_results,
+        dynamic_results=dynamic_results,
+        pilot_cases=pilot_cases,
+        run_label=output_token or "pilot",
+        static_output_path=static_output_path,
+        dynamic_output_path=dynamic_output_path,
+        figure_output_path=figure_output_path,
+    )
 
-    static_results.to_csv(STATIC_OUTPUT_PATH, index=False)
-    dynamic_results.to_csv(DYNAMIC_OUTPUT_PATH, index=False)
-    SUMMARY_OUTPUT_PATH.write_text(summary, encoding="utf-8")
-    plot_dynamic(dynamic_results=dynamic_results)
+    static_results.to_csv(static_output_path, index=False)
+    dynamic_results.to_csv(dynamic_output_path, index=False)
+    summary_output_path.write_text(summary, encoding="utf-8")
+    plot_dynamic(dynamic_results=dynamic_results, figure_output_path=figure_output_path)
 
     print(f"Full panel rows: {len(full_panel)}")
     print(f"Treated cells in full pilot: {pilot_cases[['countryiso3code', 'genre_family']].drop_duplicates().shape[0]}")
-    print(f"Wrote: {STATIC_OUTPUT_PATH}")
-    print(f"Wrote: {DYNAMIC_OUTPUT_PATH}")
-    print(f"Wrote: {SUMMARY_OUTPUT_PATH}")
-    print(f"Wrote: {FIGURE_OUTPUT_PATH}")
+    print(f"Wrote: {static_output_path}")
+    print(f"Wrote: {dynamic_output_path}")
+    print(f"Wrote: {summary_output_path}")
+    print(f"Wrote: {figure_output_path}")
 
 
 if __name__ == "__main__":
