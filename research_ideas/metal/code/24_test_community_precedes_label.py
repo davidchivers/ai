@@ -30,6 +30,7 @@ Outputs:
 Usage:
     python code/24_test_community_precedes_label.py
     python code/24_test_community_precedes_label.py --city-filter "tampa"
+    python code/24_test_community_precedes_label.py --exclude-city-file data/processed/scene_networks/city_geography_audit.csv --exclude-flag-column exclude_baseline_i
     python code/24_test_community_precedes_label.py --pilot
 """
 
@@ -454,6 +455,24 @@ def load_member_stints(input_file, band_reference, target_cities):
 
     print(f"  Read {rows_read} edge rows and kept {rows_kept} rows in target cities.")
     return stints_by_city
+
+
+def load_excluded_cities(exclude_city_file, exclude_flag_column):
+    excluded = set()
+    if not exclude_city_file:
+        return excluded
+
+    print(f"Loading excluded-city list from {exclude_city_file}...")
+    with open(exclude_city_file, "r", encoding="utf-8", newline="") as handle:
+        for row in csv.DictReader(handle):
+            flag_value = row.get(exclude_flag_column, "")
+            if str(flag_value).strip() in {"1", "True", "true", "yes", "YES"}:
+                city_country = normalize_text(row.get("city_country", ""))
+                if city_country:
+                    excluded.add(city_country)
+
+    print(f"  Loaded {len(excluded)} excluded city labels.")
+    return excluded
 
 
 def add_active_membership(active_bands_by_musician, pair_counts, musician, band_id):
@@ -882,14 +901,17 @@ def run_full(
     genre_share_threshold,
     city_filter,
     max_cities,
+    exclude_city_file,
+    exclude_flag_column,
 ):
     band_reference, city_bands = load_band_reference()
     targets_by_city = load_emergence_targets(city_filter=city_filter)
+    excluded_cities = load_excluded_cities(exclude_city_file, exclude_flag_column)
 
     targets_by_city = {
         city_country: rows
         for city_country, rows in targets_by_city.items()
-        if city_country in city_bands
+        if city_country in city_bands and city_country not in excluded_cities
     }
 
     if max_cities is not None:
@@ -1148,6 +1170,16 @@ def main():
         default=None,
         help="Optional cap on the number of cities processed after filtering",
     )
+    parser.add_argument(
+        "--exclude-city-file",
+        default="",
+        help="Optional CSV with city_country plus a binary exclusion flag",
+    )
+    parser.add_argument(
+        "--exclude-flag-column",
+        default="exclude_baseline_i",
+        help="Flag column used with --exclude-city-file",
+    )
     args = parser.parse_args()
 
     if args.pilot:
@@ -1165,6 +1197,8 @@ def main():
         genre_share_threshold=args.genre_share_threshold,
         city_filter=args.city_filter or None,
         max_cities=args.max_cities,
+        exclude_city_file=args.exclude_city_file or None,
+        exclude_flag_column=args.exclude_flag_column,
     )
 
 

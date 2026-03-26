@@ -2,16 +2,27 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-26 (lagged scene-timing pass completed)
-- Current phase: the six-market domestic-success branch remains fully built, but a parallel
-  scene-network branch has now moved from small Wikipedia pilots to the full Metal Archives member
-  dump. The delivered role-level member file is ingested; city-level network stats now exist for
-  `2,319` cities with `10+` bands; the first cross-city mechanism pass is estimated; and the first
-  full lagged `community_precedes_label` pass now writes `34,645` city-year snapshots and `5,756`
-  city-genre timing rows. Communities precede the current label proxy in `529` cases, line up in
-  the same year in `453`, and are still not detected by the label year in `4,774`. The live
-  bottleneck is now scene-unit geography cleanup and threshold robustness, plus a design decision
-  about whether the scene-network branch now outranks the earlier domestic-success design.
+- Last updated: 2026-03-26 (broad-case review packets built)
+- Current phase: the six-market domestic-success branch remains fully built, but the parallel
+  scene-network branch now has both the full lagged timing object and a materially cleaner
+  geography filter. The first full pass wrote `34,645` city-year snapshots and `5,756`
+  city-genre timing rows, with `529` `community_precedes_label` cases. After adding a reusable
+  geography-audit exclusion file and rerunning under stricter thresholds
+  (`min_bands = 10`, `community_min_genre_bands = 4`, `genre_share_threshold = 0.67`), the
+  current strict city-baseline read is `32,684` snapshots, `5,429` timing rows, `21`
+  `community_precedes_label` cases, `86` same-year cases, and `5,322` undetected cases. Repeated
+  geography tightening has kept the precedes count at `21` while mostly trimming the undetected
+  tail. The region-like sidecar adds only one extra precedes case, `Utrecht Province, Netherlands`
+  in `black_metal`, so the clean city baseline is not hiding a large region-only signal. A
+  surviving-case audit splits the `21` city-baseline precedes cases into `8` broad-scene cases,
+  `3` mid-scene cases, and `10` fragile cases. The critical robustness read is that all `21`
+  surviving cases are supported by exactly `4` same-genre bands: raising the genre-share threshold
+  from `0.67` to `0.75` leaves the count at `21`, but requiring `5` same-genre bands collapses
+  precedes to `0`. The new broad-case review packets sharpen that further: `4` of the `8` broad
+  cases show clear `multi_bridge_support`, `2` are `hub_bridge_mixed`, and `2` are
+  `single_bridge_risk`. The live bottleneck is therefore no longer "can the lagged test be built?"
+  but whether the best-supported subset is strong enough to keep the scene-network branch ahead of
+  the domestic-success redesign.
 - Canonical tracker: this file is the single source of truth for current status.
 
 ## Completed
@@ -560,15 +571,116 @@
     - but the first pass is mixed and selective, and several headline precedes cases sit in tiny
       or geography-questionable scene units, so city filtering and robustness now matter more than
       further raw scale-up
+- Built the first reusable geography audit for the scene-network branch and reran the strict
+  timing pass on top of it:
+  - added `code/25_audit_scene_geography.py`
+  - `code/24_test_community_precedes_label.py` now accepts:
+    - `--exclude-city-file`
+    - `--exclude-flag-column`
+  - current audit outputs:
+    - `data/processed/scene_networks/city_geography_audit.csv`
+    - `data/processed/scene_networks/city_geography_audit_summary.md`
+  - current audit read:
+    - audit universe: `2,446` city labels from the union of `city_network_stats.csv` and
+      `city_year_network_snapshots.csv`
+    - current baseline exclusions: `155`
+    - the still-visible excluded tail in the latest timing file is only `3` undetected rows:
+      `Kanagawa Prefecture`, `Mississippi`, and `Transylvania`
+  - current strict timing read:
+    - `32,689` city-year snapshots
+    - `5,430` city-genre timing rows
+    - `21` `community_precedes_label` cases
+    - `86` `community_same_year_as_label` cases
+    - `5,323` `community_not_detected_by_label` cases
+    - median lead among precedes cases: `4` years
+    - max lead among precedes cases: `14` years
+  - practical implication:
+    - the headline `529` precedes count collapses sharply under a cleaner baseline
+    - further geography tightening so far has not reduced the precedes count below `21`
+    - the real next question is now whether those surviving cases are meaningful enough to anchor
+      the scene-network branch
+- Audited the surviving strict-baseline precedes cases and ran a one-step robustness grid:
+  - added `code/26_audit_surviving_precedes_cases.py`
+  - current audit outputs:
+    - `data/processed/scene_networks/surviving_precedes_case_audit.csv`
+    - `data/processed/scene_networks/surviving_precedes_case_audit.md`
+  - current case-audit read:
+    - surviving cases: `21`
+    - `broad_scene_case`: `8`
+    - `mid_scene_case`: `3`
+    - `fragile_case`: `10`
+    - dominant surviving genre: `black_metal` with `11` cases
+    - all `21` surviving cases are detected on exactly `4` same-genre bands
+  - current one-step robustness read around the cleaned baseline:
+    - `community_min_genre_bands = 4`, `genre_share_threshold = 0.75`:
+      `21` precedes cases
+    - `community_min_genre_bands = 5`, `genre_share_threshold = 0.67`:
+      `0` precedes cases
+    - `community_min_genre_bands = 5`, `genre_share_threshold = 0.75`:
+      `0` precedes cases
+  - practical implication:
+    - the surviving signal is not just geography junk, because a meaningful subset sits in broad
+      recognizable scenes
+    - but it is count-fragile in absolute support size, so this currently looks more promising as a
+      narrow descriptive or mechanism branch than as a clean main design
+- Reclassified region-like units as a side object rather than mixing them into the city baseline:
+  - added `code/27_build_region_like_scene_candidates.py`
+  - current sidecar outputs:
+    - `data/processed/scene_networks/region_like_scene_units.csv`
+    - `data/processed/scene_networks/region_like_scene_units.md`
+    - `data/processed/scene_networks/community_vs_label_timing_region_like_sidecar.csv`
+    - `data/processed/scene_networks/community_vs_label_results_region_like_sidecar.md`
+    - `data/processed/scene_networks/region_like_scene_candidates.csv`
+    - `data/processed/scene_networks/region_like_scene_candidates.md`
+  - current region-like read:
+    - region-like timing rows: `134`
+    - `community_precedes_label`: `1`
+    - `community_same_year_as_label`: `0`
+    - `community_not_detected_by_label`: `133`
+    - the only region-like precedes case is `Utrecht Province, Netherlands` in `black_metal`
+  - practical implication:
+    - region-like units may still be substantively interesting, but they do not change the city
+      baseline story enough to justify mixing units
+- Built the first broad-case review packets for actual manual validation:
+  - added:
+    - `code/28_build_broad_city_case_shortlist.py`
+    - `code/29_build_broad_city_case_review_packets.py`
+  - current review outputs:
+    - `data/processed/scene_networks/broad_city_precedes_case_shortlist.csv`
+    - `data/processed/scene_networks/broad_city_precedes_case_shortlist.md`
+    - `data/processed/scene_networks/broad_city_case_review_summary.csv`
+    - `data/processed/scene_networks/broad_city_case_review_supporting_bands.csv`
+    - `data/processed/scene_networks/broad_city_case_review_bridge_musicians.csv`
+    - `data/processed/scene_networks/broad_city_case_review_packets.md`
+  - current broad-case review read:
+    - reviewed broad cases: `8`
+    - `multi_bridge_support`: `4`
+    - `hub_bridge_mixed`: `2`
+    - `single_bridge_risk`: `2`
+    - strongest topology-plus-lead cases now look like:
+      - `Pittsburgh` doom metal
+      - `Bilbao` black metal
+      - `Brussels` metalcore
+    - still-live but more mixed cases:
+      - `Córdoba` black metal
+      - `Nagoya` grindcore
+    - weak-on-topology or weak-on-lead cases:
+      - `Girona` black metal
+      - `Patras` black metal
+      - `Manchester` brutal death metal
+  - practical implication:
+    - the broad-city audit keeps the scene branch alive, but not yet as the headline design
+    - the branch now looks strongest as a bounded mechanism or descriptive fork unless the mixed
+      cases survive deeper historical validation
 
 ## In Progress
 
-- Auditing city identifiers and scene-unit quality before treating city as a stable scene object:
-  - region labels, county-like labels, and unusually dense small-city outliers now need review
-- Stress-testing the lagged timing pass under cleaner geography filters and stricter community
-  thresholds so the first headline precedes cases are not driven by tiny or awkward scene units
-- Deciding whether the scene-network branch should become the main design or remain a bounded
-  alternative to the domestic-success branch
+- Writing the branch-decision memo from the first packet-based case review:
+  - current broad-case read points toward a bounded scene branch rather than a full pivot
+- Deciding whether the `3` mid-scene cases are worth auditing:
+  - this now matters only if we still need more plausible positive cases after the broad-case pass
+- Deciding whether the scene-network branch should remain a mechanism/descriptive fork or still
+  attempt to outrank the domestic-success branch
 - Replacing or re-dating pilot domestic-success rows that already look mature before the coded
   breakthrough year if the shock design remains live
 - Building a cleaner second-wave domestic-success file with earlier and higher-confidence rows
@@ -576,14 +688,14 @@
 
 ## Next 3 Tasks
 
-1. Audit scene-unit geography:
-   clean city strings, inspect region-level labels and dense small-city outliers, and decide the
-   baseline city filter.
-2. Re-run `code/24_test_community_precedes_label.py` under cleaned geography and stricter
-   supporting-community thresholds, then compare how much of the headline `529` precedes count
-   survives.
-3. Decide whether the new member-data branch now outranks the domestic-success design; if not,
-   return to re-dating weak pilot rows and rerun the residualized country-genre pass.
+1. Write the branch-decision memo:
+   decide explicitly whether the scene-network branch is now a main-design candidate, a mechanism
+   section, or a bounded descriptive appendix after the broad-case review packets.
+2. Audit the `3` mid-scene cases only if needed:
+   use the same packet workflow on `Chico`, `Fulda`, and `Wollongong` only if we need more live
+   candidates beyond the broad-case subset.
+3. If the scene branch stays secondary, return to the domestic-success redesign:
+   clean the weak pilot rows and rerun the residualized country-genre pass.
 
 ## Open Decisions
 

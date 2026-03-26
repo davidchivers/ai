@@ -4,6 +4,130 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-26 (region-like sidecar and broad-case review packets)
+- Refined the geography-clean scene workflow so region-like labels are retained as a separate side
+  object rather than mixed into the city baseline.
+- Added:
+  - `code/27_build_region_like_scene_candidates.py`
+  - `code/28_build_broad_city_case_shortlist.py`
+  - `code/29_build_broad_city_case_review_packets.py`
+- Current region-like sidecar outputs:
+  - `data/processed/scene_networks/community_vs_label_timing_region_like_sidecar.csv`
+  - `data/processed/scene_networks/community_vs_label_results_region_like_sidecar.md`
+  - `data/processed/scene_networks/region_like_scene_candidates.csv`
+  - `data/processed/scene_networks/region_like_scene_candidates.md`
+- Current region-like read:
+  - region-like timing rows: `134`
+  - `community_precedes_label`: `1`
+  - `community_same_year_as_label`: `0`
+  - `community_not_detected_by_label`: `133`
+  - the only region-like precedes case is:
+    - `Utrecht Province, Netherlands` / `black_metal` / lead `5`
+- Current strict city-baseline read after the restored rerun:
+  - `32,684` lagged city-year snapshots
+  - `5,429` city-genre timing rows
+  - `21` `community_precedes_label` cases
+  - `86` `community_same_year_as_label` cases
+  - `5,322` `community_not_detected_by_label` cases
+  - median lead among precedes cases: `4` years
+  - max lead among precedes cases: `14` years
+- Built the first broad-city review outputs:
+  - `data/processed/scene_networks/broad_city_precedes_case_shortlist.csv`
+  - `data/processed/scene_networks/broad_city_precedes_case_shortlist.md`
+  - `data/processed/scene_networks/broad_city_case_review_summary.csv`
+  - `data/processed/scene_networks/broad_city_case_review_supporting_bands.csv`
+  - `data/processed/scene_networks/broad_city_case_review_bridge_musicians.csv`
+  - `data/processed/scene_networks/broad_city_case_review_packets.md`
+- Current broad-case review read:
+  - reviewed broad cases: `8`
+  - `multi_bridge_support`: `4`
+  - `hub_bridge_mixed`: `2`
+  - `single_bridge_risk`: `2`
+  - strongest local-network cases:
+    - `Pittsburgh` / `doom_metal`
+    - `Bilbao` / `black_metal`
+    - `Brussels` / `metalcore`
+  - still-live but mixed:
+    - `Córdoba` / `black_metal`
+    - `Nagoya` / `grindcore`
+  - topology-weak or timing-weak:
+    - `Girona` / `black_metal`
+    - `Patras` / `black_metal`
+    - `Manchester` / `brutal_death_metal`
+- Current interpretation:
+  - the city baseline remains the right main unit
+  - region-like units do not add much signal beyond the city baseline
+  - the scene-network branch survives as a real bounded mechanism or descriptive fork
+  - it still does not look strong enough to dominate the whole project unless the mixed cases hold
+    up under deeper historical validation
+
+---
+
+### Session: 2026-03-26 (geography-clean strict rerun tightened)
+- Added `code/25_audit_scene_geography.py` as a reusable city-label audit for the scene-network
+  branch.
+- Extended `code/24_test_community_precedes_label.py` so the full-data timing run can read:
+  - `--exclude-city-file`
+  - `--exclude-flag-column`
+- Current geography-audit workflow now:
+  - builds the audit universe from the union of:
+    - `data/processed/scene_networks/city_network_stats.csv`
+    - `data/processed/scene_networks/city_year_network_snapshots.csv`
+  - writes:
+    - `data/processed/scene_networks/city_geography_audit.csv`
+    - `data/processed/scene_networks/city_geography_audit_summary.md`
+  - current baseline exclusions: `155`
+- Current strict lagged-timing configuration:
+  - `min_bands = 10`
+  - `community_min_genre_bands = 4`
+  - `genre_share_threshold = 0.67`
+  - geography exclusions loaded from `city_geography_audit.csv`
+- Current strict rerun read:
+  - `32,689` lagged city-year snapshots
+  - `5,430` city-genre timing rows
+  - `21` `community_precedes_label` cases
+  - `86` `community_same_year_as_label` cases
+  - `5,323` `community_not_detected_by_label` cases
+  - median lead among precedes cases: `4` years
+  - max lead among precedes cases: `14` years
+- Current interpretation:
+  - the first-pass `529` precedes headline collapses sharply under a materially cleaner baseline
+  - repeated geography tightening has not pushed the precedes count below `21`
+  - the remaining geography tail is now small and all-undetected:
+    `Kanagawa Prefecture`, `Mississippi`, and `Transylvania` are the current excluded labels still
+    visible in the latest timing file because the audit is built iteratively from the newest
+    outputs
+  - the bottleneck has shifted from raw data plumbing to substantive triage:
+    inspect the surviving `21` cases and decide whether the scene-network branch still outranks
+    the domestic-success redesign
+- Added `code/26_audit_surviving_precedes_cases.py` to audit the surviving strict-baseline
+  precedes cases.
+- Wrote:
+  - `data/processed/scene_networks/surviving_precedes_case_audit.csv`
+  - `data/processed/scene_networks/surviving_precedes_case_audit.md`
+- Current surviving-case read:
+  - `21` surviving precedes cases
+  - `8` `broad_scene_case`
+  - `3` `mid_scene_case`
+  - `10` `fragile_case`
+  - `11` of `21` cases are `black_metal`
+  - all `21` cases are detected on exactly `4` same-genre bands
+- Ran a one-step robustness grid around the cleaned baseline:
+  - `community_min_genre_bands = 4`, `genre_share_threshold = 0.75`:
+    still `21` precedes cases
+  - `community_min_genre_bands = 5`, `genre_share_threshold = 0.67`:
+    `0` precedes cases
+  - `community_min_genre_bands = 5`, `genre_share_threshold = 0.75`:
+    `0` precedes cases
+- Current interpretation:
+  - the geography cleanup result is no longer the main uncertainty
+  - the surviving signal is real enough to keep as a live branch, because some cases sit in large
+    recognizable scenes
+  - but it is count-fragile in absolute support size, so it does not currently look strong enough
+    to dominate the whole project without manual validation of the strongest subset
+
+---
+
 ### Session: 2026-03-26 (lagged community-vs-label timing pass built)
 - Added a project-level `.gitignore` so git can track the metal source side without trying to
   absorb large local data folders.
