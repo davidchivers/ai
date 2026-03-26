@@ -4,14 +4,17 @@ Most recent session first.
 
 ---
 
-### Session: 2026-03-26 (first actual scene-cluster regression built)
+### Session: 2026-03-26 (scene-cluster robustness pass built)
 - Added `code/30_estimate_scene_cluster_regression.py`.
 - Wrote:
   - `data/processed/scene_networks/scene_cluster_regression_results.csv`
   - `data/processed/scene_networks/scene_cluster_regression_summary.md`
 - Current scene-regression design:
-  - seeded `5`-year forecast LPM with genre and year fixed effects
-  - seeded exact-year panel with `city-genre` and year fixed effects
+  - seeded forecast LPMs with `3`, `5`, `7`, and `10` year horizons
+  - seeded exact-year panels with `city-genre` and year fixed effects
+  - current smoothing windows:
+    - `roll-3`
+    - `roll-5`
   - current predictors:
     - scene size
     - bridge-musician share
@@ -19,24 +22,24 @@ Most recent session first.
     - modularity
     - nontrivial community count
 - Current regression read:
-  - seeded `5`-year forecast spec:
-    - `N = 174,416`
-    - positive windows: `23,519`
-    - `z_log_active_bands = 0.1205`
-    - `z_density = 0.0064`
-    - `z_modularity_q = 0.0125`
-    - `z_bridge_pct = -0.0086`
-  - seeded exact-year fixed-effects spec:
-    - `N = 180,498`
-    - emergence events: `5,422`
-    - `z_roll3_n_nontrivial_communities = 0.0116`
-    - `z_roll3_log_active_bands = 0.0669`
-    - bridge share, density, and modularity are weak once `city-genre` and year effects are
-      absorbed
+  - forecast horizons:
+    - `3y`: size `0.0787`, density `0.0039`, modularity `0.0093`, bridge `-0.0032`
+    - `5y`: size `0.1205`, density `0.0064`, modularity `0.0125`, bridge `-0.0086`
+    - `7y`: size `0.1552`, density `0.0086`, modularity `0.0121`, bridge `-0.0136`
+    - `10y`: size `0.1945`, density `0.0090`, modularity `0.0092`, bridge `-0.0193`
+  - exact-year fixed-effects:
+    - `roll-3`:
+      - `z_roll3_n_nontrivial_communities = 0.0116`
+      - `z_roll3_log_active_bands = 0.0669`
+    - `roll-5`:
+      - `z_roll5_n_nontrivial_communities = 0.0096`
+      - `z_roll5_log_active_bands = 0.0664`
+    - bridge share stays null in both FE windows
 - Current interpretation:
   - the old `community_precedes_label` threshold is still too support-fragile to be the main
     estimand
-  - but the scene branch now has a credible regression-based paper design
+  - but the scene branch now has a credible regression-based paper design plus a first robustness
+    layer
   - the strongest live scene story is local thickness plus organizational variety, not a
     bridge-musician headline
   - domestic success should now be treated as fallback unless the scene regression collapses under

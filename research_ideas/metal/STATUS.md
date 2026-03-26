@@ -2,7 +2,7 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-26 (first actual scene-cluster regression built)
+- Last updated: 2026-03-26 (scene-cluster robustness pass built)
 - Current phase: the project now has a real scene-cluster panel regression, which changes the live
   workflow. The old threshold-based scene result is still weak as a headline claim: the clean
   city-baseline timing pass remains `32,684` snapshots, `5,429` timing rows, `21`
@@ -10,15 +10,13 @@
   region-like sidecar adds only one extra precedes case; and requiring `5` same-genre bands still
   collapses the precedes count to `0`. But the new regression pass in
   `code/30_estimate_scene_cluster_regression.py` shifts the relevant question away from that
-  fragile count and toward local cluster structure. In the seeded `5`-year forecast spec
-  (`N = 174,416`, `23,519` positive windows), scene size is strongly positive
-  (`z_log_active_bands = 0.1205`), density and modularity are also positive, and bridge share is
-  negative. In the stricter seeded exact-year fixed-effects panel (`N = 180,498`, `5,422`
-  emergence events), bridge share and modularity wash out, but lagged nontrivial community count
-  remains strongly positive (`z_roll3_n_nontrivial_communities = 0.0116`, `p < 0.001`) alongside
-  scene size (`z_roll3_log_active_bands = 0.0669`). The practical implication is that the scene
-  branch is no longer best framed as "do four-band communities precede labels?" It is now best
-  framed as a local-cluster paper about scene thickness and organizational variety predicting genre
+  fragile count and toward local cluster structure. The first robustness pass now exists inside
+  `code/30_estimate_scene_cluster_regression.py`: forecast horizons of `3`, `5`, `7`, and `10`
+  years all keep scene size positive, density and modularity positive, and bridge share negative,
+  while the exact-year fixed-effects panel keeps scene size and nontrivial community count positive
+  under both `roll-3` and `roll-5` smoothing. The practical implication is that the scene branch
+  is no longer best framed as "do four-band communities precede labels?" It is now best framed as
+  a local-cluster paper about scene thickness and organizational variety predicting genre
   emergence. The domestic-success branch stays alive as a fallback design, not the current main
   bottleneck.
 - Canonical tracker: this file is the single source of truth for current status.
@@ -750,13 +748,41 @@
       bridge-musician headline
     - the next workflow should build robustness and richer cluster measures around this regression
       design rather than return immediately to the domestic-success file
+- Built the first robustness pass around the scene-cluster regression:
+  - `code/30_estimate_scene_cluster_regression.py` now estimates:
+    - seeded forecast horizons of `3`, `5`, `7`, and `10` years
+    - seeded exact-year fixed-effects panels with `roll-3` and `roll-5` smoothing
+  - current robustness read:
+    - forecast horizons:
+      - scene size stays positive and grows with the horizon:
+        `0.0787`, `0.1205`, `0.1552`, `0.1945`
+      - density stays positive:
+        `0.0039`, `0.0064`, `0.0086`, `0.0090`
+      - modularity stays positive:
+        `0.0093`, `0.0125`, `0.0121`, `0.0092`
+      - bridge share stays negative:
+        `-0.0032`, `-0.0086`, `-0.0136`, `-0.0193`
+    - exact-year FE:
+      - `roll-3`:
+        - `z_roll3_n_nontrivial_communities = 0.0116`
+        - `z_roll3_log_active_bands = 0.0669`
+      - `roll-5`:
+        - `z_roll5_n_nontrivial_communities = 0.0096`
+        - `z_roll5_log_active_bands = 0.0664`
+      - bridge share stays null in both FE windows
+  - practical implication:
+    - the scene-cluster result now survives a first medium-run robustness pass
+    - the stable mechanism is thickness plus organizational variety, not bridging
+    - the next high-value move is to add richer cluster variables rather than spend more time on
+      the old threshold count
 
 ## In Progress
 
-- Stress-testing the new scene-cluster regression:
-  - current baseline is the seeded `5`-year forecast plus seeded exact-year FE panel
 - Deciding which next cluster measures should enter first:
   - current leading additions are spawning, pedigree, multi-band share, and broker-musician stock
+- Deciding how much of the next scene pass should be genre-specific rather than city-wide:
+  - current regression predictors are city-level scene measures, not yet genre-targeted cluster
+    measures
 - Keeping the strongest scene cases organized for later validation and narrative use:
   - current front-runners remain `Pittsburgh`, `Bilbao`, and `Brussels`
 - Holding the domestic-success branch in reserve:
@@ -764,15 +790,15 @@
 
 ## Next 3 Tasks
 
-1. Stress-test the scene-cluster regression:
-   rerun `code/30_estimate_scene_cluster_regression.py` under alternative horizons or bins so we
-   can see whether the thickness-and-variety result survives beyond the current annual setup.
-2. Add richer cluster measures from the musician data:
+1. Add richer cluster measures from the musician data:
    build spawning, pedigree, multi-band, and broker-musician predictors so the scene paper speaks
    more directly to labor pooling, recombination, and local spinouts.
+2. Make the scene predictors more genre-targeted:
+   test whether the same result holds when the relevant local stock is measured within or near the
+   emerging genre rather than only at the whole-city scene level.
 3. Keep the domestic-success branch as fallback, not lead:
-   only return to the `shock_clean` treatment file if the scene-cluster regression collapses under
-   the next round of robustness checks.
+   only return to the `shock_clean` treatment file if the scene-cluster design weakens materially
+   after the richer predictor pass.
 
 ## Open Decisions
 

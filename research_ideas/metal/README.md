@@ -117,6 +117,15 @@ precede labels in `21` places." It is "thicker local musician clusters with more
 variety are more likely to generate later genre emergence." That reopens the scene branch as the
 more interesting main design, while the domestic-success redesign now sits in fallback position.
 
+The first robustness pass now backs that up. The same script also runs seeded forecast horizons of
+`3`, `5`, `7`, and `10` years plus exact-year fixed-effects panels with `roll-3` and `roll-5`
+smoothing. Across the forecast horizons, scene size stays strongly positive and density or
+modularity stay positive, while bridge share becomes more negative at longer horizons. In the FE
+panels, the stable terms are scene size and nontrivial community count, with bridge share staying
+null under both smoothing windows. That means the live mechanism read is now fairly specific:
+local thickness and organizational variety look robust; bridge musicians do not currently look like
+the core headline variable.
+
 The key scope choice is now settled: this is an all-metal Metallum project, not a technical-death
 project. The current outcome build is in `data/processed/`, anchored by
 `metal_archives_all_metal_band_clean.csv` and `metal_archives_all_metal_country_year_panel.csv`.
@@ -253,12 +262,12 @@ Current pilot read:
 - `memory.md`
 
 ## Next 3 concrete tasks
-1. Stress-test the scene-cluster regression:
-   rerun `code/30_estimate_scene_cluster_regression.py` under alternative horizons or bins so we
-   know whether the thickness-and-variety result survives beyond the current annual setup.
-2. Add richer cluster measures from the musician data:
+1. Add richer cluster measures from the musician data:
    build spawning, pedigree, multi-band, and broker-musician predictors so the scene paper speaks
    more directly to labor pooling, recombination, and local spinouts.
+2. Make the scene predictors more genre-targeted:
+   test whether the same result holds when local stock is measured within or near the emerging
+   genre rather than only at the whole-city scene level.
 3. Keep domestic success as fallback:
    only return to the `shock_clean` treatment file if the scene-cluster design weakens materially
-   in the next round of robustness work.
+   after the richer predictor pass.

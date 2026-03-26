@@ -39,8 +39,8 @@ to the main empirical path. Treat the unit as `city x genre_family x year` and t
 scene structure predicts later emergence.
 
 Current regression baseline:
-- seeded `5`-year forecast LPM
-- seeded exact-year fixed-effects panel
+- seeded forecast LPMs at `3`, `5`, `7`, and `10` year horizons
+- seeded exact-year fixed-effects panels with `roll-3` and `roll-5` smoothing
 - supporting threshold evidence from `community_precedes_label`
 
 Current most promising predictors:
@@ -51,6 +51,12 @@ Current weaker predictors:
 - bridge-musician share
 - modularity
 - density once fixed effects are absorbed
+
+Current read after the first robustness pass:
+- the scene-cluster signal survives medium-run horizon changes
+- the stable mechanism is local thickness plus organizational variety
+- the next design improvement should add richer and more genre-targeted cluster variables rather
+  than keep widening the domestic-success fallback
 
 Fallback strategy: Strategy 1 from `04_empirical_notes.md`, a country-year curated-blockbuster
 hit panel built from official chart and certification sources, now held in reserve unless the
