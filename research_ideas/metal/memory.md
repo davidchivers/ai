@@ -4,6 +4,46 @@ Most recent session first.
 
 ---
 
+### Session: 2026-03-26 (first actual scene-cluster regression built)
+- Added `code/30_estimate_scene_cluster_regression.py`.
+- Wrote:
+  - `data/processed/scene_networks/scene_cluster_regression_results.csv`
+  - `data/processed/scene_networks/scene_cluster_regression_summary.md`
+- Current scene-regression design:
+  - seeded `5`-year forecast LPM with genre and year fixed effects
+  - seeded exact-year panel with `city-genre` and year fixed effects
+  - current predictors:
+    - scene size
+    - bridge-musician share
+    - density
+    - modularity
+    - nontrivial community count
+- Current regression read:
+  - seeded `5`-year forecast spec:
+    - `N = 174,416`
+    - positive windows: `23,519`
+    - `z_log_active_bands = 0.1205`
+    - `z_density = 0.0064`
+    - `z_modularity_q = 0.0125`
+    - `z_bridge_pct = -0.0086`
+  - seeded exact-year fixed-effects spec:
+    - `N = 180,498`
+    - emergence events: `5,422`
+    - `z_roll3_n_nontrivial_communities = 0.0116`
+    - `z_roll3_log_active_bands = 0.0669`
+    - bridge share, density, and modularity are weak once `city-genre` and year effects are
+      absorbed
+- Current interpretation:
+  - the old `community_precedes_label` threshold is still too support-fragile to be the main
+    estimand
+  - but the scene branch now has a credible regression-based paper design
+  - the strongest live scene story is local thickness plus organizational variety, not a
+    bridge-musician headline
+  - domestic success should now be treated as fallback unless the scene regression collapses under
+    the next round of robustness checks
+
+---
+
 ### Session: 2026-03-26 (scene decision locked; shock-clean domestic rerun built)
 - Wrote the explicit scene-branch decision memo:
   - `data/processed/scene_networks/scene_branch_decision_memo.md`

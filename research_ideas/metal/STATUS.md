@@ -2,27 +2,25 @@
 
 ## Snapshot
 
-- Last updated: 2026-03-26 (scene branch decision locked; shock-clean domestic rerun completed)
-- Current phase: the project has now made an explicit branch choice. The scene-network branch stays
-  alive, but as a bounded mechanism or descriptive fork rather than the headline design. The clean
-  city-baseline scene read remains `32,684` snapshots, `5,429` timing rows, `21`
-  `community_precedes_label` cases, `86` same-year cases, and `5,322` undetected cases. The
-  region-like sidecar adds only one extra precedes case, `Utrecht Province, Netherlands` in
-  `black_metal`, so relabeling wider units does not rescue a large hidden region-only signal. The
-  crucial robustness fact also remains unchanged: all `21` surviving city-baseline precedes cases
-  are supported by exactly `4` same-genre bands, and requiring `5` same-genre bands collapses the
-  count to `0`. The broad-case review packets narrow that to a still-interesting but small core:
-  `4` of `8` broad cases show `multi_bridge_support`, `2` are `hub_bridge_mixed`, and `2` are
-  `single_bridge_risk`. That is enough to keep scenes in the project, but not enough to carry the
-  whole design. The main workflow therefore returns to the domestic-success redesign, where a new
-  cleanup pass drops `4` obvious mature-scene rows, flags `3` more for replacement or re-dating,
-  and keeps only a `3`-case `shock_clean` subset:
-  `Rammstein`, `Nightwish`, and provisional `Sepultura`. That cleaned subset improves the full-set
-  static FE sign on `all` starts from about `-7.5` in the old `10`-case pilot to about `+2.8`, but
-  the stricter `source_a + tier_1` subset remains negative at about `-4.3`, so the positive read
-  still depends on the weakest-source row. The live bottleneck is now to expand the shock-clean
-  domestic-success file with earlier source-strong cases rather than to keep debating whether the
-  scene branch should fully replace it.
+- Last updated: 2026-03-26 (first actual scene-cluster regression built)
+- Current phase: the project now has a real scene-cluster panel regression, which changes the live
+  workflow. The old threshold-based scene result is still weak as a headline claim: the clean
+  city-baseline timing pass remains `32,684` snapshots, `5,429` timing rows, `21`
+  `community_precedes_label` cases, `86` same-year cases, and `5,322` undetected cases; the
+  region-like sidecar adds only one extra precedes case; and requiring `5` same-genre bands still
+  collapses the precedes count to `0`. But the new regression pass in
+  `code/30_estimate_scene_cluster_regression.py` shifts the relevant question away from that
+  fragile count and toward local cluster structure. In the seeded `5`-year forecast spec
+  (`N = 174,416`, `23,519` positive windows), scene size is strongly positive
+  (`z_log_active_bands = 0.1205`), density and modularity are also positive, and bridge share is
+  negative. In the stricter seeded exact-year fixed-effects panel (`N = 180,498`, `5,422`
+  emergence events), bridge share and modularity wash out, but lagged nontrivial community count
+  remains strongly positive (`z_roll3_n_nontrivial_communities = 0.0116`, `p < 0.001`) alongside
+  scene size (`z_roll3_log_active_bands = 0.0669`). The practical implication is that the scene
+  branch is no longer best framed as "do four-band communities precede labels?" It is now best
+  framed as a local-cluster paper about scene thickness and organizational variety predicting genre
+  emergence. The domestic-success branch stays alive as a fallback design, not the current main
+  bottleneck.
 - Canonical tracker: this file is the single source of truth for current status.
 
 ## Completed
@@ -724,29 +722,57 @@
       Brazil `Sepultura` row
     - the next domestic-success move is to add earlier source-`A` keep candidates, not to treat
       the current tiny subset as persuasive on its own
+- Built the first actual scene-cluster regression and reopened the scene branch on a stronger
+  empirical design:
+  - added `code/30_estimate_scene_cluster_regression.py`
+  - wrote:
+    - `data/processed/scene_networks/scene_cluster_regression_results.csv`
+    - `data/processed/scene_networks/scene_cluster_regression_summary.md`
+  - current regression read:
+    - seeded `5`-year forecast LPM:
+      - `N = 174,416`
+      - positive windows: `23,519`
+      - `z_log_active_bands = 0.1205`
+      - `z_density = 0.0064`
+      - `z_modularity_q = 0.0125`
+      - `z_bridge_pct = -0.0086`
+    - seeded exact-year fixed-effects panel:
+      - `N = 180,498`
+      - emergence events: `5,422`
+      - `z_roll3_n_nontrivial_communities = 0.0116`
+      - `z_roll3_log_active_bands = 0.0669`
+      - bridge share, density, and modularity are weak once `city-genre` and year effects are
+        absorbed
+  - practical implication:
+    - the old `community_precedes_label` threshold remains too fragile to be the main estimand
+    - but the scene branch now has a credible regression-based cluster design
+    - the most promising scene story is local thickness plus organizational variety, not a
+      bridge-musician headline
+    - the next workflow should build robustness and richer cluster measures around this regression
+      design rather than return immediately to the domestic-success file
 
 ## In Progress
 
-- Rebuilding the domestic-success branch around the `shock_clean` logic:
-  - current keep set is too small, so the next task is expansion with earlier source-`A` rows
-- Deciding which replacements should enter first for the mixed late-coded rows:
-  - immediate weak rows are `Lacuna Coil`, `Powerwolf`, and `Iron Maiden`
-- Deciding whether the `3` mid-scene cases are worth auditing for the bounded scene fork:
-  - this no longer affects the main branch choice
-- Keeping the strongest scene cases organized for later mechanism use:
-  - current front-runners are `Pittsburgh`, `Bilbao`, and `Brussels`
+- Stress-testing the new scene-cluster regression:
+  - current baseline is the seeded `5`-year forecast plus seeded exact-year FE panel
+- Deciding which next cluster measures should enter first:
+  - current leading additions are spawning, pedigree, multi-band share, and broker-musician stock
+- Keeping the strongest scene cases organized for later validation and narrative use:
+  - current front-runners remain `Pittsburgh`, `Bilbao`, and `Brussels`
+- Holding the domestic-success branch in reserve:
+  - the `shock_clean` workflow remains the fallback if the scene-cluster panel weakens materially
 
 ## Next 3 Tasks
 
-1. Expand the shock-clean domestic-success file:
-   add earlier source-`A` domestic breakthroughs so the redesigned baseline does not depend on
-   provisional `Sepultura`.
-2. Replace or redate the mixed late-coded rows:
-   start with `Lacuna Coil`, `Powerwolf`, and `Iron Maiden`, which are currently too late to keep
-   as shock rows.
-3. Keep the scene branch bounded:
-   audit the `3` mid-scene cases only if we need more mechanism examples after the current strong
-   city subset.
+1. Stress-test the scene-cluster regression:
+   rerun `code/30_estimate_scene_cluster_regression.py` under alternative horizons or bins so we
+   can see whether the thickness-and-variety result survives beyond the current annual setup.
+2. Add richer cluster measures from the musician data:
+   build spawning, pedigree, multi-band, and broker-musician predictors so the scene paper speaks
+   more directly to labor pooling, recombination, and local spinouts.
+3. Keep the domestic-success branch as fallback, not lead:
+   only return to the `shock_clean` treatment file if the scene-cluster regression collapses under
+   the next round of robustness checks.
 
 ## Open Decisions
 

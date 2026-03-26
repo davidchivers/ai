@@ -1,53 +1,60 @@
 # 05 Research plan
 
 Last updated: 2026-03-26
-Status: scene branch explicitly downgraded to bounded mechanism/descriptive fork; shock-clean domestic-success subset built and rerun; current main bottleneck is finding earlier source-strong domestic breakthroughs
+Status: first actual scene-cluster regression built; the old threshold-based scene count remains
+supporting evidence only, but the live main design is now scene as a local production cluster,
+with domestic success retained as fallback
 
 ## Chosen question and estimand
-Primary question: do blockbuster metal albums in a country or shared-language market induce later
+Primary question: do thicker local musician clusters make later `city x genre_family` emergence
+more likely?
+
+Primary estimand: the lagged association between city-level scene thickness or organizational
+variety and later genre emergence in the same city.
+Current baseline decomposition: estimate scene size and organizational structure separately, rather
+than collapsing the whole scene story into a binary community-precedes-label count.
+
+Secondary live question: which scene features matter most:
+- local labor-market thickness
+- organizational variety
+- broker musicians
+- spawning from incumbent bands
+
+Fallback question: do blockbuster metal albums in a country or shared-language market induce later
 local band formation?
 
-Primary estimand: the lagged association between a visible breakthrough shock and later band entry
-in the same country-year panel.
-Current baseline decomposition: estimate domestic exemplar and foreign-blockbuster exposure
-separately inside the same country-year panel.
-
-Secondary live question: which bands appear most influential for later startup, measured by
-residualized downstream entry effects rather than by style alone?
-
-Alternative live question: do local scene complements help predict which `country x genre_family`
-cells produce a domestic breakout success in the first place?
-
 ## Chosen models
-Baseline model: Model 1 from `03_model_notes.md`, where a country-level breakthrough acts as a
+Baseline model: Model 2 from `03_model_notes.md`, reinterpreted as a local cluster model in which
+musicians are reusable inputs and genre emergence is the output.
+
+Current panel specification: seeded `city x genre_family x year` emergence regressions using
+lagged city-year network structure.
+
+Fallback model: Model 1 from `03_model_notes.md`, where a country-level breakthrough acts as a
 local entry shock.
 
-Extension model: Model 2 from `03_model_notes.md`, which adds shared-language spillovers once the
-country-year panel is stable.
-
-Derived-output model: Model 3 from `03_model_notes.md`, which converts the event panel into a
-band-influence ranking across all-metal, genre-family, and unsigned-entry margins.
-
 ## Chosen empirical strategies
-Baseline strategy: Strategy 1 from `04_empirical_notes.md`, a country-year curated-blockbuster
-hit panel built from official chart and certification sources, now split into home-market and
-foreign-market exposure.
+Baseline strategy: Strategy 5 from `04_empirical_notes.md`, now upgraded from side mechanism test
+to the main empirical path. Treat the unit as `city x genre_family x year` and test whether lagged
+scene structure predicts later emergence.
 
-Current descriptive event baseline inside that workflow: `presence`.
-Current conservative robustness margin: `top10`.
+Current regression baseline:
+- seeded `5`-year forecast LPM
+- seeded exact-year fixed-effects panel
+- supporting threshold evidence from `community_precedes_label`
 
-Secondary strategy: Strategy 2 from `04_empirical_notes.md`, a first-breakthrough event-study
-design used as a derived diagnostic once enough home-market timing is recovered.
+Current most promising predictors:
+- active band stock
+- nontrivial community count
 
-Derived ranking output: Strategy 3 from `04_empirical_notes.md`, which uses the event panel to
-rank bands by downstream entry impact after conditioning on country and year structure.
+Current weaker predictors:
+- bridge-musician share
+- modularity
+- density once fixed effects are absorbed
 
-Live refinement: Strategy 4 from `04_empirical_notes.md`, which recasts the outcome as a
-`country x genre_family x year` panel so domestic breakthroughs can be tested against the same
-genre elsewhere rather than against pooled all-metal growth alone.
-
-Alternative mechanism test: Strategy 5 from `04_empirical_notes.md`, which treats breakout success
-as partly predicted by prior scene depth and complementary local inputs.
+Fallback strategy: Strategy 1 from `04_empirical_notes.md`, a country-year curated-blockbuster
+hit panel built from official chart and certification sources, now held in reserve unless the
+scene-cluster results fail to replicate under robustness checks.
 
 ## Data access and fallback
 Outcome side:
