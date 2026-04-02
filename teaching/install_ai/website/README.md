@@ -9,23 +9,19 @@ Recommended:
 Wizard flow:
 1. Choose OS.
 2. Choose AI agent.
-3. Install prerequisites:
+3. Install editor + AI tool:
    - choose editor (VS Code or Cursor)
-   - run one install command for Git + Node + editor
-   - optional "Not working?" manual install dropdown
-4. Restart terminal (separate step).
-5. Install AI agent:
-   - run the CLI install command
-   - if a command fails, paste the full error and ask for the exact next command
-6. Sign in / auth step:
+   - download editor, Git, and Node manually
+   - open the same editor and run the AI agent install command
+4. Sign in / auth step:
    - Codex: `codex --login`
    - Claude Code: `claude`
    - Gemini CLI: set API key, then run `gemini` after reopening terminal; if the integrated terminal still misses the key, fully restart the IDE
-7. Starter folder setup (optional).
-8. Optional profile import.
-9. Pair with GitHub.
-10. Glossary.
-11. Done.
+5. Starter folder setup (optional).
+6. Optional profile import.
+7. Pair with GitHub.
+8. Glossary.
+9. Done.
 
 ## Session note (2026-02-27)
 
@@ -33,6 +29,19 @@ Wizard flow:
 - Then restart-terminal guidance was split into its own separate step before agent install.
 - Windows fast path uses one `winget` command for editor + Git + Node.
 - Mac fast path remains a short two-command path (`xcode-select` then `brew`).
+
+## Session note (2026-04-01)
+
+- Collapsed editor install, terminal restart, and AI agent install back into one page.
+- Removed the fast-install command blocks and left only the manual download/install route.
+- Added a simple-app fallback note on the first pages so users can open starter folders in ChatGPT/Codex or Claude without the full terminal route.
+- Added a warning that the starter folders are still mainly tuned for VS Code/Cursor, so some preset/profile files are editor-specific.
+
+## Session note (2026-04-02)
+
+- Added a real `Simple route` branch that skips the full VS Code/Cursor + terminal steps and jumps straight to the starter ZIP download page.
+- Softened the starter-folder warning so it says editor-specific files are fine and can be deleted later with help from the AI if needed.
+- Bumped the `app.js` cache-buster in `index.html` so browsers pick up the new route logic.
 
 If commands fail, paste the full terminal error into ChatGPT/Claude first.
 If in doubt, paste the full terminal error into the AI tool you installed and ask for the exact next command.
