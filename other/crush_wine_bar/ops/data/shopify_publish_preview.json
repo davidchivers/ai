@@ -1,0 +1,102 @@
+[
+  {
+    "handle": "boundary-line-north-fork-riesling-2022",
+    "title": "Boundary Line North Fork Riesling 2022",
+    "status": "active",
+    "product_type": "White",
+    "price": 32.0,
+    "compare_at_price": 34.0,
+    "inventory_quantity": 7,
+    "fulfilment": {
+      "collection": false,
+      "local_delivery": true
+    },
+    "metafields": {
+      "custom.public_tasting_notes": "Lime zest. White peach. Slatey freshness. A proper fridge-door white for midweek dinners.",
+      "custom.daniel_recommends": "If you want to show someone American wine can be serious, start here.",
+      "custom.available_by_glass": false,
+      "custom.local_delivery_only": true
+    },
+    "tags": [
+      "country:United States",
+      "region:Finger Lakes",
+      "state:delivery_only",
+      "style:White"
+    ]
+  },
+  {
+    "handle": "cedars-of-bekaa-high-plateau-rose-2024",
+    "title": "Cedars of Bekaa High Plateau Rose 2024",
+    "status": "active",
+    "product_type": "Rose",
+    "price": 25.0,
+    "compare_at_price": 27.0,
+    "inventory_quantity": 9,
+    "fulfilment": {
+      "collection": true,
+      "local_delivery": false
+    },
+    "metafields": {
+      "custom.public_tasting_notes": "Wild strawberry. Pink grapefruit. Dried mint. Bone-dry and very good with salty snacks and sunny tables.",
+      "custom.daniel_recommends": "This is the bottle for guests who think they do not like rose.",
+      "custom.available_by_glass": true,
+      "custom.local_delivery_only": false
+    },
+    "tags": [
+      "country:Lebanon",
+      "region:Bekaa Valley",
+      "state:collection_only",
+      "style:Rose"
+    ]
+  },
+  {
+    "handle": "cloudline-mountain-mist-pet-nat-2024",
+    "title": "Cloudline Mountain Mist Pet Nat 2024",
+    "status": "active",
+    "product_type": "Sparkling",
+    "price": 34.0,
+    "compare_at_price": 36.0,
+    "inventory_quantity": 14,
+    "fulfilment": {
+      "collection": true,
+      "local_delivery": true
+    },
+    "metafields": {
+      "custom.public_tasting_notes": "Green plum. Jasmine. Lemon curd. Slight haze and plenty of lift for celebrations or aperitif hour.",
+      "custom.daniel_recommends": "This is the party bottle: bright, conversational, and genuinely memorable.",
+      "custom.available_by_glass": true,
+      "custom.local_delivery_only": false
+    },
+    "tags": [
+      "country:Taiwan",
+      "region:Nantou",
+      "state:collection_and_delivery",
+      "style:Sparkling"
+    ]
+  },
+  {
+    "handle": "marani-no-8-kisi-amber-2023",
+    "title": "Marani No. 8 Kisi Amber 2023",
+    "status": "active",
+    "product_type": "Orange",
+    "price": 29.0,
+    "compare_at_price": 31.0,
+    "inventory_quantity": 18,
+    "fulfilment": {
+      "collection": true,
+      "local_delivery": true
+    },
+    "metafields": {
+      "custom.public_tasting_notes": "Apricot skin. Black tea. Gentle grip and a savoury finish that makes this brilliant with cheese or roast squash.",
+      "custom.daniel_recommends": "Daniel recommends this when someone says they want orange wine without too much funk.",
+      "custom.available_by_glass": true,
+      "custom.local_delivery_only": false
+    },
+    "tags": [
+      "country:Georgia",
+      "region:Kakheti",
+      "state:collection_and_delivery",
+      "style:Orange"
+    ]
+  }
+]

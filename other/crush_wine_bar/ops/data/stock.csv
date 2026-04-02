@@ -1,0 +1,7 @@
+internal_product_id,current_bottle_stock,units_on_order,reorder_threshold,stock_status,active_in_bar,available_by_glass,open_bottle_in_service,publish_online_eligibility,stock_admin_notes
+CW-101,18,12,6,in_stock,yes,yes,no,yes,Healthy stock and a reliable take-home seller.
+CW-102,9,6,4,low_stock,yes,yes,yes,yes,Keep one chilled for service at weekends.
+CW-103,7,0,3,in_stock,no,no,no,yes,Take-home focus so no glass allocation.
+CW-104,5,0,4,low_stock,yes,yes,yes,no,Keep as informational online until a deeper case arrives.
+CW-105,4,0,6,bar_only,yes,yes,no,no,Keep internal for bar wall only.
+CW-106,14,8,5,in_stock,yes,yes,no,yes,Featured sparkling and good candidate for mixed cases.

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crush | Wine bar + shop prototype</title>
+  <meta name="description" content="Prototype redesign for Crush: a Durham wine bar and local shop with a curated online range.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="home">
+  <div class="topbar">
+    <div class="shell topbar__inner">
+      <span>Local delivery every Monday &amp; Tuesday within 10 miles</span>
+      <span>Collection from 76 North Road, Durham DH1 4SQ</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">Crush</span>
+        <span class="brand__sub">wine bar + shop</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="shop.html">Shop</a>
+        <a href="visit.html">Visit</a>
+        <a href="gather.html">Gather &amp; gift</a>
+      </nav>
+      <a class="button button--ghost" href="shop.html">Browse wines</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero__copy panel panel--warm">
+        <p class="eyebrow">Durham wine bar + local shop</p>
+        <h1>A more useful online shop for a wine bar people actually visit.</h1>
+        <p class="lead">
+          Crush already feels discovery-led in person. This redesign keeps that editorial character,
+          but makes the online range clearer, easier to browse, and better matched to local delivery,
+          collection, and in-bar availability.
+        </p>
+        <div class="hero__actions">
+          <a class="button" href="shop.html">Shop the curated range</a>
+          <a class="button button--secondary" href="visit.html">Plan a visit</a>
+        </div>
+        <ul class="key-points">
+          <li>80+ wines by the glass in the bar narrative</li>
+          <li>Online range separated from the full bar wall</li>
+          <li>Collection and local-delivery rules surfaced early</li>
+        </ul>
+      </div>
+      <aside class="hero__spotlight panel panel--dark">
+        <p class="eyebrow eyebrow--light">Daniel's angle</p>
+        <h2>Curated, premium, and still easy to use.</h2>
+        <p>
+          The prototype treats Crush as a hybrid business: a place to discover wine in Durham and a
+          local storefront for selected bottles, gifts, events, and private hire.
+        </p>
+        <div class="hero-stat-grid">
+          <div>
+            <span class="hero-stat-grid__value">Shopify</span>
+            <span class="hero-stat-grid__label">storefront stays in place</span>
+          </div>
+          <div>
+            <span class="hero-stat-grid__value">5</span>
+            <span class="hero-stat-grid__label">separate source tables in v1</span>
+          </div>
+          <div>
+            <span class="hero-stat-grid__value">1</span>
+            <span class="hero-stat-grid__label">controlled sync into public products</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="shell section-grid">
+      <article class="panel feature-panel">
+        <p class="eyebrow">Wine bar</p>
+        <h2>Discovery and hospitality first</h2>
+        <p>
+          The visit side of the site gets proper weight: address, hours, by-the-glass identity,
+          atmosphere, and cleaner paths into private hire and events.
+        </p>
+      </article>
+      <article class="panel feature-panel">
+        <p class="eyebrow">Shop</p>
+        <h2>Selected bottles for home</h2>
+        <p>
+          Not every bottle becomes ecommerce. The site distinguishes between bar-only wines,
+          informational listings, collection-only products, and bottles that can join the local
+          delivery route.
+        </p>
+      </article>
+    </section>
+
+    <section class="shell section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Featured online range</p>
+          <h2>Discovery-led bottles with clear fulfilment rules</h2>
+        </div>
+        <a class="text-link" href="shop.html">View all wines</a>
+      </div>
+      <div class="product-grid" data-featured-products></div>
+    </section>
+
+    <section class="shell section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Browse entry points</p>
+          <h2>Start with taste, not with admin language</h2>
+        </div>
+      </div>
+      <div class="browse-grid" data-category-links></div>
+    </section>
+
+    <section class="shell section fulfilment-band">
+      <div class="fulfilment-band__copy">
+        <p class="eyebrow eyebrow--light">Fulfilment logic</p>
+        <h2>Collection and local delivery are product features, not footnotes.</h2>
+        <p>
+          Each listing makes it explicit whether it is collection only, local-delivery eligible,
+          both, or informational only. That matches the real Crush operating model much better than
+          a generic national shipping setup.
+        </p>
+      </div>
+      <div class="fulfilment-band__cards">
+        <article class="mini-card">
+          <h3>Collection</h3>
+          <p>Reserve online and collect from the bar with clear pickup instructions.</p>
+        </article>
+        <article class="mini-card">
+          <h3>Local delivery</h3>
+          <p>Visible delivery-day messaging for Monday and Tuesday local rounds.</p>
+        </article>
+        <article class="mini-card">
+          <h3>Informational listings</h3>
+          <p>Some bottles can be seen online for discovery even when they are not purchasable.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="shell section split-section">
+      <div class="panel panel--warm">
+        <p class="eyebrow">Visit Crush</p>
+        <h2>Give the physical venue its own destination page</h2>
+        <p>
+          Wednesday to Saturday service, the Durham address, walk-in cues, and by-the-glass highlights
+          should sit together instead of being implied through product pages.
+        </p>
+        <a class="button button--secondary" href="visit.html">See the visit page</a>
+      </div>
+      <div class="panel">
+        <p class="eyebrow">Gather &amp; gift</p>
+        <h2>Protect the profitable side routes</h2>
+        <p>
+          Events, gift vouchers, discovery boxes, and private hire stay visible as distinct commercial
+          pathways rather than feeling buried behind the cart.
+        </p>
+        <a class="button button--secondary" href="gather.html">Explore gather &amp; gift</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <p class="brand__mark brand__mark--footer">Crush</p>
+        <p>Prototype for a structured wine-bar-plus-shop redesign.</p>
+      </div>
+      <div>
+        <p class="footer-heading">Where</p>
+        <p>76 North Road<br>Durham DH1 4SQ</p>
+      </div>
+      <div>
+        <p class="footer-heading">When</p>
+        <p>Wednesday to Saturday<br>Collection and local delivery supported</p>
+      </div>
+      <div>
+        <p class="footer-heading">Prototype</p>
+        <p>Generated from separated catalogue, pricing, stock, media, and publishing data.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

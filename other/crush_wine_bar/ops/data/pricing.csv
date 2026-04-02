@@ -1,0 +1,7 @@
+internal_product_id,cost_price,bottle_retail_price,takeout_price,by_the_glass_price,carafe_price,margin_percent,vat_rate,promotional_price
+CW-101,12.40,31.00,29.00,8.50,24.00,57.2,20,
+CW-102,10.20,27.00,25.00,7.50,21.00,62.5,20,
+CW-103,13.10,34.00,32.00,9.00,25.00,59.1,20,
+CW-104,11.80,33.00,31.00,8.50,24.00,61.9,20,
+CW-105,15.40,39.00,37.00,10.50,30.00,60.4,20,
+CW-106,14.10,36.00,34.00,9.50,27.00,58.8,20,32.00
