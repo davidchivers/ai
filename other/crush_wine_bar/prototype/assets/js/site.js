@@ -5,6 +5,7 @@ const currency = new Intl.NumberFormat("en-GB", {
 });
 
 let cachedProducts;
+let cachedAdminData;
 
 async function loadProducts() {
   if (!cachedProducts) {
@@ -12,6 +13,14 @@ async function loadProducts() {
     cachedProducts = await response.json();
   }
   return cachedProducts;
+}
+
+async function loadAdminData() {
+  if (!cachedAdminData) {
+    const response = await fetch("data/admin-data.json");
+    cachedAdminData = await response.json();
+  }
+  return cachedAdminData;
 }
 
 function getPrice(product) {
@@ -311,9 +320,128 @@ function renderVisit(products) {
     : `<div class="empty-state">No by-the-glass highlights are currently marked active.</div>`;
 }
 
+function prettyLabel(value) {
+  return value.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function renderAdmin(adminData) {
+  const overviewContainer = document.querySelector("[data-admin-overview]");
+  const navContainer = document.querySelector("[data-admin-table-nav]");
+  const panelContainer = document.querySelector("[data-admin-table-panel]");
+
+  if (!overviewContainer || !navContainer || !panelContainer) {
+    return;
+  }
+
+  const overview = adminData.overview;
+  overviewContainer.innerHTML = [
+    {
+      title: "Public products",
+      value: overview.public_products,
+      text: "These are visible on the customer-facing website.",
+    },
+    {
+      title: "Shopify-ready",
+      value: overview.shopify_publish_ready,
+      text: "These are ready to become live ecommerce products.",
+    },
+    {
+      title: "Active in bar",
+      value: overview.bar_active_wines,
+      text: "These are currently marked active for bar operations.",
+    },
+    {
+      title: "By the glass",
+      value: overview.by_glass_wines,
+      text: "These are currently flagged as available by the glass.",
+    },
+    {
+      title: "Admin tables",
+      value: Object.keys(adminData.tables).length,
+      text: "These tables separate identity, pricing, stock, media, and publishing.",
+    },
+  ]
+    .map(
+      (item) => `
+        <article class="overview-card">
+          <p class="eyebrow">${item.title}</p>
+          <h3>${item.value}</h3>
+          <p>${item.text}</p>
+        </article>
+      `
+    )
+    .join("");
+
+  const tableNames = Object.keys(adminData.tables);
+
+  navContainer.innerHTML = tableNames
+    .map(
+      (name, index) => `
+        <button class="admin-table-button ${index === 0 ? "is-active" : ""}" type="button" data-table-name="${name}">
+          ${prettyLabel(name)}
+        </button>
+      `
+    )
+    .join("");
+
+  function drawTable(name) {
+    const rows = adminData.tables[name] || [];
+    const headers = rows.length ? Object.keys(rows[0]) : [];
+    const title = prettyLabel(name);
+    const descriptionMap = {
+      catalogue: "What the wine is.",
+      pricing: "What it costs and sells for.",
+      stock: "What is available operationally.",
+      media: "What image and asset records exist.",
+      publishing: "What the customer can see and buy.",
+      stock_movements: "A simple operational log of stock changes.",
+    };
+
+    panelContainer.innerHTML = `
+      <section class="admin-table-panel">
+        <div class="admin-table-panel__header">
+          <div>
+            <p class="eyebrow">${title}</p>
+            <h2>${rows.length} row${rows.length === 1 ? "" : "s"}</h2>
+          </div>
+          <p>${descriptionMap[name] || ""}</p>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>${headers.map((header) => `<th>${header}</th>`).join("")}</tr>
+            </thead>
+            <tbody>
+              ${rows
+                .map(
+                  (row) => `
+                    <tr>
+                      ${headers.map((header) => `<td>${row[header] || ""}</td>`).join("")}
+                    </tr>
+                  `
+                )
+                .join("")}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    `;
+  }
+
+  navContainer.querySelectorAll("[data-table-name]").forEach((button) => {
+    button.addEventListener("click", () => {
+      navContainer.querySelectorAll("[data-table-name]").forEach((item) => item.classList.remove("is-active"));
+      button.classList.add("is-active");
+      drawTable(button.dataset.tableName);
+    });
+  });
+
+  drawTable(tableNames[0]);
+}
+
 async function init() {
   const page = document.body.dataset.page;
-  const products = await loadProducts();
+  const products = page === "admin" ? [] : await loadProducts();
 
   if (page === "home") {
     renderHome(products);
@@ -326,6 +454,10 @@ async function init() {
   }
   if (page === "visit") {
     renderVisit(products);
+  }
+  if (page === "admin") {
+    const adminData = await loadAdminData();
+    renderAdmin(adminData);
   }
 }
 

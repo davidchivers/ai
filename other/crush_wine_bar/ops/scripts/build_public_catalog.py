@@ -9,6 +9,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "ops" / "data"
 PUBLIC_OUTPUT = PROJECT_ROOT / "prototype" / "data" / "public-products.json"
 SHOPIFY_OUTPUT = DATA_DIR / "shopify_publish_preview.json"
+ADMIN_OUTPUT = PROJECT_ROOT / "prototype" / "data" / "admin-data.json"
 
 
 STATE_RULES = {
@@ -26,6 +27,12 @@ def read_table(name: str) -> dict[str, dict[str, str]]:
     with path.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
     return {row["internal_product_id"]: row for row in rows}
+
+
+def read_rows(name: str) -> list[dict[str, str]]:
+    path = DATA_DIR / f"{name}.csv"
+    with path.open("r", encoding="utf-8", newline="") as handle:
+        return list(csv.DictReader(handle))
 
 
 def as_bool(value: str) -> bool:
@@ -211,12 +218,30 @@ def build_records() -> tuple[list[dict[str, object]], list[dict[str, object]], l
 
 def main() -> None:
     public_records, shopify_preview, warnings = build_records()
+    admin_snapshot = {
+        "overview": {
+            "public_products": len(public_records),
+            "shopify_publish_ready": len(shopify_preview),
+            "bar_active_wines": sum(1 for row in read_rows("stock") if as_bool(row["active_in_bar"])),
+            "by_glass_wines": sum(1 for row in read_rows("stock") if as_bool(row["available_by_glass"])),
+        },
+        "tables": {
+            "catalogue": read_rows("catalogue"),
+            "pricing": read_rows("pricing"),
+            "stock": read_rows("stock"),
+            "media": read_rows("media"),
+            "publishing": read_rows("publishing"),
+            "stock_movements": read_rows("stock_movements"),
+        },
+    }
     PUBLIC_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     PUBLIC_OUTPUT.write_text(json.dumps(public_records, indent=2), encoding="utf-8")
     SHOPIFY_OUTPUT.write_text(json.dumps(shopify_preview, indent=2), encoding="utf-8")
+    ADMIN_OUTPUT.write_text(json.dumps(admin_snapshot, indent=2), encoding="utf-8")
 
     print(f"Wrote {len(public_records)} public product records to {PUBLIC_OUTPUT}")
     print(f"Wrote {len(shopify_preview)} Shopify preview records to {SHOPIFY_OUTPUT}")
+    print(f"Wrote admin snapshot to {ADMIN_OUTPUT}")
     if warnings:
         print("Warnings:")
         for warning in warnings:

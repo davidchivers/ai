@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How it works | Crush prototype</title>
+  <meta name="description" content="Beginner-friendly explanation of how the Crush admin and website model work.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body data-page="admin">
+  <div class="topbar">
+    <div class="shell topbar__inner">
+      <span>This page is written for a non-technical owner or manager</span>
+      <span>No coding needed for normal product updates</span>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="shell nav">
+      <a class="brand" href="index.html">
+        <span class="brand__mark">Crush</span>
+        <span class="brand__sub">wine bar + shop</span>
+      </a>
+      <nav class="nav__links" aria-label="Primary">
+        <a href="shop.html">Shop</a>
+        <a href="visit.html">Visit</a>
+        <a href="gather.html">Gather &amp; gift</a>
+        <a href="admin.html" aria-current="page">How it works</a>
+      </nav>
+      <a class="button button--ghost" href="index.html">Back to homepage</a>
+    </div>
+  </header>
+
+  <main class="shell page-main">
+    <section class="page-hero panel panel--warm">
+      <p class="eyebrow">How this works</p>
+      <h1>A simple operating system behind the website</h1>
+      <p class="lead">
+        The key idea is that staff should update wine information in a simple admin table, not in
+        website code. The website then reads the approved output and shows customers the right version
+        of the range.
+      </p>
+    </section>
+
+    <section class="section-grid section">
+      <article class="panel">
+        <p class="eyebrow">What staff should edit</p>
+        <h2>The product tables</h2>
+        <p>
+          Catalogue, pricing, stock, images, and publishing settings. In a real setup, this would be
+          Airtable or a spreadsheet-style admin, not HTML files.
+        </p>
+      </article>
+      <article class="panel panel--dark">
+        <p class="eyebrow eyebrow--light">What staff should not edit</p>
+        <h2>The page layout code</h2>
+        <p>
+          HTML and CSS control the look of the site. They should change only when you want a redesign,
+          not when you want to update a wine, a price, or stock.
+        </p>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Daily workflow</p>
+          <h2>What a manager would actually do</h2>
+        </div>
+      </div>
+      <div class="workflow-grid">
+        <article class="workflow-step">
+          <span class="workflow-step__number">1</span>
+          <h3>Add or update the wine</h3>
+          <p>Fill in the wine identity, region, producer, grapes, and supplier details.</p>
+        </article>
+        <article class="workflow-step">
+          <span class="workflow-step__number">2</span>
+          <h3>Set price and stock</h3>
+          <p>Enter bottle price, take-home price, glass price if needed, and current stock.</p>
+        </article>
+        <article class="workflow-step">
+          <span class="workflow-step__number">3</span>
+          <h3>Choose website status</h3>
+          <p>Decide whether the wine is internal only, info only, collection only, delivery only, or both.</p>
+        </article>
+        <article class="workflow-step">
+          <span class="workflow-step__number">4</span>
+          <h3>Check image and notes</h3>
+          <p>Add the approved bottle image and the public tasting note or Daniel recommendation.</p>
+        </article>
+        <article class="workflow-step">
+          <span class="workflow-step__number">5</span>
+          <h3>Publish</h3>
+          <p>The website and Shopify feed update from the approved records rather than from manual copy-paste.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section split-section">
+      <article class="panel panel--warm">
+        <p class="eyebrow">Important rule</p>
+        <h2>Not every wine in stock should be sold online</h2>
+        <p>
+          Crush has a broader in-bar range than its take-home range. This model keeps those separate so
+          the website only shows what you want customers to see and buy.
+        </p>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">Editing answer</p>
+        <h2>Should this be edited in HTML?</h2>
+        <p>
+          For normal use: no. HTML is for designers or developers. Day-to-day editing should happen in
+          Airtable or a spreadsheet-like admin. This demo uses data files because it is a prototype, but
+          the intended live workflow is no-code for regular updates.
+        </p>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Admin overview</p>
+          <h2>The tables behind the site</h2>
+        </div>
+      </div>
+      <div class="admin-overview" data-admin-overview></div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Live example tables</p>
+          <h2>You can read the sample data here in the browser</h2>
+        </div>
+      </div>
+      <div class="admin-table-nav" data-admin-table-nav></div>
+      <div data-admin-table-panel></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div>
+        <p class="brand__mark brand__mark--footer">Crush</p>
+        <p>Beginner-friendly admin explanation and sample table viewer.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/site.js" defer></script>
+</body>
+</html>

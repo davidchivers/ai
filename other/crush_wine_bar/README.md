@@ -1,90 +1,154 @@
-# Crush wine bar prototype
+# Crush demo
 
-This folder contains a practical example redesign for **Crush**, treated as a hybrid business:
+## What this is
 
-- a Durham wine bar
-- a local wine shop
-- a curated online Shopify storefront for selected take-home products
+This is a **working example** of how Crush could run its website and wine admin system more clearly.
 
-The branch is designed to show two things together:
+It is built around one simple idea:
 
-1. a customer-facing website direction
-2. a lightweight operating system for catalogue, pricing, stock, media, and publishing
+**Staff should update wines in a simple admin table, not in website code.**
 
-## What is here
+The website should then show the right version of each wine:
 
-`prototype/`
+- internal only
+- visible online but not purchasable
+- collection only
+- local delivery only
+- collection and local delivery
 
-- static multi-page storefront prototype
-- homepage, shop, product detail, visit, and gather/gift pages
-- renders from generated `public-products.json`
+## If you are not technical, start here
 
-`ops/data/`
+There are **two parts** to this demo:
 
-- separated source tables for:
-  - catalogue
-  - pricing
-  - stock
-  - media
-  - publishing
-  - stock movement log
+### 1. The customer-facing website
 
-`ops/scripts/build_public_catalog.py`
+This is what customers would see.
 
-- joins the source tables
-- validates publishing-state rules
-- generates the public catalogue JSON used by the prototype
-- generates a Shopify publish preview payload
+Pages included:
 
-`ops/architecture.md`
+- `index.html` = homepage
+- `shop.html` = browse/shop page
+- `product.html` = wine detail page
+- `visit.html` = wine bar visit page
+- `gather.html` = gift, events, private hire
+- `admin.html` = simple explanation of how the system works
 
-- recommended version-1 architecture
-- schema design
-- platform comparison
-- roadmap
-- implementation approach
-- owner question bank
+### 2. The admin/data side
 
-## Verified live-site observations used here
+This is what sits behind the website.
 
-Checked from `https://crushwines.co/` on **2026-04-02**:
+It is split into separate tables so staff do not have to cram everything into one giant spreadsheet row:
 
-- storefront is Shopify-powered
-- site states: `Delivery available every Monday & Tuesday (within 10 miles)`
-- site positions Crush as `wine bar & shop`
-- listed address: `76 North Road, Durham, DH1 4SQ`
-- listed opening pattern: `Wednesday - Saturday`
-- home copy says `80+ wines` are available by the glass
-- home copy says the online range is a `bespoke range` for home, with collection and delivery available
+- `catalogue.csv` = what the wine is
+- `pricing.csv` = selling and cost information
+- `stock.csv` = bottle stock and bar status
+- `media.csv` = images
+- `publishing.csv` = what the website should show
+- `stock_movements.csv` = optional stock log
 
-These observations support the core design assumption that the **full bar range and the online range should not be treated as the same thing**.
+## The main point
 
-## Recommended way to use this example
+This demo is **not saying** the owner should edit HTML every day.
 
-1. Regenerate the public product feed:
+Normal workflow should be:
 
-```powershell
-python other/crush_wine_bar/ops/scripts/build_public_catalog.py
-```
+1. update the wine in Airtable or a spreadsheet-like admin
+2. choose whether it is internal, visible, collection-only, delivery-only, or both
+3. update stock and notes
+4. sync to Shopify / website
 
-2. Preview the prototype locally:
+HTML is mainly for the **design of the site**, not the everyday running of the product list.
+
+## What to click first
+
+If you want the easiest overview, open:
+
+- `prototype/admin.html`
+
+That page explains:
+
+- what gets edited
+- what should not be edited
+- the day-to-day workflow
+- the actual sample tables behind the site
+
+## How to preview the website locally
+
+If you want to open the actual demo in a browser, run:
 
 ```powershell
 python -m http.server 8000 -d other/crush_wine_bar/prototype
 ```
 
-3. Open:
+Then open:
 
-`http://localhost:8000`
+```text
+http://localhost:8000
+```
 
-## Why this shape
+For the admin explanation page:
 
-The point is not to overbuild a new platform.
+```text
+http://localhost:8000/admin.html
+```
 
-The point is to show a realistic version 1 where:
+## How the files work together
 
-- Shopify remains the storefront
-- product publishing is controlled
-- stock and catalogue are separated
-- collection and local delivery are explicit
-- the site better reflects Crush as a wine destination, not just a generic ecommerce store
+### Step 1. Product data is stored in separate tables
+
+The source files are in:
+
+- `other/crush_wine_bar/ops/data/`
+
+### Step 2. A small script combines them
+
+This file:
+
+- `other/crush_wine_bar/ops/scripts/build_public_catalog.py`
+
+reads the separate tables and creates:
+
+- `prototype/data/public-products.json`
+- `prototype/data/admin-data.json`
+- `ops/data/shopify_publish_preview.json`
+
+### Step 3. The website reads the generated output
+
+The pages in `prototype/` use those generated JSON files to display the website and the admin explanation page.
+
+## If this became a real version 1
+
+The intended live setup would be:
+
+- Shopify stays as the storefront
+- Airtable becomes the simple admin system
+- a sync process pushes approved wines into Shopify
+- the theme is improved to match the Crush identity better
+
+That means the owner or manager would mostly work in Airtable, not in code.
+
+## Most important business rule
+
+Crush is **not** a normal bottle shop.
+
+The full bar range and the online range should be treated as different things.
+
+That is why the publishing layer exists.
+
+## Useful files
+
+- `ops/architecture.md` = recommended architecture and roadmap
+- `ops/owner_question_bank.md` = questions that still need owner decisions
+- `prototype/admin.html` = easiest non-technical walkthrough
+
+## Current status of this branch
+
+This branch is an example/prototype.
+
+It shows:
+
+- a redesigned website direction
+- a practical admin model
+- a simple publishing workflow
+
+It does **not** yet connect to a real Shopify store or Airtable base.
