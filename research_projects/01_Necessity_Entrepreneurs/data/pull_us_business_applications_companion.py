@@ -1,0 +1,302 @@
+"""Build a business-applications flow companion from Census BFS via FRED.
+
+Series:
+- BABATOTALSAUS: Business Applications, Total for All NAICS
+- BAHBATOTALSAUS: High-Propensity Business Applications, Total for All NAICS
+- USREC: recession indicator
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mticker
+import pandas as pd
+
+
+START_YEAR = 2005
+END_YEAR = 2025
+OUT_DIR = Path(__file__).resolve().parent
+FIGURES_DIR = OUT_DIR.parent / "figures"
+
+OUT_MONTHLY_CSV = OUT_DIR / "us_business_applications_monthly.csv"
+OUT_ANNUAL_CSV = OUT_DIR / "us_business_applications_annual.csv"
+OUT_PNG = OUT_DIR / "us_business_applications_indexed.png"
+OUT_MD = OUT_DIR / "business_applications_recession_windows.md"
+OUT_FIG_TEX = FIGURES_DIR / "us_business_applications_indexed.tex"
+
+FRED_URL = (
+    "https://fred.stlouisfed.org/graph/fredgraph.csv?"
+    "id=BABATOTALSAUS,BAHBATOTALSAUS,USREC"
+)
+
+
+def load_monthly() -> pd.DataFrame:
+    df = pd.read_csv(FRED_URL, parse_dates=["observation_date"])
+    df = df.rename(
+        columns={
+            "observation_date": "date",
+            "BABATOTALSAUS": "applications_total",
+            "BAHBATOTALSAUS": "applications_high_propensity",
+            "USREC": "recession_flag",
+        }
+    )
+    df["year"] = df["date"].dt.year
+    df["month"] = df["date"].dt.month
+    df = df[(df["year"] >= START_YEAR) & (df["year"] <= END_YEAR)].copy()
+    df = df.dropna(subset=["applications_total", "applications_high_propensity"])
+    return df
+
+
+def annualize(monthly: pd.DataFrame) -> pd.DataFrame:
+    annual = (
+        monthly.groupby("year", as_index=False)
+        .agg(
+            applications_total=("applications_total", "sum"),
+            applications_high_propensity=("applications_high_propensity", "sum"),
+            recession_any=("recession_flag", "max"),
+            recession_months=("recession_flag", "sum"),
+        )
+        .sort_values("year")
+    )
+    annual["high_propensity_share"] = (
+        annual["applications_high_propensity"] / annual["applications_total"]
+    )
+
+    base_total = annual.loc[annual["year"] == START_YEAR, "applications_total"].iloc[0]
+    base_hba = annual.loc[
+        annual["year"] == START_YEAR, "applications_high_propensity"
+    ].iloc[0]
+    annual["applications_total_index_2005"] = 100 * annual["applications_total"] / base_total
+    annual["applications_high_propensity_index_2005"] = (
+        100 * annual["applications_high_propensity"] / base_hba
+    )
+    return annual
+
+
+def shade_recession_years(ax: plt.Axes, annual: pd.DataFrame) -> None:
+    for _, row in annual[annual["recession_any"] == 1].iterrows():
+        ax.axvspan(row["year"] - 0.5, row["year"] + 0.5, color="#d9d9d9", alpha=0.35)
+
+
+def set_year_axis(ax: plt.Axes) -> None:
+    ticks = list(range(START_YEAR, END_YEAR + 1, 5))
+    if ticks[-1] != END_YEAR:
+        ticks.append(END_YEAR)
+    ax.set_xlim(START_YEAR, END_YEAR)
+    ax.set_xticks(ticks)
+    ax.xaxis.set_major_formatter(mticker.FormatStrFormatter("%.0f"))
+
+
+def pgf_tick_list() -> str:
+    ticks = list(range(START_YEAR, END_YEAR + 1, 5))
+    if ticks[-1] != END_YEAR:
+        ticks.append(END_YEAR)
+    return ",".join(str(tick) for tick in ticks)
+
+
+def compute_y_bounds(annual: pd.DataFrame, series: list[tuple[str, str, str]]) -> tuple[float, float]:
+    values = []
+    for col, _, _ in series:
+        values.extend(annual[col].tolist())
+    ymin = min(values)
+    ymax = max(values)
+    spread = ymax - ymin
+    pad = 0.06 * spread if spread > 0 else max(1.0, 0.06 * ymax if ymax else 1.0)
+    return ymin - pad, ymax + pad
+
+
+def compute_bounds(values: list[float]) -> tuple[float, float]:
+    ymin = min(values)
+    ymax = max(values)
+    spread = ymax - ymin
+    pad = 0.06 * spread if spread > 0 else max(1.0, 0.06 * ymax if ymax else 1.0)
+    return ymin - pad, ymax + pad
+
+
+def recession_fill_commands(annual: pd.DataFrame, ymin: float, ymax: float) -> list[str]:
+    lines = []
+    for year in annual.loc[annual["recession_any"] == 1, "year"]:
+        lines.append(
+            f"\\path[fill=gray!18,draw=none] (axis cs:{year - 0.5:.1f},{ymin:.4f}) rectangle (axis cs:{year + 0.5:.1f},{ymax:.4f});"
+        )
+    return lines
+
+
+def write_final_figure_tex(annual: pd.DataFrame) -> None:
+    FIGURES_DIR.mkdir(exist_ok=True)
+    top_series = [
+        ("applications_total_index_2005", "Total applications", "black!75"),
+        (
+            "applications_high_propensity_index_2005",
+            "High-propensity applications",
+            "orange!85!black",
+        ),
+    ]
+    top_ymin, top_ymax = compute_y_bounds(annual, top_series)
+    share_values = (100 * annual["high_propensity_share"]).tolist()
+    share_ymin, share_ymax = compute_bounds(share_values)
+    lines = [
+        "% Auto-generated by pull_us_business_applications_companion.py",
+        "\\begin{tikzpicture}",
+        "\\begin{groupplot}[",
+        "group style={group size=1 by 2, vertical sep=0.95cm},",
+        "width=0.82\\textwidth,",
+        "height=0.28\\textwidth,",
+        f"xmin={START_YEAR}, xmax={END_YEAR},",
+        f"xtick={{{pgf_tick_list()}}},",
+        "xticklabel style={/pgf/number format/fixed},",
+        "ymajorgrids=true,",
+        "grid style={gray!30},",
+        "tick align=outside,",
+        "axis line style={black!70},",
+        "tick style={black!70},",
+        "]",
+        "\\nextgroupplot[",
+        f"ylabel={{Index ({START_YEAR}=100)}},",
+        "xlabel={},",
+        f"ymin={top_ymin:.4f}, ymax={top_ymax:.4f},",
+        "xticklabel=\\empty,",
+        "legend cell align={left},",
+        "legend style={draw=none, fill=none, at={(0.02,0.98)}, anchor=north west, font=\\small},",
+        "]",
+    ]
+    lines.extend(recession_fill_commands(annual, top_ymin, top_ymax))
+    for col, _, color in top_series:
+        lines.append(
+            f"\\addplot[very thick, color={color}] table [x=year, y={col}, col sep=comma] {{../data/us_business_applications_annual.csv}};"
+        )
+    lines.extend(
+        [
+            "\\legend{Total applications,High-propensity applications}",
+            "\\nextgroupplot[",
+            "ylabel={Share (\\%)},",
+            "xlabel={},",
+            f"ymin={share_ymin:.4f}, ymax={share_ymax:.4f},",
+            "]",
+        ]
+    )
+    lines.extend(recession_fill_commands(annual, share_ymin, share_ymax))
+    lines.extend(
+        [
+            "\\addplot[very thick, color=teal!60!black, mark=*, mark size=1.7pt] table [x=year, y expr=\\thisrow{high_propensity_share}*100, col sep=comma] {../data/us_business_applications_annual.csv};",
+            "\\end{groupplot}",
+            "\\end{tikzpicture}",
+            "",
+        ]
+    )
+    OUT_FIG_TEX.write_text("\n".join(lines), encoding="utf-8")
+
+
+def write_figure(annual: pd.DataFrame) -> None:
+    fig, (ax_top, ax_bottom) = plt.subplots(
+        2,
+        1,
+        figsize=(9.2, 6.8),
+        sharex=True,
+        gridspec_kw={"height_ratios": [2.0, 1.15]},
+    )
+    shade_recession_years(ax_top, annual)
+    shade_recession_years(ax_bottom, annual)
+
+    top_series = [
+        ("applications_total_index_2005", "Total applications", "#333333"),
+        (
+            "applications_high_propensity_index_2005",
+            "High-propensity applications",
+            "#b35a1f",
+        ),
+    ]
+    for col, label, color in top_series:
+        ax_top.plot(annual["year"], annual[col], label=label, color=color, linewidth=2.4)
+
+    ax_top.set_ylabel(f"Index ({START_YEAR}=100)")
+    ax_top.grid(axis="y", alpha=0.25, linewidth=0.7)
+    ax_top.legend(frameon=False, loc="upper left")
+
+    share_pct = 100 * annual["high_propensity_share"]
+    ax_bottom.plot(
+        annual["year"],
+        share_pct,
+        color="#116466",
+        linewidth=2.4,
+        marker="o",
+        markersize=3.4,
+    )
+    ax_bottom.set_ylabel("Share (%)")
+    ax_bottom.grid(axis="y", alpha=0.25, linewidth=0.7)
+    set_year_axis(ax_bottom)
+
+    note = (
+        "Annual sums of monthly seasonally adjusted Census Business Formation Statistics series "
+        "from FRED; shaded years include recession months from USREC."
+    )
+    fig.text(0.01, 0.01, note, ha="left", va="bottom", fontsize=8)
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
+    fig.savefig(OUT_PNG, dpi=300, facecolor="white")
+    plt.close(fig)
+
+
+def write_summary(annual: pd.DataFrame) -> None:
+    windows = [
+        ("2007-2010 Great Recession window", 2007, 2010),
+        ("2019-2022 pandemic window", 2019, 2022),
+    ]
+    annual = annual.set_index("year")
+
+    lines = [
+        "# Business applications recession windows",
+        "",
+        "Annual sums of Census Business Formation Statistics from the flow-side companion series.",
+        "",
+    ]
+    for label, start, end in windows:
+        lines.append(f"## {label}")
+        lines.append("")
+        total_start = annual.loc[start, "applications_total"]
+        total_end = annual.loc[end, "applications_total"]
+        hba_start = annual.loc[start, "applications_high_propensity"]
+        hba_end = annual.loc[end, "applications_high_propensity"]
+        share_start = annual.loc[start, "high_propensity_share"]
+        share_end = annual.loc[end, "high_propensity_share"]
+
+        lines.append(
+            f"- `Total applications`: {int(total_start):,} -> {int(total_end):,} "
+            f"({100 * (total_end / total_start - 1):+.2f}%)"
+        )
+        lines.append(
+            f"- `High-propensity applications`: {int(hba_start):,} -> {int(hba_end):,} "
+            f"({100 * (hba_end / hba_start - 1):+.2f}%)"
+        )
+        lines.append(
+            f"- `High-propensity share`: {100 * share_start:.2f}% -> {100 * share_end:.2f}% "
+            f"({100 * (share_end - share_start):+.2f} percentage points)"
+        )
+        lines.append("")
+
+    OUT_MD.write_text("\n".join(lines), encoding="utf-8")
+
+
+def main() -> None:
+    monthly = load_monthly()
+    annual = annualize(monthly)
+
+    monthly.to_csv(OUT_MONTHLY_CSV, index=False)
+    annual.to_csv(OUT_ANNUAL_CSV, index=False)
+    write_figure(annual)
+    write_summary(annual)
+    write_final_figure_tex(annual)
+
+    print(f"Wrote {OUT_MONTHLY_CSV}")
+    print(f"Wrote {OUT_ANNUAL_CSV}")
+    print(f"Wrote {OUT_PNG}")
+    print(f"Wrote {OUT_MD}")
+    print(f"Wrote {OUT_FIG_TEX}")
+
+
+if __name__ == "__main__":
+    main()

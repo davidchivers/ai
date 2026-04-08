@@ -9,9 +9,9 @@ No compile/run tests were executed in this environment.
 
 ## Status Update (2026-02-24)
 - This report still describes findings in the canonical source:
-  - `projects/01_necessity_entrepreneurs/calibration/cfv_red_final.cpp`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/cfv_red_final.cpp`
 - An isolated working copy was created for convergence debugging:
-  - `projects/01_necessity_entrepreneurs/calibration/ai_calibration/cfv_red_final.cpp`
+  - `research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration/cfv_red_final.cpp`
 - Implemented in `AI_calibration` copy (not yet merged to canonical source):
   - `check_agg()` theta term now uses an explicit tolerance threshold.
   - Hardcoded root path replaced by `CFV_WORKINGPATH` environment-root support.

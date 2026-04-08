@@ -1,4 +1,4 @@
-# AI Calibration Workspace
+﻿# AI Calibration Workspace
 
 This folder contains an isolated calibration workflow for tasks 1 and 2:
 - task 1: run baseline/UI experiments from a local runtime root
@@ -25,7 +25,7 @@ Place these in `runtime/data/input/cfv/`:
 ## One-time setup
 
 ```powershell
-cd projects/01_necessity_entrepreneurs/calibration/ai_calibration
+cd research_projects/01_Necessity_Entrepreneurs/calibration/ai_calibration
 ./setup_ai_calibration.ps1 -SourceInputDir "C:/path/to/folder/with/input/files"
 ```
 

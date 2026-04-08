@@ -1,0 +1,247 @@
+\section{The model}
+
+This section gives the LaTeX working version of the self-employment model.
+It is intended to be the collaboration-safe drafting surface for model writing,
+separate from the actively edited LyX file.
+
+\subsection{Environment and timing}
+
+Consider a Lucas (1978) span-of-control environment in which households differ
+in human capital $h$. As in Gomez and Kuhn (2017), households are grouped into
+three education categories, primary $(P)$, secondary $(S)$, and tertiary $(T)$.
+Higher education shifts the distribution of human capital upward and is
+positively correlated with managerial ability $x$, worker productivity $z$, and
+job-separation risk.
+
+At the start of each period, a household enters as unemployed $(i_w = 0)$,
+employed $(i_w = 1)$, or entrepreneur $(i_w = 2)$. The household then chooses
+whether to operate a business, remain in work, or search for employment.
+Employment is state-dependent: a currently employed worker faces separation
+probability $\rho(h)$, while a non-employed worker can only reach employment
+through matching, with probability $p(\theta)$. Because current employment
+provides an incumbent match, the value of employment is higher for an employed
+worker than for an otherwise identical non-employed worker.
+
+The model distinguishes two entrepreneurial margins. First, households differ
+between opportunity entrepreneurship and necessity entrepreneurship. Opportunity
+entrepreneurs would choose entrepreneurship even if they began the period with a
+viable employment relationship. Necessity entrepreneurs choose entrepreneurship
+only when they lack that employment option. Second, within entrepreneurship the
+business can be either nonemployer self-employment or employer
+entrepreneurship. The self-employment branch is designed to quantify both
+composition margins jointly.
+
+\paragraph{Timing.}
+
+Occupational choice occurs at the start of period $t$. Households that choose
+entrepreneurship operate a business during the period and choose capital and
+hired labor. If hired labor satisfies $n_h = 0$, the business is nonemployer
+self-employment. If $n_h > 0$, the business is employer entrepreneurship.
+Entrepreneurial businesses face closure risk $\rho_e(h)$. In the benchmark,
+closure preserves current-period operating income, but moves the household into
+non-employment for the next period without automatic regular unemployment
+insurance eligibility.
+
+Previously employed workers may continue in work but face separation
+probability $\rho(h)$. If separation occurs, they receive unemployment support
+for the remainder of the period and do not search again until the next period.
+Previously unemployed workers search for employment and match with firms with
+probability $p(\theta)$. Successful matches produce labor income within the
+period; unsuccessful search leads to non-employment and benefit receipt.
+
+Unlike a standard ex post wage-bargaining search model, the wage here is taken
+as given when households make occupational choices. The occupational decision
+therefore determines whether a household enters entrepreneurship or directed job
+search before the employment realization is known.
+
+\subsection{Preferences, endowments, and technology}
+
+\paragraph{Preferences.}
+
+Households derive utility from consumption $c_t$ with period utility
+$U(c_t)$ and discount factor $\beta$.
+
+\paragraph{Endowments.}
+
+Each household begins the period with assets $a$ and an education-linked human
+capital draw $h$. Human capital is positively correlated with managerial talent
+$x$, worker productivity $z$, and separation risk.
+
+\paragraph{Production.}
+
+Entrepreneurs operate a single-project technology using capital $k$, owner
+labor $\ell_e$, and hired labor $n_h$:
+\begin{equation}
+    y = x k^{\alpha} \left( \ell_e + \xi z n_h \right)^{\gamma},
+    \qquad \alpha, \gamma > 0.
+    \label{eq:model_prod_self_employment}
+\end{equation}
+Self-employment is feasible at the corner $n_h = 0$, while employer
+entrepreneurship corresponds to $n_h > 0$.
+
+\paragraph{Factor prices and policy.}
+
+Capital rents at market rate $r$, labor is paid wage $w$, and the government
+provides unemployment insurance financed through taxation. Let $b$ denote the
+unemployment benefit and $\tau$ the labor-tax object borne jointly by workers
+and employers, with employer share $\psi$.
+
+\subsection{Static firm problem}
+
+In the self-employment version, the entrepreneur chooses capital and hired labor
+while supplying owner labor internally. Let $f_{hire}$ denote the fixed
+employer-threshold cost paid whenever the entrepreneur hires strictly positive
+labor. The static problem is
+\begin{equation}
+    \max_{k,\, n_h \geq 0}
+    \; x k^{\alpha} \left( \ell_e + \xi z n_h \right)^{\gamma}
+    - wz(1 + \psi \tau) n_h
+    - rk
+    - \kappa \frac{\rho z n_h}{q(\theta)}
+    - f_{hire}\mathbf{1}\{n_h > 0\}.
+    \label{eq:static_firm_problem_self_employment}
+\end{equation}
+
+The term involving $\kappa$ captures the smooth hiring or replacement cost from
+search frictions, while $f_{hire}$ captures a discrete hurdle at the first
+worker margin. This is the key object that separates nonemployer self-employment
+from employer entrepreneurship in the benchmark extension.
+
+For an interior employer choice, the first-order condition for hired labor is
+\begin{equation}
+    \gamma x k^{\alpha}
+    \left( \ell_e + \xi z n_h \right)^{\gamma - 1} \xi z
+    = w(1 + \psi \tau) + \frac{\rho \kappa}{q(\theta)}.
+    \label{eq:foc_hired_labor_self_employment}
+\end{equation}
+
+This implies the policy rule
+\begin{equation}
+    n_h^*(k,x,\widetilde{w})
+    =
+    \max\left\{
+        0,
+        \frac{1}{\xi z}
+        \left[
+            \left(
+                \frac{\gamma x k^{\alpha}\xi z}
+                {w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}
+            \right)^{\frac{1}{1-\gamma}}
+            - \ell_e
+        \right]
+    \right\}.
+    \label{eq:nh_policy_self_employment}
+\end{equation}
+
+Substituting the labor policy into the static objective gives entrepreneur
+profits
+\begin{equation}
+    \pi(k,n_h^*,x;\widetilde{w})
+    =
+    x k^{\alpha}\left(\ell_e + \xi z n_h^*\right)^{\gamma}
+    - z n_h^* w(1+\psi\tau)
+    - rk
+    - \kappa \frac{\rho z n_h^*}{q(\theta)}
+    - f_{hire}\mathbf{1}\{n_h^*>0\}.
+    \label{eq:profit_self_employment}
+\end{equation}
+
+Under perfect capital markets, the interior capital choice satisfies
+\begin{equation}
+    \alpha x k^{\alpha - 1}\left(\ell_e + \xi z n_h\right)^{\gamma} = r.
+    \label{eq:foc_capital_self_employment}
+\end{equation}
+
+\subsection{Household problems}
+
+\paragraph{Entrepreneurs.}
+
+Entrepreneurs maximize expected discounted utility
+\begin{equation}
+    \max_{\{c_t, a_{t+1}, k_t, n_{h,t}\}}
+    \mathbb{E}\sum_{t=0}^{\infty}\beta^t U(c_t)
+\end{equation}
+subject to
+\begin{align}
+    c + a'
+    &\leq
+    (1 + r - \delta)a
+    + \pi(k,n_h,x;\widetilde{w})
+    - \tau_{\pi},
+    \label{eq:budget_entrepreneur_self_employment}
+\end{align}
+and the borrowing constraint
+\begin{equation}
+    a' \geq -\bar{a}.
+    \label{eq:borrowing_constraint_self_employment}
+\end{equation}
+
+\paragraph{Employed workers.}
+
+Employed workers solve
+\begin{equation}
+    \max_{\{c_t, a_{t+1}\}}
+    \mathbb{E}\sum_{t=0}^{\infty}\beta^t U(c_t)
+\end{equation}
+subject to
+\begin{align}
+    c + a'
+    &\leq
+    (1+r-\delta)a
+    + (1-\rho)\left[wz(1-(1-\psi)\tau_y)\right]
+    + \rho b,
+    \label{eq:budget_employed_self_employment}
+\end{align}
+with $a' \geq -\bar{a}$.
+
+\paragraph{Unemployed workers.}
+
+Unemployed workers solve
+\begin{equation}
+    \max_{\{c_t, a_{t+1}\}}
+    \mathbb{E}\sum_{t=0}^{\infty}\beta^t U(c_t)
+\end{equation}
+subject to
+\begin{align}
+    c + a'
+    &\leq
+    (1+r-\delta)a
+    + p(\theta)\left[wz(1-(1-\psi)\tau_y)\right]
+    + (1-p(\theta))b,
+    \label{eq:budget_unemployed_self_employment}
+\end{align}
+with $a' \geq -\bar{a}$.
+
+\subsection{Government}
+
+The government finances unemployment insurance and any consumption-floor
+transfers through taxation. In the endogenous-tax experiments, the relevant tax
+object adjusts to satisfy the model's budget-closure rule. In the fixed-tax
+experiments, the tax rate is held fixed and transfer changes show up directly in
+the private-side outcomes.
+
+\subsection{Occupational choice and equilibrium}
+
+Given prices and policy, the household compares the value of entrepreneurship,
+employment, and non-employment. Necessity entrepreneurship is defined as the
+set of households that choose entrepreneurship only when they lack an active
+employment relationship. Opportunity entrepreneurship is defined as the set of
+households that choose entrepreneurship regardless of whether they begin the
+period employed or non-employed.
+
+An equilibrium consists of
+\begin{itemize}
+\item household policy rules for consumption, saving, occupation, capital, and
+hired labor,
+\item value functions for entrepreneurial, employed, and unemployed states,
+\item prices $(r,w,\theta)$ consistent with capital-market and labor-market
+clearing,
+\item firm policies consistent with the static problem and search costs,
+\item and government policy objects consistent with the budget rule used in the
+experiment.
+\end{itemize}
+
+In the self-employment benchmark, the central equilibrium object is not just the
+overall entrepreneur share, but the composition of entrepreneurs between
+nonemployer self-employment and employer entrepreneurship, overall and by
+education group.

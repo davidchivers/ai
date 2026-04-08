@@ -104,3 +104,121 @@ Interpretation update:
 - A major part of the apparent non-convergence was numerical/interpolation error rather than a purely structural model failure.
 - After fixing indexing + extrapolation handling, aggregate dynamics are much better behaved and residuals drop sharply.
 - Remaining issue to investigate: persistent entrepreneur mass concentration in education group 0 (`entr_count_edu`), and why entrepreneur states remain out-of-grid so often (possible grid design/policy-boundary issue).
+
+## Write-up draft: post-fix UI experiments (case 101, endogenous tax)
+
+Date: 2026-03-05
+
+Setup:
+- Proper matched comparison was run with `SingleCase=101`, `MaxIterAgg=40`, `RngSeed=12345`, and endogenous tax closure.
+- UI ladder: baseline `UI=0.40`, low UI `UI=0.05`, and no UI `UI=0.00`.
+- Logs:
+  - `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_endog101_baseline_m40_uioverridefix_20260305_20260305_145040.log`
+  - `calibration/ai_calibration/runtime/data/output/case_1/run_ui_005_endog101_ui005_m40_uioverridefix_20260305_20260305_150731.log`
+  - `calibration/ai_calibration/runtime/data/output/case_1/run_ui_000_endog101_ui000_m40_uioverridefix_20260305_20260305_145727.log`
+
+Headline quantitative results:
+- Entrepreneurship share rises as UI falls:
+  - `0.07884` (UI=0.40) -> `0.07944` (UI=0.05) -> `0.08466` (UI=0.00).
+- Endogenous tax and transfer objects move sharply:
+  - equilibrium `tau_y`: `0.01812 -> 0.00277 -> 0.00066`,
+  - UI outlays (`total_lower_out`): `8994.34 -> 1092.55 -> 0`,
+  - tax revenue (`total_tax`): `6584.28 -> 1056.83 -> 254.13`.
+- Matching tightness does not collapse in the no-UI run:
+  - `theta_new`: `0.61111` (baseline), `0.62802` (UI=0.05), `0.61191` (UI=0.00).
+
+Firm size by education (mean entrepreneur labor demand `n`):
+- Low education: `8.9299` -> `8.7125` -> `5.6389` (`-36.85%` vs baseline at UI=0.00).
+- Medium education: `12.0528` -> `11.6187` -> `10.8825` (`-9.71%` at UI=0.00).
+- High education: `21.5651` -> `21.9708` -> `21.6084` (approximately unchanged).
+- Overall entrepreneur mean `n`: `14.9009` -> `14.6931` -> `13.6459` (`-8.42%` at UI=0.00).
+
+Interpretation for draft text:
+- After fixing the UI-override path, the model does generate meaningful responses to UI cuts.
+- The `UI=0.05` step is modest because it is still a positive safety net and because endogenous fiscal closure already offsets a large part of transfer financing through a lower equilibrium tax rate.
+- Moving from `UI=0.05` to `UI=0.00` then produces a larger compositional shift toward lower-scale entrepreneurship, concentrated in low- and medium-education groups.
+- In these runs, the no-UI effect is not a pure unemployment-risk channel: it is a joint effect of (i) reduced insurance and (ii) large tax/transfer adjustment, with little change in aggregate matching tightness under the vacancy-floor environment.
+
+Paper-facing text candidate (compact):
+- "In the corrected case-101 experiments with endogenous tax closure, cutting unemployment insurance raises entrepreneurship but primarily through composition and fiscal adjustment. Entry rises from 0.0788 (UI=0.40) to 0.0847 (UI=0.00), while the equilibrium tax rate falls from 0.0181 to 0.0007 as transfer spending is removed. The firm-size contraction is concentrated among low- and medium-education entrepreneurs (low-education mean `n`: 8.93 to 5.64), whereas high-education firm size is nearly unchanged. This pattern is consistent with increased necessity entry at the bottom of the distribution rather than a uniform collapse in entrepreneurial scale."
+
+## Coauthor explanation: why the zero-UI case now converges
+
+Date: 2026-03-06
+
+What the older archive does and does not show:
+- The archived March 4 `ui000_101A` rerun is **not** valid evidence on the zero-UI equilibrium.
+- Evidence:
+  - `run_ui_000_ui000_101A_noskip_m40_rerunA_20260304_20260304_125328.log` records `ui_override=0.00`, but it ends with the same terminal moments as the corresponding baseline run:
+    - `entr_share = 0.07884`,
+    - `n_entrepreneur avg = 14.9009`,
+    - `theta_new = 0.611106`,
+    - `Baseline equilibrium tau_y = 0.0181222`.
+  - Those are the baseline case-101 moments, not a true no-UI steady state.
+- Interpretation:
+  - the March 4 archive still reflects the pre-fix UI-override path, so it should be treated as a mislabeled baseline-equivalent run rather than a separate no-UI check.
+
+What changed before the true zero-UI convergence result:
+- The credible no-UI result appears only after the March 5 `uioverridefix` pass, on top of the earlier numerical stabilization work already documented above.
+- The important ingredients are:
+  - consistent interpolation indexing and grid clamping,
+  - probability/denominator guards in the GE loop,
+  - non-negativity clamps on simulated entrepreneur `n` and `k`,
+  - a corrected UI override path so case 101 actually runs at the requested `lowerincome_b`.
+
+Evidence: true zero-UI convergence in corrected case 101 (endogenous tax)
+- Log:
+  - `calibration/ai_calibration/runtime/data/output/case_1/run_ui_000_endog101_ui000_m40_uioverridefix_20260305_20260305_145727.log`
+- Terminal moments:
+  - `best_tol = 0.00556019`,
+  - `theta_new = 0.61191`,
+  - `r_new = 0.0848609`,
+  - `w_new = 3.33355`,
+  - `entr_share = 0.08466`,
+  - `n_entrepreneur avg = 13.6459`,
+  - `n_supply / n_demand = 115755 / 115526 = 0.999978`,
+  - UI outlays fall to `0`,
+  - equilibrium `tau_y` is near zero (`0.00065727` in the comparison summary; simulation update line `3.88994e-07` at the end of the run).
+
+Why convergence occurs now:
+- This is not evidence that the model collapses to a trivial corner.
+- Evidence:
+  - matching tightness stays interior (`theta` remains around `0.61`, not near zero),
+  - labor demand and supply are closely aligned at the terminal iteration,
+  - entrepreneur policy tails remain bounded (`opt_n_0 max` around `81`, not the earlier explosive values),
+  - the final run does not show the earlier extrapolation-driven blowups.
+- Interpretation:
+  - convergence now occurs because the main numerical failure points were removed, so the fixed-point iteration can settle instead of being knocked off course by bad interpolation/extrapolation and failed policy overrides.
+
+How much is fiscal closure versus pure zero-UI behavior?
+- The endogenous-tax run makes convergence easier because removing UI also removes transfer spending, so the equilibrium tax rate collapses sharply.
+- But that is not the whole story, because zero UI also converges under fixed tax once the path is run cleanly.
+
+Evidence: zero UI also converges with fixed baseline tax
+- Clean March 6 log:
+  - `calibration/ai_calibration/runtime/data/output/case_1/run_baseline_fixedtax113_ui000_m40_homotopyfix_20260306_091442.log`
+- This run first solves baseline case 101 to get `tau_y_baseline = 0.0181222`, then follows the fixed-tax homotopy to target `lowerincome_b = 0.00`.
+- Terminal moments:
+  - `best_tol = 0.00286268`,
+  - `theta_new = 0.615773`,
+  - `entr_share = 0.08262`,
+  - `n_entrepreneur avg = 14.0681`,
+  - `Fixed tau_y (baseline) = 0.0181222`,
+  - `UI payments = 0`,
+  - `Endogenous lump-sum tax = -0.069693` (a transfer back to households because the fixed baseline tax now over-raises revenue when UI is removed).
+
+Interpretation for coauthors:
+- The corrected model now finds a zero-UI steady state under both closures:
+  - endogenous tax, and
+  - fixed baseline tax plus lump-sum rebating.
+- Therefore the new convergence is **not** solely an artifact of letting `tau_y` fall toward zero.
+- The endogenous-tax channel still matters quantitatively:
+  - it amplifies entry (`0.08466` vs `0.08262`) and produces a somewhat stronger firm-size compression (`13.6459` vs `14.0681` mean entrepreneur `n`),
+  - but it is not the fundamental reason the iteration converges.
+
+Current status of the `101A` versus `101` comparison:
+- The March 4 `101A` archive should not be used as the "alternative calibration already checked" result for zero UI, because it reproduces the baseline path.
+- If `101A` is meant to refer to a genuinely distinct parameterization rather than that archived run tag, the exact defining parameter block still needs to be identified before treating it as a separate sanity check.
+
+Short coauthor-facing summary paragraph:
+- "The apparent March 4 zero-UI convergence in the `101A` archive was not a genuine no-UI result: the run still landed on the baseline case because the UI override was not yet propagating through the standard case-101 path. After fixing that path and the earlier interpolation/indexing problems, the model now converges cleanly at zero UI in case 101 (`best_tol = 0.00556`). Importantly, the same qualitative convergence survives when we hold the tax rate fixed at the baseline value and use a lump-sum rebate (`best_tol = 0.00286`), so the result is not just an artifact of the endogenous tax rate collapsing to zero. The endogenous fiscal channel still amplifies the quantitative response, but it is no longer the only reason the solver succeeds."

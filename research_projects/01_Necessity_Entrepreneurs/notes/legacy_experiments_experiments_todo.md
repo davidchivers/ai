@@ -1,6 +1,6 @@
 # Experiments To-Do (2026-02-20)
 
-Status note (2026-02-23): Active project tracking has moved to `projects/01_necessity_entrepreneurs/STATUS.md`. Keep this file as supporting detail for experiment-specific implementation notes.
+Status note (2026-02-23): Active project tracking has moved to `research_projects/01_Necessity_Entrepreneurs/STATUS.md`. Keep this file as supporting detail for experiment-specific implementation notes.
 
 ## 1) Slides-Paper Alignment (must stay in sync)
 

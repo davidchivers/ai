@@ -41,7 +41,17 @@
 \newtheorem{summary}[theorem]{Summary}
 \usepackage{lscape}
 \usepackage{placeins}
-\setlength{\emergencystretch}{2.5em}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{ragged2e}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots,fillbetween}
+\pgfplotsset{compat=1.18}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
+\setlength{\emergencystretch}{3em}
 \sloppy
 \end_preamble
 \use_default_options false
@@ -143,7 +153,7 @@ graphicboxes
 \begin_body
 
 \begin_layout Title
-Necessity Entrepreneurs,
+Necessity Entrepreneurship
 \begin_inset Foot
 status collapsed
 
@@ -343,7 +353,7 @@ literal "false"
 \end_layout
 
 \begin_layout Abstract
-TO BE COMPLETED.
+This paper studies when higher entrepreneurship reflects productive opportunity rather than weak labor-market outside options. We develop a model of occupational choice with search frictions, unemployment insurance, and two entrepreneurial margins: nonemployer self-employment and employer entrepreneurship. Necessity entrepreneurs choose business ownership only when wage-work options are weak, whereas opportunity entrepreneurs would choose entrepreneurship even with strong outside options. Quantitatively, lower unemployment insurance raises entrepreneurship mainly through low-scale self-employment, while stronger labor-market security shifts entrepreneurial activity toward employer firms and increases aggregate output per household. The main lesson is that the same rise in business ownership can imply very different aggregate outcomes depending on whether it reflects improved entrepreneurial opportunities or deteriorating labor-market insurance.
 \end_layout
 
 \begin_layout Abstract
@@ -387,73 +397,215 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-Entrepreneurship is often treated as a driver of innovation,
- productivity,
- and growth.
- However,
- not all entrepreneurship has the same economic role.
- In many settings,
- a substantial share of entry is necessity-driven rather than opportunity-driven.
- This distinction matters because necessity entry can reflect weak labor-market outside options rather than comparative advantage in managing production.
+Entrepreneurship is often treated as a marker of innovation,
+ firm growth,
+ and rising wages.
+ But entrepreneurial entry can reflect very different underlying choices:
+ some individuals choose it despite attractive wage-work options,
+ while others do so only when those options are weak or unavailable.
+ That distinction matters for aggregate efficiency.
+ If business ownership rises mainly because individuals have poor outside options,
+ then higher entrepreneurship may reflect weak labor-market opportunities rather than productive entrepreneurial dynamism.
+ In this paper,
+ we formally distinguish between opportunity and necessity entrepreneurship within an occupational-choice framework.
+ Opportunity entrepreneurs are individuals who choose entrepreneurship even when viable wage employment is available,
+ whereas necessity entrepreneurs choose entrepreneurship only when it is not.
 \end_layout
 
 \begin_layout Standard
-Empirical work typically separates necessity and opportunity entrepreneurship using survey responses or prior labor-market status.
- Both approaches are useful,
- but each has limits.
- Self-reported motives are subjective,
- while classifications based only on previous employment status can misclassify agents whose timing is strategic or constrained by insurance and search frictions.
- A worker who expects separation may enter early and look 
-\begin_inset Quotes eld
-\end_inset
-
-opportunity
-\begin_inset Quotes erd
-\end_inset
-
- in the data;
- an unemployed household can enter temporarily while searching and look 
-\begin_inset Quotes eld
-\end_inset
-
-necessity
-\begin_inset Quotes erd
-\end_inset
-
- even when underlying talent is high.
+This distinction is likely to vary systematically across individuals.
+ The same characteristics that make an individual more productive as an entrepreneur may also improve their prospects in wage work.
+ If higher human capital raises both managerial potential and labor-market opportunities,
+ then entrepreneurship must clear a higher bar to be optimal.
+ By contrast,
+ weaker outside options may push lower-human-capital individuals into entrepreneurial activity under less favorable conditions.
+ As a result,
+ changes in entrepreneurial entry can have very different aggregate implications depending on who enters and what type of business activity they undertake.
 \end_layout
 
 \begin_layout Standard
-This paper provides a model-based definition that maps directly into counterfactual behavior.
- We define opportunity entrepreneurs as households that choose entrepreneurship regardless of whether they enter the period employed or non-employed.
- We define necessity entrepreneurs as households that choose entrepreneurship only when they lack an employment relationship.
- The model combines heterogeneous managerial talent,
- human-capital heterogeneity,
- search frictions,
- and social insurance,
- allowing us to quantify how labor-market risk and policy jointly shape the composition of entrepreneurship.
+The difficulty is that this distinction is not directly observed.
+ Empirical work has therefore relied on indirect measures,
+ but these do not cleanly uncover the underlying occupational-choice object.
+ One approach uses stated motives.
+ In weighted U.S.
+ GEM APS microdata for 2019â€“2021,
+ between 41 and 50 percent of early-stage entrepreneurs report starting a business because jobs are scarce,
+ while between 65 and 73 percent also report motives tied to building wealth or very high income.
+ These responses are informative,
+ but they do not deliver a clean classification:
+ necessity and opportunity signals can coexist within the same entrepreneurial spell.
+ A second approach classifies entrepreneurs by prior labor-market status.
+ That is also useful,
+ but observed status at entry is not the object we seek to identify.
+ Workers may start a business while still employed because they anticipate worsening job prospects,
+ while some more growth-oriented entrepreneurs may pass through temporary non-employment before starting a firm.
 \end_layout
 
 \begin_layout Standard
-Our contribution is threefold.
+What is missing,
+ however,
+ is a definition of this distinction at the level of occupational choice.
+ In the model below,
+ entrepreneurship can take the form of nonemployer self-employment or employer entrepreneurship.
+ This allows the framework to speak not only to entrepreneurial entry,
+ but also to the composition and scale of entrepreneurial activity.
+ In particular,
+ it can distinguish between an increase in low-scale business ownership driven by weak outside options and an increase in employer-oriented entrepreneurship driven by stronger entrepreneurial prospects.
+\end_layout
+
+\begin_layout Standard
+The paper makes three contributions.
  First,
- we provide a structural framework in which necessity entrepreneurship emerges endogenously from occupational choice under incomplete insurance.
+ it offers a formal definition of necessity entrepreneurship grounded in optimal occupational choice rather than stated motives or prior labor-market status.
  Second,
- we provide a quantitative decomposition of how unemployment risk and unemployment insurance affect entry margins and firm scale across education groups.
+ it develops a theoretical framework that embeds search and matching frictions within a span-of-control model of occupational choice,
+ so the wage-work outside option is endogenous to labor-market conditions.
  Third,
- we reinterpret necessity entry as a misallocation channel:
- low outside options can push households into entrepreneurship even when their productivity is better used in paid work.
+ the quantitative results show that policy-induced increases in entrepreneurship operate mainly through a compositional margin:
+ weaker outside options raise low-scale self-employment much more than employer entrepreneurship.
+ This is why the paper emphasizes entrepreneurial composition,
+ scale,
+ and aggregate output rather than the entrepreneurship rate alone.
 \end_layout
 
 \begin_layout Standard
-The rest of the paper proceeds as follows.
- Section 2 discusses related literature.
- Section 3 presents the economic environment.
- Section 4 characterizes household behavior and equilibrium.
- Section 5 discusses calibration.
- Section 6 presents baseline quantitative results.
- Section 7 studies policy counterfactuals,
- and Section 8 concludes.
+The remainder of the paper is organized as follows.
+ Section 2 presents the empirical motivation.
+ Section 3 discusses the related literature.
+ Section 4 sets out the model environment.
+ Section 5 characterizes equilibrium.
+ Section 6 discusses calibration.
+ Section 7 presents the quantitative results.
+ Section 8 studies policy counterfactuals.
+ Section 9 concludes.
+\end_layout
+
+\begin_layout Section
+Empirical Motivation
+\end_layout
+
+\begin_layout Standard
+Necessity entrepreneurship is difficult to identify cleanly in observed data.
+ But recessions are informative because they weaken outside options in wage employment.
+\end_layout
+
+\begin_layout Standard
+Figure 1 shows this pattern in business stocks.
+ During the Great Recession,
+ zero-employee establishments rose by 1.85 percent,
+ while businesses with employees contracted.
+ The decline was largest among establishments with 20 or more employees,
+ which fell by 5.82 percent.
+ Lower-scale business ownership was therefore comparatively resilient even as employer firms weakened.
+ This does not mean that nonemployer businesses directly measure necessity entrepreneurship.
+ It does suggest that downturns shift entrepreneurial activity toward smaller-scale ownership rather than employer growth.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+U.S.
+ business counts by employment size,
+ indexed to 1997.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{../figures/us_business_counts_by_size_indexed.tex}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 2 shows the same pattern in business formation flows.
+ Total business applications fell by 5.84 percent during the recession,
+ but high-propensity applications fell by 22.12 percent,
+ and their share of total applications also declined sharply.
+ The recession therefore did not simply reduce entry in the aggregate;
+ it shifted new business formation away from the employer-oriented margin.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+alignment document
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+U.S.
+ business applications and the high-propensity share.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{../figures/us_business_applications_indexed.tex}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Taken together,
+ the figures motivate the paperâ€™s main measurement point:
+ different empirical measures capture different margins of entrepreneurship,
+ and these should not be treated as economically equivalent.
+ The framework developed below is designed to explain these compositional differences rather than a single aggregate entrepreneurship statistic.
 \end_layout
 
 \begin_layout Section
@@ -461,12 +613,9 @@ Literature Review
 \end_layout
 
 \begin_layout Standard
-This paper connects three strands in a single quantitative framework.
-\end_layout
-
-\begin_layout Standard
-First,
- we build on work that separates opportunity and necessity entrepreneurship in the data.
+This paper relates most directly to the literature distinguishing opportunity from necessity entrepreneurship.
+ Much of the empirical literature operationalizes this distinction using observable proxies,
+ especially stated motives or pre-entry labor-market status.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -475,23 +624,79 @@ literal "false"
 
 \end_inset
 
- propose an operational distinction based on pre-entry labor market status and show that opportunity and necessity entrepreneurship have different cyclical patterns.
+ propose an objective classification based on pre-entry work status and show that opportunity and necessity entry display different cyclical patterns.
  
 \begin_inset CommandInset citation
 LatexCommand citet
-key "sedlacek_sterk_2017"
+key "fairlie_2013"
 literal "false"
 
 \end_inset
 
- show that startup cohorts differ in growth potential across the business cycle.
- This maps directly to our decomposition of entrepreneurial entry by prior employment state.
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "fossen_2021"
+literal "false"
+
+\end_inset
+
+ likewise show that entrepreneurial entry is heterogeneous over the cycle,
+ with unemployment-driven and lower-scale entry behaving differently from more growth-oriented business creation.
+ Using GEM microdata,
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "chivers_2017"
+literal "false"
+
+\end_inset
+
+ show that necessity entrepreneurship is negatively associated with economic development,
+ whereas opportunity entrepreneurship is positively associated with development.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "poschke_2013"
+literal "false"
+
+\end_inset
+
+ provide the closest bridge from these empirical patterns to a structural interpretation by emphasizing how labor-market prospects shape entrepreneurial selection,
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "levine_rubinstein_2018"
+literal "false"
+
+\end_inset
+
+ further show that entrepreneurship and other forms of self-employment should not be treated as interchangeable objects.
+ This literature makes clear that entrepreneurial entry is heterogeneous,
+ but it usually measures that heterogeneity through reduced-form proxies rather than through the occupational-choice problem itself.
 \end_layout
 
 \begin_layout Standard
-Second,
- we connect to the entrepreneurship-and-frictions literature.
+The paper also builds on the occupational-choice tradition in macroeconomics and entrepreneurship.
  
+\begin_inset CommandInset citation
+LatexCommand citet
+key "lucas_1978"
+literal "false"
+
+\end_inset
+
+,
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "evans_jovanovic_1989"
+literal "false"
+
+\end_inset
+
+,
+ and 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "buera_2009"
@@ -499,8 +704,9 @@ literal "false"
 
 \end_inset
 
- shows in a dynamic model that borrowing constraints can materially change both entry and firm scale,
- with large welfare effects through undercapitalized businesses.
+ show why entrepreneurial selection,
+ firm scale,
+ and financial constraints should be studied jointly rather than through entry alone.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -509,14 +715,27 @@ literal "false"
 
 \end_inset
 
- documents that many small businesses are not primarily innovation-driven and that nonpecuniary motives are quantitatively important.
- This evidence supports modeling entrepreneurship as a broad occupational margin rather than only a high-innovation margin.
+ add an important empirical qualification:
+ much small-business activity is not well described by the standard high-growth view of entrepreneurship.
+ That point is central here.
+ If weaker outside options raise primarily low-scale self-employment rather than employer entrepreneurship,
+ then the relevant outcome is not simply whether business ownership rises,
+ but which type of business activity expands and with what implications for firm scale,
+ output,
+ and welfare.
 \end_layout
 
 \begin_layout Standard
-Third,
- our labor-market block follows the search-and-matching tradition.
+The paper also relates to a smaller but growing literature that embeds self-employment in equilibrium search environments.
  
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mortensen_pissarides_1994"
+literal "false"
+
+\end_inset
+
+ and 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "petrongolo_pissarides_2001"
@@ -524,17 +743,131 @@ literal "false"
 
 \end_inset
 
- provides the aggregate matching-function synthesis that motivates our use of separation and job-finding transitions to discipline occupational flows.
+ provide the benchmark search-and-matching framework for job-finding rates,
+ separations,
+ and labor-market tightness.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "albrecht_navarro_vroman_2009"
+literal "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "satchi_temple_2009"
+literal "false"
+
+\end_inset
+
+ show that in economies with formal and informal sectors,
+ search frictions shape the allocation of workers across unemployment,
+ wage work,
+ and self-employment.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "narita_2020"
+literal "false"
+
+\end_inset
+
+,
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "denderski_sniekers_2024"
+literal "false"
+
+\end_inset
+
+,
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "poschke_2025"
+literal "false"
+
+\end_inset
+
+ move closer to the present paper by modeling self-employment as an alternative to job search and showing that changes in labor-market frictions materially affect self-employment outcomes.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "chodorow_reich_karabarbounis_2016"
+literal "false"
+
+\end_inset
+
+ add that the opportunity cost of employment is itself cyclical,
+ while 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "hombert_schoar_sraer_thesmar_2020"
+literal "false"
+
+\end_inset
+
+ show that unemployment insurance can raise entrepreneurial entry by reducing downside risk.
+ The present paper brings these strands together in a setting where job-finding risk,
+ separation risk,
+ and unemployment insurance jointly shift the occupational-choice threshold,
+ making the distinction between opportunity and necessity entrepreneurship endogenous to labor-market conditions.
 \end_layout
 
 \begin_layout Standard
-Relative to these strands,
- our contribution is to embed an explicit opportunity-versus-necessity distinction in a heterogeneous-agent model with search frictions,
- incomplete insurance,
- and policy counterfactuals.
- This structure lets us quantify how unemployment risk and social insurance jointly shift entrepreneurial entry,
+The paper also relates to the literature on entrepreneurial composition over the business cycle.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "sedlacek_sterk_2017"
+literal "false"
+
+\end_inset
+
+ show that startup employment is procyclical and that cohort differences reflect startup size and growth potential,
+ not only startup counts.
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "haltiwanger_jarmin_miranda_2013"
+literal "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "fort_etal_2013"
+literal "false"
+
+\end_inset
+
+ similarly show that young firms,
+ startup job creation,
+ and firm scale respond strongly to cyclical conditions.
+ This evidence suggests that changes in entrepreneurship should not be interpreted through a single extensive-margin statistic.
+ That perspective aligns closely with the central prediction of this paper:
+ weaker outside options can increase lower-scale business ownership even when employer-oriented entry or startup growth potential weakens.
+\end_layout
+
+\begin_layout Standard
+Relative to these literatures,
+ the paper contributes in two ways.
+ First,
+ it offers a structural definition of necessity entrepreneurship grounded in optimal occupational choice rather than in motives or prior status alone.
+ Second,
+ it embeds that distinction in a framework with heterogeneous human capital,
+ entrepreneurial ability,
+ search frictions,
+ closure risk,
+ and social insurance,
+ allowing the model to speak not only to entrepreneurial entry,
+ but also to entrepreneurial composition,
  firm scale,
- and composition.
+ and the distinction between self-employment and employer entrepreneurship.
 \end_layout
 
 \begin_layout Section
@@ -658,9 +991,24 @@ The timing of events can be summarized below.
 \begin_inset Formula $t.$
 \end_inset
 
- Those choosing to become entrepreneurs run projects and hire workers on on rolling contracts (i.e.
- contracts,
- will be reassessed each period).
+ Those choosing to become entrepreneurs run projects and choose capital and hired labor each period.
+ If hired labor satisfies 
+\begin_inset Formula $n_{h}=0$
+\end_inset
+
+ the business is nonemployer self-employment,
+ while 
+\begin_inset Formula $n_{h}>0$
+\end_inset
+
+ corresponds to employer entrepreneurship.
+ Entrepreneurial businesses face closure risk 
+\begin_inset Formula $\rho_{e}(h)$
+\end_inset
+
+ .
+ In the benchmark,
+ closure moves the household out of business and into non-employment without automatic regular unemployment insurance eligibility.
  Those who were previously employed within a project can decide to carry on working but carry a risk of separation with probability 
 \begin_inset Formula $\rho$
 \end_inset
@@ -710,6 +1058,7 @@ Timing for Matched Workers
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename ../figures/enter_period_employed_submission.eps
 	width 82text%
@@ -733,6 +1082,7 @@ sideways false
 status open
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
@@ -745,6 +1095,7 @@ Timing for Unmatched Workers
 \end_layout
 
 \begin_layout Plain Layout
+\align center
 \begin_inset Graphics
 	filename ../figures/enter_period_unemployed_submission.eps
 	width 82text%
@@ -848,18 +1199,26 @@ Firms use labor
 \begin_inset Formula $\delta$
 \end_inset
 
-.
- Managers can operate only one project.
- The functional form of the production function is:
+.Managers can operate only one project.The functional form of the production function is:
  
 \begin_inset Formula 
 \begin{equation}
-y=xk^{\alpha}(zn){}^{\gamma}\ \ \mbox{where}\ \alpha,\gamma>0.\ \label{eq:firm_prod}
+y=xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}\ \ \mbox{where}\ \alpha,\gamma>0.\ \label{eq:firm_prod}
 \end{equation}
 
 \end_inset
 
-Managerial talent 
+ so self-employment is feasible at 
+\begin_inset Formula $n_{h}=0$
+\end_inset
+
+ ,
+ while employer entrepreneurship corresponds to 
+\begin_inset Formula $n_{h}>0$
+\end_inset
+
+ .
+ Managerial talent 
 \begin_inset Formula $x$
 \end_inset
 
@@ -1131,22 +1490,35 @@ Firms are distinguished by their productivity realization
 \end_inset
 
 .
- Agents with sufficient ability to become managers choose the level of capital and the number of employees to maximize profit subject to a technological constraint.
- In order to simplify the exposition,
- first consider the problem of a manager with talent 
+ In the self-employment version,
+ entrepreneurs choose capital and hired labor while also supplying owner labor to the business.
+ Let 
+\begin_inset Formula $n_{h}$
+\end_inset
+
+ denote hired labor and 
+\begin_inset Formula $\ell_{e}$
+\end_inset
+
+ denote owner labor.
+ When 
+\begin_inset Formula $n_{h}=0$
+\end_inset
+
+ the entrepreneur is self-employed;
+ when 
+\begin_inset Formula $n_{h}>0$
+\end_inset
+
+ the entrepreneur is an employer.
+ The static problem for a manager with talent 
 \begin_inset Formula $x^{i}$
 \end_inset
 
- for a given level of capital 
-\begin_inset Formula $k$
-\end_inset
-
- (i.e.,
- labor input choice only):
- 
+ is  
 \begin_inset Formula 
 \begin{equation}
-\max_{zn}xk^{\alpha}(zn){}^{\gamma}-zw(1+\psi\tau)n-rk-\kappa\frac{\rho zn}{q(\theta)}\label{maxP}
+\max_{k,n_{h}\geq0}xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-zw(1+\psi\tau)n_{h}-rk-\kappa\frac{\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\label{maxP}
 \end{equation}
 
 \end_inset
@@ -1155,13 +1527,24 @@ Firms are distinguished by their productivity realization
 \end_layout
 
 \begin_layout Standard
-The first order conditions are:
+Self-employment is therefore the corner 
+\begin_inset Formula $n_{h}=0$
+\end_inset
+
+ ,
+ while employer entrepreneurship corresponds to 
+\begin_inset Formula $n_{h}>0$
+\end_inset
+
+ .
+ For an interior employer choice,
+ the first-order condition for hired labor is:
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-\gamma xk^{\alpha}(zn)^{\gamma-1}=w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}\label{maxP-1}
+\gamma xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma-1}\xi z=w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}\label{maxP-1}
 \end{equation}
 
 \end_inset
@@ -1172,7 +1555,7 @@ The first order conditions are:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{equation}
-n^{*}(k,x,\widetilde{w})=\left[\frac{\gamma xk^{\alpha}}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right]^{\frac{1}{1-\gamma}}\label{FOC}
+n^{*}_{h}(k,x,\widetilde{w})=\max\left\{ 0,\frac{1}{\xi z}\left[\left(\frac{\gamma xk^{\alpha}\xi z}{w(1+\psi\tau)+\frac{\rho\kappa}{q(\theta)}}\right)^{\frac{1}{1-\gamma}}-\ell_{e}\right]\right\} \label{FOC}
 \end{equation}
 
 \end_inset
@@ -1203,11 +1586,11 @@ nolink "false"
 
 \end_inset
 
-) yields the manager's profit function for a given level of capital:
+) yields the entrepreneur's profit function:
  
 \begin_inset Formula 
 \begin{equation}
-y(k,x,\widetilde{w})=xk^{\alpha}(zn^{*})^{\gamma}-zn^{*}w(1+\psi\tau)-\kappa\frac{\rho zn^{*}}{q(\theta)}\label{profitj}
+\pi(k,n^{*}_{h},x;\widetilde{w})=xk^{\alpha}\left(\ell_{e}+\xi zn^{*}_{h}\right)^{\gamma}-zn^{*}_{h}w(1+\psi\tau)-rk-\kappa\frac{\rho zn^{*}_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n^{*}_{h}>0\}\label{profitj}
 \end{equation}
 
 \end_inset
@@ -1220,7 +1603,16 @@ Capital
 \end_layout
 
 \begin_layout Standard
-Initially we assume capital markets function perfectly.
+Initially we assume capital markets function perfectly,
+ so the interior capital choice satisfies
+\begin_inset Formula 
+\[
+\alpha xk^{\alpha-1}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}=r.
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1231,7 +1623,15 @@ Entrepreneurs
 Entrepreneurs maximize expected discounted utility of consumption 
 \begin_inset Formula 
 \[
-\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\text{with }n_{h}=0\text{ denoting nonemployer self-employment and }n_{h}>0\text{ denoting employer entrepreneurship.}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\max_{\{c_{t},a_{t+1},k_{t},n_{h,t}\}}\mathbb{E}\sum^{\infty}_{t=0}\beta^{t}U(c_{t})
 \]
 
 \end_inset
@@ -1240,7 +1640,7 @@ subject to the following budget constraint:
  
 \begin_inset Formula 
 \begin{align}
-c+a' & \leq(1+r-\delta)a+\nu-\tau_{\pi}\label{eq:c_worker-3}
+c+a' & \leq(1+r-\delta)a+\pi(k,n_{h},x;\tilde{r},w,\tau)-\tau_{\pi}\label{eq:c_worker-3}
 \end{align}
 
 \end_inset
@@ -1267,7 +1667,7 @@ Employed
 The workforce (previous periods employed who choose to reapply for work) maximize expected discounted utility of consumption 
 \begin_inset Formula 
 \[
-\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum^{\infty}_{t=0}\beta^{t}U(c_{t})
 \]
 
 \end_inset
@@ -1307,7 +1707,7 @@ Unemployed
 The unemployed maximize expected discounted utility of consumption 
 \begin_inset Formula 
 \[
-\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum_{t=0}^{\infty}\beta^{t}U(c_{t})
+\max_{\{c_{t},a_{t+1}\}}\mathbb{E}\sum^{\infty}_{t=0}\beta^{t}U(c_{t})
 \]
 
 \end_inset
@@ -1392,34 +1792,32 @@ Let
 \end_layout
 
 \begin_layout Standard
-Let denote 
-\begin_inset Formula $\mathbb{E}_{\rho}$
+Let 
+\begin_inset Formula $\mathbb{E}_{\rho(h)}$
 \end_inset
 
- the expected value considering the possibility of being separated from the job as employed;
- 
+ denote the continuation operator for employed workers who face job separation,
+ let 
 \begin_inset Formula $\mathbb{E}_{p(\theta)}$
 \end_inset
 
- the expected value considering the possibility of finding new job if previously unmatched with a firm (unemployed former entrepreneurs).
- 
-\begin_inset Formula $V_{w}$
+ denote the continuation operator for households searching for work,
+ and let 
+\begin_inset Formula $\mathbb{E}_{\rho_{e}(h)}$
 \end_inset
 
- is the contemporary utility as a worker,
- which varies with the employment status.
- 
-\begin_inset Formula $\iota_{i_{w}=1}$
+ denote the continuation operator for entrepreneurs facing business closure.
+ We write 
+\begin_inset Formula $\mathbf{V}_{0}$
 \end_inset
 
- is an indicator function.
- We can write the household's problem recursively as follows.
+ for the continuation value after business closure;
+ in the benchmark this state does not automatically receive regular unemployment insurance.
  More specifically,
  
 \begin_inset Formula 
 \begin{align*}
-\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =p(\theta)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)\\
- & +(1-p(\theta))\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)
+\mathbb{E}_{p(\theta)}\mathbf{V}(a',h,x',i'_{w}) & =p(\theta)\mathbf{V}(a',h,x',i'_{w}=1)+(1-p(\theta))\mathbf{V}(a',h,x',i'_{w}=0)
 \end{align*}
 
 \end_inset
@@ -1430,23 +1828,31 @@ Let denote
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right) & =\rho\left(V_{u}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\\
- & +(1-\rho)\left(V_{n}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=1)\right)
+\mathbb{E}_{\rho(h)}\mathbf{V}(a',h,x',i'_{w}) & =(1-\rho(h))\mathbf{V}(a',h,x',i'_{w}=1)+\rho(h)\mathbf{V}(a',h,x',i'_{w}=0)
 \end{align*}
 
 \end_inset
 
-Notice that for agents who recently separated from the firm cannot rematch with a new firm in the current period.
+
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
-\mathbf{V}(a,h,i_{w}) & =\max_{\left\{ a',c,\mathcal{I}_{e}\right\} }\left\{ \begin{array}{c}
-\iota_{i_{w}=0}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
-\iota_{i_{w}=1}\left[(1-\mathcal{I}_{e})\mathbb{E}_{\rho}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]+\\
-\iota_{i_{w}=2}\left[(1-\mathcal{I}_{e})\mathbb{E}_{p(\theta)}\left(V_{w}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w})\right)+\mathcal{I}_{e}\left(V_{e}+\beta\mathbb{E}\mathbf{V}(a',x',i'_{w}=0)\right)\right]
-\end{array}\right\} 
+\mathbb{E}_{\rho_{e}(h)}\mathbf{V}(a',h,x',i'_{w}) & =(1-\rho_{e}(h))\mathbf{V}(a',h,x',i'_{w}=2)+\rho_{e}(h)\mathbf{V}_{0}(a',h,x',i'_{w}=0)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\mathbf{V}(a,h,x,i_{w}) & =\max\left\{ V^{w}(a,h,x,i_{w}),V^{e}(a,h,x)\right\} \\
+V^{w}(a,h,x,i_{w}) & =\max_{\left\{ a',c\right\} }\left\{ u(c)+\iota_{i_{w}=1}\beta\mathbb{E}_{\rho(h)}\mathbf{V}(a',h,x',i'_{w})+\iota_{i_{w}\neq1}\beta\mathbb{E}_{p(\theta)}\mathbf{V}(a',h,x',i'_{w})\right\} \\
+V^{e}(a,h,x) & =\max_{\left\{ a',c,k,n_{h}\geq0\right\} }\left\{ u(c)+\chi_{se}\mathbf{1}\{n_{h}=0\}+\chi_{emp}\mathbf{1}\{n_{h}>0\}+\beta\mathbb{E}_{\rho_{e}(h)}\mathbf{V}(a',h,x',i'_{w})\right\} 
 \end{align*}
 
 \end_inset
@@ -1468,7 +1874,7 @@ c+a' & \leq(1-\tilde{{r}}-\delta)a+inc\label{eq:c_worker-1}
 inc & =\begin{cases}
 ra+\widetilde{w}_{n} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}=1}}\\
 ra+\widetilde{w}_{u} & \mbox{ if \ensuremath{\mathcal{I}_{e}=0,} \ensuremath{i_{w}\neq1}}\\
-ra+\nu(k,x;\tilde{r},w,\tau) & \mbox{ if \ensuremath{\mathcal{I}_{e}=1}}
+ra+\pi(k,n_{h},x;\tilde{r},w,\tau) & \mbox{ if \ensuremath{\mathcal{I}_{e}=1}}
 \end{cases}
 \end{align*}
 
@@ -1483,6 +1889,15 @@ where
 \end_inset
 
  is the earnings of the worker or entrepreneur,
+ with entrepreneurial income coming from either self-employment (
+\begin_inset Formula $n_{h}=0$
+\end_inset
+
+ ) or employer entrepreneurship (
+\begin_inset Formula $n_{h}>0$
+\end_inset
+
+ ),
  
 \begin_inset Formula $\widetilde{w}_{n}=(1-\rho)\left\{ zw(1-(1-\psi)\tau)\right\} +\rho b$
 \end_inset
@@ -1499,65 +1914,60 @@ Equilibrium
 \end_layout
 
 \begin_layout Standard
-Let 
-\begin_inset Formula $\hat{h}$
+Because the quantitative model discretizes human capital into three education groups,
+ the operative occupational-choice object is a status-specific managerial-ability critical value within each human-capital block.
+ For a household with assets 
+\begin_inset Formula $a$
 \end_inset
-
- be the critical value of human capital that determines occupational choice which is affected by both employment status and education level.
- If 
-\begin_inset Formula $h\geq\hat{h}$
+,
+human capital 
+\begin_inset Formula $h$
 \end_inset
-
- then individuals choose entrepreneurship over becoming a worker.
- The critical value of human capital is always higher for those who have employment than those who are unmatched with a firm 
-\begin_inset Formula $\hat{h}_{i_{w}\neq1}<\hat{h}_{i_{w}=1}$
+,
+ and labor-market status 
+\begin_inset Formula $s$
 \end_inset
-
+ (employed or unemployed),
+ let 
+\begin_inset Formula $x_{s}^{*}(a,h)$
+\end_inset
+ denote the minimum managerial ability required for entrepreneurship.
+ Households choose entrepreneurship whenever 
+\begin_inset Formula $x\geq x_{s}^{*}(a,h)$
+\end_inset
 .
- We define necessity entrepreneurship as those who would not have become an entrepreneur 
-\shape italic
-if
-\shape default
- they had an employment contract:
+ The value of retaining an existing wage match implies
  
 \begin_inset Formula 
 \[
-\hat{h}_{i_{w}\neq1}<h<\hat{h}_{i_{w}=1}.
+x_{\mathrm{unemp}}^{*}(a,h)\leq x_{\mathrm{emp}}^{*}(a,h).
 \]
 
 \end_inset
 
-We define opportunity-driven entrepreneurship as those who would become an entrepreneur 
-\shape italic
-regardless
-\shape default
- of circumstance:
+We define necessity entrepreneurship as households whose entrepreneurial ability is high enough to enter if unemployed but not high enough to enter if employed:
  
 \begin_inset Formula 
 \[
-h\geq\hat{h}_{i_{w}=1}\geq\hat{h}_{i_{w}\neq1}
+x_{\mathrm{unemp}}^{*}(a,h)\leq x<x_{\mathrm{emp}}^{*}(a,h).
 \]
 
 \end_inset
 
-As there are three education levels,
- there are a total of six critical values of human capital:
- two for primary educated matched or unmatched,
+We define opportunity-driven entrepreneurship as households that enter regardless of labor-market status:
  
-\begin_inset Formula $\hat{h}_{i_{w}=1}^{P}\text{ and }\hat{h}_{i_{w}\neq1}^{P}$
+\begin_inset Formula 
+\[
+x\geq x_{\mathrm{emp}}^{*}(a,h)\geq x_{\mathrm{unemp}}^{*}(a,h).
+\]
+
 \end_inset
 
- two for secondary educated,
- 
-\begin_inset Formula $\hat{h}_{i_{w}=1}^{S}\text{ and }\hat{h}_{i_{w}\neq1}^{S},$
-\end_inset
-
- and two for tertiary educated,
- 
-\begin_inset Formula $\hat{h}_{i_{w}=1}^{T}\text{ and }\hat{h}_{i_{w}\neq1}^{T}$
-\end_inset
-
-.
+With three human-capital groups,
+ the benchmark therefore yields six status-specific critical-value schedules at each asset level:
+ employed and unemployed critical values for the low-,
+ middle-,
+ and high-human-capital blocks.
 \end_layout
 
 \begin_layout Section
@@ -1565,1323 +1975,36 @@ Calibration
 \end_layout
 
 \begin_layout Standard
-\align center
-\begin_inset Float table
-placement htbp
-alignment document
-wide false
-sideways false
+\begin_inset ERT
 status open
 
 \begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Parameter values,
- baseline economy
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
 
 
 \backslash
-centering
+input{sections/calibration_self_employment.tex}
 \end_layout
 
 \end_inset
-
-
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-{}
-\end_layout
-
-\end_inset
-
-
-\begin_inset Flex Resizebox
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset Argument 1
-status collapsed
-
-\begin_layout Plain Layout
-\begin_inset ERT
-status collapsed
-
-\begin_layout Plain Layout
-
-
-\backslash
-textwidth
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Argument 2
-status collapsed
-
-\begin_layout Plain Layout
-!
-\end_layout
-
-\end_inset
-
-
-\size small
-
-\begin_inset Tabular
-<lyxtabular version="3" rows="23" columns="4">
-<features tabularvalignment="middle">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<column alignment="center" valignment="top">
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Parameters 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Values 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Description 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Comments/observations/target
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\beta$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.94$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Discount factor 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\sigma$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $2.0$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Risk aversion 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $u(c)=\frac{c^{1-\sigma}}{1-\sigma}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\delta$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.06$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Capital depreciation 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\alpha$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.3207$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Capital share 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\gamma$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.4693$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Labour Share 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Frac.
- of entrepreneurs
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\{0.109,0.581,0.310\}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Share of population by 
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Barro and Lee (2013)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\vartheta_{e}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\{0.967,1.007,1.156\}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Shape parameter by 
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Mean firm size,
- Gomez and Kuhen (2017)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\varsigma$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $2.02655$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Location parameter 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $F(x)=\left[1+\frac{x-\varsigma}{\xi}\right]^{-\alpha_{i}}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\xi$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.1115$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Scale parameter 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Gomez and Kuhen (2017)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $z$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\{1.0,1.31,1.61\}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Wage premium by 
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Goldin and Katz (2009)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\rho$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\{0.0383,0.0288,0.0136\}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Job separation rate by 
-\begin_inset Formula $h$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Cairo and Cajner (2016)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\bar{m}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.8$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Matching efficiency 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Lubik,
- 2013 
-\begin_inset Formula $p(\theta)=\bar{m}\left(\frac{v}{u}\right)^{1-\mu}$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\mu$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $[0.5,0.7]$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Matching elasticity 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Petrongolo and Pissarides (2001)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\kappa$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $[0.03,0.045]\cdot w$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Search costs 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-(Hagedorn and Manovskii,
- 2008)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\tau_{\pi}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Corporation tax 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" topline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Set as zero for now
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\tau_{y}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.151$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Income Tax 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $T(y)=(y-\lambda_{p}y^{1-\tau_{p}})$
-\end_inset
-
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\lambda_{p}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Income Tax 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Determined in equm.
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $b$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0.40\cdot w$
-\end_inset
-
-,
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Social security benefits 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Shimmer and Krause and Lubik (2005)
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\psi$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Share 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\Delta$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Credit spread 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $\bar{a}$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-\begin_inset Formula $0$
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\size small
-Borrowing constraint 
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-<row>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="center" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-<cell alignment="none" valignment="top" bottomline="true" usebox="none">
-\begin_inset Text
-
-\begin_layout Plain Layout
-
-\end_layout
-
-\end_inset
-</cell>
-</row>
-</lyxtabular>
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
- 
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
-Baseline Results
+Benchmark Equilibrium
 \end_layout
 
 \begin_layout Standard
-The baseline equilibrium shows moderate entrepreneurship (0.1472 overall),
- with substantial heterogeneity by education.
- Entry is highest for high education (0.1618) and lowest for middle education (0.1398),
- while average labor demand is 21.9129 workers and rises steeply with skill from 9.7237 (low) to 33.5470 (high).
- This pattern indicates that high-education entrepreneurs operate at much larger scale even when their entry rate is only modestly above other groups.
- Labor-market transitions also suggest strong persistence in employment (Employed 
-\begin_inset Formula $\rightarrow$
-\end_inset
-
- Work = 0.740) and a small unemployment-to-entrepreneurship channel (0.002),
- so necessity entry is present but limited in the baseline.
+The benchmark makes clear that entrepreneurship is not a single object,
+ but a composition of distinct business types and scales.
+ Although the overall entrepreneur share is 0.178,
+ 57.7 percent of entrepreneurs are self-employed nonemployers and 42.3 percent are employer entrepreneurs.
+ This composition varies sharply by education:
+ lower-education entrepreneurs are concentrated in self-employment,
+ whereas high-education entrepreneurs are much more likely to operate employer firms.
+ Average entrepreneur labor demand is 6.16 workers.
+ The relevant object is therefore not only the level of entrepreneurship,
+ but also its composition by business type,
+ education,
+ and scale.
 \end_layout
 
 \begin_layout Standard
@@ -2889,6 +2012,7 @@ The baseline equilibrium shows moderate entrepreneurship (0.1472 overall),
 status open
 
 \begin_layout Plain Layout
+
 
 \backslash
 input{tables/baseline_results_only.tex}
@@ -2896,14 +2020,106 @@ input{tables/baseline_results_only.tex}
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Standard
+Figure 5 organizes these benchmark critical values by human-capital group.
+ Each panel fixes one human-capital block 
+\begin_inset Formula $h$
+\end_inset
+ and plots the status-specific entrepreneurial-ability critical value 
+\begin_inset Formula $x_{s}^{*}(a,h)$
+\end_inset
+ over assets.
+ Because human capital shapes both labor-market productivity and entrepreneurial returns,
+ the location of these critical-value schedules differs across groups as well as across employment states.
+ The unemployed schedule lies below the employed schedule in every panel,
+ so weaker outside options lower the critical value required for entry.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{../figures/case147_benchmark_necessity_entry_regions.tex}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The shaded band identifies the necessity-entry states:
+ households that would choose business ownership when unemployed,
+ but not when employed,
+ holding assets and human capital fixed.
+ This region is narrow at very low asset levels because liquidity constraints bind in both employment states.
+ It widens at intermediate asset levels,
+ where households can finance entry but employed workers still place substantial value on remaining in wage work.
+ At high asset levels,
+ the wedge narrows again because entry becomes feasible in both states.
+The critical-value schedules also shift to the right with human capital,
+ since higher human-capital groups carry higher wage productivity and lower separation risk,
+ which raises the value of staying employed and therefore requires a higher managerial-ability critical value for entry.
+Read in this way,
+Figure 5 captures the paper's central mechanism:
+weaker outside options expand entrepreneurship by enlarging the necessity-entry region rather than by uniformly improving entrepreneurial opportunities.
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+FloatBarrier
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
-Quantitative Analysis
+Counterfactuals
 \end_layout
 
 \begin_layout Standard
-This section evaluates each policy experiment relative to the baseline and reports how unemployment insurance design and tax closure affect entry, scale, and output.
+We now use the calibrated model to study how labor-market conditions and policy affect both the level and composition of entrepreneurship.
+ The exercises below are designed to isolate the paper's central mechanism:
+ changes in outside options do not simply raise or lower entrepreneurial entry in the aggregate,
+ but also shift the type of entrepreneurial activity that emerges.
+ In particular,
+ the model distinguishes between lower-scale self-employment and employer entrepreneurship,
+ allowing the counterfactuals to speak to composition,
+ scale,
+ and aggregate output.
+\end_layout
+
+\begin_layout Subsection
+Effect of Unemployment Insurance
+\end_layout
+
+\begin_layout Standard
+The first experiment studies how unemployment insurance affects entrepreneurial entry through the wage-work outside option.
+ In the model,
+ lowering unemployment insurance reduces the expected value of wage employment by weakening the insurance attached to paid work.
+ This matters even for individuals with relatively strong labor-market prospects,
+ since employment remains exposed to separation risk.
+ The key question is therefore not simply whether lower unemployment insurance raises entrepreneurship,
+ but whether it does so by improving entrepreneurial opportunities or by making wage work less attractive.
+ To study this,
+ we reduce the unemployment-insurance replacement rate from its benchmark value of 0.40 to 0.05 and then to zero.
 \end_layout
 
 \begin_layout Standard
@@ -2912,20 +2128,67 @@ status open
 
 \begin_layout Plain Layout
 
+
+\backslash
+input{tables/self_employment_case147_ui_ladder.tex}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Table 3 shows that lower unemployment insurance raises entrepreneurship sharply,
+ with the entrepreneur share increasing from 0.178 in the benchmark to 0.289 under low UI and 0.342 under no UI.
+ This increase,
+ however,
+ is concentrated overwhelmingly in self-employment rather than employer entrepreneurship.
+ The self-employed share among entrepreneurs rises from 57.7 percent to 71.8 percent and then to 76.7 percent,
+ while average entrepreneur size falls from 6.16 to 3.32 and then to 2.55 workers.
+ Aggregate output per household also declines,
+ with the output index falling from 1.000 to 0.835 and then to 0.739.
+ Lower insurance therefore raises entrepreneurship mainly by weakening the desirability of wage work and pushing more individuals into lower-scale necessity entry,
+ rather than by generating a broad expansion of productive employer firms.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
 \backslash
 FloatBarrier
 \end_layout
 
 \end_inset
+
 
 \end_layout
 
 \begin_layout Subsection
-Low unemployment insurance with endogenous tax
+Necessity Entrepreneurship and Labor-Market Misallocation
 \end_layout
 
 \begin_layout Standard
-This subsection reports the low-UI endogenous-tax experiment against the baseline.
+This experiment is designed to isolate the labor-market misallocation associated with necessity entrepreneurship.
+ In the model,
+ necessity entrepreneurs are individuals who choose entrepreneurship only because a viable wage-work option is unavailable.
+ If unemployment risk is removed altogether,
+ that channel is effectively shut down:
+ individuals who prefer wage employment obtain it and do not lose it.
+ The experiment therefore provides a benchmark for how occupational sorting changes when entrepreneurship no longer serves as a response to labor-market risk.
+ To study this,
+ we set job finding to one and worker separation to zero,
+ while holding the benchmark tax rate fixed.
+ This is not a fully efficient allocation,
+ since entrepreneurial risk,
+ borrowing limits,
+ employer-threshold costs,
+ and occupational heterogeneity remain in place,
+ but it is informative about the role of labor-market frictions in generating necessity entry.
 \end_layout
 
 \begin_layout Standard
@@ -2934,17 +2197,25 @@ status open
 
 \begin_layout Plain Layout
 
+
 \backslash
-input{tables/baseline_vs_low_ui_endogenous.tex}
+input{tables/self_employment_case147_no_unemployment_risk.tex}
 \end_layout
 
 \end_inset
 
+
 \end_layout
 
 \begin_layout Standard
-Lower UI increases entrepreneurship and per-capita output relative to baseline,
- while output per entrepreneur is slightly lower.
+Table 4 shows that shutting down unemployment risk has only a modest effect on total entrepreneurship,
+ with the entrepreneur share rising from 0.178 to 0.193.
+ The composition of entrepreneurship changes much more sharply.
+ The self-employed share falls from 57.7 percent to 39.7 percent,
+ implying a corresponding rise in the employer share from 42.3 percent to 60.3 percent.
+ Aggregate output per household increases by 13.5 percent.
+ The experiment therefore suggests that once the necessity channel is shut down,
+ entrepreneurial activity is reallocated away from lower-scale self-employment and toward more productive employer firms.
 \end_layout
 
 \begin_layout Standard
@@ -2952,21 +2223,39 @@ Lower UI increases entrepreneurship and per-capita output relative to baseline,
 status open
 
 \begin_layout Plain Layout
+
 
 \backslash
 FloatBarrier
 \end_layout
 
 \end_inset
+
 
 \end_layout
 
 \begin_layout Subsection
-No unemployment insurance with endogenous tax
+Effect of a Recession Shock
 \end_layout
 
 \begin_layout Standard
-This subsection reports the no-UI endogenous-tax experiment against the baseline.
+The final experiment studies the effect of a recession-style deterioration in labor-market conditions.
+ The purpose is to isolate the paper's central mechanism in a downturn environment:
+ when wage-work outside options weaken,
+ some marginal individuals enter entrepreneurship,
+ but primarily at smaller scale.
+ Motivated by the empirical patterns in Section 2,
+ we therefore consider a shock that worsens labor-market prospects for low-education individuals by increasing their separation rate.
+\end_layout
+
+\begin_layout Standard
+We model the downturn through the separation margin rather than through a simple MIT productivity shock,
+ because the mechanism of interest operates through the outside option to entrepreneurship rather than through an exogenous fall in entrepreneurial productivity itself.
+ A standard MIT productivity shock would move wages,
+ firm profits,
+ and entrepreneurial returns more broadly,
+ making it difficult to isolate whether entrepreneurship changes because outside options deteriorate or because production opportunities themselves have changed.
+ We compare the resulting steady state with the benchmark and then compute the deterministic transition from the benchmark distribution.
 \end_layout
 
 \begin_layout Standard
@@ -2975,17 +2264,27 @@ status open
 
 \begin_layout Plain Layout
 
+
 \backslash
-input{tables/baseline_vs_no_ui_endogenous.tex}
+input{tables/self_employment_case147_downturn_lowedu_sep.tex}
 \end_layout
 
 \end_inset
 
+
 \end_layout
 
 \begin_layout Standard
-Removing UI under endogenous tax strongly raises entry,
- but average labor demand and output per entrepreneur decline materially.
+Table 5 shows that the new steady state displays a modest increase in entrepreneurship,
+ with the entrepreneur share rising from 0.178 to 0.187.
+ At the same time,
+ the self-employed share rises from 0.577 to 0.595,
+ average entrepreneur size falls from 6.16 to 5.80 workers,
+ and the output index declines from 1.000 to 0.979.
+ The effect is concentrated among low-education individuals,
+ for whom the entrepreneur share rises from 0.078 to 0.091.
+ The recession shock therefore increases entrepreneurship only slightly in the aggregate,
+ but shifts activity toward smaller-scale business ownership and away from more productive entrepreneurial scale.
 \end_layout
 
 \begin_layout Standard
@@ -2993,6 +2292,55 @@ Removing UI under endogenous tax strongly raises entry,
 status open
 
 \begin_layout Plain Layout
+
+
+\backslash
+begin{figure}[H]
+\backslash
+centering
+\backslash
+caption{Transition responses to a low-education separation shock.}
+\backslash
+label{fig:case147_mit_lowedu_sep010_irf}
+\backslash
+centering
+\backslash
+includegraphics[width=0.95
+\backslash
+textwidth]{../figures/case147_mit_lowedu_sep010_irf.pdf}
+\backslash
+par
+\backslash
+medskip
+\backslash
+footnotesize
+ \backslash
+emph{Note:} Panels report percentage-point deviations from the benchmark transition start state.
+\backslash
+end{figure}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 5 shows the transition dynamics behind this steady-state comparison.
+ Following the shock,
+ low-education unemployment rises on impact,
+ and the entrepreneur pool shifts modestly toward self-employment.
+ The figure sharpens the same interpretation as the steady-state comparison:
+ a recession first worsens labor-market outcomes for exposed individuals and then pushes some marginal individuals into smaller-scale entrepreneurial activity.
+ This is the necessity-entry channel emphasized in the paper.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
 
 \backslash
 FloatBarrier
@@ -3000,48 +2348,6 @@ FloatBarrier
 
 \end_inset
 
-\end_layout
-
-\begin_layout Subsection
-No unemployment insurance with fixed tax
-\end_layout
-
-\begin_layout Standard
-This subsection reports the no-UI fixed-tax experiment against the baseline.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\backslash
-input{tables/baseline_vs_no_ui_fixed.tex}
-\end_layout
-
-\end_inset
-
-\end_layout
-
-\begin_layout Standard
-With fixed tax and no UI,
- entry rises modestly,
- per-capita output is roughly unchanged,
- and productivity per entrepreneur declines.
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-\backslash
-FloatBarrier
-\end_layout
-
-\end_inset
 
 \end_layout
 
@@ -3050,30 +2356,26 @@ Conclusion
 \end_layout
 
 \begin_layout Standard
-This paper develops a high-level quantitative framework for studying necessity entrepreneurship as an equilibrium outcome of occupational choice under labor market frictions.
- By defining necessity and opportunity entrepreneurship through counterfactual choices,
- the model separates compositional shifts in entry from changes in aggregate entrepreneurship rates.
+This paper develops a quantitative framework for studying necessity entrepreneurship as an equilibrium outcome of occupational choice under labor-market frictions.
+ By defining necessity and opportunity entrepreneurship structurally,
+ rather than through stated motives or prior labor-market status,
+ the paper provides a framework for analyzing how outside options shape entrepreneurial entry.
 \end_layout
 
 \begin_layout Standard
-The main message is that unemployment risk and social insurance jointly shape who becomes an entrepreneur.
- Reducing insurance can raise entrepreneurship on paper,
- but part of this increase reflects necessity entry associated with lower average firm scale.
- Conversely,
- stronger insurance can reduce necessity entry and improve sorting,
- even when effects on total entrepreneurship are modest.
- These results support evaluating entrepreneurship policy through composition,
- not levels alone.
+The paper's central message is that entrepreneurship is a compositional object,
+ not just a scalar one.
+ Labor-market conditions and policy affect not only the level of entrepreneurial entry,
+ but also whether that entry takes the form of lower-scale self-employment or employer-oriented entrepreneurship.
+ This distinction matters for aggregate outcomes,
+ because the same rise in business ownership can reflect either productive entrepreneurial opportunity or weak outside options.
 \end_layout
 
 \begin_layout Standard
-Several extensions remain important for the next draft.
- First,
- the credit friction wedge and job-market experiments should be fully completed and integrated into a unified welfare comparison.
- Second,
- calibration choices that are still open should be aligned with the code implementation and reported transparently.
- Third,
- the literature discussion can be broadened further once the project-specific verified PDF library is restored.
+The broader implication is that entrepreneurship should not be evaluated by aggregate entry alone.
+ Understanding who becomes an entrepreneur,
+ under what labor-market conditions,
+ and at what scale is essential for interpreting both entrepreneurial dynamics and the effects of policy.
 \end_layout
 
 \begin_layout Section*
@@ -3085,6 +2387,84 @@ Several extensions remain important for the next draft.
 
 \begin_layout Section*
 Appendix
+\end_layout
+
+\begin_layout Section*
+Robustness
+\end_layout
+
+\begin_layout Standard
+The employer-threshold benchmark is disciplined locally around 
+\begin_inset Formula $f_{hire}=0.25$
+\end_inset
+
+ rather than being treated as a single lucky parameter choice.
+ The appendix reports nearby values to show that the main composition result is robust within a tight bracket.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+input{tables/self_employment_fhire_robustness.tex}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Varying 
+\begin_inset Formula $f_{hire}$
+\end_inset
+
+ between 0.15 and 0.35 barely changes the overall entrepreneur share in the baseline economy,
+ but it moves composition in the expected direction:
+ a higher employer threshold raises the self-employed share and lowers the employer share.
+ The same qualitative pattern holds in the no-UI economy,
+ where entrepreneurship remains high and increasingly concentrated in self-employment.
+\end_layout
+
+\begin_layout Standard
+The matched fixed-tax UI ladder delivers the same qualitative comparative statics as the endogenous-tax benchmark.
+ Lower UI still raises entrepreneurship and shifts the entrepreneur pool toward smaller-scale self-employment when the financing rule is held fixed.
+ The benchmark results therefore do not hinge on the fiscal closure used to finance unemployment insurance.
+\end_layout
+
+\begin_layout Section*
+Measurement note
+\end_layout
+
+\begin_layout Standard
+To compare aggregate production across steady states,
+ let 
+\begin_inset Formula $Y_{s}$
+\end_inset
+
+ denote simulated total output in steady state 
+\begin_inset Formula $s$
+\end_inset
+
+ and let 
+\begin_inset Formula $H$
+\end_inset
+
+ denote the fixed number of simulated households.
+ The aggregate output index reported in the quantitative tables is 
+\begin_inset Formula $\frac{Y_{s}/H}{Y_{0}/H}=\frac{Y_{s}}{Y_{0}}$
+\end_inset
+
+,
+ where 0 denotes the benchmark steady state.
+ A value above one therefore means that output per household,
+ and hence total output,
+ is higher than in the benchmark.
+Cutoff figures are omitted from the appendix for brevity.
 \end_layout
 
 \begin_layout Section*
@@ -3173,7 +2553,7 @@ Set a tolerance
 
 \begin_layout Enumerate
 Guess 
-\begin_inset Formula $\Phi^{0}=\left(r^{0},w^{0},\rho^{0},\tau_{y}^{0}\right)$
+\begin_inset Formula $\Phi^{0}=\left(r^{0},w^{0},\rho^{0},\tau^{0}_{y}\right)$
 \end_inset
 
 .
@@ -3210,20 +2590,20 @@ Guess value function
 
 \begin_layout Enumerate
 Calculate the cutoff values of 
-\begin_inset Formula $x_{u}^{*}$
+\begin_inset Formula $x^{*}_{u}$
 \end_inset
 
  (for previously unemployed worker,
  or entrepreneur) and 
-\begin_inset Formula $x_{n}^{*}$
+\begin_inset Formula $x^{*}_{n}$
 \end_inset
 
  (for previously employed worker) via the following conditions.
  
 \begin_inset Formula 
 \begin{align}
-\widetilde{w}_{u}= & \pi(x_{u}^{*})=\max_{n}\left\{ \left(x_{u}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_u}\\
-\widetilde{w}_{n}= & \pi(x_{n}^{*})=\max_{n}\left\{ \left(x_{n}^{*}\right)^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa zn}{q(\theta)}\right\} \label{eq:xstar_n}
+\widetilde{w}_{u}= & \pi(x^{*}_{u})=\max_{k,n_{h}\geq0}\left\{ x^{*}_{u}k^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\right\} \label{eq:xstar_u}\\
+\widetilde{w}_{n}= & \pi(x^{*}_{n})=\max_{k,n_{h}\geq0}\left\{ x^{*}_{n}k^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}\right\} \label{eq:xstar_n}
 \end{align}
 
 \end_inset
@@ -3328,7 +2708,7 @@ To simplify the analysis,
  
 \begin_inset Formula 
 \begin{align}
-u_{t} & =\left(\int_{x}\iota_{i_{w}=0}+\int_{x}\iota_{i_{w}=2}\right)\cdot\int_{0}^{x_{u}^{*}}\label{eq:measure_u}\\
+u_{t} & =\left(\int_{x}\iota_{i_{w}=0}+\int_{x}\iota_{i_{w}=2}\right)\cdot\int^{x^{*}_{u}}_{0}\label{eq:measure_u}\\
 v_{t} & =\int_{x}\iota_{i_{w}=1}\cdot\rho\label{eq:measure_v}\\
 \theta_{n,t} & =\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{1-\mu}\label{eq:measure_matching}
 \end{align}
@@ -3337,79 +2717,79 @@ v_{t} & =\int_{x}\iota_{i_{w}=1}\cdot\rho\label{eq:measure_v}\\
 
 Note that we can write the above value functions explicitly as a system of sub-problems:
  
-\begin_inset Formula $P_{x<x_{u}^{*}}^{i_{w}=0}$
+\begin_inset Formula $P^{i_{w}=0}_{x<x^{*}_{u}}$
 \end_inset
 
  ,
  
-\begin_inset Formula $P_{x\geq x_{u}^{*}}^{i_{w}=0}$
+\begin_inset Formula $P^{i_{w}=0}_{x\geq x^{*}_{u}}$
 \end_inset
 
 ,
  
-\begin_inset Formula $P_{x<x_{n}^{*}}^{i_{w}=1}$
+\begin_inset Formula $P^{i_{w}=1}_{x<x^{*}_{n}}$
 \end_inset
 
  ,
  
-\begin_inset Formula $P_{x\geq x_{n}^{*}}^{i_{w}=1}$
+\begin_inset Formula $P^{i_{w}=1}_{x\geq x^{*}_{n}}$
 \end_inset
 
 ,
  
-\begin_inset Formula $P_{x<x_{u}^{*}}^{i_{w}=2}$
+\begin_inset Formula $P^{i_{w}=2}_{x<x^{*}_{u}}$
 \end_inset
 
  ,
  
-\begin_inset Formula $P_{x\geq x_{u}^{*}}^{i_{w}=2}$
+\begin_inset Formula $P^{i_{w}=2}_{x\geq x^{*}_{u}}$
 \end_inset
 
 ,
  which correspond to the dynamic programing problem for i).
  previously self-employed with 
-\begin_inset Formula $x<x_{u}^{*}$
+\begin_inset Formula $x<x^{*}_{u}$
 \end_inset
 
 ;
  ii).
  previously self-employed with 
-\begin_inset Formula $x\geq x_{u}^{*}$
+\begin_inset Formula $x\geq x^{*}_{u}$
 \end_inset
 
 ;
  iii).
  previously employed with 
-\begin_inset Formula $x<x_{n}^{*}$
+\begin_inset Formula $x<x^{*}_{n}$
 \end_inset
 
 ;
  iv).
  previously employed with 
-\begin_inset Formula $x\geq x_{n}^{*}$
+\begin_inset Formula $x\geq x^{*}_{n}$
 \end_inset
 
 ;
  v).
  previously unemployed with 
-\begin_inset Formula $x<x_{u}^{*}$
+\begin_inset Formula $x<x^{*}_{u}$
 \end_inset
 
 ;
  vi).
  previously unemployed with 
-\begin_inset Formula $h\geq h_{u}^{*}$
+\begin_inset Formula $h\geq h^{*}_{u}$
 \end_inset
 
 .
  To economize the space,
  we only provide the details for 
-\begin_inset Formula $P_{x<x_{u}^{*}}^{i_{w}=0}$
+\begin_inset Formula $P^{i_{w}=0}_{x<x^{*}_{u}}$
 \end_inset
 
  ,
  and 
-\begin_inset Formula $P_{x\geq x_{u}^{*}}^{i_{w}=0}$
+\begin_inset Formula $P^{i_{w}=0}_{x\geq x^{*}_{u}}$
 \end_inset
 
  as follows.
@@ -3418,14 +2798,14 @@ Note that we can write the above value functions explicitly as a system of sub-p
 \end_inset
 
  
-\begin_inset Formula $\left(P_{x<x_{u}^{*}}^{i_{w}=0}\right)$
+\begin_inset Formula $\left(P^{i_{w}=0}_{x<x^{*}_{u}}\right)$
 \end_inset
 
 :
  
 \begin_inset Formula 
 \begin{equation}
-\mathbf{V}^{1}(h,z,x<x_{u}^{*},a,i_{w}=0)=\max_{a'_{n},a'_{u}}\left\{ \begin{array}{c}
+\mathbf{V}^{1}(h,z,x<x^{*}_{u},a,i_{w}=0)=\max_{a'_{n},a'_{u}}\left\{ \begin{array}{c}
 p(\theta)\left(u(c_{n})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a'_{n},i'_{w}=1)\right)\\
 +(1-p(\theta))\left(u(c_{u})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a'_{u},i'_{w}=0)\right)
 \end{array}\right\} \label{eq:V_iw0_xl}
@@ -3444,14 +2824,14 @@ c_{u}+a'_{u} & \leq(1-\tilde{r}-\delta)a+b,\text{if unemployed}\label{eq:bdg_iw0
 \end_inset
 
 
-\begin_inset Formula $\left(P_{x\geq x_{u}^{*}}^{i_{w}=0}\right)$
+\begin_inset Formula $\left(P^{i_{w}=0}_{x\geq x^{*}_{u}}\right)$
 \end_inset
 
 :
  
 \begin_inset Formula 
 \begin{equation}
-\mathbf{V}^{1}(h,z,x\geq x_{u}^{*},a,i_{w}=0)=\max_{a_{e}'}\left\{ u(c_{e})+\beta\mathbb{E}\mathbf{V}^{0}(h,z',x',a_{e}',i'_{w}=w)\right\} \label{eq:V_iw0_xh}
+\mathbf{V}^{1}(h,z,x\geq x^{*}_{u},a,i_{w}=0)=\max_{a_{e}',k,n_{h}\geq0}\left\{ u(c_{e})+\chi_{se}\mathbf{1}\{n_{h}=0\}+\chi_{emp}\mathbf{1}\{n_{h}>0\}+\beta\left[(1-\rho_{e}(h))\mathbb{E}\mathbf{V}^{0}(h,z',x',a_{e}',i'_{w}=2)+\rho_{e}(h)\mathbb{E}\mathbf{V}^{0}_{0}(h,z',x',a_{e}',i'_{w}=0)\right]\right\} \label{eq:V_iw0_xh}
 \end{equation}
 
 \end_inset
@@ -3460,7 +2840,7 @@ s.t.
  
 \begin_inset Formula 
 \begin{equation}
-c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\nu(k,x;\tilde{r},w,\tau)\label{eq:bdg_iw0_xh}
+c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\pi(k,n_{h},x;\tilde{r},w,\tau)\label{eq:bdg_iw0_xh}
 \end{equation}
 
 \end_inset
@@ -3468,7 +2848,7 @@ c_{e}+a_{e}'\leq(1-\tilde{r}-\delta)a+\nu(k,x;\tilde{r},w,\tau)\label{eq:bdg_iw0
 where 
 \begin_inset Formula 
 \begin{equation}
-\nu(k,x;\tilde{r},w,\tau)=\max_{n}\left\{ x^{1-\alpha-\gamma}k^{\alpha}n{}^{\gamma}-w(1+\psi\tau)n-rk-\frac{\kappa\rho n}{q(\theta)}\right\} .\label{eq:profit_emtrepreneur}
+\pi(k,n_{h},x;\tilde{r},w,\tau)=xk^{\alpha}\left(\ell_{e}+\xi zn_{h}\right)^{\gamma}-w(1+\psi\tau)zn_{h}-rk-\frac{\kappa\rho zn_{h}}{q(\theta)}-f_{hire}\mathbf{1}\{n_{h}>0\}.\label{eq:profit_emtrepreneur}
 \end{equation}
 
 \end_inset
@@ -3519,22 +2899,22 @@ Generate a large number of individuals,
 \end_inset
 
  assign a vector of initial condition 
-\begin_inset Formula $\left(h_{t}^{j},z_{0}^{j},x_{0}^{j},a_{0}^{j},i_{w,0}^{j}\right)$
+\begin_inset Formula $\left(h^{j}_{t},z^{j}_{0},x^{j}_{0},a^{j}_{0},i^{j}_{w,0}\right)$
 \end_inset
 
 ,
  where 
-\begin_inset Formula $x_{0}^{j}\sim\Omega_{x}$
+\begin_inset Formula $x^{j}_{0}\sim\Omega_{x}$
 \end_inset
 
 ,
  
-\begin_inset Formula $z_{0}^{j}\in\Omega_{z}$
+\begin_inset Formula $z^{j}_{0}\in\Omega_{z}$
 \end_inset
 
 ,
  
-\begin_inset Formula $i_{w,0}^{j}\in\Omega_{w}$
+\begin_inset Formula $i^{j}_{w,0}\in\Omega_{w}$
 \end_inset
 
 .
@@ -3557,16 +2937,16 @@ Simulate the economy for
 
 \begin_layout Enumerate
 Calculate the following statistics from the simulated path 
-\begin_inset Formula $\left\{ h_{t}^{j},z_{t}^{j},x_{t}^{j},a_{t}^{j},i_{w,t}^{j},\mathcal{I}_{e,t}^{j},n_{t}^{j},k_{t}^{j}\right\} _{t=0}^{T}$
+\begin_inset Formula $\left\{ h^{j}_{t},z^{j}_{t},x^{j}_{t},a^{j}_{t},i^{j}_{w,t},\mathcal{I}^{j}_{e,t},n^{j}_{t},k^{j}_{t}\right\} ^{T}_{t=0}$
 \end_inset
 
 .
  
 \begin_inset Formula 
 \begin{align}
-LS^{0} & =\frac{\sum_{j=1}^{N}\left(\iota_{i_{w}=1}\cdot z^{j}\right)}{N}\label{eq:agg_simulation_1}\\
-KS^{0} & =\frac{\sum_{j=1}^{N}\left(\iota_{i_{w}=0}\cdot a^{j}+\iota_{i_{w}=1}\cdot a^{j}+\iota_{i_{w}=2}\cdot a^{j}-\iota_{i_{w}=0}\cdot k^{j}\right)}{\sum_{j=1}^{N}a^{j}}\label{eq:agg_simulation_2}\\
-u_{t} & =\left(\int_{h}\iota_{i_{w}=0}+\int_{h}\iota_{i_{w}=2}\right)\cdot\int_{0}^{h_{u}^{*}}\\
+LS^{0} & =\frac{\sum^{N}_{j=1}\left(\iota_{i_{w}=1}\cdot z^{j}\right)}{N}\label{eq:agg_simulation_1}\\
+KS^{0} & =\frac{\sum^{N}_{j=1}\left(\iota_{i_{w}=0}\cdot a^{j}+\iota_{i_{w}=1}\cdot a^{j}+\iota_{i_{w}=2}\cdot a^{j}-\iota_{i_{w}=0}\cdot k^{j}\right)}{\sum^{N}_{j=1}a^{j}}\label{eq:agg_simulation_2}\\
+u_{t} & =\left(\int_{h}\iota_{i_{w}=0}+\int_{h}\iota_{i_{w}=2}\right)\cdot\int^{h^{*}_{u}}_{0}\\
 v_{t} & =\int_{h}\iota_{i_{w}=1}\cdot\rho\\
 p(\theta)_{t} & =\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{1-\mu}\\
 G & =\int\tau wz
@@ -3575,7 +2955,7 @@ G & =\int\tau wz
 \end_inset
 
 and 
-\begin_inset Formula $\tau_{y}^{1}$
+\begin_inset Formula $\tau^{1}_{y}$
 \end_inset
 
  that balances the government's budget.
@@ -3589,7 +2969,7 @@ Stop and set
 
 ,
  if 
-\begin_inset Formula $\max\left\{ LS^{0},KS^{0},\left|\theta_{n}^{1}-\theta_{n}^{0}\right|\right\} \leq\epsilon$
+\begin_inset Formula $\max\left\{ LS^{0},KS^{0},\left|\theta^{1}_{n}-\theta^{0}_{n}\right|\right\} \leq\epsilon$
 \end_inset
 
 .
@@ -3601,7 +2981,7 @@ Stop and set
 r^{0} & =\chi r^{0}+(1-\chi)r^{1}\left(KS^{0}\right)\\
 w^{0} & =\chi w^{0}+(1-\chi)w^{1}\left(LS^{0}\right)\\
 p(\theta)^{0} & =\chi p(\theta)^{0}+(1-\chi)p(\theta)^{1}\\
-\tau_{y}^{0} & =\chi\tau_{y}^{0}+(1-\chi)\tau_{y}^{1}
+\tau^{0}_{y} & =\chi\tau^{0}_{y}+(1-\chi)\tau^{1}_{y}
 \end{align*}
 
 \end_inset
@@ -3646,7 +3026,7 @@ The matching function is Cobb-Douglass where
 \begin_layout Standard
 \begin_inset Formula 
 \[
-m_{t}=\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}
+m_{t}=\bar{m}v^{1-\mu}_{t}u^{\mu}_{t}
 \]
 
 \end_inset
@@ -3676,7 +3056,7 @@ m_{t}=\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}
 \begin_layout Standard
 \begin_inset Formula 
 \[
-q(\theta_{t})=\frac{m_{t}}{v_{t}}=\bar{m}\theta_{t}^{-\mu}
+q(\theta_{t})=\frac{m_{t}}{v_{t}}=\bar{m}\theta^{-\mu}_{t}
 \]
 
 \end_inset
@@ -3692,7 +3072,7 @@ is aggregate labour market tightness.
 \begin_layout Standard
 \begin_inset Formula 
 \[
-p(\theta_{t})=\frac{m_{t}}{u_{t}}=\bar{m}\theta_{t}^{1-\mu}
+p(\theta_{t})=\frac{m_{t}}{u_{t}}=\bar{m}\theta^{1-\mu}_{t}
 \]
 
 \end_inset
@@ -3769,7 +3149,7 @@ To find the steady state of the employment equation
 \end_inset
 
  and 
-\begin_inset Formula $m_{t}=\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}.$
+\begin_inset Formula $m_{t}=\bar{m}v^{1-\mu}_{t}u^{\mu}_{t}.$
 \end_inset
 
  Substituting and getting rid of time subscript gives 
@@ -3777,7 +3157,7 @@ To find the steady state of the employment equation
 \end_inset
 
  which simplifies to 
-\begin_inset Formula $\bar{m}v_{t}^{1-\mu}u_{t}^{\mu}=$
+\begin_inset Formula $\bar{m}v^{1-\mu}_{t}u^{\mu}_{t}=$
 \end_inset
 
 
@@ -3805,7 +3185,7 @@ The steady state for the JCC can be found by using
 \end_inset
 
  and 
-\begin_inset Formula $q(\theta_{t})=\bar{m}\theta_{t}^{-\mu}=\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{-\mu}$
+\begin_inset Formula $q(\theta_{t})=\bar{m}\theta^{-\mu}_{t}=\bar{m}\left(\frac{v_{t}}{u_{t}}\right)^{-\mu}$
 \end_inset
 
 .

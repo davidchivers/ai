@@ -1,0 +1,197 @@
+#LyX 2.4 created this file. For more info see https://www.lyx.org/
+\lyxformat 620
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{babel}
+\usepackage{xcolor}
+\usepackage{amsfonts}
+\usepackage{placeins}
+\setlength{\emergencystretch}{2.5em}
+\sloppy
+\end_preamble
+\use_default_options false
+\language english
+\language_package default
+\inputencoding iso8859-15
+\fontencoding T1
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing onehalf
+\use_hyperref true
+\pdf_bookmarks false
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder false
+\pdf_colorlinks false
+\pdf_backref section
+\pdf_pdfusetitle false
+\papersize default
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 2
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\biblio_options round
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\leftmargin 1.1in
+\topmargin 1.1in
+\rightmargin 1.1in
+\bottommargin 1.1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content true
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Necessity Entrepreneurship: sidecar introduction and motivation draft
+\end_layout
+
+\begin_layout Author
+Data sidecar draft for integration into the main paper
+\end_layout
+
+\begin_layout Standard
+This file is intentionally separate from the main draft. Its purpose is to provide a fuller paper-style opening that can be mined, revised, or transplanted later without altering the canonical LyX source in
+ \family typewriter
+drafts/
+\family default
+.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Entrepreneurship is central to modern macroeconomics, labor economics, and development economics because it sits at the intersection of innovation, firm creation, occupational choice, and resource allocation. Yet the term
+ \emph on
+entrepreneurship
+ \emph default
+ often bundles together activities with very different economic content. At one end are businesses started to exploit an innovation, expand into a new market, or scale an organization with high growth potential. At the other end are low-scale businesses created when paid employment is difficult to obtain, insecure, or poorly matched to the worker's underlying circumstances. The distinction matters because the welfare, policy, and aggregate implications of these two forms of entry are unlikely to be the same.
+\end_layout
+
+\begin_layout Standard
+This distinction is especially important over the business cycle. Recessions weaken labor demand, raise unemployment risk, and reduce the value of remaining attached to paid work. At the same time, downturns can compress demand, tighten financing conditions, and reduce the expected scale of newly created firms. These forces push in different directions. A weaker labor market can increase entry by households with poor outside options, while the same recession can reduce the number of growth-oriented employer startups and shrink the expected size of entrant firms. A useful theory of entrepreneurship over the cycle therefore cannot ask only whether entry rises or falls in the aggregate. It must ask
+ \emph on
+what kind
+ \emph default
+ of entry becomes more attractive, for whom, and with what implications for firm scale and allocation.
+\end_layout
+
+\begin_layout Standard
+This paper studies that problem through the lens of necessity entrepreneurship. We define necessity entrepreneurs as households whose occupational choice is state contingent on the loss or absence of an employment relationship. In our framework, a household is a necessity entrepreneur if it prefers entrepreneurship when it enters the period without an employment attachment, but would prefer paid work if a stable employment relationship were available. By contrast, an opportunity entrepreneur prefers entrepreneurship regardless of whether it enters the period employed or non-employed. This definition differs from survey-based measures of motives because it is grounded directly in counterfactual behavior. It also differs from reduced-form classifications based only on observed labor-market status, because the model can distinguish between entrepreneurs who are genuinely pushed into entry by weak outside options and those who would have chosen entrepreneurship anyway.
+\end_layout
+
+\begin_layout Standard
+The mechanism we emphasize is straightforward. Workers differ in human capital, outside options, and managerial ability. Employment relationships are risky because separation is possible, while non-employed workers face a lower probability of regaining employment than currently employed workers face of preserving it. Unemployment insurance partially insures the downside of job loss, but it also changes the relative attractiveness of waiting for work versus starting a business immediately. Entrepreneurship then becomes an endogenous response to labor-market risk, incomplete insurance, and heterogeneity in productive ability. In this environment, downturns can reallocate households toward entrepreneurship even when many of the newly created businesses are small, temporary, or low-scale.
+\end_layout
+
+\begin_layout Standard
+This perspective matters for both positive and normative reasons. Positively, it helps explain why broad measures of entrepreneurship can behave differently from measures of employer-firm formation or startup job creation. Normatively, it changes how social insurance should be interpreted. A more generous safety net may reduce low-scale necessity entry, but that reduction need not be evidence of less dynamism. It may instead reflect improved matching, better worker-firm allocation, and a lower incidence of business creation driven by weak outside options rather than comparative advantage in management. The relevant policy question is therefore not whether insurance raises or lowers a single entrepreneurship rate, but whether it changes the composition of entry and the scale of the firms that are created.
+\end_layout
+
+\begin_layout Standard
+Our contribution is threefold. First, we provide a structural definition of necessity entrepreneurship that maps directly into state-contingent occupational choice. Second, we embed that definition in a quantitative framework with heterogeneous education, entrepreneurial ability, search frictions, and social insurance, allowing the model to speak simultaneously to entry, firm scale, and labor-market conditions. Third, we connect necessity entrepreneurship to misallocation. If weak outside options push households into business ownership when their comparative advantage lies in paid work, then necessity entrepreneurship is not only a labor-market response; it is also a firm-composition and allocation margin. That perspective helps reinterpret business creation during downturns and clarifies what should count as an improvement in entrepreneurial outcomes.
+\end_layout
+
+\begin_layout Standard
+The empirical and conceptual motivation for this approach comes from a simple observation: recession-era business activity does not move uniformly across data objects. Some measures suggest resilience, or even growth, in low-scale business activity. Other measures suggest weakness in employer startup creation and startup quality. A satisfactory opening for this paper therefore has to embrace that heterogeneity rather than suppress it. The purpose of the next section is to show why this is the right starting point and how it maps into the paper's quantitative agenda.
+\end_layout
+
+\begin_layout Section
+Motivation and empirical background
+\end_layout
+
+\begin_layout Standard
+The recent literature points strongly toward separating necessity-style entry from growth-oriented startup formation. Fairlie and Fossen argue that business creation contains both opportunity and necessity components, and that the necessity component is more countercyclical. Fossen's decomposition of entrepreneurship over the business cycle similarly emphasizes that countercyclical movement is concentrated in unemployment-driven and unincorporated entry rather than in the kinds of businesses most closely associated with employer growth. Hurst and Pugsley, from a different angle, show that many small businesses are not high-growth innovation projects at all, but local-service or lifestyle businesses with limited scale ambitions. Taken together, these studies imply that recession entrepreneurship should not be interpreted through a single extensive-margin count.
+\end_layout
+
+\begin_layout Standard
+The literature on startup dynamics sharpens this point. Sedlacek and Sterk show that startup cohorts born in weak aggregate conditions are persistently smaller and have lower growth potential. Haltiwanger, Jarmin, and Miranda emphasize the importance of startups and young firms for job creation, while also showing that startup-related job creation fell sharply in the Great Recession. Fort, Haltiwanger, Jarmin, and Miranda further show that young and small firms are especially cycle sensitive. These papers do not contradict the necessity-entrepreneurship view. Rather, they imply that low-scale entry may remain active, or even become more attractive, precisely when growth-oriented employer creation is weak. The empirical object therefore matters. If we mix zero-employee business counts, self-employment rates, employer startups, and high-propensity applications into one headline statement, we risk describing none of them accurately.
+\end_layout
+
+\begin_layout Standard
+The sidecar evidence assembled for this project illustrates that point clearly. Using annual U.S. business counts by employment size for 1997--2022, the zero-employee margin behaves differently from the positive-employment bins in the Great Recession window. Between 2007 and 2010, zero-employee establishments rise by about 1.9 percent, while establishments with 1--4 employees fall by about 3.6 percent, those with 5--19 employees fall by about 2.6 percent, and those with 20 or more employees fall by about 5.8 percent. The aggregate total across all tracked bins barely changes because the rise in zero-employee activity offsets the decline in employer establishments. This is exactly the sort of pattern a necessity-entrepreneurship framework should be built to interpret: low-scale activity is relatively resilient while larger employer activity weakens.
+\end_layout
+
+\begin_layout Standard
+A second sidecar fact comes from Census Business Formation Statistics. When we move from stock-style business counts to a flow measure of business creation, the recession pattern looks different again, and in a way that is highly informative for this paper. During the 2007--2010 window, total business applications fall by about 5.8 percent, while high-propensity business applications fall by about 22.1 percent. The share of applications classified as high propensity declines by almost 10 percentage points. This is useful because it points much more directly to a deterioration in growth-oriented or employer-likely creation. Put differently, the same downturn that appears consistent with resilience on the zero-employee margin looks much less favorable when attention shifts to business formation flows and employer-oriented application quality.
+\end_layout
+
+\begin_layout Standard
+The person-level companion series adds an additional caution. Annual CPS self-employment rates do not reproduce the same Great Recession pattern as the zero-employee establishment counts. Over the 2007--2010 window, the total self-employment rate declines, and both the incorporated and unincorporated components decline as well. That divergence should not be treated as a problem to be hidden. It is evidence that different data sets capture different margins. A person-level self-employment rate uses workers as the unit and employment as the denominator; a nonemployer business count uses business entities as the unit; a business-applications series measures flow rather than stock. If these objects all moved identically, the concept of necessity entrepreneurship would be much less interesting. The fact that they differ is precisely what makes composition central.
+\end_layout
+
+\begin_layout Standard
+These facts suggest a disciplined way to motivate the model. The paper should not claim that recessions simply create more firms. That statement is too coarse and is not well supported once one distinguishes low-scale activity from employer-oriented formation. A more accurate claim is that downturns can shift business activity toward the zero-employee or necessity margin even while reducing employer creation, startup scale, and high-propensity formation. This is the setting in which a structural model becomes most useful. The model can ask which households move into entrepreneurship when employment risk rises, how insurance changes that movement, and whether the induced entry is associated with economically meaningful firms or with low-scale businesses that mainly reflect weak outside options.
+\end_layout
+
+\begin_layout Standard
+This framing also changes how the final quantitative exercise should be interpreted. If the paper ends with an MIT shock meant to mimic recession-like conditions, the goal should not be to match one broad entrepreneurship statistic in isolation. The more defensible objective is to compare the model's directional predictions with the empirical pattern across margins: a stronger necessity or zero-employee margin, weaker employer creation, and lower entrant scale or growth orientation. In that sense, the recession evidence assembled in the sidecar is not a replacement for the model. It is a discipline device. It tells us what a plausible recession mapping should look like if the paper is going to claim relevance for business-cycle entrepreneurship rather than for a generic occupational-choice environment.
+\end_layout
+
+\begin_layout Standard
+For that reason, the strongest empirical motivation for the current paper is a two-figure combination rather than a single stylized fact. The first figure should show the business-count shift toward zero-employee establishments relative to positive-employment bins. The second should show the weakening of business-formation flows, especially high-propensity applications. Together these figures deliver a coherent message: downturns appear to support low-scale or necessity-style business activity more than employer-oriented, growth-relevant creation. That is the empirical contrast the model should explain, and it is the contrast that gives the paper a sharper contribution than a generic discussion of entrepreneurship over the cycle.
+\end_layout
+
+\begin_layout Section
+Implications for integration into the main draft
+\end_layout
+
+\begin_layout Standard
+The opening above is intentionally longer and more explicit than the current introduction in the main paper. If integrated, it would probably need to be trimmed. But the trimming should preserve three elements. First, the paper should open with the heterogeneity of entrepreneurship, not with entrepreneurship as a single homogeneous margin. Second, the empirical motivation should emphasize that recession patterns differ across zero-employee activity, self-employment rates, and employer-oriented creation flows. Third, the model's contribution should be framed as explaining those compositional differences through labor-market risk, insurance, and state-contingent occupational choice.
+\end_layout
+
+\begin_layout Standard
+The safest immediate use of this sidecar file is therefore not wholesale replacement, but selective transplantation. The first three introduction paragraphs can be mined for framing, the middle part of the motivation section can be used to build a more data-grounded empirical setup, and the final two paragraphs can be used to justify the eventual MIT-shock comparison. Keeping the file separate allows those choices to be made later without disturbing the current paper source while the calibration pipeline remains the primary active task.
+\end_layout
+
+\end_body
+\end_document
