@@ -1,5 +1,9 @@
 ﻿# VS Code Setup Wizard
 
+> Source of truth for participant setup: `teaching/install_ai/website/index.html`
+>
+> Use this Markdown file as a longer backup/reference guide. It may lag the live website wizard.
+
 A simple setup guide for beginners. Follow one step at a time.
 
 ## Fast Help (keep this handy)
