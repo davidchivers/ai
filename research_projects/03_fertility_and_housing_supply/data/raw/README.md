@@ -18,13 +18,17 @@ If a file is missing, the build still runs and logs the gap in:
 
 - `notes/build/us_panel_source_coverage.md`
 
-## Current ingest status (2026-03-02)
+## Current ingest status (2026-03-09)
 
-- `cdc_fertility_county_year.csv` is now populated from legacy NIMBY data
-  (`merged_birthrates_migrationweights.dta`) via:
-  - `code/06_import_nimby_birthrates_to_raw.py`
-- This ingest populates `gfr_15_44` as a legacy weighted birth-rate proxy and keeps
-  age-specific fertility fields blank for now.
+- `cdc_fertility_county_year.csv` is now populated from a direct CDC WONDER natality pull
+  covering first births by county, year, and mother's age group for `2007-2024`.
+- Direct pull path:
+  - `code/12_pull_cdc_wonder_first_births.py`
+  - output: `data/raw/cdc_wonder_first_births_export.csv`
+- Import path:
+  - `code/11_import_cdc_wonder_first_births.py`
+  - output: `data/raw/cdc_fertility_county_year.csv`
+- The old NIMBY metro-level fertility proxy remains superseded for the main empirical path.
 - `housing_county_year.csv` and `controls_county_year.csv` are now populated from legacy NIMBY
   `addedpermits.dta` via:
   - `code/07_import_nimby_housing_controls_to_raw.py`
@@ -32,8 +36,9 @@ If a file is missing, the build still runs and logs the gap in:
   - housing: `permits_total_pc` (from `unitspercapita`), `real_rent_index` (from `rent`),
     and population-growth-based demand shifters
   - controls: `unemployment_rate` (from `unemp`)
-- `policy_reforms_county_year.csv` and `population_immigration_county_year.csv` remain template
-  headers until dedicated source extracts are loaded.
+- `population_immigration_county_year.csv` is populated from the legacy county file and now has
+  nativity fields backfilled from the ACS API via `code/09_backfill_nativity_from_acs_api.py`.
+- `policy_reforms_county_year.csv` remains the legacy metro-year proxy file.
 
 ## Minimum expected columns by file
 
@@ -47,6 +52,24 @@ Identifier note:
 - `fips`, `cbsa`, `metarea`, `metareano`, `state_fips`, `year`
 - `asfr_15_19`, `asfr_20_24`, `asfr_25_29`, `asfr_30_34`, `asfr_35_39`, `asfr_40_44`
 - `gfr_15_44`, `first_birth_proxy`, `completed_fertility_proxy`
+- `first_births_total`, `first_birth_rate_15_44`
+- `mean_age_first_birth`, `median_age_first_birth`
+- `share_first_birth_15_19`, `share_first_birth_20_24`, `share_first_birth_25_29`
+- `share_first_birth_30_34`, `share_first_birth_35_44`, `share_first_birth_30_plus`
+
+## CDC WONDER first-birth timing import
+
+Preferred workflow:
+
+1. Run `code/12_pull_cdc_wonder_first_births.py`
+2. This writes `data/raw/cdc_wonder_first_births_export.csv`
+3. Run `code/11_import_cdc_wonder_first_births.py`
+4. This writes `data/raw/cdc_fertility_county_year.csv`
+
+Fallback workflow:
+
+1. Save a manual CDC WONDER export as `data/raw/cdc_wonder_first_births_export.csv`
+2. Run `code/11_import_cdc_wonder_first_births.py`
 
 ### `housing_county_year.csv`
 

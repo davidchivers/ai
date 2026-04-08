@@ -1,8 +1,112 @@
 # 03 model notes
 
-Last updated: 2026-03-02
+Last updated: 2026-03-20
 
-## Intuition first
+## Current implemented household benchmark
+
+The active MATLAB object is now the steady-state heterogeneous-household block in
+`code/SolveSS_fertility.m`, not the older aggregate prototype described later in this file.
+The older reduced-form and structural-FOC comparison notes are kept below as archival
+diagnostics, but the current benchmark and verification work is based on the household solver.
+
+### Intuition first
+
+The corrected household block now separates two child objects that had previously been mixed
+together:
+
+- `p_t`: parity, or children ever born. This is the permanent fertility state.
+- `h_t`: children currently at home. This is the temporary housing-crowding state.
+
+A birth increases both states today. Later, children can leave home so `h_t` falls, but `p_t`
+does not. This is the key modeling distinction needed to match completed fertility without
+pretending that older households still have the same number of resident children.
+
+Housing matters through crowding. More children at home reduce effective housing services, so
+high housing prices make additional births less attractive. The political equilibrium remains the
+project-02 vote/debt fixed-point problem, now evaluated using the fertility-augmented household
+policies.
+
+### Variables
+
+- `b_t`: liquid assets / debt choice carried into next period
+- `a_t`: housing stock choice
+- `z_t`: idiosyncratic income state
+- `p_t in {0,1,2,3+}`: parity, or children ever born
+- `h_t in {0,1,2,3}`: children currently at home
+- `q`: housing purchase price (`a_price` in code)
+- `r(q)`: rental price implied by `q`
+
+### Key household equations
+
+Let `H_t` denote raw housing services from owned plus rented housing. Without a birth this
+period, flow utility is
+
+$$
+u^0_t = \log c_t + s_h \log\left(\frac{H_t}{(1 + \lambda_c h_t)^{\psi_c}}\right)
++ \nu_h h_t - \text{penalty}_t.
+$$
+
+If a birth occurs, the newborn counts immediately in the crowding and child-utility terms:
+
+$$
+u^1_t = \log c_t + s_h \log\left(\frac{H_t}{(1 + \lambda_c (h_t + 1))^{\psi_c}}\right)
++ \nu_h (h_t + 1) + \phi(p_t) - \kappa_0 - \kappa_q q - \text{penalty}_t.
+$$
+
+Here `\phi(p_t)` is parity-specific birth utility, `\kappa_0` is the direct birth cost, and
+`\kappa_q q` is the housing-price-sensitive birth cost term.
+
+The state transitions are:
+
+$$
+p_{t+1} = \min(p_t + \mathbf{1}\{\text{birth}\}, 3+),
+$$
+
+$$
+h_{t+1} =
+\begin{cases}
+h_t + 1 & \text{after birth, before leave-home shock} \\
+h_t & \text{without birth, before leave-home shock}
+\end{cases}
+$$
+
+followed by a reduced-form leave-home shock that can lower `h_{t+1}` by one child. The
+leave-home block is disciplined by Census-style leave-by-bin targets and should be interpreted as
+a reduced-form device, not a structural model of young-adult co-residence.
+
+### Verification and active benchmark
+
+The upstream reproduction check is now exact: when `C = 1` and the fertility/crowding terms are
+shut off, `SolveSS_fertility.m` reproduces the project-02 `SolveSS_function.m` distance, vote,
+and debt outputs exactly.
+
+The active benchmark is centralized in `code/fertility_benchmark_config.m`:
+
+- solver grid: `I = 60`, `J = 14`
+- `birth_utility_by_parity = [0.85, 1.10, 1.20]`
+- `child_utility = 0.02`
+- `birth_cost = 0.06`
+- `birth_price_coeff = 0.24`
+- `lambda_crowd = 0.18`
+
+Current benchmark readout from `notes/build/fertility_run_ge_report.md`:
+
+- the corrected recalibration sweep confirmed that current defaults and candidate `1` are the
+  same benchmark object
+- birth rates fall from `0.655463` at `a_price = 1.5` to `0.197750` at `3.0`
+- completed-fertility shares at age `50` remain
+  `[0.223716, 0.255603, 0.292729, 0.227952]`
+- one vote sign change on the supplied market-clearing grid
+- refined equilibrium price `a_price = 1.751853`
+
+### Numerical-resolution note
+
+The benchmark was promoted at `I = 60`, `J = 14` because the coarser `I = 50`, `J = 10` grid
+created vote wiggles on the market-clearing grid. The finer household grid removes that spurious
+extra sign change for the promoted candidate and is therefore the correct resolution for the
+current corrected-code benchmark.
+
+## Legacy aggregate prototype notes
 
 This project extends the project-02 NIMBY housing-politics mechanism with a fertility channel.
 The key question is whether a temporary baby boom can worsen later housing tightness through

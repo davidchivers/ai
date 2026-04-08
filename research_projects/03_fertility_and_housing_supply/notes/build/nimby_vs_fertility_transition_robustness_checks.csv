@@ -1,0 +1,3 @@
+check,max_abs_error
+python_bridge_matches_matlab_fertility_policy,6.394884621840902e-14
+python_bridge_matches_matlab_old_proxy_policy,5.684341886080802e-14

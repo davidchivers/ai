@@ -1,0 +1,9 @@
+model_id,label,term,coef,std_err,p_value,n_obs,n_states,year_min,year_max,r_squared
+rate_rent_unemp,State and year FE: first-birth rate on rents and unemployment,real_rent_index,-9.30561926565888,7.032351432808875,0.18574940595086364,92,43,2010,2017,0.9955694958580191
+rate_rent_unemp,State and year FE: first-birth rate on rents and unemployment,unemployment_rate,-14.825358175657925,29.941329104649434,0.6204963853687488,92,43,2010,2017,0.9955694958580191
+age_rent_unemp,State and year FE: mean age at first birth on rents and unemployment,real_rent_index,1.0007323624178284,0.8932292101784415,0.2625632042414483,221,43,2007,2017,0.9961527838214501
+age_rent_unemp,State and year FE: mean age at first birth on rents and unemployment,unemployment_rate,2.7336882611878184,2.811723430972628,0.33092793302476897,221,43,2007,2017,0.9961527838214501
+share30_rent_unemp,State and year FE: share age 30+ among first births on rents and unemployment,real_rent_index,0.02667358191203848,0.05907047576476808,0.6515894330185037,221,43,2007,2017,0.9959373507657293
+share30_rent_unemp,State and year FE: share age 30+ among first births on rents and unemployment,unemployment_rate,0.09174899987943679,0.14940575930277017,0.5391540110599313,221,43,2007,2017,0.9959373507657293
+rate_permits,State and year FE: first-birth rate on permits,permits_total_pc,11.260392417281974,103.4316918780711,0.9133072571724348,45,22,2010,2012,0.9854268794764146
+age_permits,State and year FE: mean age at first birth on permits,permits_total_pc,-3.2396834392176004,2.0549134484555576,0.11489802489238696,111,22,2007,2012,0.9945827464468877

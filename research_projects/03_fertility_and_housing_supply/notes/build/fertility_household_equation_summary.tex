@@ -1,0 +1,112 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.55in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage[T1]{fontenc}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.35em}
+
+\begin{document}
+\small
+
+{\Large Fertility-Household Block: One-Page Equation Summary}\par
+
+The only essential math update is to separate the old single child state into:
+\[
+h_t = \text{children currently at home}, \qquad p_t = \text{children ever born}.
+\]
+The model household is one homogeneous fertility household.  The housing crowding channel uses
+$h_t$, while completed fertility moments are matched with $p_t$.
+
+\textbf{State.}
+\[
+x_t=(b_t,a_t,z_t,h_t,p_t,t),
+\]
+where $b_t$ is debt/assets, $a_t$ is owned housing, $z_t$ is idiosyncratic income, $h_t\in\{0,1,2,3\}$,
+and $p_t\in\{0,1,2,3+\}$.
+
+\textbf{Flow utility without a birth.}
+\[
+u_t^{N}=\log c_t+s_h\log \widetilde{H}_t+\phi_h h_t,
+\qquad
+\widetilde{H}_t=\frac{H_t}{(1+\lambda h_t)^{\psi}},
+\]
+where $H_t$ is housing services, $\lambda$ is the crowding strength, and $\psi$ is the crowding exponent.
+
+\textbf{Flow utility with a birth.}
+\[
+u_t^{B}=\log c_t+s_h\log \widetilde{H}_t^{B}+\phi_h h_t
++\phi_p(p_t)-\kappa_b-\eta_q q_t,
+\]
+\[
+\widetilde{H}_t^{B}=\frac{H_t}{(1+\lambda (h_t+1))^{\psi}},
+\]
+where $\phi_p(p_t)$ is the parity-specific birth utility, $\kappa_b$ is the birth cost, and $\eta_q q_t$
+is the housing-price birth penalty.
+
+\textbf{Budget constraint.}
+\[
+c_t = y_t(z_t,t) + R(b_t)b_t + q_t a_t
+- q_t a_{t+1}\bigl[1+\kappa_a \mathbf{1}\{a_{t+1}\neq a_t\}\bigr]
+ + b_t - b_{t+1},
+\]
+with a rental branch when $a_{t+1}=0$.
+
+\textbf{Bellman problem.}
+\[
+V_t(x_t)=\sigma \log\!\left(e^{V_t^{N}(x_t)/\sigma}+e^{V_t^{B}(x_t)/\sigma}\right),
+\]
+\[
+V_t^{N}(x_t)=\max_{a_{t+1},b_{t+1}}
+\left\{u_t^{N}+\beta\,\mathbb E_t[V_{t+1}(x_{t+1}^{N})]\right\},
+\]
+\[
+V_t^{B}(x_t)=\max_{a_{t+1},b_{t+1}}
+\left\{u_t^{B}+\beta\,\mathbb E_t[V_{t+1}(x_{t+1}^{B})]\right\}.
+\]
+
+\textbf{Birth choice probability.}
+\[
+\Pr(d_t=1\mid x_t)=
+\frac{1}{1+\exp\!\left(-(V_t^{B}(x_t)-V_t^{N}(x_t))/\sigma\right)}.
+\]
+
+\textbf{Child-state transitions.}
+\[
+p_{t+1}=\min\{p_t+d_t,\overline p\},
+\]
+\[
+h_{t+1}=\min\{\max(h_t+d_t-L_{t+1},0),\overline h\},
+\qquad
+L_{t+1}\sim \text{Bernoulli}(\pi_t).
+\]
+The leave-home hazard $\pi_t$ is reduced-form and is calibrated from leave-by-age bins
+($20,25,30$ years) rather than from completed fertility moments.
+
+\textbf{Calibration mapping.}
+\[
+p_t \longrightarrow \text{target moments }(0,1,2,3+) \text{ ever born},
+\]
+\[
+h_t \longrightarrow \text{housing crowding and children-at-home diagnostics}.
+\]
+Current main parity target at age $50$:
+\[
+(0.165,\ 0.193,\ 0.357,\ 0.285).
+\]
+
+\textbf{Political equilibrium condition.}
+\[
+\Delta V(x_t;q)=V_t(x_t;q^{+})-V_t(x_t;q), \qquad \text{pref}(x_t;q)=\operatorname{sign}(\Delta V(x_t;q)),
+\]
+\[
+\text{TotalVote}(q)=\int \text{pref}(x_t;q)\,d\Gamma_t(x_t),
+\qquad
+q^{*}:\ \text{TotalVote}(q^{*})=0.
+\]
+
+\textbf{Bottom line.} The math change needed for the paper is modest: replace the old single child stock
+with $(p_t,h_t)$, make birth utility parity-specific through $p_t$, and let housing crowding depend on
+$h_t$ only.
+
+\end{document}
