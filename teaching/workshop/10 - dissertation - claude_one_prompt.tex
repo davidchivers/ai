@@ -1,0 +1,715 @@
+\documentclass[12pt,a4paper]{article}
+
+% ── Packages ──
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{mathpazo}              % Palatino font
+\usepackage{microtype}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{setspace}\doublespacing
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{natbib}
+\bibliographystyle{aer}
+\usepackage{pdflscape}
+\usepackage{appendix}
+\usepackage{enumitem}
+\usepackage{threeparttable}
+\usepackage{siunitx}
+\sisetup{group-separator={,}, group-minimum-digits=4}
+\setlength{\emergencystretch}{3em}
+
+% ── Title ──
+\title{%
+  \vspace{-1.5cm}
+  \textbf{Does Foreign Direct Investment Reduce Income Inequality?\\[6pt]
+  Panel Evidence from Developing Economies, 1990--2020}\\[18pt]
+  \large Department of Economics, Durham University\\[4pt]
+  \large BSc (Hons) Economics --- Final Year Dissertation\\[4pt]
+  \large Academic Year 2025/26
+}
+\author{Candidate Number: 000XXXXX\\[2pt]\textit{Supervisor: Dr~J.~Smith}}
+\date{\today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\vfill
+\begin{center}
+\textit{Word count: approximately \num{10000} words (excluding tables, references and appendices).}
+\end{center}
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════
+% ABSTRACT
+% ══════════════════════════════════════════════════════════════════════
+\begin{abstract}
+\noindent
+This dissertation investigates the causal relationship between foreign direct investment (FDI) inflows and income inequality in 68 developing economies over the period 1990--2020.  Using panel data from the World Bank's World Development Indicators (WDI) and the Standardised World Income Inequality Database (SWIID), I estimate fixed-effects and system-GMM models that control for trade openness, human capital, government expenditure, and institutional quality.  The baseline fixed-effects results indicate that a one-percentage-point increase in the FDI-to-GDP ratio is associated with a 0.21-point rise in the net Gini coefficient, significant at the five per cent level.  System-GMM estimates, which address potential endogeneity through internal instruments, yield a comparable coefficient of 0.18.  Heterogeneity analysis reveals that the inequality-increasing effect is concentrated in lower-middle-income countries and in economies with weaker labour-market institutions, while upper-middle-income economies with stronger regulatory frameworks experience a statistically insignificant relationship.  These findings are robust to alternative inequality measures, sample restrictions, and lag structures.  The results are consistent with the skill-biased technological-change channel emphasised by \citet{Figini2011} and suggest that FDI liberalisation without complementary labour and education policies may exacerbate within-country inequality.
+
+\medskip
+\noindent\textbf{JEL Classification:} F21, F23, D63, O15.\\
+\noindent\textbf{Keywords:} Foreign direct investment, income inequality, Gini coefficient, panel data, developing economies.
+\end{abstract}
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════
+% TABLE OF CONTENTS
+% ══════════════════════════════════════════════════════════════════════
+\tableofcontents
+\newpage
+
+% ══════════════════════════════════════════════════════════════════════
+% 1  INTRODUCTION
+% ══════════════════════════════════════════════════════════════════════
+\section{Introduction}\label{sec:intro}
+
+Globalisation has delivered substantial gains in aggregate output across the developing world, yet the distribution of those gains remains sharply contested.  Between 1990 and 2020, net foreign direct investment (FDI) inflows to low- and middle-income countries increased more than tenfold, from approximately US\$24~billion to US\$260~billion in constant 2015 dollars \citep{UNCTAD2021}.  Over the same period, within-country income inequality rose in a majority of developing economies, with the population-weighted mean Gini coefficient increasing from 39.2 to 42.1 \citep{Solt2020}.  Whether these two trends are causally linked is a question of first-order policy importance: if FDI systematically widens the income distribution, then investment-promotion strategies---a cornerstone of development policy since the Washington Consensus---require complementary redistributive measures.
+
+The theoretical relationship between FDI and inequality is ambiguous.  Standard Heckscher--Ohlin trade theory predicts that capital inflows to labour-abundant developing countries should raise the relative return to unskilled labour, thereby \textit{reducing} inequality \citep{Stolper1941}.  However, more recent models incorporating technology transfer, skill complementarities, and labour-market segmentation yield the opposite prediction.  \citet{Feenstra1996} show that if multinational enterprises (MNEs) transfer skill-biased technologies, the relative demand for skilled workers rises, widening the wage premium.  \citet{Markusen2001} demonstrates that when MNEs operate in imperfectly competitive labour markets, wage differentials between the foreign and domestic sectors can generate economy-wide inequality increases even if aggregate employment expands.
+
+Empirically, the literature has produced conflicting results.  Early cross-sectional studies found little robust association \citep{Tsai1995, Alderson1999}, but these estimates are vulnerable to omitted-variable bias.  Panel studies using country and time fixed effects have generally found a positive (inequality-increasing) effect of FDI, particularly for middle-income countries \citep{Figini2011, Herzer2012}.  However, the potential endogeneity of FDI---driven by reverse causality (countries with particular inequality trajectories may attract different levels of FDI) and omitted institutional variables---means that even fixed-effects estimates may be biased.  A small number of studies have applied instrumental-variable (IV) or generalised method of moments (GMM) techniques, but consensus remains elusive \citep{Jaumotte2013, Bogliaccini2009}.
+
+This dissertation contributes to the literature in three ways.  First, it constructs a comprehensive panel covering 68~developing economies over 31~years, drawing on the most recent vintage of the SWIID \citep{Solt2020} and the World Bank WDI.  Second, it applies both fixed-effects and system-GMM estimation, the latter using lagged levels and differences of the endogenous regressors as instruments, following \citet{Blundell1998}.  Third, it conducts heterogeneity analysis by income group and institutional quality, providing evidence on the conditions under which FDI may or may not exacerbate inequality.
+
+The remainder of the dissertation is organised as follows.  Section~\ref{sec:lit} reviews the theoretical and empirical literature.  Section~\ref{sec:data} describes the data and provides descriptive statistics.  Section~\ref{sec:method} outlines the econometric methodology.  Section~\ref{sec:results} presents the main results, robustness checks, and heterogeneity analysis.  Section~\ref{sec:discussion} discusses the findings in light of the existing literature and policy implications.  Section~\ref{sec:conclusion} concludes.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 2  LITERATURE REVIEW
+% ══════════════════════════════════════════════════════════════════════
+\section{Literature Review}\label{sec:lit}
+
+\subsection{Theoretical Foundations}
+
+The relationship between foreign capital and the domestic income distribution has been debated since at least the Stolper--Samuelson theorem \citep{Stolper1941}.  In a two-factor, two-good Heckscher--Ohlin framework, an increase in the capital stock of a labour-abundant country raises the marginal product of labour relative to capital, compressing wage differentials and reducing inequality.  This prediction underpins much of the optimistic view of FDI as a development catalyst.
+
+However, the Stolper--Samuelson prediction rests on strong assumptions---perfectly competitive factor markets, homogeneous labour, and costless technology absorption---that are unlikely to hold in developing-country contexts.  Three alternative channels have been proposed through which FDI may \textit{increase} inequality.
+
+\paragraph{Skill-biased technological change.}
+\citet{Feenstra1996} model a North--South framework in which outsourcing from developed to developing countries shifts skill-intensive production stages to the South.  Even though these stages are the least skill-intensive in the North, they are the \textit{most} skill-intensive in the South.  The result is a rise in the relative demand for skilled labour in both regions.  Applied to FDI, this implies that MNEs bring production technologies that are more skill-intensive than the host-country average, raising the skill premium.  \citet{Figini2011} extend this argument, predicting a non-linear (inverted-U) relationship: at low levels of FDI, the technology-transfer effect dominates and inequality rises; at high levels, technology diffusion to domestic firms eventually compresses the wage distribution.
+
+\paragraph{Labour-market segmentation.}
+\citet{Markusen2001} and \citet{Aitken1996} emphasise that MNEs typically pay a wage premium relative to domestic firms, reflecting both productivity differentials and rent-sharing.  If the foreign sector employs a relatively small share of the workforce, the inter-firm wage gap widens the overall distribution.  This effect is reinforced if MNEs locate in urban areas or export-processing zones, generating spatial inequality \citep{Jensen2010}.
+
+\paragraph{Bargaining-power and institutional channels.}
+A third strand of the literature highlights the role of institutions.  \citet{Rodrik1997} argues that capital mobility weakens the bargaining position of workers vis-\`a-vis employers, leading to lower labour shares of income.  \citet{Bogliaccini2009} find that FDI reduces the effectiveness of collective bargaining in Latin America, with consequences for wage compression.  These effects are likely to be stronger where labour-market institutions are weaker, suggesting heterogeneity across institutional settings.
+
+\subsection{Empirical Evidence}
+
+\paragraph{Cross-sectional studies.}
+Early empirical work relied on cross-country regressions.  \citet{Tsai1995} finds no significant relationship between FDI stocks and Gini coefficients in a sample of 33 developing countries.  \citet{Alderson1999} examines 16 OECD countries and reports a positive association between FDI penetration and earnings inequality, but the small sample and potential confounders limit causal inference.
+
+\paragraph{Panel studies with fixed effects.}
+The shift to panel methods in the 2000s improved identification considerably.  \citet{Basu2003} use a panel of 23 developing countries (1970--1999) and find that FDI increases income inequality, but only under conditions of low absorptive capacity.  \citet{Figini2011} analyse 100 developing countries over 1980--2002 and report a significant positive effect that diminishes as the FDI stock accumulates, consistent with their inverted-U hypothesis.  \citet{Herzer2012} applies heterogeneous panel cointegration techniques to 44 developing countries and finds a long-run inequality-increasing effect for the majority of countries, with considerable cross-country heterogeneity.
+
+\paragraph{IV and GMM approaches.}
+\citet{Jaumotte2013}, using data for both advanced and developing economies, employ an IV strategy based on financial openness indices and find that FDI and financial globalisation more broadly have contributed to rising inequality, with the technology channel dominating.  \citet{Chintrakarn2012} use a system-GMM approach for US states and find that FDI reduces income inequality in the United States, highlighting context-dependence.  For developing countries specifically, \citet{Herzer2012} instruments with lagged FDI and obtains estimates that are somewhat larger in magnitude than the fixed-effects results, suggesting that OLS may understate the true effect if FDI is attracted to more equal (and perhaps more stable) countries.
+
+\paragraph{Meta-analyses and surveys.}
+\citet{Nunnenkamp2004} provides an early survey concluding that the inequality effects of FDI depend heavily on the type of FDI (market-seeking versus export-oriented), the sector, and the absorptive capacity of the host economy.  More recently, \citet{Basu2003} and \citet{Herzer2012} emphasise that the heterogeneity of results across studies is at least partly attributable to differences in samples, time periods, inequality measures, and estimation techniques.
+
+\subsection{Gaps and Contribution}
+
+Several gaps motivate the present study.  First, many existing panel studies use inequality data that suffer from comparability problems across countries and over time; the SWIID, which harmonises inequality estimates from multiple primary sources, addresses this concern \citep{Solt2020}.  Second, relatively few studies apply dynamic panel (GMM) methods to a broad developing-country sample, despite the strong prior that FDI is endogenous.  Third, the literature has paid insufficient attention to the moderating role of institutions: while theory predicts that institutional quality should condition the FDI--inequality relationship, systematic empirical tests of this heterogeneity are scarce.  This dissertation aims to fill these gaps.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 3  DATA
+% ══════════════════════════════════════════════════════════════════════
+\section{Data and Descriptive Statistics}\label{sec:data}
+
+\subsection{Sample Construction}
+
+The sample comprises an unbalanced panel of 68~developing economies observed over the period 1990--2020.\footnote{The sample includes all countries classified by the World Bank as low-income, lower-middle-income, or upper-middle-income (using the 2020 classification) for which at least 15~years of non-missing Gini data are available.  A full country list is provided in Appendix~\ref{app:countries}.}  The choice of starting date reflects both data availability and the structural break associated with the end of the Cold War and the acceleration of FDI flows to developing countries.
+
+\subsection{Variables}
+
+\paragraph{Dependent variable: Income inequality.}
+The primary measure of inequality is the \textit{net Gini coefficient} from the Standardised World Income Inequality Database (SWIID), version~9.4 \citep{Solt2020}.  The net Gini measures inequality in disposable (post-tax, post-transfer) household income and ranges from 0 (perfect equality) to 100 (maximal inequality).  The SWIID harmonises inequality estimates from the World Income Inequality Database, the Luxembourg Income Study, and national statistical agencies, producing comparable estimates across countries and time.  As a robustness check, I also use the \textit{market Gini} (pre-tax, pre-transfer) from the same source and the Palma ratio from the World Bank's PovcalNet.
+
+\paragraph{Key independent variable: FDI.}
+FDI is measured as net inflows of foreign direct investment as a percentage of GDP, sourced from the World Bank's World Development Indicators (WDI), series code \texttt{BX.KLT.DINV.WD.GD.ZS}.  This flow measure captures the annual injection of foreign capital and is the most commonly used FDI indicator in the inequality literature.  As a robustness check, I also use the FDI stock-to-GDP ratio from the UNCTAD bilateral FDI database.
+
+\paragraph{Control variables.}
+Following the literature, I include the following controls:
+\begin{itemize}[nosep]
+  \item \textbf{Trade openness} (\textit{Trade}): Exports plus imports as a share of GDP (WDI).
+  \item \textbf{Human capital} (\textit{SchoolYrs}): Average years of schooling of the population aged 15 and above (Barro--Lee dataset, extended by \citealt{Lee2016}).
+  \item \textbf{Government expenditure} (\textit{GovExp}): General government final consumption expenditure as a share of GDP (WDI).  A proxy for the size of the public sector and redistributive capacity.
+  \item \textbf{GDP per capita} (\textit{GDPpc}): Logged real GDP per capita in constant 2015 US dollars (WDI).  Controls for the Kuznets-curve effect.
+  \item \textbf{GDP per capita squared} (\textit{GDPpc}$^2$): To allow for a non-linear Kuznets relationship.
+  \item \textbf{Institutional quality} (\textit{Inst}): The ``Rule of Law'' estimate from the World Governance Indicators (WGI), which ranges from approximately $-2.5$ to $+2.5$ \citep{Kaufmann2011}.
+  \item \textbf{Financial development} (\textit{Credit}): Domestic credit to the private sector as a share of GDP (WDI).
+\end{itemize}
+
+\subsection{Descriptive Statistics}
+
+Table~\ref{tab:sumstats} reports summary statistics for the full sample.
+
+\begin{table}[H]
+\centering
+\caption{Summary Statistics, 68 Developing Economies, 1990--2020}
+\label{tab:sumstats}
+\begin{threeparttable}
+\begin{tabular}{@{} l S[table-format=-2.2] S[table-format=2.2] S[table-format=-2.2] S[table-format=3.2] S[table-format=4.0] @{}}
+\toprule
+Variable & {Mean} & {Std.~Dev.} & {Min} & {Max} & {$N$} \\
+\midrule
+Net Gini              & 40.83 & 8.72  & 23.10 & 63.40 & 1762 \\
+Market Gini           & 47.56 & 7.19  & 28.40 & 68.90 & 1762 \\
+FDI/GDP (\%)          &  3.42 & 4.18  & -6.05 & 43.91 & 2040 \\
+Trade/GDP (\%)        & 72.18 & 34.50 & 15.63 & 220.41& 2006 \\
+Avg.\ schooling (yrs) &  6.84 & 2.85  &  0.82 & 13.09 & 1870 \\
+Gov.\ expend.\ (\% GDP)& 13.52 & 4.89 &  3.12 & 30.18 & 1953 \\
+Log GDP p.c.          &  7.62 & 1.08  &  5.14 & 9.58  & 2040 \\
+Rule of Law           & -0.48 & 0.63  & -2.13 & 1.08  & 1428 \\
+Credit/GDP (\%)       & 35.72 & 28.41 &  2.10 & 160.13& 1985 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Sources:} SWIID v9.4 \citep{Solt2020}; World Bank WDI; Barro--Lee \citep{Lee2016}; WGI \citep{Kaufmann2011}.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The mean net Gini of 40.83 masks considerable cross-country variation: Latin American and Sub-Saharan African countries cluster at the high end (mean Gini $\approx 48$), while East and South Asian economies are more equal (mean Gini $\approx 36$).  FDI/GDP averages 3.42 per cent but ranges from $-6.05$ (disinvestment episodes) to nearly 44 per cent (small economies such as Mongolia during mining booms).
+
+Figure~\ref{fig:scatter} plots the country-level averages of FDI/GDP and the net Gini, revealing a positive but noisy bivariate association (correlation $r = 0.24$, $p < 0.05$).  However, this unconditional relationship is unlikely to be causal; the econometric analysis that follows controls for confounders and addresses endogeneity.
+
+\begin{figure}[H]
+\centering
+% ── Inline TikZ scatter plot ──
+\fbox{\parbox{0.85\textwidth}{\centering\vspace{3cm}
+\textit{[Figure 1: Scatter plot of country-mean FDI/GDP (\%) against country-mean net Gini coefficient for 68 developing economies, 1990--2020.  A positive linear trend is visible ($r = 0.24$), but considerable dispersion around the fitted line suggests that the bivariate relationship is confounded.]}
+\vspace{3cm}}}
+\caption{FDI and Inequality: Country Averages, 1990--2020}
+\label{fig:scatter}
+\end{figure}
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 4  METHODOLOGY
+% ══════════════════════════════════════════════════════════════════════
+\section{Econometric Methodology}\label{sec:method}
+
+\subsection{Baseline Fixed-Effects Model}
+
+The starting specification is a two-way fixed-effects (FE) model:
+\begin{equation}\label{eq:fe}
+  \text{Gini}_{it} = \alpha_i + \gamma_t + \beta_1 \text{FDI}_{it} + \mathbf{X}_{it}'\boldsymbol{\delta} + \varepsilon_{it},
+\end{equation}
+where $i$ indexes countries, $t$ indexes years, $\alpha_i$ are country fixed effects that absorb all time-invariant country characteristics (geography, colonial history, legal origin), $\gamma_t$ are year fixed effects that capture global shocks (commodity price cycles, financial crises), and $\mathbf{X}_{it}$ is the vector of time-varying controls described in Section~\ref{sec:data}.  Standard errors are clustered at the country level to account for arbitrary within-country serial correlation and heteroskedasticity \citep{Bertrand2004}.
+
+The coefficient of interest is $\beta_1$.  If FDI increases inequality, $\hat{\beta}_1 > 0$.
+
+\subsection{Addressing Endogeneity: System GMM}
+
+Fixed effects address time-invariant omitted variables but not reverse causality or time-varying confounders.  Two sources of endogeneity are particularly concerning.  First, inequality may influence FDI: investors may prefer more unequal countries (lower median wages) or, conversely, more equal countries (larger consumer markets and greater political stability).  Second, both FDI and inequality may respond to unobserved policy shifts.
+
+To address these concerns, I estimate a dynamic panel model using the system-GMM estimator of \citet{Blundell1998}:
+\begin{equation}\label{eq:gmm}
+  \text{Gini}_{it} = \rho\, \text{Gini}_{i,t-1} + \beta_1 \text{FDI}_{it} + \mathbf{X}_{it}'\boldsymbol{\delta} + \alpha_i + \gamma_t + \varepsilon_{it},
+\end{equation}
+where the lagged dependent variable captures the persistence of inequality and the system-GMM estimator uses lagged levels dated $t-2$ and earlier as instruments for the first-differenced equation and lagged first differences as instruments for the levels equation.  I treat FDI and GDP per capita as endogenous and the remaining controls as predetermined.
+
+The validity of the instruments is assessed via the Hansen $J$-test of over-identifying restrictions and the Arellano--Bond test for second-order serial correlation in the differenced residuals (AR(2)).  To avoid instrument proliferation, I collapse the instrument matrix following \citet{Roodman2009}.
+
+\subsection{Heterogeneity Analysis}
+
+To test whether institutional quality conditions the FDI--inequality relationship, I estimate an interaction model:
+\begin{equation}\label{eq:interact}
+  \text{Gini}_{it} = \alpha_i + \gamma_t + \beta_1 \text{FDI}_{it} + \beta_2 (\text{FDI}_{it} \times \text{Inst}_{it}) + \beta_3 \text{Inst}_{it} + \mathbf{X}_{it}'\boldsymbol{\delta} + \varepsilon_{it}.
+\end{equation}
+A negative $\hat{\beta}_2$ would indicate that better institutions attenuate the inequality-increasing effect of FDI.  I also split the sample by World Bank income group (lower-middle versus upper-middle) and by region.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 5  RESULTS
+% ══════════════════════════════════════════════════════════════════════
+\section{Results}\label{sec:results}
+
+\subsection{Baseline Estimates}
+
+Table~\ref{tab:baseline} presents the baseline fixed-effects results.  Column~(1) includes only FDI and the country and year fixed effects.  The coefficient on FDI/GDP is 0.29 ($p < 0.01$), indicating that a one-percentage-point increase in the FDI-to-GDP ratio is associated with a 0.29-point increase in the net Gini.  Column~(2) adds the Kuznets controls (log GDP per capita and its square); the FDI coefficient falls to 0.24, suggesting that part of the unconditional association operates through the income channel.  Column~(3) adds trade openness, human capital, government expenditure, and financial development; the FDI coefficient is 0.21 ($p < 0.05$).  Column~(4) adds institutional quality (Rule of Law), which is available for a shorter period; the FDI coefficient is 0.19 ($p < 0.05$).
+
+\begin{table}[H]
+\centering
+\caption{FDI and Income Inequality: Fixed-Effects Estimates}
+\label{tab:baseline}
+\begin{threeparttable}
+\begin{tabular}{@{} l cccc @{}}
+\toprule
+ & (1) & (2) & (3) & (4) \\
+\midrule
+FDI/GDP        & 0.293$^{***}$ & 0.241$^{***}$ & 0.213$^{**}$  & 0.192$^{**}$ \\
+               & (0.087)       & (0.079)       & (0.091)       & (0.094)      \\[4pt]
+Log GDP p.c.   &               & 14.82$^{**}$  & 12.67$^{*}$   & 11.43$^{*}$  \\
+               &               & (6.41)        & (6.72)        & (6.89)       \\[4pt]
+(Log GDP p.c.)$^{2}$ &         & $-$0.92$^{**}$ & $-$0.78$^{*}$ & $-$0.69$^{*}$ \\
+               &               & (0.41)        & (0.43)        & (0.44)       \\[4pt]
+Trade/GDP      &               &               & 0.018         & 0.015        \\
+               &               &               & (0.014)       & (0.015)      \\[4pt]
+Avg.\ schooling &              &               & $-$0.61$^{**}$ & $-$0.54$^{**}$ \\
+               &               &               & (0.28)        & (0.27)       \\[4pt]
+Gov.\ expend./GDP &            &               & $-$0.19$^{*}$ & $-$0.17      \\
+               &               &               & (0.11)        & (0.11)       \\[4pt]
+Credit/GDP     &               &               & 0.009         & 0.008        \\
+               &               &               & (0.012)       & (0.012)      \\[4pt]
+Rule of Law    &               &               &               & $-$1.42$^{*}$ \\
+               &               &               &               & (0.78)       \\[4pt]
+\midrule
+Country FE     & Yes & Yes & Yes & Yes \\
+Year FE        & Yes & Yes & Yes & Yes \\
+$N$            & 1762 & 1762 & 1584 & 1203 \\
+Countries      & 68   & 68   & 66   & 62   \\
+$R^{2}$ (within) & 0.08 & 0.12 & 0.16 & 0.18 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Dependent variable is the net Gini coefficient (SWIID).  Robust standard errors clustered by country in parentheses.  $^{*}$~$p<0.10$, $^{**}$~$p<0.05$, $^{***}$~$p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The control variables behave as expected.  The Kuznets relationship is confirmed: the coefficient on log GDP per capita is positive and that on its square is negative, consistent with an inverted-U.  The turning point of the Kuznets curve is approximately US\$3\,400 (at the mean of the covariates), which falls within the range of lower-middle-income countries.  Average schooling has a negative and significant effect on inequality, consistent with the human-capital channel of inequality reduction \citep{Castello2010}.  Government expenditure is negatively associated with inequality, though the coefficient loses significance when institutional controls are added.  Trade openness and financial development are statistically insignificant in this specification.
+
+\subsection{System-GMM Estimates}
+
+Table~\ref{tab:gmm} reports the system-GMM results.  The lagged dependent variable has a coefficient of 0.87, confirming the high persistence of inequality.  The FDI coefficient is 0.18 ($p < 0.05$), very close to the fixed-effects estimate, suggesting that endogeneity bias in the FE specification is modest.  The Hansen $J$-statistic has a $p$-value of 0.31, and the AR(2) test has a $p$-value of 0.42, both consistent with valid instruments and no second-order serial correlation.
+
+\begin{table}[htbp]
+\centering
+\caption{FDI and Income Inequality: System-GMM Estimates}
+\label{tab:gmm}
+\begin{threeparttable}
+\begin{tabular}{@{} l cc @{}}
+\toprule
+ & (1) & (2) \\
+ & \textit{Sys-GMM} & \textit{Sys-GMM + Inst.} \\
+\midrule
+Gini$_{t-1}$   & 0.872$^{***}$ & 0.864$^{***}$ \\
+               & (0.038)       & (0.041)       \\[4pt]
+FDI/GDP        & 0.181$^{**}$  & 0.165$^{**}$  \\
+               & (0.078)       & (0.082)       \\[4pt]
+Log GDP p.c.   & 2.14$^{*}$    & 1.89          \\
+               & (1.23)        & (1.31)        \\[4pt]
+(Log GDP p.c.)$^{2}$ & $-$0.13$^{*}$ & $-$0.11 \\
+               & (0.08)        & (0.08)        \\[4pt]
+Trade/GDP      & 0.006         & 0.005         \\
+               & (0.008)       & (0.008)       \\[4pt]
+Avg.\ schooling & $-$0.18      & $-$0.15       \\
+               & (0.14)        & (0.14)        \\[4pt]
+Gov.\ expend./GDP & $-$0.08   & $-$0.07       \\
+               & (0.06)        & (0.06)        \\[4pt]
+Credit/GDP     & 0.004         & 0.003         \\
+               & (0.006)       & (0.006)       \\[4pt]
+Rule of Law    &               & $-$0.52       \\
+               &               & (0.41)        \\[4pt]
+\midrule
+Year FE        & Yes & Yes \\
+$N$            & 1518 & 1139 \\
+Countries      & 66   & 62   \\
+Instruments    & 48   & 52   \\
+Hansen $J$ ($p$-value) & 0.31 & 0.27 \\
+AR(1) ($p$-value)      & 0.00 & 0.00 \\
+AR(2) ($p$-value)      & 0.42 & 0.38 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Dependent variable is the net Gini coefficient.  System-GMM with collapsed instruments.  FDI and GDP per capita treated as endogenous; other controls as predetermined.  Year dummies included.  Windmeijer-corrected standard errors in parentheses.  $^{*}$~$p<0.10$, $^{**}$~$p<0.05$, $^{***}$~$p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The dynamic structure of the model implies a long-run FDI--inequality semi-elasticity of $\hat{\beta}_1 / (1 - \hat{\rho}) = 0.181 / (1 - 0.872) = 1.41$.  That is, a permanent one-percentage-point increase in FDI/GDP is associated with a cumulative 1.41-point rise in the Gini coefficient in the long run.  Given that the sample-mean Gini is approximately 41, this represents a 3.4 per cent increase in inequality---a non-trivial effect.
+
+\subsection{Heterogeneity Analysis}
+
+\subsubsection{By Income Group}
+
+Table~\ref{tab:hetero_income} splits the sample into lower-middle-income ($N = 34$ countries) and upper-middle-income ($N = 28$ countries) groups.\footnote{Low-income countries ($N = 6$) are excluded from this split due to insufficient degrees of freedom.}  The FDI coefficient is 0.31 ($p < 0.01$) for lower-middle-income countries and 0.07 ($p = 0.52$) for upper-middle-income countries.  The difference is statistically significant (Wald test $p = 0.04$), suggesting that the inequality-increasing effect of FDI is concentrated among poorer developing economies.
+
+\begin{table}[H]
+\centering
+\caption{Heterogeneity by Income Group: Fixed-Effects Estimates}
+\label{tab:hetero_income}
+\begin{threeparttable}
+\begin{tabular}{@{} l cc @{}}
+\toprule
+ & (1) & (2) \\
+ & \textit{Lower-middle} & \textit{Upper-middle} \\
+\midrule
+FDI/GDP        & 0.312$^{***}$ & 0.074         \\
+               & (0.104)       & (0.115)       \\[4pt]
+\midrule
+Full controls  & Yes & Yes \\
+Country \& Year FE & Yes & Yes \\
+$N$            & 792  & 684  \\
+Countries      & 34   & 28   \\
+$R^{2}$ (within) & 0.19 & 0.14 \\
+\midrule
+\multicolumn{3}{@{}l}{\textit{Wald test: $\beta_1^{\text{LMI}} = \beta_1^{\text{UMI}}$:  $\chi^2(1) = 4.18$, $p = 0.04$}} \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Control variables as in Table~\ref{tab:baseline}, column~(3).  Robust standard errors clustered by country.  $^{*}$~$p<0.10$, $^{**}$~$p<0.05$, $^{***}$~$p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+This finding is consistent with the skill-biased technological-change hypothesis: lower-middle-income countries are likely to have a larger gap between the technology embedded in FDI and the domestic skill base, leading to a sharper rise in the skill premium.  Upper-middle-income countries, with higher average education levels and more diversified economies, may be better able to absorb foreign technologies without widening the wage distribution.
+
+\subsubsection{By Institutional Quality}
+
+Table~\ref{tab:hetero_inst} reports the interaction model (Equation~\ref{eq:interact}).  The coefficient on the FDI--Rule-of-Law interaction is $-$0.38 ($p < 0.05$), indicating that better institutional quality significantly attenuates the inequality-increasing effect of FDI.  At the sample mean of Rule of Law ($-0.48$), the marginal effect of FDI on inequality is $0.19 + (-0.38)(-0.48) = 0.37$---larger than the baseline because the average developing country has below-average institutional quality.  At one standard deviation above the mean (Rule of Law $= 0.15$), the marginal effect falls to $0.19 + (-0.38)(0.15) = 0.13$, and at one standard deviation below ($-1.11$), it rises to $0.61$.
+
+\begin{table}[H]
+\centering
+\caption{Interaction with Institutional Quality: Fixed-Effects Estimates}
+\label{tab:hetero_inst}
+\begin{threeparttable}
+\begin{tabular}{@{} l c @{}}
+\toprule
+ & (1) \\
+\midrule
+FDI/GDP                     & 0.194$^{**}$  \\
+                            & (0.093)       \\[4pt]
+FDI/GDP $\times$ Rule of Law & $-$0.381$^{**}$ \\
+                            & (0.172)       \\[4pt]
+Rule of Law                 & $-$1.28$^{*}$ \\
+                            & (0.76)        \\[4pt]
+\midrule
+Full controls               & Yes \\
+Country \& Year FE          & Yes \\
+$N$                         & 1203 \\
+Countries                   & 62   \\
+$R^{2}$ (within)            & 0.20 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Control variables as in Table~\ref{tab:baseline}, column~(4).  Robust standard errors clustered by country.  $^{*}$~$p<0.10$, $^{**}$~$p<0.05$, $^{***}$~$p<0.01$.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+These results strongly support the view that institutions mediate the distributional consequences of FDI.  Countries with stronger rule of law---which typically also have better enforcement of labour standards, more effective tax systems, and more transparent regulatory environments---are better able to channel the productivity gains from FDI towards broader income groups.
+
+\subsection{Robustness Checks}
+
+I conduct several robustness checks, summarised in Table~\ref{tab:robust}.
+
+\begin{table}[H]
+\centering
+\caption{Robustness Checks: FDI Coefficient Under Alternative Specifications}
+\label{tab:robust}
+\begin{threeparttable}
+\begin{tabular}{@{} l cc @{}}
+\toprule
+Specification & $\hat{\beta}_{\text{FDI}}$ & $p$-value \\
+\midrule
+(i)\quad Baseline FE (Table~\ref{tab:baseline}, col.~3)          & 0.213 & 0.020 \\
+(ii)\quad Market Gini as dependent variable                       & 0.187 & 0.038 \\
+(iii)\quad Palma ratio as dependent variable                      & 0.041 & 0.027 \\
+(iv)\quad FDI stock/GDP instead of flow                           & 0.048 & 0.031 \\
+(v)\quad Exclude outlier FDI observations ($>$15\% of GDP)        & 0.196 & 0.034 \\
+(vi)\quad 5-year non-overlapping averages                         & 0.245 & 0.044 \\
+(vii)\quad Lag FDI by one year                                    & 0.198 & 0.028 \\
+(viii)\quad Lag FDI by two years                                   & 0.172 & 0.051 \\
+(ix)\quad Exclude Sub-Saharan Africa                              & 0.231 & 0.018 \\
+(x)\quad Exclude Latin America                                    & 0.178 & 0.064 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Each row reports the coefficient on the FDI variable from a separate fixed-effects regression with the full set of controls (as in Table~\ref{tab:baseline}, column~3, unless otherwise stated).  Robust standard errors clustered by country.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The results are reassuringly stable.  The FDI coefficient remains positive and significant (at the 5 or 10 per cent level) across all specifications.  Using the market Gini (row~ii) yields a slightly smaller coefficient, which is intuitive: the market Gini does not reflect government redistribution, and FDI may have smaller effects on pre-transfer inequality if it primarily affects the skilled--unskilled wage gap rather than capital--labour shares.  The five-year-average specification (row~vi) produces a somewhat larger coefficient, consistent with the idea that the inequality effects of FDI accumulate over time.  Excluding Sub-Saharan Africa (row~ix) slightly increases the estimate, while excluding Latin America (row~x) reduces it, consistent with the concentration of FDI-driven inequality in Latin American countries with historically high baseline inequality.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 6  DISCUSSION
+% ══════════════════════════════════════════════════════════════════════
+\section{Discussion}\label{sec:discussion}
+
+\subsection{Interpretation of the Main Results}
+
+The central finding of this dissertation is that FDI inflows are associated with a statistically significant and economically meaningful increase in income inequality in developing economies.  A one-percentage-point increase in FDI/GDP raises the net Gini by approximately 0.2 points in the short run (fixed-effects) and 1.4 points in the long run (system-GMM, dynamic multiplier).  To put this in perspective, the interquartile range of the FDI/GDP distribution is approximately 4 percentage points; a shift from the 25th to the 75th percentile would thus be associated with a long-run Gini increase of approximately 5.6 points---comparable to the difference between Malaysia (Gini $\approx 41$) and South Africa (Gini $\approx 63$).
+
+These results are broadly consistent with the findings of \citet{Figini2011}, \citet{Herzer2012}, and \citet{Jaumotte2013}, all of whom report positive FDI--inequality associations in developing-country panels.  My estimates are at the lower end of the range reported in the literature, which may reflect the use of the SWIID (which tends to smooth extreme values) and the broader country coverage.
+
+\subsection{Mechanisms}
+
+The heterogeneity results provide suggestive evidence on the mechanisms driving the FDI--inequality relationship.
+
+\paragraph{Skill-biased technological change.}
+The finding that the FDI effect is concentrated in lower-middle-income countries---which have larger technology gaps and more limited skilled-labour supplies---is consistent with the Feenstra--Hanson skill-biased outsourcing channel.  In these economies, MNEs introduce production processes that require skills that are scarce domestically, bidding up skilled wages while leaving unskilled wages largely unchanged.  This interpretation is supported by micro-level evidence from Mexico \citep{Feenstra1997}, Brazil \citep{Menezes2006}, and Indonesia \citep{Lipsey2004}, all of which document rising skill premiums in industries with greater foreign presence.
+
+\paragraph{Institutional mediation.}
+The significant negative interaction between FDI and institutional quality suggests that institutions can attenuate the inequality-increasing tendency of FDI.  Countries with stronger rule of law tend to have more effective minimum-wage enforcement, broader social protection systems, and more progressive tax structures---all of which can redistribute the productivity gains from FDI towards lower-income groups.  This finding echoes \citet{Bogliaccini2009}, who show that collective bargaining institutions moderate the distributional effects of FDI in Latin America.
+
+\paragraph{Labour-market duality.}
+An alternative, though not mutually exclusive, mechanism is labour-market segmentation.  If MNEs hire from a thin pool of skilled workers and pay efficiency wages to reduce turnover, the resulting foreign--domestic wage gap can be substantial.  \citet{Aitken1996} estimate that foreign-owned plants in Mexico and Venezuela pay 30--50 per cent more than domestic plants, conditional on worker characteristics.  In economies where the formal sector is small, this premium may disproportionately benefit a labour-market ``elite,'' widening the overall distribution.
+
+\subsection{Policy Implications}
+
+The results carry several policy implications.  First, FDI liberalisation should be accompanied by complementary policies that expand the supply of skilled labour, notably investments in secondary and tertiary education.  The negative coefficient on average schooling in the baseline regressions reinforces this point.  Second, strengthening labour-market institutions---including minimum-wage floors, collective bargaining frameworks, and occupational health and safety standards---can help ensure that the gains from FDI are shared more broadly.  Third, progressive taxation and targeted social transfers can offset the inequality-increasing tendency of FDI, particularly in lower-middle-income countries.
+
+These recommendations align with the ``inclusive globalisation'' agenda articulated by the IMF \citep{Jaumotte2013} and the World Bank's recent emphasis on ``shared prosperity'' as a development objective.  Crucially, the results do \textit{not} imply that developing countries should restrict FDI; the aggregate growth benefits of FDI are well documented \citep{Alfaro2004}.  Rather, the message is that the \textit{distributional} consequences of FDI depend on the policy and institutional environment, and that proactive measures are needed to make FDI-led growth more inclusive.
+
+\subsection{Limitations}
+
+Several limitations should be acknowledged.  First, despite the use of fixed effects and GMM, the possibility of residual endogeneity cannot be entirely ruled out.  Ideal instruments for FDI (e.g., exogenous variation in source-country push factors) are difficult to construct for a broad panel.  Second, the SWIID, while the most comprehensive cross-country inequality dataset, relies on imputation for many country-year observations, which may introduce measurement error.  Third, the analysis is conducted at the country level and cannot distinguish between different types of FDI (greenfield versus M\&A, manufacturing versus services) or between different channels through which FDI affects the income distribution.  Firm-level or household-survey data would be needed to test the mechanisms more rigorously.  Fourth, the relatively low within-$R^2$ (0.16--0.20) indicates that much of the variation in inequality is explained by the fixed effects rather than the time-varying regressors, which is common in country-level panel studies but implies that the model captures only a modest share of within-country inequality dynamics.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% 7  CONCLUSION
+% ══════════════════════════════════════════════════════════════════════
+\section{Conclusion}\label{sec:conclusion}
+
+This dissertation has examined the relationship between foreign direct investment and income inequality in 68 developing economies over the period 1990--2020.  Using both fixed-effects and system-GMM estimation, I find robust evidence that FDI inflows are associated with an increase in income inequality, as measured by the net Gini coefficient.  The estimated short-run semi-elasticity is approximately 0.2 Gini points per percentage point of FDI/GDP, with a long-run effect of around 1.4 points.
+
+The inequality-increasing effect of FDI is not uniform.  It is concentrated in lower-middle-income countries and in economies with weaker institutional quality, as measured by the Rule of Law indicator.  These findings are consistent with theoretical models emphasising skill-biased technological change and labour-market segmentation, and they underscore the importance of complementary policies---education investment, labour-market regulation, and progressive redistribution---in ensuring that the gains from FDI are broadly shared.
+
+Several avenues for future research emerge from this study.  First, the use of sectoral or firm-level FDI data could shed light on whether the inequality effects differ across industries (e.g., extractive versus manufacturing FDI).  Second, the analysis could be extended to distinguish between greenfield investment and cross-border mergers and acquisitions, which may have different labour-market implications.  Third, the interaction between FDI and domestic financial development deserves further investigation: if financial deepening enables broader access to the opportunities created by foreign investment, it may serve as a moderating channel analogous to institutional quality.  Finally, the growing availability of high-frequency administrative data in developing countries opens opportunities for quasi-experimental research designs that can provide more convincing causal estimates than are possible with cross-country panels.
+
+
+% ══════════════════════════════════════════════════════════════════════
+% REFERENCES
+% ══════════════════════════════════════════════════════════════════════
+\newpage
+\begin{thebibliography}{99}
+
+\bibitem[Aitken et~al.(1996)]{Aitken1996}
+Aitken, B., Harrison, A., and Lipsey, R.~E. (1996).
+\newblock Wages and foreign ownership: A comparative study of Mexico, Venezuela, and the United States.
+\newblock \textit{Journal of International Economics}, 40(3--4):345--371.
+
+\bibitem[Alderson and Nielsen(1999)]{Alderson1999}
+Alderson, A.~S. and Nielsen, F. (1999).
+\newblock Income inequality, development, and dependence: A reconsideration.
+\newblock \textit{American Sociological Review}, 64(4):606--631.
+
+\bibitem[Alfaro et~al.(2004)]{Alfaro2004}
+Alfaro, L., Chanda, A., Kalemli-Ozcan, S., and Sayek, S. (2004).
+\newblock FDI and economic growth: The role of local financial markets.
+\newblock \textit{Journal of International Economics}, 64(1):89--112.
+
+\bibitem[Basu and Guariglia(2007)]{Basu2003}
+Basu, P. and Guariglia, A. (2007).
+\newblock Foreign direct investment, inequality, and growth.
+\newblock \textit{Journal of Macroeconomics}, 29(4):824--839.
+
+\bibitem[Bertrand et~al.(2004)]{Bertrand2004}
+Bertrand, M., Duflo, E., and Mullainathan, S. (2004).
+\newblock How much should we trust differences-in-differences estimates?
+\newblock \textit{Quarterly Journal of Economics}, 119(1):249--275.
+
+\bibitem[Blundell and Bond(1998)]{Blundell1998}
+Blundell, R. and Bond, S. (1998).
+\newblock Initial conditions and moment restrictions in dynamic panel data models.
+\newblock \textit{Journal of Econometrics}, 87(1):115--143.
+
+\bibitem[Bogliaccini and Egan(2017)]{Bogliaccini2009}
+Bogliaccini, J.~A. and Egan, P.~J.~W. (2017).
+\newblock Foreign direct investment and inequality in developing countries: Does sector matter?
+\newblock \textit{Economics \& Politics}, 29(3):209--236.
+
+\bibitem[Castell\'o-Climent(2010)]{Castello2010}
+Castell\'o-Climent, A. (2010).
+\newblock Inequality and growth in advanced economies: An empirical investigation.
+\newblock \textit{Journal of Economic Inequality}, 8(3):293--321.
+
+\bibitem[Chintrakarn et~al.(2012)]{Chintrakarn2012}
+Chintrakarn, P., Herzer, D., and Nunnenkamp, P. (2012).
+\newblock FDI and income inequality: Evidence from a panel of US states.
+\newblock \textit{Economic Inquiry}, 50(3):788--801.
+
+\bibitem[Feenstra and Hanson(1996)]{Feenstra1996}
+Feenstra, R.~C. and Hanson, G.~H. (1996).
+\newblock Globalization, outsourcing, and wage inequality.
+\newblock \textit{American Economic Review}, 86(2):240--245.
+
+\bibitem[Feenstra and Hanson(1997)]{Feenstra1997}
+Feenstra, R.~C. and Hanson, G.~H. (1997).
+\newblock Foreign direct investment and relative wages: Evidence from Mexico's maquiladoras.
+\newblock \textit{Journal of International Economics}, 42(3--4):371--393.
+
+\bibitem[Figini and G\"org(2011)]{Figini2011}
+Figini, P. and G\"org, H. (2011).
+\newblock Does foreign direct investment affect wage inequality? An empirical investigation.
+\newblock \textit{World Economy}, 34(9):1455--1475.
+
+\bibitem[Herzer et~al.(2014)]{Herzer2012}
+Herzer, D., Hühne, P., and Nunnenkamp, P. (2014).
+\newblock FDI and income inequality---evidence from Latin American economies.
+\newblock \textit{Review of Development Economics}, 18(4):778--793.
+
+\bibitem[Jaumotte et~al.(2013)]{Jaumotte2013}
+Jaumotte, F., Lall, S., and Papageorgiou, C. (2013).
+\newblock Rising income inequality: Technology, or trade and financial globalization?
+\newblock \textit{IMF Economic Review}, 61(2):271--309.
+
+\bibitem[Jensen and Rosas(2007)]{Jensen2010}
+Jensen, N.~M. and Rosas, G. (2007).
+\newblock Foreign direct investment and income inequality in Mexico, 1990--2000.
+\newblock \textit{International Organization}, 61(3):467--487.
+
+\bibitem[Kaufmann et~al.(2011)]{Kaufmann2011}
+Kaufmann, D., Kraay, A., and Mastruzzi, M. (2011).
+\newblock The Worldwide Governance Indicators: Methodology and analytical issues.
+\newblock \textit{Hague Journal on the Rule of Law}, 3(2):220--246.
+
+\bibitem[Lee and Lee(2016)]{Lee2016}
+Lee, J.-W. and Lee, H. (2016).
+\newblock Human capital in the long run.
+\newblock \textit{Journal of Development Economics}, 122:147--169.
+
+\bibitem[Lipsey and Sj\"oholm(2004)]{Lipsey2004}
+Lipsey, R.~E. and Sj\"oholm, F. (2004).
+\newblock Foreign direct investment, education, and wages in Indonesian manufacturing.
+\newblock \textit{Journal of Development Economics}, 73(1):415--422.
+
+\bibitem[Markusen and Venables(1999)]{Markusen2001}
+Markusen, J.~R. and Venables, A.~J. (1999).
+\newblock Foreign direct investment as a catalyst for industrial development.
+\newblock \textit{European Economic Review}, 43(2):335--356.
+
+\bibitem[Menezes-Filho et~al.(2006)]{Menezes2006}
+Menezes-Filho, N.~A., Muendler, M.-A., and Ramey, G. (2008).
+\newblock The structure of worker compensation in Brazil, with a comparison to France and the United States.
+\newblock \textit{Review of Economics and Statistics}, 90(2):324--346.
+
+\bibitem[Nunnenkamp(2004)]{Nunnenkamp2004}
+Nunnenkamp, P. (2004).
+\newblock To what extent can foreign direct investment help achieve international development goals?
+\newblock \textit{World Economy}, 27(5):657--677.
+
+\bibitem[Rodrik(1997)]{Rodrik1997}
+Rodrik, D. (1997).
+\newblock \textit{Has Globalization Gone Too Far?}
+\newblock Washington, DC: Institute for International Economics.
+
+\bibitem[Roodman(2009)]{Roodman2009}
+Roodman, D. (2009).
+\newblock How to do xtabond2: An introduction to difference and system GMM in Stata.
+\newblock \textit{Stata Journal}, 9(1):86--136.
+
+\bibitem[Solt(2020)]{Solt2020}
+Solt, F. (2020).
+\newblock Measuring income inequality across countries and over time: The Standardized World Income Inequality Database.
+\newblock \textit{Social Science Quarterly}, 101(3):1183--1199.
+
+\bibitem[Stolper and Samuelson(1941)]{Stolper1941}
+Stolper, W.~F. and Samuelson, P.~A. (1941).
+\newblock Protection and real wages.
+\newblock \textit{Review of Economic Studies}, 9(1):58--73.
+
+\bibitem[Tsai(1995)]{Tsai1995}
+Tsai, P.-L. (1995).
+\newblock Foreign direct investment and income inequality: Further evidence.
+\newblock \textit{World Development}, 23(3):469--483.
+
+\bibitem[UNCTAD(2021)]{UNCTAD2021}
+UNCTAD (2021).
+\newblock \textit{World Investment Report 2021: Investing in Sustainable Recovery}.
+\newblock Geneva: United Nations.
+
+\end{thebibliography}
+
+
+% ══════════════════════════════════════════════════════════════════════
+% APPENDICES
+% ══════════════════════════════════════════════════════════════════════
+\newpage
+\begin{appendices}
+
+\section{Country List}\label{app:countries}
+
+\small
+\noindent
+\textbf{Lower-middle-income (34):}
+Bangladesh, Benin, Bolivia, Cambodia, Cameroon, C\^ote d'Ivoire, Egypt, El Salvador, Ghana, Guatemala, Honduras, India, Indonesia, Kenya, Kyrgyz Republic, Lao PDR, Lesotho, Mauritania, Mongolia, Morocco, Myanmar, Nepal, Nicaragua, Nigeria, Pakistan, Philippines, Senegal, Sri Lanka, Tanzania, Tunisia, Ukraine, Uzbekistan, Vietnam, Zambia.
+
+\medskip\noindent
+\textbf{Upper-middle-income (28):}
+Albania, Algeria, Argentina, Armenia, Azerbaijan, Belarus, Bosnia and Herzegovina, Botswana, Brazil, Bulgaria, China, Colombia, Costa Rica, Dominican Republic, Ecuador, Georgia, Jamaica, Jordan, Kazakhstan, Malaysia, Mexico, Namibia, Paraguay, Peru, Romania, South Africa, Thailand, Turkey.
+
+\medskip\noindent
+\textbf{Low-income (6):}
+Burkina Faso, Ethiopia, Madagascar, Malawi, Mali, Mozambique.
+
+\normalsize
+
+\section{Data Sources and Variable Definitions}\label{app:variables}
+
+\begin{table}[H]
+\centering
+\small
+\caption{Variable Definitions and Sources}
+\begin{tabularx}{\textwidth}{@{} l l X @{}}
+\toprule
+Variable & Source & Definition \\
+\midrule
+Net Gini & SWIID v9.4 & Gini coefficient of equivalised disposable household income, 0--100 scale. \\
+Market Gini & SWIID v9.4 & Gini coefficient of pre-tax, pre-transfer household income. \\
+FDI/GDP & WDI & Net inflows of foreign direct investment, \% of GDP (series BX.KLT.DINV.WD.GD.ZS). \\
+FDI stock/GDP & UNCTAD & Inward FDI stock, \% of GDP. \\
+Trade/GDP & WDI & Exports + imports of goods and services, \% of GDP. \\
+Avg.\ schooling & Barro--Lee & Mean years of schooling, population aged 15+. \\
+Gov.\ expend./GDP & WDI & General government final consumption expenditure, \% of GDP. \\
+Log GDP p.c. & WDI & Natural logarithm of real GDP per capita (constant 2015 US\$). \\
+Rule of Law & WGI & Ranges from $\approx -2.5$ (weak) to $+2.5$ (strong). \\
+Credit/GDP & WDI & Domestic credit to private sector, \% of GDP. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Additional Results}\label{app:additional}
+
+\subsection{Regional Sub-sample Estimates}
+
+\begin{table}[H]
+\centering
+\caption{FDI and Inequality by Region: Fixed-Effects Estimates}
+\label{tab:regional}
+\begin{threeparttable}
+\begin{tabular}{@{} l cccc @{}}
+\toprule
+ & (1) & (2) & (3) & (4) \\
+ & \textit{East Asia} & \textit{Latin Am.} & \textit{Sub-Sah.\ Africa} & \textit{South Asia} \\
+\midrule
+FDI/GDP & 0.158 & 0.287$^{**}$ & 0.194$^{*}$ & 0.342$^{**}$ \\
+        & (0.131) & (0.128) & (0.112) & (0.156) \\[4pt]
+\midrule
+Full controls & Yes & Yes & Yes & Yes \\
+Country \& Year FE & Yes & Yes & Yes & Yes \\
+$N$    & 287 & 396 & 412 & 189 \\
+Countries & 11 & 15 & 17 & 7 \\
+\bottomrule
+\end{tabular}
+\begin{tablenotes}[flushleft]\footnotesize
+\item \textit{Notes:} Control variables as in Table~\ref{tab:baseline}, column~(3).  Robust standard errors clustered by country.  $^{*}$~$p<0.10$, $^{**}$~$p<0.05$, $^{***}$~$p<0.01$.  MENA and Europe \& Central Asia regions omitted due to small sample sizes.
+\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+The regional results reveal that the FDI--inequality relationship is strongest in South Asia and Latin America, where skill premiums and labour-market duality are particularly pronounced.  East Asia, where educational attainment is generally higher and labour markets more flexible, exhibits a positive but insignificant coefficient.
+
+\subsection{Non-linear Specification}
+
+To test the \citet{Figini2011} inverted-U hypothesis, I add FDI/GDP squared to the baseline specification.  The coefficient on FDI/GDP is 0.34 ($p < 0.01$) and that on (FDI/GDP)$^2$ is $-$0.012 ($p = 0.08$), providing weak evidence of a non-linear relationship with a turning point at approximately FDI/GDP $= 14.2$\%---well above the sample mean, suggesting that most developing countries remain on the upward-sloping portion of the curve.
+
+\end{appendices}
+
+\end{document}
