@@ -1,0 +1,7 @@
+# Large local data should live on D: and stay out of git.
+data/raw/
+data/processed/
+data/exploration/
+
+# Local Python cache
+code/__pycache__/
