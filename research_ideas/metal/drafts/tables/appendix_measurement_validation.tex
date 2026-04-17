@@ -1,0 +1,39 @@
+\begin{table}[p]
+\centering
+\caption{Measurement validation for the city-genre emergence object}
+\label{tab:appendix_measurement_validation}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.30\textwidth}YYY>{\raggedleft\arraybackslash}p{0.10\textwidth}>{\raggedleft\arraybackslash}p{0.08\textwidth}@{}}
+\toprule
+Object or sample & Local spawning flow & Target-genre active bands & Target-genre multi-band musicians & $N$ & Events \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Panel A. Geography audit counts}} \\
+Audit-universe city labels &  &  &  & 2,443 &  \\
+Region-like labels &  &  &  & 86 &  \\
+Missing-or-multi-place labels &  &  &  & 66 &  \\
+Current city-baseline exclusions &  &  &  & 152 &  \\
+Small dense labels flagged for stricter validation &  &  &  & 177 &  \\
+Preferred FE sample rows and events &  &  &  & 171,653 & 5,306 \\
+Preferred-sample rows in small dense cities &  &  &  & 4,874 & 166 \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Panel B. Geography and coverage robustness}} \\
+Preferred baseline & 0.0134*** & 0.0505*** & 0.0227*** & 171,653 & 5,306 \\
+ & (0.0017) & (0.0015) & (0.0015) &  &  \\
+Drop small dense labels & 0.0133*** & 0.0510*** & 0.0215*** & 166,779 & 5,140 \\
+ & (0.0017) & (0.0015) & (0.0015) &  &  \\
+Restrict to 1990 onward & 0.0135*** & 0.0481*** & 0.0235*** & 166,685 & 5,071 \\
+ & (0.0017) & (0.0014) & (0.0016) &  &  \\
+Restrict to countries with at least 50 events & 0.0143*** & 0.0514*** & 0.0213*** & 142,372 & 4,434 \\
+ & (0.0019) & (0.0017) & (0.0017) &  &  \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: Panel A reports the current geography screen behind
+the city baseline. Region-like and malformed labels are excluded upstream before the live feature
+files are built, which is why the preferred FE sample contains zero such rows. Panel B reruns the
+preferred \texttt{roll-5} exact-year fixed-effects specification on narrower geography and
+coverage subsets. Standard errors are clustered by city. *** $p<0.01$.}
+\end{table}

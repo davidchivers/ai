@@ -1,0 +1,24 @@
+\begin{table}[htbp]
+\centering
+\caption{Main variables in the exact-year scene specification}
+\label{tab:main_variables}
+\small
+\begin{tabularx}{\textwidth}{@{}lY Y@{}}
+\toprule
+Variable & Definition & Transformation and role \\
+\midrule
+Emergence this year & Indicator equal to one when the snapshot year is the emergence year for a city-genre cell & Binary outcome in exact-year fixed effects \\
+Local spawning flow & Bands formed in a city-year whose founding cohort includes at least one musician with prior local band history in that city & Log transformed, one-year-lagged roll-5 average, z-scored; headline mechanism \\
+Target-genre active bands & Active local bands in the focal broad genre family & Log transformed, one-year-lagged roll-5 average, z-scored; headline mechanism \\
+Target-genre multi-band musicians & Local musicians active in the focal genre who hold at least two active local bands in that same genre & Log transformed, one-year-lagged roll-5 average, z-scored; headline mechanism \\
+Overall active bands & Active local bands of any genre in the city-year snapshot & Log transformed, one-year-lagged roll-5 average, z-scored; control \\
+Nontrivial communities & Number of detected communities with at least two active bands in the local yearly network & One-year-lagged roll-5 average, z-scored; control \\
+Overall multi-band musicians & Active local musicians with at least two active local bands of any genre & Log transformed, one-year-lagged roll-5 average, z-scored; control \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: The preferred specification uses city-genre and year
+fixed effects with standard errors clustered by city. All reported continuous predictors are
+z-scored within the estimation sample.}
+\end{table}

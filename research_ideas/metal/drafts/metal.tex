@@ -1,0 +1,87 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{margin=1.1in}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage[authoryear,round]{natbib}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{microtype}
+\usepackage{xurl}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false,pdfborder={0 0 0}}
+\setlength{\emergencystretch}{3em}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\graphicspath{{../data/processed/scene_networks/figures/}{../data/processed/genre_analysis/}{../data/processed/scene_networks/diffusion/figures/}}
+
+\title{Local scene emergence in heavy metal}
+\author{David Chivers\thanks{Department of Economics, Durham University, \href{mailto:david.chivers@durham.ac.uk}{david.chivers@durham.ac.uk}.}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This paper studies local scene emergence in heavy metal. Using the full Metal Archives band census
+and member dump, I build a city-level collaboration dataset from 971,877 musician-band edges
+covering 682,126 musicians and link it to a dynamic city-by-genre panel of local scene emergence.
+A city-genre cell is counted as emergent in the year it first crosses the paper's operational
+fifth-band threshold in that broad genre family. In the preferred exact-year fixed-effects sample,
+the panel contains 171,653 city-genre-years and 5,306 emergence events. Two facts organize the
+paper. First, exact-year emergence rates rise sharply with local band stock and with the depth of
+the local multi-band musician pool. Second, in the preferred exact-year transition specification,
+later transitions into operational scene status track three stable lagged scene predictors: local
+spawning flow, target-genre active bands, and target-genre multi-band musician depth. These
+patterns survive nearby threshold changes and geography-clean restrictions, but attenuate sharply
+when the risk set is restricted to city-genre cells still far below the threshold. The paper is
+therefore strongest on late-stage local niche consolidation rather than on the earliest seed stage
+of scene formation. The contribution is reduced-form and measurement-driven rather than causal.
+Heavy metal is useful because it makes local project overlap and worker mobility unusually
+observable, allowing the paper to study how localized capability, embedded project formation, and
+within-niche recombination are associated with local scene emergence.
+\end{abstract}
+
+\section{Introduction}
+\input{sections/introduction.tex}
+
+\section{Related literature}
+\input{sections/literature_review.tex}
+
+\section{Empirical motivation}
+\input{sections/empirical_motivation.tex}
+\clearpage
+
+\section{Model}
+\input{sections/model.tex}
+
+\section{Data}
+\input{sections/data.tex}
+
+\section{Empirical approach}
+\input{sections/method.tex}
+
+\section{Results}
+\input{sections/results.tex}
+
+\appendix
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\theHtable}{appendix.\thetable}
+\setcounter{figure}{0}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\theHfigure}{appendix.\thefigure}
+\clearpage
+\input{sections/appendix.tex}
+
+\input{sections/references.tex}
+
+\end{document}

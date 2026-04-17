@@ -1,0 +1,103 @@
+The first result is descriptive. Exact-year emergence rates rise sharply with local scene
+thickness. When a city has fewer than 10 active local bands, the exact-year emergence rate is
+1.4 percent. When it has 40 or more, the rate rises to 4.0 percent. The same pattern appears for
+multi-band depth: emergence rises from 1.4 percent with 0--1 multi-band musicians to 3.7 percent
+with 10 or more. Figure \ref{fig:critical_mass} reports this critical-mass pattern directly.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{scene_critical_mass_event_rates.png}
+\caption{Exact-year emergence rates by local scene thickness and multi-band depth.}
+\label{fig:critical_mass}
+\end{figure}
+
+The main regression result appears in the preferred exact-year fixed-effects transition
+specification. The counts-only roll-5 design is the cleanest current main-table object because it
+isolates the stable unconditional scene terms. The dependent variable is whether a city-genre cell
+that has not yet emerged crosses the operational fifth-band threshold in the current year.
+Table \ref{tab:preferred_results} reports the preferred paired presentation: a core counts-only
+panel and a composition extension. The main paper read comes from Panel A. Because the lagged
+predictors are z-scored, the coefficients are directly comparable on a common within-sample scale.
+Local spawning flow enters at 0.0134, target-genre active bands at 0.0505, and target-genre
+multi-band musicians at 0.0227. Relative to the sample event rate of 3.09 percent, those are
+economically large associations on the linear-probability scale: a one-standard-deviation increase
+in local spawning flow corresponds to about 1.3 percentage points higher transition probability, a
+one-standard-deviation increase in target-genre active bands corresponds to about 5.1 percentage
+points, and a one-standard-deviation increase in target-genre multi-band depth corresponds to
+about 2.3 percentage points. The largest coefficient is therefore not generic city size, but
+focal-niche thickness.
+
+\input{tables/preferred_results.tex}
+
+The control pattern is also interpretable once the table is read conditionally rather than
+literally. Overall active bands remain positive, but overall multi-band musicians enter negatively.
+That sign is not a claim that worker overlap is bad for scenes. It is the opposite comparison.
+Holding fixed focal-genre active bands and focal-genre multi-band depth, broader city-wide
+multi-band overlap appears to proxy for labor spread across many niches rather than for depth in
+the focal one. The paper's mechanism read is therefore about niche-specific recombination, not
+generic scene-wide overlap. This is also why the positive target-genre multi-band coefficient is
+the more substantively important labor-pool margin.
+
+The direct threshold-response package is reported in Appendix Tables
+\ref{tab:appendix_threshold_response} and \ref{tab:appendix_threshold_specificity}. The first
+result is encouraging. The coefficient pattern is not pinned to the fifth-band cutoff: across
+alternative emergence thresholds of three, four, six, and eight bands, local spawning flow,
+target-genre active bands, and target-genre multi-band musicians all remain positive. The harder
+risk-set exercises are more sobering. When I drop observations one band below the fifth-band
+cutoff, all three headline terms remain positive but become much smaller. When I keep only
+city-genre cells that are still well below the cutoff, the coefficients attenuate sharply and the
+multi-band term is no longer distinguishable from zero. The disciplined interpretation is
+therefore narrower than the most expansive version of the project. The paper is strongest on
+late-stage local niche consolidation rather than on the earliest seed stage of scene formation.
+A focal labor-pool specificity check still supports the recombination margin: conditional on
+target-genre active bands and total target-genre active musicians, target-genre multi-band
+musicians remain positive while total target-genre active musicians turn negative.
+
+The measurement-validation package is reported in Appendix Tables
+\ref{tab:appendix_measurement_validation} and \ref{tab:appendix_historical_sanity}. The current
+preferred sample is already geography-clean on the project's audit rule: region-like and malformed
+city labels are excluded upstream, so none survive into the live fixed-effects panel. Tightening
+the sample further does not materially change the main coefficients. Dropping the small dense
+labels flagged for closer inspection, restricting the sample to `1990` onward, and restricting to
+the high-coverage countries all leave the three headline terms close to their baseline values.
+The historical sanity cases are also reassuring. Operational emergence dates such as Birmingham
+heavy metal in `1977`, Tampa death metal in `1987`, Bergen black metal in `1992`, and Gothenburg
+melodic death metal in `1996` are at least broadly plausible. The Bay Area case is useful for a
+different reason: its raw timing looks plausible too, but the label is explicitly excluded because
+it names a wider unit rather than a city.
+
+The coefficient pattern points to a specific view of local creative development. City-genre cells
+are more likely to transition into operational scene status when three conditions hold. First,
+cities generate new projects through local spinouts. Second, the focal genre already has a thicker
+local stock of active bands. Third, musicians in that focal genre work across multiple local
+projects, which is consistent with labor pooling and recombination within the niche.
+Figure \ref{fig:coefficients} visualizes the current headline coefficients.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.78\textwidth]{scene_preferred_mechanism_coefficients.png}
+\caption{Preferred core exact-year fixed-effects coefficients on z-scored lagged predictors.}
+\label{fig:coefficients}
+\end{figure}
+
+Background role-composition checks add little to this interpretation. Only guitarist share among
+switchers shows any visible signal, and even that is weakly negative rather than positive
+($-0.0013$, $p = 0.062$); drums, bass, vocals, and keyboards are all close to zero. I therefore
+leave role composition out of the headline narrative. The stable margin is broader
+overlapping-worker depth within the focal niche, not one privileged instrument class.
+
+The remaining digital-era checks are secondary and do not change the paper's main read. A broad
+period split suggests that local spawning flow and target-genre active-band stock attenuate after
+`2005`, while the target-genre multi-band-musician coefficient remains stable. That is useful as a
+descriptive nuance, but it is not central to the paper's contribution. I therefore leave the
+broader internet-adoption and city-broadband probes to Appendix Section \ref{app:digital_checks}.
+Those exercises are either too broad, too late, or too small to identify a local digital
+mechanism cleanly, and none of them overturn the main scene result.
+
+The contribution is reduced-form rather than causal. That is still enough to establish a clear
+empirical pattern. Thicker local capability, stronger spinout flow, and deeper within-genre
+overlapping experience are all associated with later scene emergence. Heavy metal is useful here
+not because it is culturally exceptional, but because the setting makes local project overlap and
+worker mobility unusually observable. In that sense, the paper speaks to a broader economic
+question: how localized capability and recombination shape the emergence of new creative
+varieties.

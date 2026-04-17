@@ -1,0 +1,29 @@
+\begin{table}[p]
+\centering
+\caption{Variable definitions for the main scene specification}
+\label{tab:appendix_variable_crosswalk}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth}>{\raggedright\arraybackslash}p{0.20\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}YY@{}}
+\toprule
+Paper label & Code variable & Unit of observation & Construction & Estimating transformation and role \\
+\midrule
+Emergence this year & emerge\_this\_year & city x genre x year & Indicator equal to 1 when snapshot year equals emergence year; emergence year is the year the city reaches its fifth band in the genre family. & Binary outcome in exact-year fixed effects; outcome variable. \\
+Overall active bands & n\_active\_bands \newline $\rightarrow$ log\_active\_bands & city x year & Active local bands in the yearly shared-member network snapshot. & log(1 + x), one-year-lagged roll-5 average, z-scored within the estimation sample; control. \\
+Nontrivial communities & n\_nontrivial\_ \newline communities & city x year & Number of detected communities with at least two active bands. & One-year-lagged roll-5 average, z-scored; control. \\
+Overall multi-band musicians & n\_multi\_band\_ \newline musicians\_total \newline $\rightarrow$ log\_multi\_band\_ \newline musicians\_total & city x year & Active local musicians with two or more active local bands of any genre. & log(1 + x), one-year-lagged roll-5 average, z-scored; control. \\
+Local spawning flow & spawn\_bands\_ \newline formed \newline $\rightarrow$ log\_spawn\_bands\_ \newline formed & city x year & Bands formed in the city-year whose founding cohort includes at least one musician with prior local-band history in that city. & log(1 + x), one-year-lagged roll-5 average, z-scored; headline mechanism. \\
+Target-genre active bands & genre\_active\_ \newline bands \newline $\rightarrow$ log\_genre\_active\_ \newline bands & city x genre x year & Active local bands in the focal broad genre family. & log(1 + x), one-year-lagged roll-5 average at the city-genre level, z-scored; headline mechanism. \\
+Target-genre multi-band musicians & genre\_multi\_band\_ \newline musicians \newline $\rightarrow$ log\_genre\_multi\_band\_ \newline musicians & city x genre x year & Local musicians active in the focal genre who hold two or more active local bands in that same genre. & log(1 + x), one-year-lagged roll-5 average at the city-genre level, z-scored; headline mechanism. \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: The preferred specification in the active paper draft
+is the core roll-5 exact-year fixed-effects table with city-genre and year fixed effects
+and standard errors clustered by city. Z-scores are computed within the estimation sample rather
+than in a universal preprocessing file. Overall scene predictors are rolled at the city-year level
+before the full panel merge. Target-genre predictors are rolled at the city-genre level before the
+merge. Connector or broker variables are not part of the active main-text paper package.}
+\end{table}

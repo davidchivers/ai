@@ -1,0 +1,80 @@
+\section{Appendix material for the main scene specification}
+
+This appendix gathers the audit objects that sit behind the active main-text scene result. The
+goal is not to reopen the design, but to make the preferred sample and variable definitions
+transparent enough that the empirical package is fully auditable.
+
+\subsection{Sample construction}
+
+Appendix Table \ref{tab:appendix_sample_construction} reports the full construction of the
+city-genre panel from the raw band and member universes to the preferred \texttt{roll-5}
+exact-year fixed-effects sample. It also records the geography-audit exclusions and the nearby
+\texttt{roll-3} robustness sample so that the main-text estimation object is easy to locate inside
+the broader data pipeline.
+
+\input{tables/appendix_sample_construction.tex}
+
+\subsection{Variable definitions}
+
+Appendix Table \ref{tab:appendix_variable_crosswalk} defines the variables used in the active
+headline specification. It distinguishes city-year controls from city-genre mechanisms, records
+where the rolling transformations are applied, and keeps the paper-facing labels tied to the code
+variables used in the estimation pipeline.
+
+\input{tables/appendix_variable_crosswalk.tex}
+
+\subsection{Threshold-response package}
+
+Appendix Table \ref{tab:appendix_threshold_response} is the direct answer to the mechanical-threshold
+objection. It first reruns the preferred exact-year fixed-effects specification under nearby
+emergence cutoffs of three, four, six, and eight bands. It then holds the fifth-band definition
+fixed and asks how much of the predictive pattern remains once the risk set is pushed away from the
+immediate approach to the cutoff.
+
+\input{tables/appendix_threshold_response.tex}
+
+\subsection{Focal labor-pool specificity}
+
+Appendix Table \ref{tab:appendix_threshold_specificity} adds target-genre active musicians to the
+preferred fifth-band specification. This is a falsification-style check on whether the positive
+multi-band coefficient is simply standing in for broad focal labor-pool size rather than
+overlapping worker depth within the niche.
+
+\input{tables/appendix_threshold_specificity.tex}
+
+\subsection{Measurement validation}
+
+Appendix Table \ref{tab:appendix_measurement_validation} validates the emergence object on three
+margins. It first reports the current geography audit that defines the city baseline. It then reruns
+the preferred exact-year specification after dropping the small-dense labels flagged for closer
+inspection, after restricting the sample to `1990` onward, and after restricting to the
+high-coverage countries that contribute at least `50` emergence events.
+
+\input{tables/appendix_measurement_validation.tex}
+
+\subsection{Historical sanity cases}
+
+Appendix Table \ref{tab:appendix_historical_sanity} reports a small set of canonical scenes for
+which the operational emergence dates should be broadly plausible. It also includes the Bay Area
+thrash-metal row to make the geography logic transparent: the raw timing file dates it, but the
+city baseline excludes it because `Bay Area` is a wider unit rather than a city-like label.
+
+\input{tables/appendix_historical_sanity.tex}
+
+\subsection{Secondary digital-era checks}
+\label{app:digital_checks}
+
+The digital-era branch is kept as background only. A broad period split of the preferred
+\texttt{roll-5} exact-year specification suggests that local spawning flow attenuates from
+`0.0177` before `1995` to `0.0071` in `2005--2014`, and target-genre active bands attenuate from
+`0.0977` to `0.0310`, while target-genre multi-band musicians stay stable at `0.0270`, `0.0312`,
+and `0.0325`. That is a useful descriptive nuance, but not a different paper.
+
+The broader internet and broadband probes are weaker. Country-level internet-adoption event studies
+line up with higher later metal entry, but the effect is broad-based rather than cleanly
+genre-specific, and the strongest black-metal case also shows a positive pretrend. The city-level
+Ookla extension is narrower still: the current black-metal broadband probe covers only `47`
+city-year observations across `33` cities in `2020--2022`, so it is too late and too small to
+support a serious local internet mechanism claim. The practical implication is simple. These
+checks are useful for scope discipline and for guarding against overclaiming, but they do not
+strengthen the main scene result enough to belong in the core paper narrative.

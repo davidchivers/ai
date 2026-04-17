@@ -1,0 +1,31 @@
+\begin{table}[p]
+\centering
+\caption{Focal labor-pool specificity check}
+\label{tab:appendix_threshold_specificity}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabular}{@{}lc@{}}
+\toprule
+Predictor & Coefficient \\
+\midrule
+Target-genre active bands & 0.1533*** \\
+ & (0.0035) \\
+Target-genre active musicians & -0.1049*** \\
+ & (0.0027) \\
+Target-genre multi-band musicians & 0.0121*** \\
+ & (0.0015) \\
+\midrule
+$N$ & 171,653 \\
+Events & 5,306 \\
+$R^2$ & 0.0592 \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\parbox{0.88\textwidth}{\footnotesize Notes: This specification adds lagged target-genre active
+musicians to the preferred fifth-band exact-year fixed-effects regression. The point is to ask
+whether the overlap term is just a proxy for broad focal labor-pool size. City-genre and year
+fixed effects are included and standard errors are clustered by city. The multi-band term remains
+positive even after conditioning on total focal active musicians. *** $p<0.01$.}
+\end{table}

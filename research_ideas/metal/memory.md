@@ -4,6 +4,1412 @@ Most recent session first.
 
 ---
 
+### Session: 2026-04-13 (field-paper wording pass for the main draft)
+- Updated:
+  - `drafts/metal.tex`
+  - `drafts/sections/introduction.tex`
+  - `drafts/sections/empirical_motivation.tex`
+  - `drafts/sections/method.tex`
+  - `drafts/sections/results.tex`
+- Writing pass:
+  - tightened the paper's wording around the operational outcome rather than changing the evidence
+  - the preferred exact-year specification now reads more explicitly as a within-cell transition
+    equation on the risk set
+  - the introduction and abstract now say more clearly that the paper studies transitions into
+    operational scene status rather than a literal ontological birth date
+  - the results section now states more directly that the dependent variable is crossing the
+    operational fifth-band threshold in the current year
+  - the role-composition paragraph is now shorter and more clearly backgrounded
+- Verification:
+  - `latexmk -pdf -interaction=nonstopmode -halt-on-error metal.tex` ran successfully in
+    `drafts/`
+  - `drafts/metal.pdf` rebuilt cleanly
+- Current implication:
+  - the draft is now better aligned with the field-journal positioning memo and the round-5
+    referee advice
+  - the next sensible step is a stop-or-stabilize read, not another additive expansion
+
+---
+
+### Session: 2026-04-10 (stacked FE prototype for the central-loss branch)
+- Added:
+  - `code/82_build_central_loss_stacked_spec.py`
+  - `data/processed/scene_networks/central_loss_stacked_event_panel.csv`
+  - `data/processed/scene_networks/central_loss_stacked_did_results.csv`
+  - `data/processed/scene_networks/central_loss_stacked_event_study_results.csv`
+  - `data/processed/scene_networks/figures/central_loss_stacked_event_study.png`
+  - `data/processed/scene_networks/central_loss_stacked_spec_summary.md`
+- Design:
+  - stack the `9` usable post-emergence death events against their matched same-genre controls
+  - estimate a parsimonious treated-by-post FE DID with `stack-city` and relative-year effects
+  - estimate a short event study for focal same-genre band starts with `t-1` as the reference year
+- Current read:
+  - event-weighted focal same-genre treated-by-post coefficient: `-0.932`
+  - unique-shock focal same-genre treated-by-post coefficient: `-0.993`
+  - event-study coefficients for focal same-genre band starts:
+    - `t-3 = -0.370`
+    - `t-2 = -1.000`
+    - `t = -2.333`
+    - `t+1 = -0.444`
+  - focal multi-band depth does not show a negative treated-by-post effect
+  - city-wide spawning flow also does not show a negative treated-by-post effect
+- Current implication:
+  - the branch is now past pure audit mode and has a real estimation prototype
+  - the narrow live estimand is now post-death suppression of focal same-genre entry
+  - the branch still does not support a broad scene-collapse story or a scene-emergence design
+
+---
+
+### Session: 2026-04-10 (central-musician-loss first pass)
+- Added:
+  - `code/77_build_central_loss_audit_shortlist.py`
+  - `code/78_build_central_loss_event_preview.py`
+  - `notes/30_central_musician_loss_first_pass.md`
+  - `data/processed/scene_networks/central_loss_candidate_cells.csv`
+  - `data/processed/scene_networks/central_loss_audit_shortlist.csv`
+  - `data/processed/scene_networks/central_loss_audit_summary.md`
+  - `data/processed/scene_networks/central_loss_manual_audit_first_pass.csv`
+  - `data/processed/scene_networks/central_loss_verified_death_events.csv`
+  - `data/processed/scene_networks/central_loss_event_preview.csv`
+  - `data/processed/scene_networks/central_loss_event_window_preview.csv`
+  - `data/processed/scene_networks/central_loss_event_preview_summary.md`
+- Updated:
+  - `notes/README.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Current branch read:
+  - the central-musician-loss idea is now a live feasibility object rather than only a design memo
+  - the data can already rank plausible local connector losses using stable musician IDs, yearly
+    membership spans, local same-genre overlap, and scene-size context
+  - the refined first screen now yields `31` audit-ready rows after requiring:
+    - fully observed terminal years
+    - `3+` lifetime bands
+    - `2+` local same-genre active bands at the terminal year
+    - a local scene with at least `5` active same-genre bands
+    - plus a capped fallback to the latest available scene snapshot within `2` years
+  - the first web audit is more encouraging after that refinement:
+    - clear or near-clear deaths recovered from within the shortlist:
+      `Kory Alvarez`, `Miguel Angel`, `L-G Petrov`, `Jasmine You`, `Eric Wagner`,
+      `Nattdal`, `Andre Matos`, `Mortifer`, `Geoff Nicholls`, `Reverend Jim Forrester`,
+      `Evgeny Reutov`, and `Sergey Stankov`
+    - clear false positives: `Moritz Bossmann`, `Aidan Smith`, `Ilya Zudilov`,
+      `Luke Tolcher`, `N. Schner`, `Kriger Morket`, `Andrew Power`, `Tragisk`,
+      and `Tommy Henriksen`
+    - possible permanent exits rather than death shocks: `Capricornus` and `Ariersohn`
+- Current implication:
+  - the branch is alive and looks more plausible than at the start of the session
+  - but it is still in audit mode rather than estimation mode because the shortlist remains noisy
+  - the branch now has a clean first event file with `12` verified deaths
+  - the first panel preview is more sobering:
+    - only `5` verified deaths have a minimally usable short post window in the live panel
+    - `11` of the `12` verified deaths are already post-emergence events
+  - the next sensible move, if any, is no longer an emergence event study
+  - instead, continue only if the branch is reframed around post-emergence scene activity margins
+    such as same-genre starts, spawning, or local multi-band depth
+
+---
+
+### Session: 2026-04-10 (fifth AER-style referee report)
+- Added:
+  - `referee/aer_referee_report_round5.md`
+- Current report read:
+  - the recommendation remains reject at AER standard
+  - the paper is now judged to be a strong and disciplined reduced-form field-paper draft
+  - the decisive AER issue remains unchanged:
+    - the preferred exact-year fixed-effects design identifies a robust within-cell transition
+      pattern, not a causal account of scene formation
+  - the recent narrowing and validation work are treated as genuine improvements, but not as outlet-
+    changing improvements
+- External cross-check:
+  - an Oracle browser review was launched under slug `metal-aer-r5` as a second-model read
+  - the browser session was still running when this session note was written, so the saved round-5
+    report reflects the direct read rather than a completed Oracle output
+- Current implication:
+  - the paper now looks close to a stop-or-stabilize decision
+  - if one more move is taken, it should likely be a field-journal-standard final read rather than
+    another AER-oriented revision cycle
+
+---
+
+### Session: 2026-04-10 (empirical-motivation section compressed)
+- Updated:
+  - `drafts/sections/empirical_motivation.tex`
+  - `STATUS.md`
+  - `notes/05_research_plan.md`
+- Current writing read:
+  - the empirical-motivation section now keeps the same three figures but does less explanatory
+    work
+  - the long subgenre-by-subgenre walk-through is gone
+  - the section now reads more clearly as setup for the city-genre panel and the threshold-crossing
+    model rather than as a parallel paper on metal taxonomy or diffusion
+- Verification:
+  - `latexmk -pdf -interaction=nonstopmode -halt-on-error metal.tex` ran successfully in
+    `drafts/`
+  - `drafts/metal.pdf` rebuilt cleanly
+- Current implication:
+  - the draft is now closer to a stop-or-stabilize decision
+  - if one more pass is wanted, it should be a final referee-style read rather than another
+    additive expansion
+
+---
+
+### Session: 2026-04-09 (overnight workflow closeout; breakout branch parked)
+- Added:
+  - `notes/29_breakout_branch_parking_memo.md`
+- Updated:
+  - `notes/README.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Current workflow read:
+  - the bounded recovery pass is now closed rather than left as an open-ended branch
+  - `Comalies` remains an official FIMI dead end under the live workflow
+  - Brazil timing is materially cleaner, but `Rebirth` and `Temple of Shadows` still do not
+    become chart-entry events usable in the stacked first-breakout design
+- Current implication:
+  - the breakout-demand branch should remain parked at feasibility stage
+  - active project time should return to the bounded field-journal paper unless one of the
+    explicit re-entry conditions in `notes/29_breakout_branch_parking_memo.md` is met
+
+---
+
+### Session: 2026-04-09 (breakout event file created)
+- Added:
+  - `data/processed/country_genre_analysis/breakout_event_file.csv`
+- Updated:
+  - `notes/25_breakout_branch_workflow.md`
+- Current branch read:
+  - the branch now has a stable first-pass event file rather than only a screened candidate list
+  - the retained event set contains `5` branch-ready breakout episodes:
+    - `DEU x extreme_metal x 1996`
+    - `GBR x extreme_metal x 1996`
+    - `ITA x extreme_metal x 1996`
+    - `DEU x industrial_metal x 2001`
+    - `DEU x symphonic_metal x 2004`
+- Current implication:
+  - the next branch object is now the stacked `city x genre_family x relative_event_year` panel
+    built from this event file
+
+---
+
+### Session: 2026-04-09 (breakout branch workflow note added)
+- Added:
+  - `notes/25_breakout_branch_workflow.md`
+- Updated:
+  - `notes/README.md`
+- Current branch read:
+  - the breakout branch now has an explicit phase order rather than only a design note and a
+    screened candidate list
+  - the next required branch objects are:
+    - `breakout_event_file.csv`
+    - `city_genre_breakout_event_panel.csv`
+- Current implication:
+  - the branch can now be worked through in bounded steps without drifting into general treatment
+    expansion
+
+---
+
+### Session: 2026-04-09 (breakout branch candidate screen added)
+- Added:
+  - `data/processed/country_genre_analysis/breakout_episode_candidates.csv`
+  - `notes/24_breakout_episode_screen.md`
+- Updated:
+  - `notes/README.md`
+- Current branch read:
+  - the breakout-demand idea now has a first screened event set rather than only a design memo
+  - the strongest first-pass market is `DEU`, followed by `GBR` and `ITA`
+  - most `heavy_metal` rows are intentionally excluded from the first branch because they are too
+    mature to read cleanly as genre-breakout events
+- Current implication:
+  - the next branch task is to convert the screened candidates into a clean breakout-episode file
+    and merge it onto the city-genre scene panel for a stacked event-study pass
+
+---
+
+### Session: 2026-04-09 (breakout-demand shock design memo added)
+- Added:
+  - `notes/23_breakout_demand_shock_design.md`
+- Updated:
+  - `notes/README.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Current strategy read:
+  - the most feasible quasi-causal follow-on is now specified more concretely
+  - the right redesign is not a coarse `country x genre_family` treatment panel
+  - it is a stacked `city x genre_family` event study around clean national breakout episodes, with
+    identification from pre-shock local capability within the treated country-genre
+- Current implication:
+  - if the project tests a causal extension, the first operational task is to build a clean
+    breakout-episode file rather than to add more rows mechanically to the older domestic-success
+    FE pilot
+
+---
+
+### Session: 2026-04-09 (causal follow-on strategy memo added)
+- Added:
+  - `notes/22_causal_followon_designs.md`
+- Updated:
+  - `notes/README.md`
+- Current strategy read:
+  - the current draft should stay a reduced-form field paper rather than being stretched into a
+    causal scene-origins paper
+  - if a quasi-causal follow-on is pursued, the practical ranking is:
+    - breakout-demand shock first
+    - central-musician-loss feasibility audit second
+    - infrastructure shock distant third
+- Current implication:
+  - the cleanest next step for a causal branch is a bounded audit rather than a rewrite of the live
+    paper
+
+---
+
+### Session: 2026-04-09 (fourth internal AER-style referee read)
+- Added:
+  - `referee/aer_referee_report_round4.md`
+- Current report read:
+  - the recommendation remains reject at AER standard
+  - the draft is now judged to be the strongest version so far and a credible field-paper
+  - the central AER blocker remains the same:
+    - the strongest result is still about the later approach to an operational emergence threshold
+      rather than the causal origin of new scenes
+  - the next obvious compression margin is now the empirical-motivation section
+- Current implication:
+  - the paper should now be treated as close to a stable field-journal draft
+  - if one more tightening pass is done, it should be compressive rather than additive
+
+---
+
+### Session: 2026-04-09 (field-journal positioning memo added)
+- Added:
+  - `referee/field_journal_positioning_memo.md`
+- Current implication:
+  - the project now has a clean target statement for the next draft stage that is not framed only
+    as a response to the AER reports
+  - the draft can now be stabilized as a field-paper without reopening exploratory branches
+
+---
+
+### Session: 2026-04-09 (literature review compressed)
+- Updated:
+  - `drafts/sections/literature_review.tex`
+  - `STATUS.md`
+  - `notes/05_research_plan.md`
+- Current writing read:
+  - the literature review now keeps the same citation spine with fewer explanatory detours
+  - the paper's middle sections now better match the discipline of the front end and results
+- Current implication:
+  - the draft is now close to a stable field-paper version
+  - the next move is likely a stop-or-stabilize decision rather than another major rewrite
+
+---
+
+### Session: 2026-04-09 (front end polished toward field-journal fit)
+- Updated:
+  - `drafts/metal.tex`
+  - `drafts/sections/introduction.tex`
+  - `notes/08_scene_paper_sections.md`
+  - `STATUS.md`
+  - `notes/05_research_plan.md`
+- Current writing read:
+  - the abstract now leads with local scene emergence in heavy metal rather than a broader
+    category-creation claim
+  - the introduction now states the paper's bounded contribution more directly:
+    - new city-level collaboration data
+    - a panel measure of scene emergence
+    - a validated reduced-form result strongest near the later approach to emergence
+  - the opening pages now lean less on broad general-interest aspiration and more on the paper the
+    current design can actually support
+- Current implication:
+  - the draft is now better aligned with the round-three referee read
+  - the next revision should be compressive rather than architectural
+
+---
+
+### Session: 2026-04-09 (third internal referee read confirms field-journal fit)
+- Added:
+  - `referee/aer_referee_report_round3.md`
+- Current report read:
+  - the recommendation remains reject at AER standard
+  - but the report is materially more favorable than the prior two rounds
+  - the draft is now judged to be a coherent field-journal paper rather than a sprawling working
+    memo
+  - the main remaining issues are:
+    - keep claim language disciplined
+    - consider trimming the role-composition paragraph
+    - do one more front-end polish pass only if needed
+- Current implication:
+  - the paper should now be revised as a bounded field-paper, not as an AER-aspirational object
+  - the next revisions should be compressive rather than expansive
+
+---
+
+### Session: 2026-04-09 (main-table interpretation and notes tightened)
+- Updated:
+  - `drafts/sections/method.tex`
+  - `drafts/tables/preferred_results.tex`
+  - `drafts/sections/results.tex`
+  - `notes/08_scene_paper_sections.md`
+  - `STATUS.md`
+  - `notes/05_research_plan.md`
+- Current writing read:
+  - the preferred table now states explicitly that the lagged predictors are z-scored, so the
+    coefficients are directly comparable on a common within-sample scale
+  - the main text now translates the three headline coefficients into percentage-point terms
+    relative to the `3.09` percent event rate:
+    - local spawning flow: about `1.3` percentage points
+    - target-genre active bands: about `5.1` percentage points
+    - target-genre multi-band depth: about `2.3` percentage points
+  - the negative overall multi-band-musician control is now explained as a conditional contrast:
+    broader city-wide overlap is less helpful than overlap concentrated within the focal niche
+- Current implication:
+  - the preferred scene table now reads more like a paper result and less like a raw regression
+    dump
+  - the next live task is another referee-style read on the tighter draft rather than more local
+    table editing
+
+---
+
+### Session: 2026-04-09 (digital and broadband material pushed into appendix)
+- Updated:
+  - `drafts/sections/results.tex`
+  - `drafts/sections/appendix.tex`
+  - `STATUS.md`
+  - `notes/05_research_plan.md`
+- Current writing read:
+  - the main results section is now more tightly centered on:
+    - descriptive critical mass
+    - the preferred exact-year scene result
+    - threshold and measurement validation
+  - the digital-era split remains only as a short secondary note
+  - the broader country-level internet and city-level broadband probes have been moved out of the
+    core narrative and into an appendix prose subsection
+- Current implication:
+  - the paper now reads less like a bundle of adjacent probes and more like one paper with a clear
+    main result
+  - the next live bottlenecks are:
+    - main-table interpretation and presentation
+    - another referee-style read on the tighter draft
+    - a final front-end alignment pass if the new referee read still finds drift
+
+---
+
+### Session: 2026-04-09 (measurement-validation package integrated into the draft)
+- Added:
+  - `code/71_build_scene_measurement_validation.py`
+  - `data/processed/scene_networks/scene_measurement_validation_results.csv`
+  - `data/processed/scene_networks/scene_historical_sanity_cases.csv`
+  - `data/processed/scene_networks/scene_measurement_validation_summary.md`
+  - `drafts/tables/appendix_measurement_validation.tex`
+  - `drafts/tables/appendix_historical_sanity.tex`
+- Updated:
+  - `drafts/sections/data.tex`
+  - `drafts/sections/results.tex`
+  - `drafts/sections/appendix.tex`
+  - `notes/08_scene_paper_sections.md`
+- Current empirical read:
+  - the preferred exact-year FE sample is already geography-clean on the project's current audit
+    rule:
+    - zero region-like rows
+    - zero malformed-label rows
+  - tightening the geography screen does not materially move the headline coefficients:
+    - dropping the `177` small-dense labels shifts the three coefficients only from `0.0134`,
+      `0.0505`, and `0.0227` to `0.0133`, `0.0510`, and `0.0215`
+  - coverage-sensitive restrictions also leave the main pattern intact:
+    - the post-1990 sample yields `0.0135`, `0.0481`, and `0.0235`
+    - the `23` countries with at least `50` emergence events yield `0.0143`, `0.0514`, and
+      `0.0213`
+  - the historical sanity table is useful on both substantive and measurement margins:
+    - Birmingham heavy metal appears in `1977`
+    - Tampa death metal appears in `1987`
+    - Bergen black metal appears in `1992`
+    - Oslo black metal appears in `1990`
+    - Gothenburg melodic death metal appears in `1996`
+    - Bay Area thrash is intentionally excluded from the city baseline because it is a wider-unit
+      label rather than a city
+- Current implication:
+  - the emergence object is now defended on both threshold and measurement margins
+  - the next live bottlenecks are:
+    - scope cleanup of the internet and broadband material
+    - tighter interpretation and presentation of the preferred table
+    - one more results-section compression pass before another internal referee read
+
+---
+
+### Session: 2026-04-09 (threshold-response package integrated into the draft)
+- Added:
+  - `code/70_build_scene_threshold_response.py`
+  - `data/processed/scene_networks/scene_threshold_response_results.csv`
+  - `data/processed/scene_networks/scene_threshold_response_summary.md`
+  - `drafts/tables/appendix_threshold_response.tex`
+  - `drafts/tables/appendix_threshold_specificity.tex`
+- Updated:
+  - `drafts/metal.tex`
+  - `drafts/sections/introduction.tex`
+  - `drafts/sections/results.tex`
+  - `drafts/sections/appendix.tex`
+  - `notes/08_scene_paper_sections.md`
+- Current empirical read:
+  - the preferred three-variable result is not pinned to the fifth-band cutoff:
+    - under thresholds `3`, `4`, `5`, `6`, and `8`, local spawning flow, target-genre active
+      bands, and target-genre multi-band musicians all remain positive
+  - the stronger distance-from-threshold checks are materially more sobering:
+    - dropping rows one band below the fifth-band cutoff leaves the headline coefficients positive
+      but much smaller
+    - keeping only cells with lag cumulative formed bands `<= 2` attenuates the pattern sharply,
+      and the target-genre multi-band coefficient is no longer distinguishable from zero
+  - the cleanest narrowed interpretation is now:
+    - the paper is strongest on late-stage local niche consolidation rather than on the earliest
+      seed stage of scene formation
+  - a focal labor-pool specificity check still helps the mechanism read:
+    - target-genre multi-band musicians stay positive once target-genre active musicians are added
+    - target-genre active musicians themselves turn negative conditional on target-genre active
+      bands
+- Current implication:
+  - the threshold-objection package is now built and integrated into the paper draft
+  - the next live bottlenecks are:
+    - measurement validation of the emergence object
+    - scope cleanup of internet and broadband material
+    - interpretation polish for the main table
+
+### Session: 2026-04-09 (internal AER-style referee report, round 2)
+- Added:
+  - `referee/aer_referee_report_round2.md`
+- Current report read:
+  - the introduction-led rewrite is judged a real improvement
+  - the recommendation still stays at reject for AER
+  - the unresolved central issue is still the threshold-mechanics objection
+  - the secondary live issue is that the results section remains too diffuse because internet and
+    broadband material still take too much main-text space relative to the core scene result
+- Current implication:
+  - the next revision should not revisit the introduction again first
+  - it should now move directly to:
+    - threshold-response tests
+    - measurement validation
+    - tighter scope cleanup in the results section
+
+### Session: 2026-04-09 (appendix package integrated into LaTeX draft)
+- Added:
+  - `drafts/sections/appendix.tex`
+  - `drafts/tables/appendix_sample_construction.tex`
+  - `drafts/tables/appendix_variable_crosswalk.tex`
+- Updated:
+  - `drafts/metal.tex`
+  - `drafts/sections/data.tex`
+  - `drafts/sections/method.tex`
+  - `notes/08_scene_paper_sections.md`
+- Current writing read:
+  - the paper now has an explicit appendix section in the LaTeX draft rather than only markdown
+    audit objects sitting outside the paper
+  - the main text still keeps compact sample-construction and variable-summary tables, but it now
+    points directly to Appendix Tables `A1` and `A2` for the full audit trail
+  - appendix table numbering is now distinct from the main text, and the rebuilt PDF compiles
+    cleanly
+- Current implication:
+  - the empirical package is more defensible and easier to hand to a reader without sending them
+    back to markdown notes
+  - the next writing bottleneck is now front-end paper quality: abstract, introduction, captions,
+    and table notes rather than missing appendix infrastructure
+
+### Session: 2026-04-09 (front end rewritten into an introduction-led draft)
+- Added:
+  - `drafts/sections/introduction.tex`
+- Updated:
+  - `drafts/metal.tex`
+  - `notes/08_scene_paper_sections.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Current writing read:
+  - the paper no longer opens with the literature review
+  - the abstract now fits the narrower reduced-form paper better
+  - the new introduction states:
+    - the question
+    - the data contribution
+    - the main result
+    - the main limitation
+    - the paper's broader economics payoff
+- Current implication:
+  - the front-end bottleneck is materially reduced
+  - the next live bottlenecks are now the threshold-objection package and the measurement-validation
+    package
+
+### Session: 2026-04-09 (internal AER-style referee report drafted)
+- Added:
+  - `referee/aer_referee_report.md`
+  - `referee/aer_revision_plan.md`
+- Current report read:
+  - recommendation is reject at AER standard
+  - strongest critique is that the main threshold-crossing result is still too close to a
+    mechanical local-thickness fact
+  - secondary critique is that the paper remains too reduced-form and setting-specific for AER
+    even though the data object is genuinely interesting
+- Current implication:
+  - the report is useful as a sharpening device for the next draft
+  - the revision plan now locks the immediate sequence:
+    - real introduction and abstract rewrite
+    - direct threshold-objection package
+    - stronger substantive validation of the emergence measure
+    - tighter focus on the core scene result rather than exploratory side branches
+
+### Session: 2026-04-01 (theory notation aligned to empirical scene design)
+- Updated:
+  - `drafts/sections/model.tex`
+  - `notes/03_model_notes.md`
+  - `notes/08_scene_paper_sections.md`
+- Theory-side changes:
+  - clarified that the empirical spawning variable is `city-year`, not `city x genre x year`
+  - reinterpreted spawning as a proxy for broad local spinout intensity via the latent embedded-
+    founder share `\rho_{ct}`
+  - added an explicit threshold-crossing hazard bridge from niche entry dynamics to the paper's
+    exact-year emergence outcome
+- Current implication:
+  - the live model section now maps more tightly to the actual regression object
+  - the longer model note and the integrated paper-sections note now use the same spawning
+    interpretation
+
+### Session: 2026-03-30 (city-level broadband raw store and first city-quarter panel)
+- Added reusable shared scripts:
+  - `_shared/scripts/download_ookla_open_data.py`
+  - `_shared/scripts/aggregate_ookla_tiles_to_city_points.py`
+- New reusable raw-data asset on `D:`:
+  - `D:\AI_data\shared\connectivity\ookla_open_data\`
+  - official Ookla Open Data fixed-broadband parquet mirror
+  - current coverage: `2019 Q1` to `2025 Q4`
+  - `28` quarterly files, about `8.57 GB`
+- First proof-of-concept city-quarter panel for the project:
+  - `data/processed/scene_networks/diffusion/black_metal_city_broadband_2019_2025_radius15km.csv`
+  - `895` cities
+  - `25,060` city-quarter rows
+  - `15 km` radius aggregation from tile centroids
+- Current implication:
+  - we now have a real reusable city-broadband workflow for recent years
+  - this is likely more useful for the other project than for the early-period metal paper because
+    Ookla fixed-broadband coverage starts only in `2019`
+
+### Session: 2026-03-30 (model expanded and literature review substantially redrafted)
+- Updated:
+  - `drafts/sections/model.tex`
+  - `drafts/sections/literature_review.tex`
+  - `drafts/sections/references.tex`
+  - `drafts/metal.tex`
+  - `notes/17_lit_review_verification.md`
+- Current writing read:
+  - the model section is no longer a short gloss; it now includes:
+    - CES differentiated-variety setup
+    - heterogeneous founders
+    - quality and fixed-cost equations
+    - aggregate entry
+    - dynamics
+    - emergence threshold
+  - the literature review is now materially fuller and organized around:
+    - creative geography and music scenes
+    - agglomeration and local externalities
+    - worker mobility, spinouts, and recombination
+    - varieties
+    - digitization and genre measurement
+  - the empirical-motivation figures are forced to clear before the model using `\\clearpage`, so
+    the diffusion figure no longer drifts into the model section
+- Current implication:
+  - the next paper bottleneck is now quality of the introduction and the transition from the lit
+    review into the model, not missing model substance
+
+### Session: 2026-03-30 (paper reordered to put model before data and empirics)
+- Added:
+  - `drafts/sections/model.tex`
+- Rewrote:
+  - `drafts/sections/method.tex`
+  - `drafts/metal.tex`
+- Current writing read:
+  - the LaTeX paper now has a cleaner economics-paper order:
+    - literature review
+    - empirical motivation
+    - model
+    - data
+    - empirical approach
+    - results
+  - the compact micro model now sits before the data and empirical section rather than being buried
+    inside the method text
+- Current implication:
+  - the next writing task is to improve the expanded literature review so it matches the stronger
+    model section
+
+### Session: 2026-03-30 (model note rewritten around a concrete economics model)
+- Rewrote:
+  - `notes/03_model_notes.md`
+- Current theory read:
+  - the best model is now stated explicitly as a hybrid with one center:
+    - local variety creation
+    - spinouts
+    - recombination through overlapping workers
+    - diffusion only as a secondary extension
+  - the note now includes:
+    - ranked candidate model families
+    - a simple entry-cost formulation
+    - state-variable dynamics for `B`, `M`, and `S`
+    - scene emergence as a threshold-crossing event
+    - comparative statics that map directly to the paper coefficients
+- Current implication:
+  - the next clean paper task is to compress this note into a short formal-model subsection in the
+    LaTeX draft rather than keep debating model families abstractly
+
+### Session: 2026-03-30 (digital-era split probe)
+- Added:
+  - `code/54_probe_scene_digital_era_splits.py`
+  - `notes/16_digital_era_split_probe.md`
+- Wrote:
+  - `data/processed/scene_networks/scene_digital_era_split_results.csv`
+  - `data/processed/scene_networks/scene_digital_era_split_summary.md`
+- Current read:
+  - the preferred scene result does not disappear in later periods
+  - local spawning flow attenuates across `<=1994`, `1995-2004`, and `2005-2014`
+  - target-genre active bands also attenuate materially
+  - target-genre multi-band musicians stay stable or slightly strengthen
+- Current implication:
+  - the digital-era question is worth keeping as a descriptive robustness check
+  - the cleanest nuance is not that the internet killed scenes, but that some local stock margins
+    weaken while overlapping worker depth remains important
+
+### Session: 2026-03-30 (lit review and empirical motivation integrated into paper)
+- Added to the LaTeX draft:
+  - `drafts/sections/literature_review.tex`
+  - `drafts/sections/empirical_motivation.tex`
+  - `drafts/sections/references.tex`
+- Added:
+  - `code/51_build_black_metal_diffusion_snapshots.py`
+  - `data/processed/scene_networks/diffusion/figures/black_metal_diffusion_snapshots.png`
+  - `data/processed/scene_networks/diffusion/black_metal_diffusion_snapshots_summary.md`
+- Updated:
+  - `drafts/metal.tex`
+  - `notes/02_literature_and_synthesis.md`
+- Current writing read:
+  - the paper now has literature review, empirical motivation, data, empirical approach, and
+    results
+  - the empirical motivation now includes both a global genre-proliferation figure and a static
+    scene-diffusion figure
+- Current implication:
+  - the next pass should improve the quality of the prose and table presentation inside the paper
+    rather than expand the empirical scope again
+
+### Session: 2026-03-30 (paper voice rewrite and literature search pass)
+- Updated:
+  - `drafts/metal.tex`
+  - `drafts/sections/data.tex`
+  - `drafts/sections/method.tex`
+  - `drafts/sections/results.tex`
+  - `notes/02_literature_and_synthesis.md`
+- Current writing read:
+  - the LaTeX draft now reads less like a scaffold and more like a paper draft
+  - the `Data`, `Method`, and `Results` sections now use a more restrained academic register
+- Current literature read:
+  - the lit review note now has a more explicit search-driven bridge on:
+    - local spillovers
+    - worker mobility
+    - urban buzz
+    - local variety creation
+  - additions include:
+    - `Moretti (2004)`
+    - `Møen (2000)`
+    - `Storper and Venables (2004)`
+    - `Glaeser, Ponzetto, and Tobio (2011/2014)`
+- Current implication:
+  - the next pass should probably improve the tables and title rather than add more branches
+
+### Session: 2026-03-30 (first paper-phase LaTeX draft created)
+- Added:
+  - `drafts/metal.tex`
+  - `drafts/sections/data.tex`
+  - `drafts/sections/method.tex`
+  - `drafts/sections/results.tex`
+  - `drafts/tables/sample_construction.tex`
+  - `drafts/tables/main_variables.tex`
+  - `drafts/tables/preferred_results.tex`
+- Compiled:
+  - `drafts/metal.pdf`
+- Current writing read:
+  - the first LaTeX paper draft is solo-author and intentionally simple
+  - main sections are:
+    - data
+    - empirical approach
+    - results
+  - the draft already includes three tables and two inserted figures
+- Current implication:
+  - the next paper task is to improve paper-standard presentation and wording inside the LaTeX
+    draft rather than continue expanding side branches
+
+### Session: 2026-03-30 (main draft reorganized around paper order)
+- Updated:
+  - `notes/08_scene_paper_sections.md`
+  - `notes/05_research_plan.md`
+  - `README.md`
+  - `STATUS.md`
+- Current writing read:
+  - the main draft is now explicitly structured as:
+    - data
+    - empirical approach
+    - results
+  - the sample-construction counts are now stated more clearly in the main data section
+- Current implication:
+  - the next writing task is the appendix pass, so the main text and appendix objects line up cleanly
+
+### Session: 2026-03-28 (model-side literature anchors added)
+- Updated:
+  - `notes/02_literature_and_synthesis.md`
+- Added a targeted subsection on:
+  - differentiated varieties
+  - recombination
+  - urban agglomeration microfoundations
+  - spinouts
+- Verified anchors added:
+  - `Dixit and Stiglitz (1977)`
+  - `Romer (1990)`
+  - `Weitzman (1998)`
+  - `Duranton and Puga (2004)`
+  - `Glaeser et al. (1992)`
+  - `Franco and Filson (2006)`
+- Current implication:
+  - the modelling section can now be framed in more mainstream economics language as local variety
+    creation through labor pooling, recombination, and spinouts
+
+### Session: 2026-03-27 (conceptual framework integrated into paper draft)
+- Updated:
+  - `notes/08_scene_paper_sections.md`
+  - `notes/05_research_plan.md`
+  - `README.md`
+  - `STATUS.md`
+- Current writing read:
+  - the compact economics framework from `03_model_notes.md` is now inside the main paper draft
+  - the live draft now states the theory object directly as local niche formation through labor
+    pooling, spinouts, and recombination
+- Current implication:
+  - the next clean writing task is the appendix pass, not more theory expansion
+
+### Session: 2026-03-27 (model note rewritten)
+- Rewrote:
+  - `notes/03_model_notes.md`
+- Current conceptual read:
+  - main theory object:
+    - local niche formation in a project-based creative industry
+  - core mechanisms:
+    - labor pooling
+    - spinouts
+    - recombination through overlapping teams
+  - secondary extension:
+    - diffusion of genre templates across cities
+  - baseline only:
+    - all metal as a parent-form benchmark, not the main paper object
+- Current implication:
+  - the live theory now matches the data work
+  - the next writing step is to fold this compact framework into `08_scene_paper_sections.md`
+
+---
+
+### Session: 2026-03-27 (multi-genre diffusion check run)
+- Added:
+  - `notes/15_multi_genre_diffusion_check.md`
+- Current comparison read:
+  - checked:
+    - `black_metal`
+    - `death_metal`
+    - `thrash_metal`
+    - `doom_metal`
+    - `power_metal`
+  - cross-genre result:
+    - the maps still make the diffusion idea visually plausible
+    - but the first reduced-form exposure terms mostly do not survive once lagged local same-genre
+      thickness is included
+- Current implication:
+  - diffusion is useful as descriptive support
+  - local scene thickness remains the stronger empirical result
+  - the project should not pivot into a diffusion paper right now
+
+---
+
+### Session: 2026-03-27 (diffusion exposure panel built)
+- Added:
+  - `code/50_build_scene_diffusion_exposure_panel.py`
+  - `notes/14_scene_diffusion_exposure_panel.md`
+- Wrote:
+  - `data/processed/scene_networks/diffusion/black_metal_diffusion_exposure_panel.csv`
+  - `data/processed/scene_networks/diffusion/black_metal_diffusion_exposure_results.csv`
+  - `data/processed/scene_networks/diffusion/black_metal_diffusion_exposure_bins.csv`
+  - `data/processed/scene_networks/diffusion/black_metal_diffusion_exposure_summary.md`
+- Current black-metal read:
+  - matched city cells:
+    - `4,281`
+  - at-risk city-year observations:
+    - `11,503`
+  - emergence events:
+    - `894`
+  - descriptive pattern:
+    - emergence rates rise across hub-exposure quintiles
+  - first reduced-form result:
+    - lagged external hub exposure is positive on its own
+    - but it washes out once lagged local same-genre band stock is included
+- Current implication:
+  - this is a real diffusion branch, not just a map idea
+  - but the first serious pass still reinforces the main scene paper rather than replacing it
+  - local same-genre thickness remains the stronger empirical object
+
+---
+
+### Session: 2026-03-27 (band-level world animation prototype built)
+- Added:
+  - `code/49_build_band_genre_world_animation.py`
+  - `notes/13_band_world_animation_workflow.md`
+- Wrote:
+  - `data/processed/scene_networks/band_world_animation/black_metal_band_world_animation_coordinates.csv`
+  - `data/processed/scene_networks/band_world_animation/black_metal_band_world_animation_panel.csv`
+  - `data/processed/scene_networks/band_world_animation/black_metal_band_world_animation_yearly_summary.csv`
+  - `data/processed/scene_networks/band_world_animation/black_metal_band_world_animation.html`
+  - `data/processed/scene_networks/band_world_animation/black_metal_band_world_animation_summary.md`
+- Current prototype read:
+  - first genre:
+    - `black_metal`
+  - frame step:
+    - `3` years
+  - geography-clean city matches:
+    - `4053` of `6161` (`65.8%`)
+  - matched band-year observations:
+    - `101,092`
+  - descriptive note:
+    - this looks like a workable moving world map of active bands, but it is still just a visual
+      prototype
+- Current implication:
+  - this is a separate exploratory branch, not part of the main paper spine
+  - if it stays, it should be treated as a visual companion to the diffusion story, not as a core
+    empirical result
+
+---
+
+### Session: 2026-03-27 (scene-diffusion prototype built)
+- Added:
+  - `code/48_build_scene_diffusion_map.py`
+  - `notes/12_scene_diffusion_workflow.md`
+- Wrote:
+  - `data/processed/scene_networks/diffusion/black_metal_city_coordinates.csv`
+  - `data/processed/scene_networks/diffusion/black_metal_scene_diffusion_panel.csv`
+  - `data/processed/scene_networks/diffusion/black_metal_scene_diffusion_map.html`
+  - `data/processed/scene_networks/diffusion/black_metal_scene_diffusion_summary.md`
+- Current prototype read:
+  - first genre:
+    - `black_metal`
+  - geography-clean emerged-city coordinate coverage:
+    - `895` of `977` cities (`91.6%`)
+  - matched yearly active city observations:
+    - `14,694`
+  - descriptive diffusion pattern:
+    - this looks more like a sequence of hub formation and spread than a one-origin story
+    - early emerged hubs include `Athens`, `Stockholm`, and `Oslo`
+    - later large hubs include `Moscow`, `São Paulo`, `Paris`, `Bogota`, and `Santiago`
+- Current implication:
+  - this is a useful descriptive branch for showing scene-to-scene diffusion
+  - the next serious step would be a distance-weighted exposure panel, not further map styling
+  - keep it secondary to the main local scene-emergence paper for now
+
+---
+
+### Session: 2026-03-27 (band-success upgrading ladder sidecar built)
+- Added:
+  - `code/47_build_band_upgrading_ladder_sidecar.py`
+  - `notes/11_band_upgrading_ladder.md`
+- Wrote:
+  - `data/processed/band_success/band_upgrading_ladder_outcomes.csv`
+  - `data/processed/band_success/city_genre_birth_cohort_upgrading_panel.csv`
+  - `data/processed/band_success/city_genre_birth_cohort_upgrading_pilot.csv`
+  - `data/processed/band_success/band_upgrading_ladder_summary.md`
+- Current sidecar read:
+  - the cleaner sidecar object is now a staged upgrading ladder rather than vague `breakout band`
+  - matched bands by stage:
+    - `16` home-market presence
+    - `13` home-market validation
+    - `12` foreign-market presence
+    - `5` validated-then-foreign
+  - audited cohort file:
+    - `57,756` `city x genre_family x formed_year` rows
+    - `5` home-market validated winner cohorts within `15` years
+    - `3` validated-then-foreign cohorts within `20` years
+- Current implication:
+  - this is a better conceptual sidecar than the old `ever successful band` object
+  - but it is still too sparse to move into a serious regression branch
+  - if the branch is revisited, the next disciplined move is to lock a bounded cohort-winner
+    outcome rather than widen raw coverage again
+
+---
+
+### Session: 2026-03-27 (workflow reset around the paper)
+- Added `notes/10_workflow_reset.md`.
+- Updated:
+  - `STATUS.md`
+  - `README.md`
+  - `notes/05_research_plan.md`
+  - `notes/README.md`
+- Tightened `notes/08_scene_paper_sections.md` into first full-draft prose rather than a
+  section-ready memo.
+- Extended `notes/08_scene_paper_sections.md` again with a real abstract, a cleaner bridge from
+  measurement to evidence, an economic-interpretation subsection, and a compact conclusion.
+- Expanded the band-success sidecar with new home-market manual supplements for:
+  - Finland
+  - Sweden
+  - France
+  - Norway
+- Updated:
+  - `code/03_build_core_treatment_panel.py`
+  - `code/38_build_band_success_sidecar_data.py`
+- New sidecar outputs now include:
+  - `data/processed/band_success/band_success_coverage_audit.csv`
+  - `data/processed/band_success/band_success_design_audit.md`
+- Current sidecar read after the expansion:
+  - curated home-market success artists in current core file: `17`
+  - matched onto the birth panel: `16`
+  - `top10` cases: `9`
+  - median founding-to-success gap: `16.5` years
+  - practical implication:
+    - the branch is now worth keeping
+    - but the next disciplined move is a bounded-horizon or later-cohort redesign, not a naive
+      full-sample birth regression
+- Current workflow read:
+  - the network figure branch is now explicitly parked rather than treated as the main bottleneck
+  - the live workflow returns to the paper spine:
+    - keep `08_scene_paper_sections.md` as the live writing object
+    - keep appendix support moving
+    - leave the band-success branch secondary until the main draft advances
+- Current implication:
+  - the metal project should now be run as a paper-first workflow again, not a graph-first workflow
+
+---
+
+### Session: 2026-03-26 (Helsinki connector-core preview graphs built)
+- Added `code/40_build_gephi_preview_graphs.py`.
+- Wrote:
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_preview.png`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_connector_core_preview.png`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_preview.png`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_connector_core_preview.png`
+  - `data/processed/scene_networks/gephi_exports/helsinki_gephi_preview_comparison.md`
+- Current preview read:
+  - the full Helsinki maps are useful diagnostics but not good paper figures because the city-year
+    network breaks into many disconnected band cliques
+  - connector-core trims read much better because they keep only components that contain multi-band
+    bridges
+  - `Helsinki, Finland / black_metal / 2010` is the best current thick-scene candidate, but it is
+    still provisional rather than paper-settled:
+    - `53` musicians
+    - `146` edges
+    - `8` repeated ties
+    - `13` connectors
+    - `6` connected components
+  - `Helsinki, Finland / death_metal / 2005` is mostly a contrast case for thickness without much
+    overlap:
+    - `20` musicians
+    - `34` edges
+    - `5` connectors
+    - `4` connected components
+- Current implication:
+  - the live paper-facing thick-scene map is not settled yet
+  - Pittsburgh remains useful as a smaller pre-emergence mechanism appendix or slide
+
+---
+
+### Session: 2026-03-26 (Gephi-ready Helsinki export built)
+- Added `code/39_export_gephi_city_genre_network.py`.
+- Wrote:
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_nodes.csv`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_edges.csv`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_gephi_recipe.md`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_death_metal_2005_summary.md`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_nodes.csv`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_edges.csv`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_gephi_recipe.md`
+  - `data/processed/scene_networks/gephi_exports/helsinki_finland_black_metal_2010_summary.md`
+- Current export read:
+  - `Helsinki, Finland / death_metal / 2005`:
+    - active musicians: `105`
+    - collaboration edges: `163`
+    - multi-band connectors: `5`
+  - `Helsinki, Finland / black_metal / 2010`:
+    - active musicians: `79`
+    - collaboration edges: `159`
+    - repeated ties: `8`
+    - multi-band connectors: `13`
+  - both are much better suited to a Gephi force-directed map than the tiny Pittsburgh microcase
+- Current implication:
+  - if the paper wants a visually impressive local labor-market network, a large city-genre case
+    like Helsinki is the right direction
+  - Gephi is now installed at `D:\apps\gephi\`
+  - the live workflow is now Gephi-first rather than matplotlib-first for the thick-scene map
+  - the black-metal export may actually be the better figure because it has more connector
+    structure and repeated ties relative to its size
+
+---
+
+### Session: 2026-03-26 (band-success sidecar pilot built)
+- Added `code/38_build_band_success_sidecar_data.py`.
+- Wrote:
+  - `data/processed/band_success/band_birth_panel.csv`
+  - `data/processed/band_success/band_scene_at_birth_panel.csv`
+  - `data/processed/band_success/band_success_outcomes.csv`
+  - `data/processed/band_success/band_success_match_diagnostics.csv`
+  - `data/processed/band_success/band_success_descriptive_pilot.csv`
+  - `data/processed/band_success/band_success_sidecar_summary.md`
+- Current pilot read:
+  - birth panel now has `128,053` rows
+  - exact pre-birth scene matches at `formed_year - 1`: `67,572`
+  - conservative home-market success coverage is still tiny:
+    - `11` curated artists survive the current alias or homonym screen
+    - `10` match onto the birth panel
+    - `5` certification cases
+    - `4` top-10 cases
+  - explicit audit adjustments already needed:
+    - map `Rhapsody` to `Rhapsody of Fire`
+    - exclude obvious homonym collisions `Disturbed` and `Slipknot`
+    - `Rammstein` remains unmatched under current Metallum coverage
+- Current implication:
+  - the sidecar is now a real data workflow, not just a design note
+  - it is not yet a serious regression branch because the outcome side is too sparse
+  - the next sidecar task is to expand audited home-market success coverage, not to force a model
+
+---
+
+### Session: 2026-03-26 (band-success sidecar moved into active workflow)
+- Added `notes/09_band_success_workflow.md`.
+- Updated:
+  - `notes/04_empirical_notes.md`
+  - `notes/05_research_plan.md`
+  - `notes/README.md`
+  - `README.md`
+  - `STATUS.md`
+- Current branch logic is now explicit:
+  - main paper:
+    `scene -> genre emergence`
+  - active sidecar:
+    `scene -> band success`
+  - fallback:
+    `domestic breakthrough shock -> later entry`
+- Current implication:
+  - the next empirical sidecar build should be a band birth panel linked to scene-at-birth
+    predictors and later visible success outcomes
+
+---
+
+### Session: 2026-03-26 (musician-only Pittsburgh graph built)
+- Added `code/37_build_scene_case_study_musician_network.py`.
+- Wrote:
+  - `data/processed/scene_networks/figures/pittsburgh_doom_metal_musician_network.png`
+  - `data/processed/scene_networks/pittsburgh_doom_metal_musician_network_summary.md`
+- Current figure read:
+  - redesigned as a weighted musician map with `12` people and `25` co-worker ties in detection
+    year `1991`
+  - node colors now mark primary local project affiliation
+  - edge width now carries repeated shared-band ties directly
+  - `6` multi-band connectors are highlighted by outline
+- Current implication:
+  - this is the preferred fourth-figure candidate over the earlier band-worker bipartite graph
+  - it is visually closer to the clustered music-network map style and fits the economics framing
+    better because it foregrounds labor pooling and recombination
+
+---
+
+### Session: 2026-03-26 (Pittsburgh case-study graph built)
+- Added `code/36_build_scene_case_study_network.py`.
+- Wrote:
+  - `data/processed/scene_networks/figures/pittsburgh_doom_metal_case_network.png`
+  - `data/processed/scene_networks/pittsburgh_doom_metal_case_network_summary.md`
+- Current case-study read:
+  - the figure shows `5` supporting bands and `12` active worker nodes in detection year `1991`
+  - `6` multi-band connectors are highlighted
+  - `Penance` is the central local project in the reconstructed cluster
+- Current implication:
+  - this is now the live small mechanism case rather than the main thick-scene figure
+  - write the visual as worker-project recombination and local capability accumulation, not as
+    scene lore
+
+---
+
+### Session: 2026-03-26 (broker dropped from paper package)
+- Rebuilt `data/processed/scene_networks/figures/scene_preferred_mechanism_coefficients.png` as a
+  single-panel headline figure using only the preferred core exact-year FE specification.
+- Updated the live paper-facing drafts so broker or connector variables are no longer part of the
+  active main-text package.
+- Current live paper headline is now only:
+  - local spawning flow
+  - target-genre active bands
+  - target-genre multi-band musicians
+- Current implication:
+  - the final main-text support object should be a case-study network figure, not a broker panel
+
+---
+
+### Session: 2026-03-26 (appendix objects built)
+- Wrote:
+  - `data/processed/scene_networks/scene_appendix_sample_construction.md`
+  - `data/processed/scene_networks/scene_appendix_sample_construction.csv`
+  - `data/processed/scene_networks/scene_appendix_variable_crosswalk.md`
+  - `data/processed/scene_networks/scene_appendix_variable_crosswalk.csv`
+- Current appendix package now covers:
+  - sample construction from raw band and member inputs to the preferred exact-year FE sample
+  - paper-facing variable definitions for the preferred scene table
+  - caption-ready text for later LaTeX transfer
+- Current implication:
+  - the scene paper now has real appendix infrastructure
+  - the next unresolved paper choice is the last supporting figure
+
+---
+
+### Session: 2026-03-26 (section-ready scene draft written)
+- Added `notes/08_scene_paper_sections.md`.
+- The paper now has section-ready markdown prose for:
+  - Introduction
+  - Data and Measurement
+  - Results
+- Current stable paper logic:
+  - critical-mass figure first
+  - headline core coefficient figure second
+  - one additional supporting figure at most
+- Current practical implication:
+  - the empirical spine is now written closely enough that appendix work should come next
+  - LaTeX is now feasible later, but not yet necessary
+
+---
+
+### Session: 2026-03-26 (scene prose memo written)
+- Added `notes/07_scene_paper_memo.md`.
+- The paper now exists as real markdown prose, not just as an outline:
+  - opening argument
+  - data and measurement framing
+  - descriptive critical-mass fact
+  - exact-year FE design language
+  - preferred paired result
+  - mechanism interpretation
+  - figure order
+- Current drafting rule:
+  - keep causal language out
+  - use `cross-genre connectors` in prose
+  - keep theory compact until the empirical draft is fully stable
+
+---
+
+### Session: 2026-03-26 (scene paper skeleton started)
+- Added `notes/06_scene_paper_skeleton.md`.
+- Current draft structure now exists in markdown rather than LaTeX:
+  - working titles
+  - one-paragraph pitch
+  - abstract skeleton
+  - section-by-section paper order
+  - figure placement
+  - appendix plan
+- Current writing rule:
+  - empirical spine first
+  - compact theory later
+  - no serious LaTeX or PDF work until the markdown draft stabilizes
+- Current paper logic:
+  - optional global opener first
+  - critical-mass descriptive figure second
+  - preferred paired mechanism figure third
+  - one case-study or broker companion figure only after the core draft reveals the need
+
+---
+
+### Session: 2026-03-26 (scene figure package and audits)
+- Added `code/35_build_scene_presentation_figures.py`.
+- Wrote:
+  - `data/processed/scene_networks/scene_figure_roadmap.md`
+  - `data/processed/scene_networks/scene_presentation_figures_summary.md`
+  - `data/processed/scene_networks/figures/scene_critical_mass_event_rates.png`
+  - `data/processed/scene_networks/figures/scene_preferred_mechanism_coefficients.png`
+- Also documented the scene branch more explicitly in:
+  - `data/processed/scene_networks/scene_data_cleaning_audit.md`
+  - `data/processed/scene_networks/scene_variable_measurement_audit.md`
+- Current figure-package read:
+  - the scene branch now has a real presentation sequence rather than only markdown tables
+  - the critical-mass figure is the right first scene visual:
+    - exact-year emergence rises from `1.4%` to `4.0%` across active-band bins
+    - it rises from `1.4%` to `3.7%` across multi-band-musician bins
+  - the preferred coefficient plot is the right second visual:
+    - Panel A headlines local spawning flow, target-genre active bands, and target-genre
+      multi-band depth
+    - Panel B keeps the negative share terms visible without turning broker musicians into the
+      unconditional headline
+- Current interpretation:
+  - the next live scene task is memo-writing and appendix packaging, not more generic predictor
+    search
+  - paper-facing language should move toward `cross-genre connectors` rather than `broker
+    musicians` except in code
+
+---
+
+### Session: 2026-03-26 (preferred scene mechanism table locked)
+- Added `code/34_build_scene_preferred_mechanism_table.py`.
+- Wrote:
+  - `data/processed/scene_networks/scene_cluster_preferred_mechanism_table.csv`
+  - `data/processed/scene_networks/scene_cluster_preferred_mechanism_table.md`
+- Chosen presentation:
+  - paired `roll-5` exact-year FE table
+  - Panel A headline core:
+    - overall scene controls plus:
+      - local spawning flow
+      - target-genre active bands
+      - target-genre multi-band musicians
+  - Panel B composition extension:
+    - adds spawn share, broker count and share, and target-genre multi-band share
+- Current preferred-table read:
+  - Panel A core:
+    - local spawning flow: `0.0134`
+    - target-genre active bands: `0.0505`
+    - target-genre multi-band musicians: `0.0227`
+  - Panel B extension:
+    - local spawning flow: `0.0224`
+    - spawn share: `-0.0066`
+    - target-genre active bands: `0.0488`
+    - target-genre broker musicians: `0.0579`
+    - target-genre broker share: `-0.0724`
+    - target-genre multi-band musicians: `0.0331`
+    - target-genre multi-band share: `-0.0195`
+  - built-in robustness:
+    - target-genre multi-band musicians remain:
+      - `0.0221` under `roll-3`
+      - `0.0217` when the overall switcher control is removed
+    - broker count is omitted from Panel A because its counts-only reference coefficient is
+      `-0.0053`
+- Current interpretation:
+  - the scene branch now has a locked headline table rather than an open table-design question
+  - the clean unconditional story is local spawning flow plus target-genre active-band and
+    switcher depth
+  - broker musicians remain in the paper as a conditional composition result, not as a standalone
+    unconditional headline
+  - the next live task is to refine that broker interpretation or replace it with a cleaner broker
+    measure
+
+---
+
+### Session: 2026-03-26 (compact richer-scene stress test built)
+- Added `code/33_stress_test_scene_cluster_richer_specs.py`.
+- Wrote:
+  - `data/processed/scene_networks/scene_cluster_richer_stress_test_results.csv`
+  - `data/processed/scene_networks/scene_cluster_richer_stress_test_summary.md`
+- Current compact stress-test read:
+  - counts-only exact-year FE:
+    - local spawning flow stays positive:
+      - `roll-3`: `0.0088`
+      - `roll-5`: `0.0133`
+    - target-genre active bands stay strongly positive:
+      - `roll-3`: `0.0480`
+      - `roll-5`: `0.0534`
+    - target-genre multi-band musicians stay positive:
+      - `roll-3`: `0.0220`
+      - `roll-5`: `0.0225`
+    - target-genre broker musicians are slightly negative in counts-only tables:
+      - `roll-3`: `-0.0033`
+      - `roll-5`: `-0.0053`
+  - counts-plus-shares exact-year FE:
+    - share terms stay negative:
+      - `roll-5` spawn share: `-0.0066`
+      - `roll-5` broker share: `-0.0724`
+      - `roll-5` multi-band share: `-0.0195`
+    - count terms remain positive in the same table:
+      - `roll-5` spawning flow: `0.0224`
+      - `roll-5` target-genre active bands: `0.0488`
+      - `roll-5` target-genre broker musicians: `0.0579`
+      - `roll-5` target-genre multi-band musicians: `0.0331`
+    - broker-musician count therefore flips from slightly negative to strongly positive once
+      broker share is held fixed
+  - removing the overall switcher control barely changes the target-genre switcher result:
+    - `roll-5` coefficient moves from `0.0225` to `0.0216`
+- Current interpretation:
+  - the count-versus-share split survives both `roll-3` and `roll-5`
+  - the cleanest stable scene mechanisms are now spawning flow, target-genre active bands, and
+    target-genre switcher depth
+  - the broker result is live but now has to be framed as count conditional on broker
+    concentration rather than as a generic unconditional stock story
+  - the next task is to decide what the compact headline mechanism table should be, not to keep
+    adding new generic predictors
+
+---
+
+### Session: 2026-03-26 (richer scene-cluster extensions built)
+- Added `code/32_build_scene_cluster_richer_extensions.py`.
+- Wrote:
+  - `data/processed/scene_networks/city_year_scene_cluster_richer_features.csv`
+  - `data/processed/scene_networks/city_genre_scene_cluster_richer_features.csv`
+  - `data/processed/scene_networks/scene_cluster_richer_extension_results.csv`
+  - `data/processed/scene_networks/scene_cluster_richer_extension_summary.md`
+- Current richer extension read:
+  - descriptive scale:
+    - city-year rows with any observed formation flow: `24,861`
+    - mean spawn share among nonzero-formation city-years: `0.384`
+    - mean founder pedigree among nonzero-formation city-years: `0.293`
+    - target-genre rows written: `438,922`
+    - mean active bands within a target genre-cell: `2.250`
+    - mean broker-musician share within active target genre-cells: `0.403`
+  - exact-year FE with spawning and founder pedigree:
+    - `z_roll5_log_spawn_bands_formed = 0.0189`
+    - `z_roll5_spawn_share_formed = -0.0059`
+    - `z_roll5_founder_pedigree_mean = -0.0016`, `p = 0.2246`
+  - exact-year FE with target-genre labor-pool levels:
+    - `z_roll5_log_genre_active_bands = 0.1642`
+    - `z_roll5_log_genre_active_musicians = -0.1128`
+  - exact-year FE with target-genre broker musicians:
+    - `z_roll5_log_genre_broker_musicians = 0.0665`
+    - `z_roll5_genre_broker_share = -0.0815`
+  - exact-year FE with target-genre switcher depth:
+    - `z_roll5_log_genre_multi_band_musicians = 0.0440`
+    - `z_roll5_genre_multi_band_share = -0.0280`
+  - role-targeted labor pools:
+    - strongest role term is guitar:
+      `z_roll5_log_genre_active_guitar_musicians = -0.0360`
+    - keyboards are weakest:
+      `z_roll5_log_genre_active_keyboards_musicians = -0.0018`, `p = 0.1888`
+- Current interpretation:
+  - the scene branch now has direct measures for spinouts, target-genre labor pools, and
+    genre-crossing brokers rather than only city-wide cluster thickness
+  - the robust recurring pattern is that absolute target-genre counts are positive while
+    corresponding share terms are negative
+  - founder pedigree is currently too weak to headline
+  - the next scene task should stress-test and compress these richer mechanisms into a preferred
+    baseline table before spending more time on the domestic-success fallback
+
+---
+
+### Session: 2026-03-26 (scene role and switcher extensions built)
+- Added `code/31_probe_scene_role_switcher_extensions.py`.
+- Wrote:
+  - `data/processed/scene_networks/city_year_scene_role_switcher_features.csv`
+  - `data/processed/scene_networks/scene_role_switcher_critical_mass.csv`
+  - `data/processed/scene_networks/scene_role_switcher_extension_results.csv`
+  - `data/processed/scene_networks/scene_role_switcher_extension_summary.md`
+- Current extension read:
+  - descriptive critical mass:
+    - active bands:
+      - `<10`: `0.0145`
+      - `10-19`: `0.0305`
+      - `20-39`: `0.0341`
+      - `40+`: `0.0398`
+    - multi-band musicians:
+      - `0-1`: `0.0140`
+      - `2-4`: `0.0242`
+      - `5-9`: `0.0334`
+      - `10+`: `0.0374`
+  - exact-year FE:
+    - `z_roll5_log_multi_band_musicians = 0.0087`
+    - `z_roll5_multi_band_share = -0.0036`
+    - current implication: absolute switcher mass matters more than switchers as a scene share
+  - role composition:
+    - strongest role-specific term is guitar share among switchers
+    - current coefficient: `-0.0013`
+    - current p-value: `0.0621`
+    - current implication: no positive guitarist-creativity story yet
+  - signed/unsigned proxy:
+    - `z_roll5_unsigned_band_share_current_proxy = -0.0024`
+    - current p-value: `0.0123`
+    - current implication: current unsigned-heavy scenes look less emergence-prone on this proxy,
+      but the measure is not historical
+- Current interpretation:
+  - the scene branch now has a sharper mechanism ranking:
+    - scene thickness
+    - organizational variety
+    - absolute switcher mass
+  - switcher share alone does not look like the key margin
+  - signed versus unsigned remains too noisy to elevate beyond exploratory status
+
+---
+
 ### Session: 2026-03-26 (scene-cluster robustness pass built)
 - Added `code/30_estimate_scene_cluster_regression.py`.
 - Wrote:
@@ -1028,3 +2434,525 @@ Most recent session first.
 - Keep this project notes-first until the treatment data path is credible.
 - Reuse the existing Metallum build where possible rather than duplicating files too early.
 - Distinguish clearly between what exists now and what is still a proposed data source.
+- When extending the scene branch, compute rolling predictors at the aggregation level where the
+  measure actually lives before merging to the full `city x genre x year` panel; otherwise the
+  rolling windows can be contaminated by duplicate within-year panel rows.
+
+---
+
+### Session: 2026-04-09 (breakout branch workflow correction)
+- Corrected the breakout-demand branch so the operational workflow matches the live scene taxonomy.
+- The key branch issue was real rather than cosmetic:
+  - the conceptually attractive `Sepultura - Roots` rows were coded as `extreme_metal`
+  - but `extreme_metal` is **not** a live `genre_family` in the current
+    `city x genre_family x year` scene panel
+  - loading those rows into the event stack produced all-zero focal panels
+- The branch now explicitly distinguishes:
+  - conceptual screen candidates in
+    `data/processed/country_genre_analysis/breakout_episode_candidates.csv`
+  - operational stack events in
+    `data/processed/country_genre_analysis/breakout_event_file.csv`
+- Current operational event file now retains only scene-taxonomy-compatible rows:
+  - `deu_industrial_metal_2001_mutter`
+  - `deu_symphonic_metal_2004_once`
+- Updated the branch notes to record that distinction:
+  - `notes/24_breakout_episode_screen.md`
+  - `notes/25_breakout_branch_workflow.md`
+- Fixed the builder script:
+  - `code/72_build_breakout_event_panel.py`
+  - the script now validates `primary_genre` against the live scene taxonomy before stacking
+  - the old capability-bin assignment bug is fixed; it no longer resets the sparse panel index and
+    silently drops most labels
+  - the capability rule is now more honest:
+    - zero-score cities stay `low_capability`
+    - only positive-score cities can become `mid_capability` or `high_capability`
+    - events with no variation would be flagged as `flat_capability`
+- Rebuilt the branch outputs:
+  - `data/processed/country_genre_analysis/city_genre_breakout_event_panel.csv`
+  - `data/processed/country_genre_analysis/city_genre_breakout_capability.csv`
+  - `data/processed/country_genre_analysis/breakout_branch_panel_summary.md`
+- Corrected branch read after rebuild:
+  - retained events: `2`
+  - event coverage:
+    - `deu_industrial_metal_2001_mutter`: `8` event-window years with local genre starts
+    - `deu_symphonic_metal_2004_once`: `16` event-window years with local genre starts
+  - pre-shock capability is extremely sparse:
+    - industrial event: `3` high-capability cities and `2,292` low-capability cities
+    - symphonic event: `1` high-capability city, `3` mid-capability cities, and `2,291`
+      low-capability cities
+- Practical implication:
+  - the branch workflow is now valid and reproducible
+  - but the current operational stack is still a **workflow object**, not a regression-ready causal
+    design
+  - the next serious branch decision is whether to add more panel-compatible events or stop before
+    event-study estimation
+
+---
+
+### Session: 2026-04-09 (breakout branch audit and descriptive gate)
+- Extended the breakout branch from a two-event placeholder into a real audited first-breakout
+  stack.
+- Added:
+  - `code/73_audit_breakout_event_candidates.py`
+  - `data/processed/country_genre_analysis/breakout_event_candidate_audit.csv`
+  - `data/processed/country_genre_analysis/breakout_event_candidate_audit.md`
+  - `notes/26_breakout_candidate_audit.md`
+- The audit now starts from the full chart-led top-10 treatment universe with live scene families
+  and asks:
+  - is the row the first breakout for `market x genre_family`?
+  - does the event window show local same-genre starts?
+  - is pre-shock focal capability non-flat in the city panel?
+- Current retained first-breakout stack:
+  - `deu_industrial_metal_2001_mutter`
+  - `deu_symphonic_metal_2004_once`
+  - `fin_symphonic_metal_2004_once`
+  - `deu_power_metal_2012_carolus_rex`
+- Current parked rows:
+  - taxonomy-incompatible conceptual rows:
+    - the `Sepultura - Roots` `extreme_metal` cases
+  - first-breakout but flat-capability rows:
+    - `aus_industrial_metal_2022_zeit`
+    - `gbr_industrial_metal_2022_zeit`
+    - `swe_power_metal_2022_the_war_to_end_all_wars`
+  - later repeats rather than first breakouts:
+    - `deu_power_metal_2016_the_last_stand`
+    - `deu_power_metal_2018_the_sacrament_of_sin`
+- Updated the operational event file:
+  - `data/processed/country_genre_analysis/breakout_event_file.csv`
+  - rebuilt:
+    - `city_genre_breakout_event_panel.csv`
+    - `city_genre_breakout_capability.csv`
+    - `breakout_branch_panel_summary.md`
+- Corrected four-event branch read:
+  - retained events: `4`
+  - event-window years with focal starts:
+    - industrial Germany 2001: `8`
+    - symphonic Germany 2004: `16`
+    - symphonic Finland 2004: `13`
+    - power Germany 2012: `76`
+  - positive-capability cities at `t = -1`:
+    - industrial Germany 2001: `3`
+    - symphonic Germany 2004: `4`
+    - symphonic Finland 2004: `3`
+    - power Germany 2012: `49`
+- Then ran the explicit descriptive gate before any event-study regression:
+  - added `code/74_build_breakout_branch_descriptive_summary.py`
+  - wrote:
+    - `breakout_branch_descriptive_event_time.csv`
+    - `breakout_branch_descriptive_event_summary.csv`
+    - `breakout_branch_descriptive_summary.md`
+- Current descriptive read:
+  - positive-capability city-event cells at `t = -1`: `49`
+  - zero-capability city-event cells at `t = -1`: `7,186`
+  - pre-period mean local same-genre band starts:
+    - positive capability: `0.0571`
+    - zero capability: `0.0007`
+  - post-period mean local same-genre band starts:
+    - positive capability: `0.0408`
+    - zero capability: `0.0010`
+  - dominant positive-capability event:
+    - `deu_power_metal_2012_carolus_rex` with `39` positive-capability cities
+- Practical implication:
+  - the branch is now cleaner and more honest
+  - but it has **not** cleared the descriptive gate for event-study estimation
+  - the live next decision is now binary:
+    - add more first-breakout events with non-flat pre-shock capability
+    - or stop the branch at feasibility stage
+
+---
+
+### Session: 2026-04-09 (breakout relaxed peak-20 extension)
+- Kept pushing on the breakout-demand branch after the strict top-10 first-breakout stack proved
+  too thin.
+- Generalized the branch scripts so they can be reused on alternate event files instead of only on
+  the strict default objects:
+  - `code/72_build_breakout_event_panel.py` now accepts input and output paths
+  - `code/73_audit_breakout_event_candidates.py` now accepts a chart cutoff, top-10 toggle, and
+    custom output paths
+  - `code/74_build_breakout_branch_descriptive_summary.py` now accepts input and output paths
+- Built a secondary relaxed branch screen using:
+  - live scene-panel genre families
+  - non-`heavy_metal` rows
+  - dated chart-entry rows
+  - peak position `<= 20` rather than top `10`
+- Wrote the relaxed branch objects:
+  - `data/processed/country_genre_analysis/breakout_event_candidate_audit_peak20.csv`
+  - `data/processed/country_genre_analysis/breakout_event_candidate_audit_peak20.md`
+  - `data/processed/country_genre_analysis/breakout_event_file_peak20_relaxed.csv`
+  - `data/processed/country_genre_analysis/city_genre_breakout_event_panel_peak20_relaxed.csv`
+  - `data/processed/country_genre_analysis/city_genre_breakout_capability_peak20_relaxed.csv`
+  - `data/processed/country_genre_analysis/breakout_branch_panel_summary_peak20_relaxed.md`
+  - `data/processed/country_genre_analysis/breakout_branch_descriptive_event_time_peak20_relaxed.csv`
+  - `data/processed/country_genre_analysis/breakout_branch_descriptive_event_summary_peak20_relaxed.csv`
+  - `data/processed/country_genre_analysis/breakout_branch_descriptive_summary_peak20_relaxed.md`
+  - note: `notes/27_breakout_peak20_relaxed_extension.md`
+- Relaxed retained first-breakout rows:
+  - `deu_industrial_metal_2001_mutter`
+  - `ita_power_metal_2002_power_of_the_dragonflame`
+  - `deu_symphonic_metal_2004_once`
+  - `fin_symphonic_metal_2004_once`
+  - `ita_symphonic_metal_2007_dark_passion_play`
+  - `deu_power_metal_2012_carolus_rex`
+  - `gbr_power_metal_2016_the_last_stand`
+  - `ita_gothic_metal_2016_delirium`
+- Relaxed branch read:
+  - retained events rise from `4` to `8`
+  - positive-capability city-event cells at `t = -1` rise from `49` to `123`
+  - zero-capability city-event cells rise from `7,186` to `11,000`
+  - pre-period same-genre band starts remain much higher in positive-capability cities:
+    - positive capability: `0.1024`
+    - zero capability: `0.0013`
+  - post-period same-genre band starts:
+    - positive capability: `0.0691`
+    - zero capability: `0.0018`
+  - `deu_power_metal_2012_carolus_rex` remains the single biggest contributor to the
+    positive-capability margin
+- Practical implication:
+  - the branch is not exhausted under the current treatment build
+  - but even the relaxed peak-20 extension still does **not** clear the descriptive gate for
+    event-study estimation
+  - the current best read is now:
+    - strict branch: too thin
+    - relaxed branch: larger and more informative, but still descriptively weak
+    - next real move, if any, is to search for more first-breakout rows with non-flat pre-shock
+      capability rather than to run the event study
+
+---
+
+### Session: 2026-04-09 (branch sweep and recovery targets)
+- Added a systematic screen sweep rather than eyeballing one relaxed branch at a time:
+  - `code/75_sweep_breakout_branch_screens.py`
+  - outputs:
+    - `data/processed/country_genre_analysis/breakout_branch_screen_sweep.csv`
+    - `data/processed/country_genre_analysis/breakout_branch_screen_sweep.md`
+- Current sweep read across:
+  - `top10`
+  - `peak15`
+  - `peak20`
+  - `peak25`
+  - `peak30`
+- Sweep result:
+  - best support comes from `peak20`
+  - widening beyond `peak20` does not add retained events under the current operational rule
+  - no chart cutoff in the current treatment build solves the pretrend problem
+- Then moved from screen design to recovery targets:
+  - added `code/76_build_breakout_expansion_targets.py`
+  - wrote:
+    - `data/processed/country_genre_analysis/breakout_seed_recovery_targets.csv`
+    - `data/processed/country_genre_analysis/breakout_seed_recovery_targets.md`
+  - added note:
+    - `notes/28_breakout_seed_recovery_targets.md`
+- The target logic now asks:
+  - which live-family home-market seeds are missing or weakly recovered
+  - and which of those would actually change the relaxed first-breakout set if recovered
+- Current highest-value recovery targets:
+  - `Lacuna Coil - Comalies` (`ITA`, `gothic_metal`, `2002`)
+    - would replace the current relaxed Italian gothic first breakout
+    - provisional positive-capability cities: `30`
+    - source path: `FIMI` (`low` difficulty)
+  - `Angra - Rebirth` (`BRA`, `power_metal`, `2001`)
+    - would add a Brazilian power-metal home-market first breakout
+    - provisional positive-capability cities: `35`
+    - source path: Brazil mixed manual supplement (`high` difficulty)
+  - `Angra - Temple of Shadows` (`BRA`, `power_metal`, `2004`)
+    - same branch contribution logic as above
+    - provisional positive-capability cities: `39`
+  - `Sabaton - Carolus Rex` (`SWE`, `power_metal`, `2012`)
+    - would add a Swedish power-metal home-market first breakout
+    - provisional positive-capability cities: `17`
+    - source path: `Sverigetopplistan` (`medium` difficulty)
+- Practical implication:
+  - the branch now has a concrete next-step map
+  - the right next recovery order is:
+    1. `Comalies`
+    2. `Carolus Rex`
+    3. `Rebirth`
+    4. `Temple of Shadows`
+  - if those do not move, the branch should probably stay at feasibility stage
+
+---
+
+### Session: 2026-04-09 (Karmacode recovery and branch rebuild)
+- Reopened the Italian gothic-metal branch after probing the live FIMI archive directly.
+- Confirmed that `Lacuna Coil - Comalies` still shows zero official chart and zero certification
+  rows on the current FIMI title page, so the original dead-end read remains correct for that
+  album.
+- Found a better official Italian gothic-metal row in the same source environment:
+  - `Lacuna Coil - Karmacode`
+  - exact official FIMI recovery:
+    - entry week: `W14-2006`
+    - peak: `17`
+    - maximum observed run length: `20` weeks
+- Promoted that recovery into the live treatment build:
+  - added `lacuna_coil_karmacode_2006` to `data/blockbuster_album_seed.csv`
+  - updated `data/README.md`
+  - rebuilt `code/03_build_core_treatment_panel.py`
+- The rebuilt core treatment file now includes:
+  - `ITA` home-market row for `Karmacode`
+  - `GBR` foreign-market row for `Karmacode`
+- Rebuilt the relaxed branch from the updated core:
+  - reran `code/73_audit_breakout_event_candidates.py` with `peak <= 20`
+  - reran `code/72_build_breakout_event_panel.py`
+  - reran `code/74_build_breakout_branch_descriptive_summary.py`
+  - reran `code/75_sweep_breakout_branch_screens.py`
+  - reran `code/76_build_breakout_expansion_targets.py`
+- The relaxed retained stack changed materially:
+  - `ita_gothic_metal_2016_delirium` dropped to a later repeat
+  - `ita_gothic_metal_2006_karmacode` is now the retained Italian gothic-metal first breakout
+- Updated relaxed-branch read:
+  - retained events remain `8`
+  - positive-capability city-event cells at `t = -1` rise from `123` to `139`
+  - zero-capability city-event cells become `10,984`
+  - pre-period same-genre starts worsen rather than improve:
+    - positive capability: `0.1295`
+    - zero capability: `0.0013`
+  - post-period same-genre starts:
+    - positive capability: `0.0755`
+    - zero capability: `0.0022`
+  - `deu_power_metal_2012_carolus_rex` still dominates the positive-capability margin with `39`
+    cities
+- Event-specific implication:
+  - `Karmacode` improves support and historical plausibility for the Italian gothic-metal slot
+  - but it makes the descriptive pretrend problem more visible, not less
+  - so the branch is still not regression-ready
+- Updated notes and trackers:
+  - `notes/27_breakout_peak20_relaxed_extension.md`
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Updated recovery-target interpretation:
+  - `Comalies` remains a real high-priority target
+  - but it is now an **earlier-than-Karmacode** recovery target, not the only usable Italian
+    gothic-metal row
+  - Sweden and Brazil remain the next serious expansion margins after that
+
+---
+
+### Session: 2026-04-09 (Swedish Carolus Rex recovery and second branch rebuild)
+- Pushed the next recovery target immediately after the Italian fix instead of stopping at
+  `Karmacode`.
+- Probed the official Sverigetopplistan weekly album pages directly and confirmed that the public
+  chart page plus hidden item-stat endpoint are enough to recover exact Swedish home-market timing.
+- Recovered `Sabaton - Carolus Rex` from official Swedish sources:
+  - first placement: `W22-2012`
+  - peak: `2`
+  - run length: `31` weeks
+- Added that row to `data/blockbuster_album_country_hits_swe_manual.csv` and updated
+  `data/README.md` to reflect the live Swedish manual supplement.
+- Rebuilt the core treatment workflow:
+  - `code/03_build_core_treatment_panel.py`
+  - core rows rise from `94` to `95`
+  - home-market top-10 rows rise from `12` to `13`
+- Rebuilt the branch objects again:
+  - `code/73_audit_breakout_event_candidates.py`
+  - `code/72_build_breakout_event_panel.py`
+  - `code/74_build_breakout_branch_descriptive_summary.py`
+  - `code/75_sweep_breakout_branch_screens.py`
+  - `code/76_build_breakout_expansion_targets.py`
+- The strict top-10 stack now improves from `4` to `5` retained events:
+  - added `swe_power_metal_2012_carolus_rex`
+  - positive-capability city-event cells at `t = -1` rise from `49` to `63`
+  - zero-capability city-event cells rise from `7,186` to `7,640`
+  - pre-period same-genre starts:
+    - positive capability: `0.0444`
+    - zero capability: `0.0011`
+- The relaxed peak-20 stack now improves from `8` to `9` retained events:
+  - `swe_power_metal_2012_carolus_rex` joins the already-updated `Karmacode` stack
+  - positive-capability city-event cells at `t = -1` rise from `139` to `153`
+  - zero-capability city-event cells rise from `10,984` to `11,438`
+  - pre-period same-genre starts move to:
+    - positive capability: `0.1176`
+    - zero capability: `0.0015`
+  - post-period same-genre starts move to:
+    - positive capability: `0.0730`
+    - zero capability: `0.0024`
+- Event-specific read:
+  - the Swedish row is relatively clean descriptively:
+    - positive-capability cities: `14`
+    - pre-period same-genre starts: `0.0000`
+    - post-period same-genre starts: `0.0476`
+  - but the branch still fails overall because the total treated margin remains thin and the stack
+    is still partly dominated by `deu_power_metal_2012_carolus_rex`
+- Updated branch documents to match the new state:
+  - `notes/24_breakout_episode_screen.md`
+  - `notes/25_breakout_branch_workflow.md`
+  - `notes/27_breakout_peak20_relaxed_extension.md`
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `notes/05_research_plan.md`
+  - `STATUS.md`
+- Also fixed the generated-summary wording in `code/76_build_breakout_expansion_targets.py` so the
+  markdown target file now reflects the actual remaining shortlist instead of hard-coding Sweden as
+  unresolved.
+- New practical read:
+  - Italy and Sweden are now materially cleaner than they were at the start of the day
+  - the next unresolved recovery margin is basically:
+    1. `Comalies`
+    2. `Rebirth`
+    3. `Temple of Shadows`
+  - but even after the Swedish fix, the branch remains a feasibility object, not a regression-ready
+    causal design
+
+---
+
+### Session: 2026-04-09 (Brazil source-quality and timing upgrades)
+- Reopened the Brazil source-quality margin without changing the branch estimand or workflow.
+- Confirmed again that direct Pro-Music Brasil retrieval is still blocked in this environment:
+  repeated requests to certificate pages continue to fail with connection resets or remote
+  disconnects.
+- Extracted text from official Aquiles Priester press PDFs and recovered a stronger source for
+  `Angra - Rebirth`:
+  - `https://aquilespriester.com/site/wp-content/uploads/2019/02/AQUILES-PRIESTER-Biografia-Oficial-Imprensa-2019.pdf`
+  - the official bio explicitly states that `Rebirth` "foi certificado Disco de Ouro no Brasil"
+- Then pushed the timing margin further by following the journalistic trail:
+  - `https://whiplash.net/materias/news_964/011035-angra.html`
+  - Whiplash reports on `2001-12-17` that the gold award had been delivered during the Sao Paulo
+    show on `2001-12-15`
+  - the live row now uses an observed December `2001` certification timing rather than only the
+    release year
+- Recovered a stronger source for `Angra - Temple of Shadows` as well:
+  - followed the Wikipedia citation trail to the archived `Epoca` page:
+    `https://web.archive.org/web/20110212200159/http://revistaepoca.globo.com/Epoca/0,6993,EPT1073675-1655,00.html`
+  - the archived page is titled `Lista dos 50 CDs mais vendidos na semana`
+  - it records publication on `2005-11-17` and lists `Angra - Temple Of Shadows` at number `10`
+    for the period `2005-11-08` to `2005-11-15`
+- Updated the live Brazil manual supplement:
+  - `data/blockbuster_album_country_hits_bra_manual.csv`
+  - `Angra - Rebirth` now uses a dated Whiplash certification-timing report, with the official
+    artist bio retained as corroboration in the notes
+  - `Angra - Temple of Shadows` now uses the archived `Epoca` chart page rather than a generic
+    Wikipedia row or the intermediate BraveWords bridge
+- Updated the branch notes and trackers:
+  - `data/README.md`
+  - `notes/04_empirical_notes.md`
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `STATUS.md`
+- Rebuilt the core treatment outputs:
+  - `code/03_build_core_treatment_panel.py`
+  - `data/processed/blockbuster_album_country_hits_core.csv`
+  - `data/processed/blockbuster_country_year_hit_panel.csv`
+  - `data/processed/blockbuster_country_year_hit_summary.md`
+- Practical implication:
+  - `Rebirth` is no longer weak on certification existence or basic timing; it now has an observed
+    December `2001` gold-award date, though still not a chart-entry date
+  - `Temple of Shadows` is no longer just a vague release-year placeholder in the country-year
+    panel; it now lands as an observed Brazil home-market top-10 hit in `2005` backed by an
+    archived weekly chart page
+  - the breakout-event stack is still unchanged because neither Brazilian row has an exact
+    chart-entry week or date suitable for the stacked first-breakout workflow
+
+---
+
+### Session: 2026-04-10 (central-musician-loss recovery expansion to 20 verified deaths)
+- Continued the central-musician-loss feasibility branch with a deeper recovery workflow rather
+  than a shallow obituary pass.
+- Extended `code/77_build_central_loss_audit_shortlist.py` so the shortlist builder can now:
+  - allow blank `last_year_in_band` values
+  - require no current memberships when desired
+  - write alternate recovery outputs via suffixes
+- Generated and audited multiple recovery margins:
+  - `central_loss_audit_shortlist_recovery.csv`
+  - `central_loss_audit_shortlist_recovery3.csv`
+  - `central_loss_audit_shortlist_recovery_loose.csv`
+  - `central_loss_audit_shortlist_recovery_anycurrent.csv`
+- Expanded the manual audit ledger materially:
+  - `20` `death_verified`
+  - `60` `not_loss_or_false_positive`
+  - `14` `unresolved`
+  - `2` `possible_permanent_exit`
+- Expanded the clean death-event object:
+  - `data/processed/scene_networks/central_loss_verified_death_events.csv`
+  - now `20` verified deaths
+- New verified deaths added during the recovery pass include:
+  - `Ivo Rocha`
+  - `Apollyon Baphomet`
+  - `Franco Crucifixion`
+  - `Azizi`
+  - `Warwolf`
+  - `Sergey Bokarev`
+  - `Micha Laska`
+  - `Doomicus Stardust`
+- Rebuilt the event preview:
+  - `data/processed/scene_networks/central_loss_event_preview.csv`
+  - `data/processed/scene_networks/central_loss_event_window_preview.csv`
+  - `data/processed/scene_networks/central_loss_event_preview_summary.md`
+- Current preview read:
+  - verified death events: `20`
+  - events with `3+` pre years, event year, and `1+` post year: `9`
+  - emergence timing:
+    - `18` `post_emergence`
+    - `2` `no_emergence_record`
+- Practical implication:
+  - the branch is now clearly past pure idea stage
+  - but the real bottleneck is no longer raw death count
+  - it is usable post window and the fact that almost all verified deaths are already
+    post-emergence
+  - so the design still looks more plausible for post-emergence scene activity than for scene
+    emergence itself
+
+---
+
+### Session: 2026-04-10 (central-loss frontier exhaustion and first post-emergence read)
+- Fully audited the `any-current` recovery shortlist:
+  - remaining open cases in that margin are now `0`
+  - the obituary workflow leaves:
+    - `20` `death_verified`
+    - `105` `not_loss_or_false_positive`
+    - `2` `possible_permanent_exit`
+    - `9` `unresolved`
+- The remaining unresolved names are now:
+  - `Wizard`
+  - `Domjan Laszlo`
+  - `Roger Stachow`
+  - `Marcelo Bartolozzi`
+  - `Eliud Tamez`
+  - `Andrey Kapachev`
+  - `Sinister`
+  - `Dawidek`
+  - `Q_Snc`
+- Practical implication:
+  - the search frontier is now largely exhausted under the current conservative standard
+  - the remaining uncertainty is identity quality and weak memorial surface, not an obviously rich
+    hidden pool of death events
+- Built the first descriptive post-emergence outcome object:
+  - `code/79_build_central_loss_post_emergence_summary.py`
+  - `data/processed/scene_networks/central_loss_post_emergence_event_window.csv`
+  - `data/processed/scene_networks/central_loss_post_emergence_relative_year_summary.csv`
+  - `data/processed/scene_networks/central_loss_post_emergence_summary.md`
+- Current descriptive read from the `9` usable post-emergence events:
+  - focal same-genre active-band stock rises from `70.630` in years `-3` to `-1` to `79.500` in
+    years `0` to `+1`
+  - focal same-genre multi-band musicians rise from `28.333` to `31.222`
+  - city total band starts soften slightly from `24.407` to `23.500`
+  - city spawning flow rises slightly from `12.815` to `13.833`
+  - city spawning share rises from `0.536` to `0.632`
+- Practical implication:
+  - the branch now has a real outcome read, not only an event ledger
+  - but the current descriptive pattern does not support a simple collapse narrative after central
+    deaths
+  - if the branch continues, it needs a tighter post-emergence estimand rather than more obituary
+    search by default
+
+---
+
+### Session: 2026-04-10 (matched-control prototype for central-loss branch)
+- Built the first matched-control descriptive prototype:
+  - `code/81_build_central_loss_matched_control_prototype.py`
+  - `data/processed/scene_networks/central_loss_matched_controls.csv`
+  - `data/processed/scene_networks/central_loss_matched_relative_year_summary.csv`
+  - `data/processed/scene_networks/central_loss_matched_event_comparison.csv`
+  - `data/processed/scene_networks/central_loss_matched_control_summary.md`
+- Design:
+  - keep the `9` post-emergence deaths with usable short windows
+  - match each treated event to `3` same-genre control cities using pre-event focal band starts,
+    focal active-band stock, and focal multi-band depth
+  - exclude nearby death events in the matched control cells
+- Main descriptive read:
+  - average DID-style change in focal same-genre band starts: `-0.932`
+  - `6` of `9` event-level focal-start DID deltas are negative
+  - average DID-style change in city-wide spawning flow: `0.784`
+  - so the negative margin shows up more clearly in focal same-genre entry than in broad
+    city-wide spawning
+- Practical implication:
+  - the branch now has a clearer live estimand
+  - if it continues, the right target is post-death suppression of focal same-genre entry
+  - not a broad scene-collapse narrative

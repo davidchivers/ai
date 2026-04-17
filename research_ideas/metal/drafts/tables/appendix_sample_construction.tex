@@ -1,0 +1,38 @@
+\begin{table}[p]
+\centering
+\caption{Full sample construction for the city-genre scene panel}
+\label{tab:appendix_sample_construction}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.06\textwidth}Y>{\raggedleft\arraybackslash}p{0.12\textwidth}YY@{}}
+\toprule
+Stage & Object & Count & Restriction or construction rule & Source \\
+\midrule
+1 & Raw all-metal Metallum band universe & 163,965 & Upstream cleaned all-metal reference. & All-metal summary \\
+2 & Bands matched to standardized countries & 161,945 & Country standardization succeeds. & All-metal summary \\
+3 & Bands with usable formed year & 131,511 & Parsable formed year required. & All-metal summary \\
+4 & Raw member-role universe & 1,038,533 & Delivered member dump before collapse. & Member ingest summary \\
+5 & Unique musician-band edges & 971,877 & Duplicate role rows collapsed to one band-musician edge. & Member ingest summary \\
+6 & Unique musicians & 682,126 & Unique musician keys after edge collapse. & Member ingest summary \\
+7 & Reference-matched bands in edge file & 156,729 & Band ID matched back to cleaned band reference. & Member ingest summary \\
+8 & Cities with any member-linked bands & 22,572 & Requires usable city label in band metadata. & City network summary \\
+9 & Eligible cities for descriptive network baseline & 2,319 & At least 10 bands in city. & City network summary \\
+10 & City-genre cells in emergence panel & 56,978 & Usable city, usable formed year, mapped genre family. & City-genre emergence summary \\
+11 & City-genre cells reaching emergence threshold & 5,756 & City reaches its fifth band in the genre family. & City-genre emergence summary \\
+12 & Live city-year network snapshots & 32,684 & Strict timing baseline with minimum active city bands of 10. & Scene cleaning audit \\
+13 & Live city-genre timing rows & 5,429 & Current strict city baseline after geography audit. & Scene cleaning audit \\
+14 & Preferred exact-year FE sample (roll-5) & 171,653 & Non-missing first-band year, snapshot year on or after first-band year, pre-emergence or emergence-year risk set, and lagged roll-5 predictors available. & Preferred mechanism table \\
+15 & Preferred exact-year FE emergence events (roll-5) & 5,306 & Snapshot year equals emergence year within preferred sample. & Preferred mechanism table \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: The preferred paper sample is the roll-5 exact-year
+fixed-effects panel. The nearby roll-3 robustness panel contains 180,498
+city-genre-years and 5,422 emergence events. The geography audit is a reusable exclusion register
+rather than a nested sample row: its audit universe contains 2,443 labels, with 86
+region-like labels and 66 missing-or-multi-place labels, for 152
+city-baseline exclusions. A city-genre cell is counted as emergent in the year it reaches its
+fifth band in the broad genre family.}
+\end{table}

@@ -24,6 +24,10 @@ AUS_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_aus_manual.csv"
 USA_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_usa_manual.csv"
 DEU_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_deu_manual.csv"
 BRA_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_bra_manual.csv"
+FIN_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_fin_manual.csv"
+SWE_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_swe_manual.csv"
+FRA_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_fra_manual.csv"
+NOR_MANUAL_PATH = DATA_DIR / "blockbuster_album_country_hits_nor_manual.csv"
 
 OUTPUT_HITS_PATH = OUTPUT_DIR / "blockbuster_album_country_hits_core.csv"
 OUTPUT_PANEL_PATH = OUTPUT_DIR / "blockbuster_country_year_hit_panel.csv"
@@ -774,7 +778,8 @@ def resolve_event_year(row: pd.Series, date_column: str) -> int | pd.NA:
 def build_country_year_panel(hits: pd.DataFrame) -> pd.DataFrame:
     scaffold = pd.read_csv(OUTCOME_PANEL_PATH, usecols=["countryiso3code", "country_name", "year"])
     scaffold = scaffold.loc[
-        scaffold["countryiso3code"].isin(["AUS", "USA", "GBR", "ITA", "DEU", "BRA"]) & scaffold["year"].between(1995, 2022)
+        scaffold["countryiso3code"].isin(["AUS", "USA", "GBR", "ITA", "DEU", "BRA", "FIN", "SWE", "FRA", "NOR"])
+        & scaffold["year"].between(1995, 2022)
     ].drop_duplicates()
 
     chart_rows = hits.loc[
@@ -1068,6 +1073,30 @@ def main() -> None:
             "Brazil row loaded from a manual supplement because direct Pro-Musica retrieval is blocked in this environment.",
             "No Brazil row in the current manual supplement.",
         ),
+        (
+            "FIN",
+            FIN_MANUAL_PATH,
+            "Finland row loaded from a manual official-source supplement built from IFPI Finland chart pages.",
+            "No Finland row in the current manual official-source supplement.",
+        ),
+        (
+            "SWE",
+            SWE_MANUAL_PATH,
+            "Sweden row loaded from a manual official-source supplement built from Sverigetopplistan weekly chart pages.",
+            "No Sweden row in the current manual official-source supplement.",
+        ),
+        (
+            "FRA",
+            FRA_MANUAL_PATH,
+            "France row loaded from a manual official-source supplement built from SNEP weekly top-album PDFs.",
+            "No France row in the current manual official-source supplement.",
+        ),
+        (
+            "NOR",
+            NOR_MANUAL_PATH,
+            "Norway row loaded from a manual official-source supplement built from VG-lista weekly chart pages.",
+            "No Norway row in the current manual official-source supplement.",
+        ),
     ]
     manual_hits_frames = [hits]
     manual_log_frames = [logs]
@@ -1094,13 +1123,14 @@ def main() -> None:
 
     print(f"Seed albums processed: {len(seed)}")
     print(f"Album-country rows recovered: {len(hits)}")
-    for market_code, country_name in [
-        ("BRA", "Brazil"),
-        ("DEU", "Germany"),
-        ("GBR", "United Kingdom"),
-        ("ITA", "Italy"),
-    ]:
-        print(f"{country_name} rows: {int((hits['market_code'] == market_code).sum())}")
+    market_names = (
+        hits[["market_code", "country_name"]]
+        .drop_duplicates()
+        .sort_values("market_code")
+        .itertuples(index=False)
+    )
+    for row in market_names:
+        print(f"{row.country_name} rows: {int((hits['market_code'] == row.market_code).sum())}")
     print(f"Top-10 rows: {int((hits['top10_flag'] == 1).sum())}")
     print(f"Home-market top-10 rows: {int(((hits['top10_flag'] == 1) & (hits['home_market_i'] == 1)).sum())}")
     print(f"Foreign-market top-10 rows: {int(((hits['top10_flag'] == 1) & (hits['foreign_market_i'] == 1)).sum())}")

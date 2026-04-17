@@ -1,6 +1,6 @@
 # 04 Empirical notes
 
-Last updated: 2026-03-21
+Last updated: 2026-04-09
 
 ## Current build status
 The outcome side is already usable. The project-specific all-metal build now lives in:
@@ -67,19 +67,24 @@ sparsity, is the main constraint. Germany is still added through a manual offici
 supplement, Brazil still enters through a manual supplement because direct Pro-Musica retrieval is
 blocked in this environment, Italy is cleaner because the seed includes additional exact
 FIMI-recoverable domestic chart rows, Australia enters through a manual official-source supplement
-built from the live ARIA chart API, and the United States now enters through a manual official
-supplement built from exact public RIAA album-certification matches. The current six-market core
-build recovers `85` album-country rows across `37` seed albums:
+built from the live ARIA chart API, the United States now enters through a manual official
+supplement built from exact public RIAA album-certification matches, and the newer Nordic and
+continental extensions now add Finland, France, Norway, and Sweden. The current ten-market core
+build processes `38` seed albums and recovers `95` album-country rows:
 
 - Australia: `9` rows, `6` top-10 rows
-- Brazil: `6` rows, `2` top-10 rows, `5` certification rows
+- Brazil: `6` rows, `2` top-10 rows, `4` certification rows
+- Finland: `2` rows, `2` top-10 rows
+- France: `1` row, `1` top-10 row
 - Germany: `14` rows, `11` top-10 rows
-- United Kingdom: `24` rows, `13` top-10 rows
-- Italy: `24` rows, `9` top-10 rows, `2` certification rows
+- United Kingdom: `25` rows, `13` top-10 rows
+- Italy: `26` rows, `9` top-10 rows, `4` certification rows
+- Norway: `1` row
+- Sweden: `3` rows, `3` top-10 rows
 - United States: `8` rows, `8` certification rows
-- Exposure split: `7` home-market top-10 rows and `34` foreign-market top-10 rows
-- Certification rows recovered: `15`
-- Country-year rows with any treatment signal once chart-weeks are counted: `51`
+- Exposure split: `13` home-market top-10 rows and `34` foreign-market top-10 rows
+- Certification rows recovered: `16`
+- Country-year rows with any treatment signal once chart-weeks are counted: `58`
 
 That is enough to move the treatment side beyond a pilot and into a real first-pass event panel.
 The design choice after Germany is to keep this country-year intensity panel as the baseline
@@ -89,15 +94,23 @@ country-year shocks that already exist in the current build.
 The Brazil rows still need to be read carefully. They currently mix:
 
 - one official band press release for `Iron Maiden - The Book of Souls`
+- one named journalistic certification-timing source, corroborated by an official Aquiles Priester
+  press bio, for `Angra - Rebirth`
+- one archived `Epoca` chart page for `Angra - Temple of Shadows`
 - a named journalistic source for `Sepultura - Roots`
 - a named historical source for `Sepultura - Nation`
-- still-weaker secondary traces for `Angra - Rebirth`, `Angra - Temple of Shadows`, and
-  `Sepultura - Dante XXI`
+- a still-weaker secondary trace for `Sepultura - Dante XXI`
 
 So Brazil is now a somewhat better substantive extension than before, especially because it now
 adds explicit Sepultura home-market certification timing in `1996` and `2001` as well as the
-existing Brazil home-market top-10 event for `Angra - Temple of Shadows`. But it is still not the
-cleanest benchmark market for source purity.
+existing Brazil home-market top-10 event for `Angra - Temple of Shadows`, now tied directly to an
+archived `Epoca` weekly chart page published on `2005-11-17` for the sales period
+`2005-11-08` to `2005-11-15`. `Rebirth` is also no longer just a year-only certification row:
+Whiplash reports that the gold award was delivered during the Sao Paulo show on `2001-12-15`, and
+official Aquiles Priester press bios corroborate that the album was certified gold in Brazil. But
+Brazil is still not the cleanest benchmark market for source purity or branch-ready exact timing,
+because the workflow remains blocked on direct Pro-Music Brasil retrieval and neither Brazilian row
+provides a true chart-entry date.
 
 Italy now clarifies a second measurement point. The historical anchor `Lacuna Coil - Comalies`
 produces an official FIMI title page but no chart or certification evidence, so it should no
@@ -602,3 +615,105 @@ Primary project references:
 - `data/processed/country_genre_analysis/scene_qualitative_evidence_memo.md`
 
 Verified academic scene-complements anchors pending.
+
+---
+
+# Strategy 6: Band-level scene conditions and later band success
+
+**Strategy type:** Band-level reduced-form design asking whether projects founded in thicker local
+scenes become more likely to achieve later visible success.
+
+**Why this is distinct.**
+Strategy 5 treats domestic success as a country-genre milestone that may be predicted by prior
+scene depth. This strategy goes one level lower. The unit is now the band itself. The economic
+question is whether local scene thickness and labor pooling at birth help create successful
+projects, not only successful local genre cells.
+
+**How this applies to the question.**
+For each band `b`, build scene-at-birth predictors from the city-year and `city x genre x year`
+scene files. Then ask whether those founding conditions predict later visible success under the
+already-built chart and certification workflow.
+
+The first-pass model is:
+
+$$
+Success_b = \alpha_{country,decade} + \lambda_{genre} + \beta_1 SceneAtBirth_b + \gamma X_b + \varepsilon_b,
+$$
+
+where `Success_b` should use a strict outcome hierarchy:
+
+- first choice: later home-market `presence`
+- second choice: later home-market `certification`
+- third choice: later home-market `top10`
+
+The preferred predictors are the same ones already carrying the scene paper:
+
+- overall active local bands
+- nontrivial communities
+- local spawning flow
+- target-genre active bands
+- target-genre multi-band musicians
+
+**Why this branch is worth keeping.**
+This is the cleanest way to test the stronger economics claim that scenes do not just generate new
+categories. They also generate successful firms or projects inside those categories. It also fits
+the current paper language better than a generic “music influence” framing because it is about
+project performance inside a project-based creative industry.
+
+**Immediate workflow.**
+The low-risk sequence is:
+
+1. build a `band x birth year` panel from the cleaned Metallum file
+2. merge city-year and target-genre scene predictors at birth
+3. merge later visible success flags from the curated chart and certification workflow
+4. run descriptive success rates across scene-thickness bins before estimating any regression
+
+The dedicated design note for this branch is now:
+
+- `notes/09_band_success_workflow.md`
+
+The first actual pilot now exists in:
+
+- `code/38_build_band_success_sidecar_data.py`
+- `data/processed/band_success/band_birth_panel.csv`
+- `data/processed/band_success/band_scene_at_birth_panel.csv`
+- `data/processed/band_success/band_success_outcomes.csv`
+- `data/processed/band_success/band_success_coverage_audit.csv`
+- `data/processed/band_success/band_success_design_audit.md`
+- `data/processed/band_success/band_success_sidecar_summary.md`
+- `notes/09_band_success_workflow.md`
+
+That first pass is now joined by a cleaner redesign object:
+
+- `code/47_build_band_upgrading_ladder_sidecar.py`
+- `data/processed/band_success/band_upgrading_ladder_outcomes.csv`
+- `data/processed/band_success/city_genre_birth_cohort_upgrading_panel.csv`
+- `data/processed/band_success/city_genre_birth_cohort_upgrading_pilot.csv`
+- `data/processed/band_success/band_upgrading_ladder_summary.md`
+- `notes/11_band_upgrading_ladder.md`
+
+Current pilot read:
+
+- the workflow is mechanically real:
+  - `128,053` bands survive into the birth panel
+  - `67,572` have exact pre-birth scene matches at `formed_year - 1`
+- audited home-market coverage is now materially wider:
+  - `17` curated home-market success artists survive the current conservative name screen
+  - `16` match onto the birth panel
+  - `5` have home-market certification and `9` have home-market top-10 signals
+- the artist merge already requires a small audit layer:
+  - `Rhapsody` must be mapped to `Rhapsody of Fire`
+  - obvious homonym collisions such as `Disturbed` and `Slipknot` have to be excluded
+  - `Rammstein` stays unmatched under current Metallum coverage
+- the design problem is now timing rather than just raw coverage:
+  - median founding-to-first-home-market-presence gap is `16.5` years
+  - only `5` matched bands reach home-market validation within `15` years
+  - only `5` matched bands satisfy the stricter `validated_then_foreign` ordering at all
+- the cleaner sidecar object is now the cohort winner ladder, not the old `ever successful` band
+  outcome
+
+**Practical implication.**
+This should remain a sidecar to the active scene paper, but it is not yet ready for a serious
+regression branch. The better next move is not just to widen raw coverage further. It is to use a
+bounded cohort winner outcome such as `home_market_validation_within_15y`, with the stricter
+`validated_then_foreign` path kept as a second-stage extension.

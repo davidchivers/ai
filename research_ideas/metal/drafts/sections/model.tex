@@ -1,0 +1,140 @@
+The literature and descriptive evidence point to a narrower theoretical task than a full model of
+genre origin or cultural diffusion. The paper needs a framework that explains why some
+city-genre cells are more likely than others to cross from thin local activity into repeated local
+entry. In the data, that transition is most strongly associated with local spawning flow,
+target-genre active bands, and target-genre multi-band musician depth.
+
+The empirical object in this paper is therefore local niche formation in a project-based creative
+industry. Bands are projects, musicians are skilled workers, and a local scene emerges when
+activity in a city-genre cell becomes thick enough to sustain repeated entry. The model is not a
+theory of technological progress in the usual sense. It is a compact model of local variety
+creation in which entry depends on local niche thickness, spinouts by already embedded
+participants, and recombination through overlapping workers.
+
+\subsection*{Environment}
+
+Time is discrete. Cities are indexed by $c$, genre niches by $g$, and years by $t$. For a
+city-genre cell that is still at risk of emergence, the local state at the start of period $t$ is
+summarized by
+\[
+\left(B_{cg,t-1},\; M_{cg,t-1},\; \rho_{c,t-1}\right),
+\]
+where $B_{cg,t-1}$ is the number of active local bands in the focal genre, $M_{cg,t-1}$ is the
+number of local multi-band musicians active in that genre, and $\rho_{c,t-1}$ is the share of
+potential founders who are already embedded in the broader local scene. A band is one
+differentiated local variety, and a scene emerges when the local niche becomes thick enough to
+sustain repeated entry rather than isolated projects.
+
+\subsection*{Entry}
+
+In each period, a mass of potential founders considers launching a new band in genre $g$ in city
+$c$. Founder $i$ draws embedded status $e_i \in \{0,1\}$ with
+$\Pr(e_i = 1) = \rho_{c,t-1}$, an idiosyncratic fixed cost $f_i$, and a payoff shock
+$\varepsilon_i$. Expected net entry value is
+\begin{equation}
+\Pi_{icgt}
+=
+\bar{\pi}_g
++ \phi_B \log(1 + B_{cg,t-1})
++ \phi_M \log(1 + M_{cg,t-1})
++ \gamma e_i
+- f_i
++ \varepsilon_i,
+\qquad
+\phi_B,\phi_M,\gamma > 0.
+\end{equation}
+
+The term in $B_{cg,t-1}$ captures local niche thickness and labor pooling. The term in
+$M_{cg,t-1}$ captures recombinant capacity through overlapping workers. The embedded-founder
+premium $\gamma$ captures inherited local know-how from prior participation in the scene. Broader
+city conditions are left in the background here and are absorbed empirically by fixed effects and
+the paper's broader scene controls rather than being modeled explicitly.
+
+Entry occurs when $\Pi_{icgt} \ge 0$. Aggregate entry is
+\begin{equation}
+N_{cgt}
+=
+\int \mathbf{1}\{\Pi_{icgt} \ge 0\} \, dH_{ct}(i),
+\end{equation}
+where $H_{ct}$ is the distribution of founder types in city $c$ at date $t$. It follows
+immediately that
+\[
+\frac{\partial N_{cgt}}{\partial B_{cg,t-1}} > 0,
+\qquad
+\frac{\partial N_{cgt}}{\partial M_{cg,t-1}} > 0,
+\qquad
+\frac{\partial N_{cgt}}{\partial \rho_{c,t-1}} > 0.
+\]
+
+\subsection*{Dynamics and emergence}
+
+Band stock evolves as
+\begin{equation}
+B_{cgt} = (1 - \delta) B_{cg,t-1} + N_{cgt},
+\qquad
+\delta \in (0,1).
+\end{equation}
+
+Let $N^E_{cg't}$ denote entry by embedded founders in genre $g'$. The observed spawning variable is
+\begin{equation}
+S_{ct} = \sum_{g'} N^E_{cg't}.
+\end{equation}
+Because $S_{ct}$ is indexed at the city-year level rather than the city-genre level, it is best
+read as a proxy for broad local spinout intensity rather than as a purely focal-genre count.
+
+A local scene emerges when activity crosses a viability threshold:
+\begin{equation}
+E_{cgt} = \mathbf{1}\{B_{cgt} \ge \bar{B}\},
+\qquad
+\bar{B} = 5.
+\end{equation}
+This threshold is operational rather than ontological. It marks the point at which a local niche
+looks thick enough to sustain repeated entry, not the literal historical birth of a genre.
+
+For cells that are still at risk, the one-period emergence hazard is
+\begin{equation}
+h_{cgt} = \Pr(E_{cgt} = 1 \mid E_{cg,t-1} = 0).
+\end{equation}
+Because $B_{cgt}$ depends on prior niche stock and current entry, this hazard is increasing in
+$B_{cg,t-1}$, $M_{cg,t-1}$, and the latent embedded-founder share $\rho_{c,t-1}$.
+
+\subsection*{Empirical mapping}
+
+The model maps directly to the paper's three headline predictors:
+\begin{align*}
+B_{cg,t-1} &\leftrightarrow \text{target-genre active bands}, \\
+M_{cg,t-1} &\leftrightarrow \text{target-genre multi-band musicians}, \\
+\rho_{c,t-1} &\leftrightarrow \text{embedded-founder margin, proxied by } S_{c,t-1}.
+\end{align*}
+
+The reduced-form exact-year specification is therefore a compact empirical analogue of the
+threshold-crossing condition:
+\begin{equation}
+\Pr(E_{cgt}=1 \mid E_{cg,t-1}=0)
+=
+G\!\left(
+\alpha_{cg}
++ \lambda_t
++ \beta_S S_{c,t-1}
++ \beta_B B_{cg,t-1}
++ \beta_M M_{cg,t-1}
+\right),
+\end{equation}
+where $G(\cdot)$ is increasing. The estimated specification adds broader scene controls and
+smoothed lags, but this compact version captures the paper's core economic object.
+
+\subsection*{Predictions and scope}
+
+The model yields three predictions aligned with the main results. First, thicker target-genre
+stock should raise later emergence because deeper local niche activity lowers the effective cost of
+entry. Second, deeper overlapping-worker pools should raise later emergence because recombination
+and team assembly are easier where more musicians already work across related projects. Third,
+higher city-year spawning flow should predict later emergence because places that generate more
+embedded spinouts also generate more viable founders than de novo entry alone would.
+
+The interpretation remains deliberately modest. The paper does not observe knowledge transfer
+directly, does not treat the emergence threshold as structural, and does not claim that spawning
+is a purely genre-specific causal mechanism. The model instead rationalizes a reduced-form pattern:
+new local scenes are more likely to emerge where local labor pooling is thicker, embedded
+participants generate more new projects, and overlapping workers are already recombining across
+related bands.

@@ -59,6 +59,27 @@ BROAD_FAMILY_RULES: list[tuple[str, callable]] = [
     ("industrial metal", lambda token: "industrial" in token and "metal" in token),
 ]
 
+FAMILY_COLORS = {
+    "black metal": "#3f5873",
+    "death metal": "#b35a52",
+    "doom metal": "#a3833d",
+    "folk metal": "#5f7f49",
+    "gothic metal": "#7a617c",
+    "grindcore": "#8a6646",
+    "industrial metal": "#5b6b79",
+    "metalcore": "#8a5976",
+    "power metal": "#c08a43",
+    "progressive metal": "#4b7f78",
+    "speed metal": "#9a5560",
+    "symphonic metal": "#6f6aa8",
+    "thrash metal": "#8f4f67",
+    "heavy metal": "#a86f4e",
+    "groove metal": "#7d6a58",
+    "sludge metal": "#746750",
+    "stoner metal": "#8d7a52",
+    "deathcore": "#915d5d",
+}
+
 
 def clean_genre_text(value: str) -> str:
     text = PAREN_PATTERN.sub("", value)
@@ -288,12 +309,18 @@ def write_summary(
 
 
 def plot_top_families(yearly_family_counts: pd.DataFrame, top_families: list[str]) -> None:
+    plt.rcParams.update(
+        {
+            "font.family": "serif",
+            "font.serif": ["STIX Two Text", "STIXGeneral", "CMU Serif", "Computer Modern Roman", "DejaVu Serif"],
+            "mathtext.fontset": "cm",
+        }
+    )
     plot_data = yearly_family_counts.loc[yearly_family_counts["genre_family"].isin(top_families)].copy()
     year_min = int(plot_data["entry_year"].min())
     year_max = int(plot_data["entry_year"].max())
     all_years = pd.Index(range(year_min, year_max + 1), name="entry_year")
 
-    color_map = plt.get_cmap("tab10")
     fig, ax = plt.subplots(figsize=(12, 7))
     for index, family in enumerate(top_families):
         family_series = (
@@ -302,16 +329,17 @@ def plot_top_families(yearly_family_counts: pd.DataFrame, top_families: list[str
             .reindex(all_years, fill_value=0)
         )
         rolling = family_series.rolling(window=ROLLING_WINDOW, min_periods=1).mean()
+        line_color = FAMILY_COLORS.get(family, "#666666")
         ax.plot(
             all_years,
             rolling,
             linewidth=2.2,
-            color=color_map(index),
+            color=line_color,
             label=family.title(),
         )
 
-    ax.set_title("Broad metal genre families over time", fontsize=14, weight="bold")
-    ax.set_xlabel("Band entry year")
+    ax.set_title("Broad Metal Genre Families over Time", fontsize=14, weight="bold", fontfamily="serif")
+    ax.set_xlabel("Band Entry Year", fontfamily="serif")
     ax.set_ylabel(f"Band starts ({ROLLING_WINDOW}-year rolling mean)")
     ax.grid(alpha=0.25, linewidth=0.6)
     ax.legend(frameon=False, ncol=2)
@@ -321,7 +349,7 @@ def plot_top_families(yearly_family_counts: pd.DataFrame, top_families: list[str
         "Family membership is multi-label: a band can count in more than one broad family.\n"
         "The 2020s are a partial decade in this snapshot."
     )
-    fig.text(0.01, 0.01, note, ha="left", va="bottom", fontsize=9)
+    fig.text(0.01, 0.01, note, ha="left", va="bottom", fontsize=9, fontfamily="serif")
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     fig.savefig(OUTPUT_DIR / "top_genre_families_over_time.png", dpi=200)
     plt.close(fig)

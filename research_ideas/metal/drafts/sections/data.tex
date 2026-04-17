@@ -1,0 +1,25 @@
+The empirical analysis combines a complete band reference, a complete member file, and a set of
+derived city-level collaboration panels. The cleaned all-metal reference built from the full Metal
+Archives snapshot contains 163,965 bands, of which 131,511 carry a usable formed year. The member
+dump contributes 1,038,533 raw member-role rows, which collapse to 971,877 unique
+musician-band edges once duplicate within-band role rows are removed. These source files make it
+possible to move beyond anecdotal scene histories and study local collaboration at scale.
+
+The data construction has two substantive steps. The first builds yearly local collaboration
+snapshots by linking bands that share at least one musician and are active in the same year. These
+city-year graphs are then summarized into measures of local scale, organizational variety, and
+cross-project worker mobility. The second builds the city-by-genre emergence panel. Genre strings
+are mapped into broad genre families, bands are assigned to cities using the cleaned location
+field, and each city-genre cell is dated by its first observed band and its emergence year. A cell
+is counted as emergent when the city reaches its fifth band in that broad genre family.
+
+The preferred estimation sample is the roll-5 exact-year panel. It contains 171,653 city-genre-
+year observations and 5,306 emergence events. Table \ref{tab:sample_construction} summarizes the
+construction of that sample from the raw band and member universes to the final estimating panel.
+Appendix Table \ref{tab:appendix_sample_construction} reports the fuller construction audit,
+including the intermediate network objects, the geography exclusions, and the nearby roll-3
+robustness sample. Appendix Tables \ref{tab:appendix_measurement_validation} and
+\ref{tab:appendix_historical_sanity} report the measurement-validation objects behind the live
+emergence definition.
+
+\input{tables/sample_construction.tex}

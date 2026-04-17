@@ -1,236 +1,451 @@
 # 03 Model notes
 
-Last updated: 2026-03-20
-Status: working theory note
+Last updated: 2026-03-30
+Status: working economics model note for the scene paper
 
-# Model 1: Country-level breakthrough as an entry shock
+## What the model has to do
 
-**Model type:** Reduced-form entry model in which visible local success changes the perceived
-return to starting a band.
+The paper is not trying to explain:
 
-**Literature.**
-The closest conceptual benchmarks are role-model spillovers, cultural entrepreneurship, and local
-scene formation. Exact citations are intentionally omitted here until they are verified in
-`notes/02_literature_and_synthesis.md`.
+- technological progress in the patent sense
+- global genre origins
+- network structure for its own sake
 
-**How this applies to the question.**
-Let `Entry_ct` denote new bands formed in country `c` and year `t`, and let `Hit_ct` denote a
-major metal breakthrough in that country-year. The baseline idea is that a breakthrough changes
-salience, expected payoff, and local scene legitimacy. A simple reduced-form starting point is:
+It is trying to explain something narrower and more economic:
+
+- why some cities become able to sustain a new local creative niche earlier than others
+
+In the live paper:
+
+- bands are projects
+- musicians are skilled workers
+- subgenres are differentiated creative varieties inside a broader product space
+- a local scene emerges when a `city x genre` cell becomes thick enough to support repeated entry
+
+So the model needs to rationalize:
+
+1. why thicker local target-genre activity predicts later scene emergence
+2. why local spinout formation predicts later scene emergence
+3. why overlapping workers across local projects predict later scene emergence
+
+## Candidate economics models
+
+### Candidate 1. Local variety-creation model
+
+This is the best main candidate.
+
+Interpretation:
+
+- subgenres are differentiated varieties
+- cities differ in local capability to support a niche variety
+- entry into the niche becomes easier as relevant local capability accumulates
+
+What it explains well:
+
+- why target-genre active bands matter
+- why the outcome is economically meaningful even though it is not technological innovation
+- why the paper belongs in economics rather than only music studies
+
+Closest anchors:
+
+- Dixit-Stiglitz
+- Romer
+- Glaeser / Duranton-Puga style local externalities
+
+Weakness:
+
+- by itself it does not yet explain why multi-band musicians and spawning should be special
+
+### Candidate 2. Spinout model
+
+This is the best mechanism for `local spawning flow`.
+
+Interpretation:
+
+- new bands inherit routines, contacts, and tacit know-how from incumbent local bands
+- embedded participants create new projects rather than completely de novo entrants doing so
+
+What it explains well:
+
+- why spawning is not just “more bands”
+- why local project lineage matters
+- why scenes can become locally self-reinforcing
+
+Closest anchors:
+
+- Franco-Filson
+- Klepper-style spinout logic
+
+Weakness:
+
+- alone, it is too narrow to carry the whole paper
+
+### Candidate 3. Recombinant worker-mobility model
+
+This is the best mechanism for `target-genre multi-band musicians`.
+
+Interpretation:
+
+- musicians accumulate tacit know-how in projects
+- overlapping membership and project switching raise the scope for recombination
+- new bands and new local varieties draw on those recombined inputs
+
+What it explains well:
+
+- why individuals with multiple project ties matter
+- why role composition is secondary
+- why the stable result is about overlapping worker depth rather than one instrument
+
+Closest anchors:
+
+- Weitzman
+- worker-mobility spillover papers
+
+Weakness:
+
+- alone, it can drift toward vague “ideas spread” language
+
+### Candidate 4. Diffusion model
+
+This is useful only as an extension.
+
+Interpretation:
+
+- once a niche becomes legible in some hubs, templates can spread across cities
+
+What it explains well:
+
+- the maps
+- the broad cultural intuition that styles spread
+
+Weakness:
+
+- the current regression evidence says local thickness dominates once both are included
+- so diffusion should not be the core model
+
+## Best choice
+
+The best model is a hybrid with one clear center:
+
+1. baseline: local variety creation
+2. mechanism 1: spinouts
+3. mechanism 2: recombination through overlapping workers
+4. extension only: diffusion
+
+That keeps the theory mainstream enough for economics and close enough to the actual evidence.
+
+## Formal microfoundation
+
+### Environment
+
+Time is discrete. Cities are indexed by `c`, genre niches by `g`, and years by `t`.
+
+Within each city-genre cell there is a differentiated-product market for niche metal projects. A
+band is one variety in that niche. Demand is not modeled in full detail, but the clean benchmark is
+a Dixit-Stiglitz style environment in which a larger set of viable local varieties can be supported
+when projects can be formed at lower cost and with higher expected quality.
+
+In each period, a mass of potential founders considers creating a new band in niche `g` in city
+`c`.
+
+### Agents
+
+Potential founder `i` is characterized by:
+
+- `e_i \in {0,1}`: embedded local founder status
+- `m_i \ge 0`: overlapping project experience
+- `f_i`: idiosyncratic fixed cost of forming a band
+
+Interpretation:
+
+- `e_i = 1` means the founder comes from the existing local scene and is therefore a spinout-type
+  entrant
+- `m_i` captures experience accumulated by working across multiple local bands
+- `f_i` captures founder-specific barriers to entry
+
+The city-genre state is:
+
+- `B_{cgt}`: active local bands in niche `g`
+- `M_{cgt}`: multi-band musicians active in niche `g`
+- `A_{ct}`: broader city-level metal infrastructure
+
+The local spinout flow observed in the data is the realized count of new bands founded by embedded
+participants. In the model it is an equilibrium outcome of the mass of embedded founders entering.
+
+### Quality and entry costs
+
+If founder `i` enters, expected project quality is:
 
 $$
-Entry_{ct} = \alpha_c + \lambda_t + \beta Hit_{c,t-k} + \varepsilon_{ct},
+q_{icgt} = \bar{q}_g + \gamma_e e_i + \gamma_m m_i + \varepsilon_i,
 $$
 
-where `k` allows for delayed entry after the shock. The interpretation of `\beta` is disciplined
-but modest: it captures whether breakthrough timing is associated with later local startup waves.
-It should not be read as fully causal unless the event timing is credibly exogenous.
+with `\gamma_e, \gamma_m > 0`.
 
-**References.**
-Verified references pending.
+Interpretation:
 
-# Model 2: Country plus language-market spillovers
+- embedded founders inherit routines, contacts, and tacit niche knowledge from incumbent projects
+- founders with broader overlapping experience can recombine more local know-how
 
-**Model type:** Cross-market diffusion model with both own-country and shared-language exposure.
-
-**Literature.**
-This model sits between country-based scene formation and broader cultural-market diffusion.
-Verified references on language markets and cultural spillovers are still pending.
-
-**How this applies to the question.**
-The language extension says that a breakthrough can matter outside the home country when the album
-travels in a shared cultural market. Let `LangHit_lt` denote breakthrough exposure in language
-market `l`, and let `l(c)` map country `c` into its relevant language market. Then:
+The effective fixed cost of forming and sustaining a new local niche project is:
 
 $$
-Entry_{ct} = \alpha_c + \lambda_t + \beta Hit_{c,t-k} + \gamma LangHit_{l(c),t-k} + \varepsilon_{ct}.
+F_{icgt} = f_i - \phi_B \log(1+B_{cgt}) - \phi_M \log(1+M_{cgt}) - \phi_A A_{ct},
 $$
 
-Here `\beta` captures own-country exposure and `\gamma` captures broader language spillovers. This
-model is useful because some metal scenes may respond more to culturally legible external hits
-than to geography alone. The main caution is that language coding may be noisier than country
-coding, so this should remain a second-stage extension until the country-year panel is stable.
+with `\phi_B,\phi_M,\phi_A > 0`.
 
-**References.**
-Verified references pending.
+Interpretation:
 
-# Model 3: Band influence as residualized downstream entry impact
+- thicker local niche stock lowers search, matching, and organizational costs
+- more overlapping workers make it easier to assemble a viable team
+- broader local metal infrastructure also lowers project-formation costs
 
-**Model type:** Event-style ranking model that treats bands as startup catalysts rather than only
-as style leaders.
+### Expected profits and entry decision
 
-**Literature.**
-The relevant conceptual literature is likely to overlap with superstar effects, local role-model
-effects, and scene-building. Exact anchors are still pending verification.
+Let `\pi(q_{icgt})` denote operating profit from supplying one differentiated niche variety, with
+`\pi'(\cdot) > 0`.
 
-**How this applies to the question.**
-Once the event panel exists, the project can rank bands by their downstream entry impact. The key
-point is that "influential" means associated with later startup, not only with stylistic copying.
-For a given band or album event `b`, define a residualized post-hit entry object such as:
+Founder `i` enters if:
 
 $$
-Influence_b = \sum_{j=0}^{J} \omega_j \widehat{Entry}_{c_b,t_b+j},
+\Pi_{icgt} = \pi(q_{icgt}) - F_{icgt} \ge 0.
 $$
 
-where `\widehat{Entry}` is entry net of country and year structure, and the weights `\omega_j`
-define the post-hit window. The same object can be constructed for:
+Substituting for quality and cost:
 
-- all-metal entry
-- genre-family entry
-- unsigned entry
-- later signed entry
+$$
+\Pi_{icgt}
+= \pi\left(\bar{q}_g + \gamma_e e_i + \gamma_m m_i + \varepsilon_i\right)
+- f_i + \phi_B \log(1+B_{cgt}) + \phi_M \log(1+M_{cgt}) + \phi_A A_{ct}.
+$$
 
-This model is useful because it converts the treatment panel into an interpretable ranking. The
-main risk is overreading naive post-hit counts. The ranking must condition on baseline scene depth
-and common year shocks.
+This is the core micro mechanism:
 
-**References.**
-Verified references pending.
+- higher `B_{cgt}` raises entry by lowering effective formation costs
+- higher `M_{cgt}` raises entry both by lowering costs and by increasing founder quality through
+  recombination
+- embedded founders are more likely to enter successfully because they have higher expected quality
 
----
+### Aggregate entry
 
-# Scenes Pivot: Collaborative Innovation Models
+Let `H` be the joint distribution of founder types `(e_i,m_i,f_i,\varepsilon_i)`. Then total niche
+entry in `c,g,t` is:
 
-> Last updated: 2026-03-22. Full write-up in `model/scenes_as_collaborative_innovation.md`.
+$$
+N_{cgt} = \int \mathbf{1}\{\Pi_{icgt} \ge 0\}\, dH(i).
+$$
 
-The project is pivoting from blockbuster shocks to **scenes as the unit of analysis**. The core question becomes: how do localised clusters of bands collectively produce a new genre? Genre creation is a form of innovation driven by mutual inspiration and personnel exchange, not standard competition.
+Comparative statics follow immediately:
 
-> **Sequencing note.** Empirics first, model second. Build the membership network and characterise scene-level facts before committing to a framework.
+$$
+\frac{\partial N_{cgt}}{\partial B_{cgt}} > 0,
+\qquad
+\frac{\partial N_{cgt}}{\partial M_{cgt}} > 0,
+\qquad
+\frac{\partial N_{cgt}}{\partial \Pr(e_i=1)} > 0.
+$$
 
-## Mechanism summary
+That last term is the model-side object behind the empirical spawning variable: if a larger share
+of potential entrants is drawn from embedded local participants, more niche entry should occur.
 
-Three channels connect scenes to genre emergence:
+The paper's observed spawning variable is city-year rather than city-genre specific. Let `\rho_{ct}`
+denote the city-year share of potential founders who are embedded local participants, and let
+realized local spawning flow be:
 
-1. **Localised knowledge spillovers** --- bands observe each other's shows, share rehearsal spaces, trade recordings. Imitation is celebrated, not free-riding (Marshall 1890; Jaffe, Trajtenberg & Henderson 1993).
-2. **Member switching as labour mobility** --- musicians move between bands (often playing in several simultaneously), carrying stylistic vocabulary across projects (Saxenian 1994; Breschi & Lissoni 2009).
-3. **Recombinant innovation** --- genre = novel combination of existing musical elements assembled by many bands experimenting in the same place (Weitzman 1998; Fleming 2001).
+$$
+S_{ct} = \rho_{ct} \sum_{g'} N_{cg't}.
+$$
 
-## Candidate frameworks: ranked
+This is best read as a proxy for broad local spinout intensity. Cities with more incumbent depth
+and more overlapping workers should generate more embedded founders, and that city-wide
+entrepreneurial circulation should raise the supply of viable founders who can enter focal niche
+`g`.
 
-| Rank | Framework | Type | Novelty | Data fit | Journal ceiling |
-|------|-----------|------|---------|----------|----------------|
-| **1** | Network + community detection | Network science | High | Excellent | Top-5 possible |
-| **2** | Diffusion on graphs | Network/econ hybrid | Medium-high | Excellent | Top field / top-5 |
-| **3** | Public-good genre model | Standard econ | Medium | Good | Top field |
-| **4** | Hybrid (network + public-good) | Hybrid | Medium-high | Excellent | Top field / top-5 |
-| **5** | MAR spillover model | Standard econ | Low | Moderate | Field journal |
+### Dynamics
 
-### Model D (recommended lead): Network community detection as endogenous genre definition
+The stock of active niche bands evolves as:
 
-Define genre emergence **endogenously from the network** rather than from retrospective genre tags:
+$$
+B_{cg,t+1} = (1-\delta_B)B_{cgt} + N_{cgt},
+$$
 
-- Build band-band projection of the bipartite musician-band network for each region-year.
-- Apply community detection (spectral clustering, stochastic block models, modularity maximisation) to identify dense subgraphs.
-- A genre exists when a detected community's members also show observable style convergence.
+where `\delta_B` is exit.
 
-**Key testable prediction:** the network community should be detectable *before* the genre label appears in common use, because social structure precedes naming.
+Overlapping worker depth evolves as:
 
-Additional topology predictions:
-- Small-world networks (high clustering, short path length) produce genres faster.
-- Bridge musicians (high-degree nodes) accelerate diffusion disproportionately.
-- Clustering coefficient at a given date predicts subsequent genre crystallisation.
+$$
+M_{cg,t+1} = (1-\delta_M)M_{cgt} + \mu_1 B_{cgt} + \mu_2 N_{cgt},
+$$
 
-**Why this over off-the-shelf:** Metallum gives us the complete bipartite network with dated entry/exit --- almost unheard of in innovation economics. A generic MAR model wastes this. Community detection turns the data's unique structure into the paper's identifying feature.
+with `\mu_1,\mu_2 > 0`.
 
-### Model B: Diffusion on graphs
+The mass of embedded founders evolves as:
 
-Bands are nodes, shared members are edges. Style propagates along edges:
+$$
+\Pr(e_{i,t+1}=1) = G(B_{cgt},M_{cgt}),
+$$
 
-$$s_i^{t+1} = s_i^t + \beta \sum_{j: (i,j) \in G_t} (s_j^t - s_i^t) + \varepsilon_i^t$$
+with `G_B, G_M > 0`.
 
-Familiar via Jackson (2008). Generates topology predictions but less novel than D.
+Interpretation:
 
-### Model C: Public-good genre model
+- more incumbent bands generate more future local founders
+- more overlapping workers create more experienced participants who can launch spinouts later
 
-Genre as a club good. Bands choose effort $e_i$; payoff $\pi_i = Q \cdot g(d_i) - c(e_i)$ where $Q$ is collective genre quality and $d_i$ is own distinctiveness. Captures the similarity-vs-variety tension. Good fallback if network data is too sparse or noisy.
+### Emergence
 
-### Model A: MAR spillover (not recommended)
+A scene emerges once the local niche passes a viability threshold:
 
-Standard agglomeration with bands. "Jaffe-Trajtenberg but for music" is not a contribution.
+$$
+E_{cgt} = \mathbf{1}\{B_{cgt} \ge \bar{B}\}.
+$$
 
-## Key references for scenes pivot
+In the paper, `\bar{B}` is operationalized as `5` active bands. This is not the ontological birth
+of a genre. It is the point at which the local niche becomes thick enough to sustain repeated entry.
 
-- Florida, Mellander & Stolarick (2010). "Music Scenes to Music Clusters." *Environment and Planning A*.
-- Kim & Askin (2024). "Feature-Based Structures of Opportunity: Genre Innovation in American Popular Music." *ASR*.
-- Crossley (2009, 2015). Network dynamics in punk/post-punk scenes. *Poetics* / Manchester UP.
-- Newman (2006). "Modularity and Community Structure in Networks." *PNAS*.
-- Uzzi & Spiro (2005). "Collaboration and Creativity: The Small World Problem." *AJS*.
-- Vedres & Stark (2010). "Structural Folds: Generative Disruption in Overlapping Groups." *AJS*.
+For cells that are still below the threshold, define the one-period transition hazard:
 
-## Pilot network results: Norwegian black metal (2026-03-22)
+$$
+h_{cgt} = \Pr(E_{cg,t+1}=1 \mid E_{cgt}=0).
+$$
 
-First pilot network built from Wikipedia sources. Full stats in
-`data/processed/scene_networks/norwegian_bm_network_stats.md`.
+Because `B_{cg,t+1} = (1-\delta_B)B_{cgt} + N_{cgt}`, that hazard is increasing in current
+`B_{cgt}`, `M_{cgt}`, and the latent embedded-founder share `\rho_{ct}`. In the data, the exact-
+year reduced-form regression uses lagged `B_{cg,t-1}`, `M_{cg,t-1}`, and city-year spawning flow
+`S_{c,t-1}` as proxies for those transition forces.
 
-- 28 bands, 38 musicians, 33 band-band edges (via shared members)
-- Density: 0.087 (sparse overall, dense core)
-- Average clustering coefficient: 0.345 (high --- consistent with small-world structure)
-- 22 of 38 musicians (58%) played in 2+ bands --- extraordinary multi-band rate
-- Hub bands: Emperor (degree 6), Arcturus (5), Borknagar (5), Mayhem (4), Gorgoroth (4)
-- Top bridge musicians: Carl-Michael Eide (4 bands), Varg Vikernes (3), Samoth (3), Garm (3), Tchort (3)
-- Darkthrone is isolated (degree 0) despite being a genre-defining band --- interesting outlier
+## Comparative statics
 
-**Implication:** the network approach is viable. Even a quick Wikipedia-sourced pilot produces a
-non-trivial graph with clear hub-and-bridge structure. The dense core maps onto the bands that
-defined the genre.
+The model delivers the paper’s core comparative statics directly.
 
-## Dual-network idea: membership + influences
+### Proposition 1. Thicker local niche stock raises the probability of emergence.
 
-Wikipedia band pages typically carry two types of relational data:
+If `\phi_B > 0`, then a higher `B_{cgt}` lowers effective entry costs and therefore raises niche
+entry `N_{cgt}`. This makes crossing `\bar{B}` more likely.
 
-1. **Shared members** (already built) --- the bipartite musician-band graph projected onto band-band
-   space. This captures direct personnel exchange as a channel for style transfer.
+This is the direct economics interpretation of the positive `target-genre active bands`
+coefficient.
 
-2. **Influence / associated-acts links** --- most Wikipedia band pages list "associated acts" in the
-   infobox and sometimes cite explicit influences in the prose. This gives a second, independent
-   network layer: not who shared members, but who cited or was influenced by whom.
+### Proposition 2. More overlapping workers raise the probability of emergence.
 
-**Why two layers matter:**
+If `\phi_M > 0` and `\gamma_m > 0`, then higher `M_{cgt}` both lowers effective entry costs and
+raises expected founder quality. It also raises future embedded-founder mass through the dynamics.
 
-- The membership network captures **labour-mobility spillovers** (Breschi & Lissoni). A shared
-  member literally carries musical knowledge between bands.
-- The influence network captures **observational spillovers** (Marshall, Jaffe-Trajtenberg). A band
-  can be influenced by another without ever sharing a member --- through attending shows, hearing
-  recordings, or deliberate emulation.
+This is the cleanest interpretation of the positive `target-genre multi-band musicians`
+coefficient: overlapping worker depth lowers effective entry costs by increasing local
+recombination capacity.
 
-**Testable predictions from the dual network:**
+### Proposition 3. More city-year local spawning raises the probability of emergence.
 
-- If membership edges are stronger predictors of style convergence than influence edges, the
-  labour-mobility channel dominates. If influence edges are stronger, observational spillovers
-  dominate.
-- If bands connected by *both* membership and influence edges converge fastest, the channels are
-  complementary.
-- The influence network may be more *directional* (band A influenced band B, but not vice versa),
-  while the membership network is inherently undirected. That asymmetry is itself informative ---
-  it can test whether innovation flows from early to late entrants as the theory predicts.
-- Influence links may span cities and even countries (e.g., Bathory in Sweden influencing the
-  Norwegian scene), while membership links are overwhelmingly local. Testing which network
-  predicts genre formation would distinguish local vs. non-local spillovers.
+If embedded founders have `\gamma_e > 0`, then a higher city-year share of local embedded founders
+raises the supply of entrants with stronger expected project quality. In the data, higher realized
+spawning flow is the equilibrium footprint of that mechanism.
 
-**Data construction:**
+This is the economics interpretation of the positive spawning coefficient.
 
-For the pilot scenes, the influence network can be built from the same Wikipedia pages used for
-membership. Each band's infobox contains an "Associated acts" field. Individual band pages
-often list influences in the "Musical style" or "History" sections. This is hand-collectible
-for 20--30 band scenes without any scraping.
+### Proposition 4. Local self-reinforcement is possible without strong causal claims.
 
-A richer version could later use Metal Archives, which lists "similar artists" and "related
-links" on many band pages, or Last.fm's "similar artists" API.
+Because `B`, `M`, and `S` all feed into future entry, the model permits cumulative local niche
+formation:
 
-**Where this sits in the model ranking:**
+- more bands create more overlapping workers
+- more overlapping workers create more spinouts
+- more spinouts create more future bands
 
-The dual-network approach strengthens Model D (community detection) by giving it two independent
-network layers to detect communities on. A community that appears in *both* networks is much
-more credible than one that appears in only one. It also generates a natural decomposition of
-the innovation mechanism: how much of genre formation is carried by people moving between bands
-vs. bands listening to each other?
+That is enough to rationalize local scene thickening as a reduced-form empirical pattern without
+claiming point identification of the underlying causal channel.
 
-## Next steps
+## Why this model fits the current regression better than alternatives
 
-1. ~~Build membership network for Norwegian black metal.~~ Done (2026-03-22).
-2. Build membership network for 2--3 more pilot scenes (Tampa death metal, Gothenburg melodic death, Birmingham NWOBHM) from Wikipedia.
-3. Build influence/associated-acts network for Norwegian black metal from Wikipedia band infoboxes.
-4. Characterise network topology across scenes: clustering coefficient, path length, degree distribution, community structure over time.
-5. Test dual-network predictions: does membership or influence better predict style convergence?
-6. Test "community precedes label" informally.
-7. Let empirical patterns determine framework choice.
+The model fits the evidence because:
+
+- it makes `target-genre active bands` central
+- it gives `target-genre multi-band musicians` an independent role
+- it treats `spawning flow` as a distinct mechanism
+- it leaves diffusion secondary
+
+It also explains why some alternative branches are weak:
+
+- role composition is not central because the key object is overlapping experience, not one
+  privileged instrument class
+- `all metal` is not the best outcome because the theoretical object is niche formation inside a
+  broader field, not generic metal agglomeration
+- diffusion is not the core model because the current exposure results mostly wash out once local
+  thickness is included
+
+## Main critique and response
+
+The strongest critique is that this may still be partly mechanical. If the same small group of
+people appears in many local bands, then more bands and more links may arise together even without
+economically meaningful spillovers.
+
+The model response should stay modest:
+
+- the paper does not claim to observe ideas moving directly
+- the paper does not claim that every overlapping worker generates a new scene
+- the paper only claims that local entry costs are lower where local capability, spinouts, and
+  overlapping experience are thicker
+
+That is exactly why the empirical language should remain:
+
+- `predicts`
+- `tracks`
+- `is associated with`
+
+rather than stronger causal phrasing.
+
+## Digital-era extension
+
+The digital-era split suggests a useful extension, but not a different main model.
+
+One simple way to represent digitization is to let remote access reduce the importance of local
+stock for some margins:
+
+$$
+F_{icgt} = F_{icgt}(B_{cgt},M_{cgt},S_{ct}; d_t),
+$$
+
+where higher `d_t` means better remote access to music, information, and models from elsewhere.
+
+Then:
+
+- the cost-reducing role of `B` may weaken as `d_t` rises
+- the cost-reducing role of `S` may also weaken if imitation becomes easier
+- but the local role of `M` may remain strong because overlapping workers still matter for actual
+  project formation and recombination
+
+That matches the current descriptive split better than a crude story that “the internet killed
+scenes.”
+
+## What to put in the paper
+
+The paper does not need a long formal-model section.
+
+It needs:
+
+1. one paragraph on the economic object:
+   local variety creation in a project-based industry
+2. one paragraph on the three mechanisms:
+   labor pooling, spinouts, recombination
+3. one compact equation:
+
+$$
+\Pr(E_{cgt}=1) = F\left(\alpha_{cg} + \lambda_t + \beta_1 S_{c,t-1} + \beta_2 B_{cg,t-1} +
+\beta_3 M_{cg,t-1}\right)
+$$
+
+4. one sentence on why the outcome is meaningful:
+   emergence marks the point at which a local niche becomes thick enough to sustain repeated entry
+
+The longer note should stay here in `03`. The paper should keep only the compact version.
+
+## Working takeaway
+
+The best economics model for the project is:
+
+- a local variety-creation model
+- with spinouts and overlapping worker mobility as the micro-mechanisms
+- and diffusion treated as a secondary extension
+
+That is the cleanest bridge between the actual regressions and a mainstream economics framing.

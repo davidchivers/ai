@@ -1,6 +1,6 @@
 # 02 Literature and synthesis
 
-Last updated: 2026-03-21
+Last updated: 2026-03-30
 
 ## What this note is for
 This literature note is now broader than metal. The relevant question is not only whether a metal
@@ -64,6 +64,73 @@ production and discovery costs can expand creative entry.
 The takeaway from this strand is important: economics does study music supply and entry, but I have
 not yet found a verified economics paper that directly tests whether a domestic musical
 breakthrough in genre `g` causes later band formation in the same country and genre.
+
+### Model-side anchors: varieties, recombination, agglomeration, and spinouts
+If the paper's model is going to be economics-facing, the cleanest formal anchors are not music
+papers. They are broader models of differentiated varieties, local agglomeration, recombination,
+and spinout formation.
+
+[Dixit and Stiglitz (1977)](https://econpapers.repec.org/RePEc:aea:aecrev:v:67:y:1977:i:3:p:297-308)
+is the obvious starting point. The paper is not about music or cities, but it gives the baseline
+economics language for differentiated varieties. For this project, the key use is interpretive:
+subgenres can be thought of as differentiated varieties within a broader product space rather than
+as technological improvements. The metal paper is not a Dixit-Stiglitz model, but that framework
+helps justify why the emergence of a new niche can still be economically meaningful.
+
+[Romer (1990)](https://web.stanford.edu/~klenow/Romer_1990.pdf) is the standard expanding-variety
+growth anchor. Again, the fit is conceptual rather than literal. The metal project is not about
+aggregate growth or formal R&D, but it does share the idea that economic value can come from the
+creation of new varieties rather than from quality improvements alone. The right borrowing from
+Romer is therefore narrow: the outcome can be framed as local variety creation, not technological
+progress in the usual sense.
+
+[Weitzman (1998)](https://doi.org/10.1162/003355398555595) is particularly useful for the current
+mechanism because it formalizes growth through recombination. This is probably the closest clean
+economics analogue to the metal finding on multi-band musicians. The paper should not overclaim
+that it literally observes idea recombination, but Weitzman gives a mainstream way to think about
+why overlapping inputs and novel combinations can matter for the creation of new niches.
+
+[Duranton and Puga (2004)](https://hceconomics.uchicago.edu/sites/default/files/pdf/events/Duranton_Puga_2004_HbRegUrbEcon_micro-foundations-urban.pdf)
+is the best urban-theory bridge. Their taxonomy of sharing, matching, and learning gives exactly
+the right language for this project. The strongest current scene variables map well onto those
+mechanisms: thick target-genre band stock looks like local capability and matching, spawning looks
+like new project formation by embedded participants, and multi-band depth looks like learning and
+recombination through overlapping teams.
+
+[Glaeser, Kallal, Scheinkman, and Shleifer (1992)](https://www.nber.org/papers/w3787) is not the
+paper's formal model, but it is an important supporting bridge because it ties urban variety to
+growth and links that logic to Jacobs-style spillovers. That is useful for keeping the metal paper
+from sounding like a niche cultural history. The broader economics claim is about how local
+variety and local spillovers help new niches become viable.
+
+[Franco and Filson (2006)](https://econpapers.repec.org/RePEc:bla:randje:v:37:y:2006:i:4:p:841-860)
+is the cleanest spinout anchor in the current note. Their focus is employee mobility and spin-outs
+as a channel for knowledge diffusion. That is not the same empirical setting as music, but it is
+very close to the logic of musicians carrying tacit know-how across bands and founding new local
+projects. This is probably the best existing economics support for treating spawning flow as more
+than a descriptive curiosity.
+
+A further search pass sharpens this model-side bridge. [Moretti (2004)](https://www.aeaweb.org/articles?id=10.1257/0002828041464623)
+provides direct evidence that local human capital spillovers raise plant-level productivity, which
+is a useful empirical analogue for the paper's thicker-local-capability channel. [Møen (2000)](https://www.nber.org/papers/w7834)
+is closer still to the worker-mobility mechanism, because it explicitly asks whether the mobility
+of technical personnel is a source of R\&D spillovers. [Storper and Venables (2004)](https://academic.oup.com/joeg/article/4/4/351/1005137)
+adds the urban-buzz side, arguing that face-to-face contact remains central to coordination,
+learning, and localized interaction even in highly networked economies. [Glaeser, Ponzetto, and
+Tobio (2011/2014)](https://www.nber.org/papers/w16934) is also especially useful because it makes
+the varieties language explicit: in their framework, skilled workers generate more product
+varieties and thereby raise local labor demand and entrepreneurship.
+
+My read is that these references together give a much better theoretical foundation than network
+models per se. The right model-side pitch is:
+
+- differentiated local variety creation rather than pure technological innovation
+- local agglomeration through sharing, matching, and learning
+- recombination through overlapping inputs
+- spinouts by embedded workers
+
+That is mainstream enough to anchor a compact modelling section without forcing the paper into a
+full-blown endogenous-growth exercise.
 
 ### Creative clusters, scenes, and local production environments
 The economic-geography literature is much closer to the scene-formation part of the project.
@@ -193,6 +260,16 @@ as privileged substantive cases.
 ## Verified references
 
 ### Economics and economic geography
+- [Dixit, Avinash, and Joseph E. Stiglitz. 1977. *Monopolistic Competition and Optimum Product Diversity*](https://econpapers.repec.org/RePEc:aea:aecrev:v:67:y:1977:i:3:p:297-308)
+- [Romer, Paul M. 1990. *Endogenous Technological Change*](https://web.stanford.edu/~klenow/Romer_1990.pdf)
+- [Weitzman, Martin L. 1998. *Recombinant Growth*](https://doi.org/10.1162/003355398555595)
+- [Duranton, Gilles, and Diego Puga. 2004. *Micro-Foundations of Urban Agglomeration Economies*](https://hceconomics.uchicago.edu/sites/default/files/pdf/events/Duranton_Puga_2004_HbRegUrbEcon_micro-foundations-urban.pdf)
+- [Glaeser, Edward L., Hedi D. Kallal, Jose A. Scheinkman, and Andrei Shleifer. 1992. *Growth in Cities*](https://www.nber.org/papers/w3787)
+- [Glaeser, Edward L., Giacomo A. M. Ponzetto, and Kristina Tobio. 2011/2014. *Cities, Skills, and Regional Change*](https://www.nber.org/papers/w16934)
+- [Franco, April, and Darren Filson. 2006. *Spin-outs: knowledge diffusion through employee mobility*](https://econpapers.repec.org/RePEc:bla:randje:v:37:y:2006:i:4:p:841-860)
+- [Moretti, Enrico. 2004. *Workers' Education, Spillovers, and Productivity: Evidence from Plant-Level Production Functions*](https://www.aeaweb.org/articles?id=10.1257/0002828041464623)
+- [Møen, Jarle. 2000. *Is Mobility of Technical Personnel a Source of R\&D Spillovers?*](https://www.nber.org/papers/w7834)
+- [Storper, Michael, and Anthony J. Venables. 2004. *Buzz: face-to-face contact and the urban economy*](https://academic.oup.com/joeg/article/4/4/351/1005137)
 - [Ferreira, Fernando, and Joel Waldfogel. 2010/2013. *Pop Internationalism: Has A Half Century of World Music Trade Displaced Local Culture?*](https://www.nber.org/papers/w15964)
 - [Gans, Joshua S. 2014/2015. *\"Selling Out\" and the Impact of Music Piracy on Artist Entry*](https://www.nber.org/papers/w20162)
 - [Waldfogel, Joel. 2015. *Digitization and the Quality of New Media Products: The Case of Music*](https://www.nber.org/books-and-chapters/economic-analysis-digital-economy/digitization-and-quality-new-media-products-case-music)

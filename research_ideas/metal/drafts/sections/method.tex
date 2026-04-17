@@ -1,0 +1,35 @@
+The unit of observation is the city-by-genre-by-year cell. The outcome is an indicator for whether
+that cell emerges in a given year. The headline regressors are local spawning flow, target-genre
+active bands, and target-genre multi-band musicians. The preferred specification also includes
+broader city-level controls for overall active bands, nontrivial communities, and total multi-band
+musicians. All predictors are transformed as one-year-lagged rolling averages and z-scored within
+the estimation sample. Table \ref{tab:main_variables} reports the main variables used in the
+current draft. Appendix Table \ref{tab:appendix_variable_crosswalk} reports the fuller variable
+crosswalk, including the code-side variable names, units of observation, and the level at which
+the rolling transformations are constructed before the full panel merge. This standardization is
+useful later in the results section because the coefficients can be compared on a common
+within-sample scale: each coefficient is the change in emergence probability associated with a
+one-standard-deviation increase in the lagged predictor.
+
+\input{tables/main_variables.tex}
+
+The preferred exact-year specification is a reduced-form transition equation for the probability
+that a city-genre cell that has not yet emerged first crosses the paper's operational scene
+threshold in year $t$:
+\[
+\Pr(E_{cgt}=1 \mid E_{cg,t-1}=0) = F\left(\alpha_{cg} + \lambda_t + \beta_1 S_{c,t-1}
+ + \beta_2 B_{cg,t-1} + \beta_3 M_{cg,t-1}\right),
+\]
+where $E_{cgt}$ indicates whether city $c$ and genre $g$ emerge in year $t$, $S_{c,t-1}$ is
+lagged local spawning flow, $B_{cg,t-1}$ is lagged target-genre active band stock, and
+$M_{cg,t-1}$ is lagged target-genre multi-band musician depth. The design absorbs city-genre fixed
+effects and year fixed effects, with standard errors clustered by city. This specification is
+useful because it compares the same city-genre environment over time rather than relying on static
+differences between famous and obscure scenes. It should therefore be read as a within-cell
+transition equation on the risk set, not as a structural production function for scenes.
+
+The design should not be read as delivering causal identification. Stronger local scenes may
+generate some of the measured predictors, and omitted local shocks may move both current scene
+conditions and later emergence. The coefficients therefore support a disciplined statement about
+which local scene features predict later transitions into operational scene status, not a claim
+that the paper directly observes knowledge transfer or the exact historical birth date of a genre.

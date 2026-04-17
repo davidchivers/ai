@@ -3,5 +3,17 @@ data/raw/
 data/processed/
 data/exploration/
 
+# Draft build artifacts
+drafts/*.pdf
+drafts/*.aux
+drafts/*.bbl
+drafts/*.blg
+drafts/*.fdb_latexmk
+drafts/*.fls
+drafts/*.log
+drafts/*.out
+drafts/*.synctex.gz
+drafts/*.toc
+
 # Local Python cache
 code/__pycache__/

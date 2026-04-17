@@ -1,0 +1,50 @@
+\begin{table}[htbp]
+\centering
+\caption{Preferred exact-year fixed-effects scene results}
+\label{tab:preferred_results}
+\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Predictor & Panel A: core counts-only & Panel B: composition extension \\
+\midrule
+Overall active bands & 0.0135*** & 0.0174*** \\
+ & (0.0043) & (0.0044) \\
+Nontrivial communities & 0.0062*** & 0.0008 \\
+ & (0.0018) & (0.0020) \\
+Overall multi-band musicians & -0.0223*** & -0.0244*** \\
+ & (0.0028) & (0.0030) \\
+Local spawning flow & 0.0134*** & 0.0224*** \\
+ & (0.0017) & (0.0025) \\
+Spawn share &  & -0.0066*** \\
+ &  & (0.0012) \\
+Target-genre active bands & 0.0505*** & 0.0488*** \\
+ & (0.0015) & (0.0017) \\
+Target-genre broker musicians &  & 0.0579*** \\
+ &  & (0.0028) \\
+Target-genre broker share &  & -0.0724*** \\
+ &  & (0.0022) \\
+Target-genre multi-band musicians & 0.0227*** & 0.0331*** \\
+ & (0.0015) & (0.0027) \\
+Target-genre multi-band share &  & -0.0195*** \\
+ &  & (0.0023) \\
+\midrule
+$N$ & 171,653 & 171,653 \\
+Events & 5,306 & 5,306 \\
+Event rate & 0.0309 & 0.0309 \\
+$R^2$ & 0.0422 & 0.0581 \\
+Fixed effects & City-genre + year & City-genre + year \\
+Clustering & City & City \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: Standard errors in parentheses. All predictors are
+one-year-lagged \texttt{roll-5} averages z-scored within the estimation sample, so coefficients are
+comparable as within-sample percentage-point changes in emergence probability from a
+one-standard-deviation increase in the predictor. *** $p<0.01$. Panel A is the active headline
+specification. Panel B is retained as a background composition extension because the share terms
+are substantively informative even though the main paper read comes from the core counts-only
+panel. The negative coefficient on overall multi-band musicians should be read as a conditional
+control result: holding focal-genre depth fixed, broader city-wide overlapping labor appears less
+helpful than overlap concentrated within the target niche.}
+\end{table}

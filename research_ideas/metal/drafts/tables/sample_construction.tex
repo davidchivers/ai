@@ -1,0 +1,28 @@
+\begin{table}[htbp]
+\centering
+\caption{Sample construction for the preferred city-genre scene panel}
+\label{tab:sample_construction}
+\small
+\begin{tabularx}{\textwidth}{@{}lYcY@{}}
+\toprule
+Stage & Object & Count & Restriction or construction rule \\
+\midrule
+1 & Raw all-metal Metallum band universe & 163,965 & Upstream cleaned all-metal reference \\
+2 & Bands with standardized countries & 161,945 & Country standardization succeeds \\
+3 & Bands with usable formed year & 131,511 & Parsable formed year required \\
+4 & Raw member-role universe & 1,038,533 & Delivered member dump before collapse \\
+5 & Unique musician-band edges & 971,877 & Duplicate role rows collapsed to one band-musician edge \\
+6 & Unique musicians & 682,126 & Unique musician keys after edge collapse \\
+7 & Reference-matched bands in edge file & 156,729 & Band ID matched back to cleaned band reference \\
+8 & City-genre cells in emergence panel & 56,978 & Usable city, usable formed year, mapped genre family \\
+9 & City-genre cells reaching emergence & 5,756 & City reaches its fifth band in the genre family \\
+10 & Preferred exact-year FE sample & 171,653 & Valid lagged roll-5 predictors and at-risk city-genre-years \\
+11 & Preferred emergence events & 5,306 & Snapshot year equals emergence year within preferred sample \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: A city-genre cell is counted as emergent in the year
+it reaches its fifth band in the broad genre family. The preferred estimating sample is the roll-5
+exact-year fixed-effects panel used in the current main specification.}
+\end{table}

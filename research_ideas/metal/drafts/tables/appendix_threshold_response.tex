@@ -1,0 +1,42 @@
+\begin{table}[p]
+\centering
+\caption{Threshold-response package for the preferred exact-year scene specification}
+\label{tab:appendix_threshold_response}
+\tiny
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.08}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.29\textwidth}YYY>{\raggedleft\arraybackslash}p{0.10\textwidth}>{\raggedleft\arraybackslash}p{0.08\textwidth}@{}}
+\toprule
+Sample or threshold & Local spawning flow & Target-genre active bands & Target-genre multi-band musicians & $N$ & Events \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Panel A. Alternative emergence thresholds}} \\
+Threshold = 3 bands & 0.0152*** & 0.0583*** & 0.0123*** & 133,117 & 6,565 \\
+ & (0.0023) & (0.0016) & (0.0020) &  &  \\
+Threshold = 4 bands & 0.0132*** & 0.0542*** & 0.0169*** & 154,856 & 5,676 \\
+ & (0.0018) & (0.0015) & (0.0017) &  &  \\
+Threshold = 5 bands & 0.0134*** & 0.0505*** & 0.0227*** & 171,653 & 5,306 \\
+ & (0.0017) & (0.0015) & (0.0015) &  &  \\
+Threshold = 6 bands & 0.0127*** & 0.0363*** & 0.0160*** & 180,091 & 3,230 \\
+ & (0.0014) & (0.0015) & (0.0011) &  &  \\
+Threshold = 8 bands & 0.0103*** & 0.0270*** & 0.0161*** & 190,638 & 2,273 \\
+ & (0.0011) & (0.0013) & (0.0010) &  &  \\
+\midrule
+\multicolumn{6}{@{}l}{\textit{Panel B. Restricted fifth-band risk sets}} \\
+Full fifth-band risk set & 0.0134*** & 0.0505*** & 0.0227*** & 171,653 & 5,306 \\
+ & (0.0017) & (0.0015) & (0.0015) &  &  \\
+Drop rows one band below the cutoff & 0.0046*** & 0.0113*** & 0.0024*** & 154,856 & 1,010 \\
+ & (0.0008) & (0.0007) & (0.0006) &  &  \\
+Keep only cells with lag cumulative formed $\leq 2$ & 0.0010*** & 0.0019*** & -0.0001 & 133,117 & 156 \\
+ & (0.0003) & (0.0002) & (0.0002) &  &  \\
+\bottomrule
+\end{tabularx}
+
+\vspace{0.4em}
+\parbox{0.96\textwidth}{\footnotesize Notes: All specifications use the preferred
+\texttt{roll-5} exact-year fixed-effects design with city-genre and year fixed effects and
+standard errors clustered by city. Panel A varies only the operational emergence cutoff used to
+date the city-genre outcome. Panel B keeps the fifth-band definition fixed and changes the risk set
+using lagged cumulative formed bands in the focal city-genre cell. The far-below-threshold row
+shows that the strongest predictive content comes from the later approach to emergence rather than
+from the earliest seed stage. *** $p<0.01$.}
+\end{table}

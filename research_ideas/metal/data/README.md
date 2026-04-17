@@ -30,7 +30,7 @@ Current rule:
   - active curated seed for the first treatment build
   - now also carries the Italy cleanup pass:
     - `Comalies` retained only as a historical benchmark dead end on official FIMI
-    - `Delirium`, `Power of the Dragonflame`, and `Triumph or Agony` added as exact
+    - `Karmacode`, `Delirium`, `Power of the Dragonflame`, and `Triumph or Agony` added as exact
       FIMI-recoverable Italian flagship rows
 - `blockbuster_hit_rule.md`
   - operational rule for seed inclusion and country-level hit timing
@@ -47,8 +47,15 @@ Current rule:
   - manual Brazil supplement because direct Pro-Musica retrieval is blocked in this environment
   - now mixes:
     - one official band press release
+    - one named journalistic certification-timing source corroborated by an official artist press bio
+    - one archived magazine chart page
     - named historical and journalistic Sepultura sources
-    - some remaining weaker secondary chart and certification traces
+    - one remaining weaker secondary certification trace
+- `blockbuster_album_country_hits_swe_manual.csv`
+  - manual Sweden supplement built from official Sverigetopplistan weekly chart pages and the
+    official item-stat endpoint
+  - now includes the recovered home-market `Sabaton - Carolus Rex` row in addition to the modern
+    `2022` examples
 - `exploration/`
   - reproducible outcome-scope diagnostics using the reused Metallum band file
   - includes country summaries, core-country yearly panels, top-country rankings, and descriptive
@@ -65,7 +72,7 @@ Current rule:
     - `scene_networks/city_network_summary.md`
     - `scene_networks/mechanism_test_merged.csv`
     - `scene_networks/mechanism_test_results.md`
-  - now also includes the first four-market treatment build:
+  - now also includes the current multi-market treatment build:
     - `blockbuster_album_country_hits_core.csv`
       - now includes seed-linked home-versus-foreign exposure columns
     - `blockbuster_country_year_hit_panel.csv`
