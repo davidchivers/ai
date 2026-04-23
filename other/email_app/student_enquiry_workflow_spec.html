@@ -24,6 +24,71 @@
       vertical-align: middle;
     }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -52,9 +117,10 @@ identity from Forms</li>
 <h2 id="version-1-design-principles">2. version 1 design principles</h2>
 <ul>
 <li>Keep the intake form short and professional.</li>
-<li>Keep the form short by not asking students to re-enter identity that
-Forms already knows, but keep a few checkpoint fields for classification
-and sanity checking.</li>
+<li>Do not ask students to re-enter stable record facts that the
+department can pull from Banner export or another lookup source.</li>
+<li>Keep extra checkpoint fields optional and add them only if testing
+shows the lookup is not reliable enough.</li>
 <li>Continue the process even if lookup fails.</li>
 <li>Keep staff work centered on a normal inbox first and a shared
 mailbox later.</li>
@@ -122,42 +188,20 @@ username from the email prefix if needed.</p>
 <tbody>
 <tr>
 <td>1</td>
-<td>Stage of study</td>
-<td>Choice</td>
-<td>Yes</td>
-<td>Undergraduate, Taught postgraduate</td>
-</tr>
-<tr>
-<td>2</td>
-<td>Year of study</td>
-<td>Choice</td>
-<td>Yes for undergraduates</td>
-<td>Show only if stage = Undergraduate</td>
-</tr>
-<tr>
-<td>3</td>
-<td>Programme of study</td>
-<td>Choice</td>
-<td>Yes</td>
-<td>Checkpoint field; can be removed later if lookup becomes fully
-reliable</td>
-</tr>
-<tr>
-<td>4</td>
 <td>Enquiry type</td>
 <td>Choice</td>
 <td>Yes</td>
 <td>Controlled list for classification</td>
 </tr>
 <tr>
-<td>5</td>
+<td>2</td>
 <td>Other enquiry type</td>
 <td>Text</td>
 <td>Yes when needed</td>
 <td>Show only if enquiry type = Other</td>
 </tr>
 <tr>
-<td>6</td>
+<td>3</td>
 <td>Message</td>
 <td>Long text</td>
 <td>Yes</td>
@@ -167,25 +211,16 @@ reliable</td>
 </table>
 <h3 id="enquiry-type-values">Enquiry type values</h3>
 <ul>
-<li>Module enquiry</li>
 <li>Academic advisor</li>
 <li>Assessment query</li>
-<li>Extension</li>
-<li>Mitigating circumstances</li>
 <li>Attendance</li>
-<li>Timetable</li>
-<li>IT / systems access</li>
+<li>Extension</li>
 <li>Fees / finance</li>
+<li>IT / systems access</li>
+<li>Mitigating circumstances</li>
+<li>Module enquiry</li>
+<li>Timetable</li>
 <li>Other</li>
-</ul>
-<h3 id="programme-values-for-prototype">Programme values for
-prototype</h3>
-<ul>
-<li>BSc Economics</li>
-<li>BSc Economics and Management</li>
-<li>BA Economics and Politics</li>
-<li>BA PPE</li>
-<li>Masters</li>
 </ul>
 <h3 id="identity-note">Identity note</h3>
 <p>Recommended behavior:</p>
@@ -199,6 +234,16 @@ identity</li>
 lookup, tags, or staff handling</li>
 <li>Only add a separate <code>University email address</code> field if
 testing shows the flow cannot access the responder email</li>
+</ul>
+<h3 id="stable-student-facts-note">Stable student facts note</h3>
+<p>Preferred version 1 rule:</p>
+<ul>
+<li>Ask students only for the enquiry itself.</li>
+<li>Pull stable student facts such as stage, year, programme, student
+ID, and advisor from Banner export or the lookup workbook.</li>
+<li>Only add one checkpoint field later, such as
+<code>Programme of study</code>, if testing shows matching is
+unreliable.</li>
 </ul>
 <h3 id="submission-behavior">Submission behavior</h3>
 <ul>
@@ -260,6 +305,8 @@ while still keeping email as the main workflow channel.</p>
 <li>Excel Online workbook in OneDrive or SharePoint</li>
 <li>One table only</li>
 <li>Unique key column: <code>UniversityEmailNormalized</code></li>
+<li>Prefer to populate the workbook from Banner export or another
+trusted student-record extract</li>
 </ul>
 <p>Recommended table shape for this department:</p>
 <ul>
@@ -297,7 +344,13 @@ reasonable for this exact-match prototype</li>
 <ul>
 <li>If lookup succeeds, use Excel values as the main staff-facing
 values.</li>
-<li>If lookup fails, fall back to the form answers where available.</li>
+<li>If lookup fails, fall back to the recorded responder email and let
+staff check Banner or the student record manually.</li>
+<li>If lookup fails in the preferred short-form build, do not populate
+programme, stage, or year from unrelated form answers such as enquiry
+type. Leave them blank or mark them as <code>Not matched</code>.</li>
+<li>Do not rely on the spreadsheet as the normal staff working
+interface; use it as backend lookup data.</li>
 </ul>
 <h3 id="soft-routing-and-tagging">Soft routing and tagging</h3>
 <p>Do not hard-route to named individuals in version 1.</p>
@@ -327,11 +380,16 @@ action</li>
 <li>reference number</li>
 <li>lookup status</li>
 <li>suggested owner</li>
+<li>resolved enquiry type in the subject tags when <code>Other</code>
+was selected</li>
 <li>student identity fields</li>
 <li>study context fields</li>
 <li>Banner identifiers or link</li>
 <li>original student message</li>
 </ul>
+<p>If stage, year, or programme are unavailable because lookup fails,
+leave those fields blank or mark them as <code>Not matched</code> rather
+than asking the student to re-enter them in version 1.</p>
 <h3 id="student-acknowledgement-email">Student acknowledgement
 email</h3>
 <p>Send a simple acknowledgement to the student after the staff email
@@ -457,17 +515,33 @@ adds avoidable lookup logic.</li>
 <li>If the lookup later grows beyond a simple department roster or needs
 frequent automated refresh, replace the lookup block rather than adding
 multiple Excel files.</li>
+<li>Use the spreadsheet to support the flow, not as the normal
+staff-facing screen.</li>
 </ul>
 <h2 id="draft-staff-email-format">7. draft staff email format</h2>
 <h3 id="subject">Subject</h3>
-<p><code>[Enquiry][Module enquiry][UG][Year 2][Matched] DEPT-2026-000123 - hfnt93</code></p>
+<p><code>[Form submission] Jane Smith | Extension | Ref: DEPT-2026-000123</code></p>
 <h3 id="body-structure">Body structure</h3>
-<p>Reference number: Recorded responder email: Derived username: Student
-name: Student email: Student ID: Stage of study: Year of study:
-Programme of study: Enquiry type: Other enquiry type: Academic advisor:
-Banner link / code: Lookup status: Suggested owner: Student message:</p>
-<p>This should remain short, plain, and easy to scan on desktop or
-mobile Outlook.</p>
+<p>The first line should contain the staff actions:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode html"><code class="sourceCode html"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">strong</span><span class="dt">&gt;&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">&quot;{{ReplyLink}}&quot;</span><span class="dt">&gt;</span>Reply to {{DisplayNameForStaff}}<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;&lt;/</span><span class="kw">strong</span><span class="dt">&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">&amp;nbsp;</span>|<span class="dv">&amp;nbsp;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">a</span><span class="ot"> href</span><span class="op">=</span><span class="st">&quot;{{DrafterLink}}&quot;</span><span class="dt">&gt;</span>Open Email Drafter<span class="dt">&lt;/</span><span class="kw">a</span><span class="dt">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code></pre></div>
+<p>Then include:</p>
+<ul>
+<li>student message</li>
+<li>lookup details: email, username, student ID, programme, stage, year,
+advisor, Banner link/code</li>
+<li>uploaded file links, if the form has attachments</li>
+</ul>
+<p>The subject already contains the form-submission marker, student
+display name, enquiry type, and reference number. Do not repeat those as
+a second summary line in the body.</p>
+<p><code>Open Email Drafter</code> belongs in this first staff
+notification email. The Outlook reply link should only open a clean
+reply draft addressed to the student.</p>
 <h2 id="draft-student-acknowledgement-email">8. draft student
 acknowledgement email</h2>
 <h3 id="subject-1">Subject</h3>
@@ -501,8 +575,8 @@ risks, and assumptions</h2>
 <ul>
 <li>The form can reliably record responder identity when it is
 restricted to signed-in university users.</li>
-<li>Programme and year are checkpoint fields, not permanent long-term
-requirements.</li>
+<li>The department can maintain a Banner export or other trusted lookup
+extract with stable student facts.</li>
 <li>Banner access is handled by staff permissions outside the flow.</li>
 </ul>
 <h3 id="main-risks">Main risks</h3>
@@ -511,6 +585,8 @@ requirements.</li>
 high-scale transactional store.</li>
 <li>Email aliases or stale lookup data may cause unmatched or incorrect
 enrichment.</li>
+<li>If lookup fails, the staff email may contain less study-context
+detail because the form is intentionally short.</li>
 <li>Sensitive information may be typed into free-text messages.</li>
 <li>A response-ID-based reference number is simple but only sequential
 within the form.</li>

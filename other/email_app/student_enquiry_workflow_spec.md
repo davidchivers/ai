@@ -22,7 +22,8 @@ The workflow should not:
 ## 2. version 1 design principles
 
 - Keep the intake form short and professional.
-- Keep the form short by not asking students to re-enter identity that Forms already knows, but keep a few checkpoint fields for classification and sanity checking.
+- Do not ask students to re-enter stable record facts that the department can pull from Banner export or another lookup source.
+- Keep extra checkpoint fields optional and add them only if testing shows the lookup is not reliable enough.
 - Continue the process even if lookup fails.
 - Keep staff work centered on a normal inbox first and a shared mailbox later.
 - Make the design replaceable: Excel lookup now, stronger institutional source later.
@@ -61,33 +62,22 @@ For a cautious pilot, use the recorded responder email as the acknowledgement ad
 
 | # | Question | Type | Required | Branching / notes |
 |---|---|---|---|---|
-| 1 | Stage of study | Choice | Yes | Undergraduate, Taught postgraduate |
-| 2 | Year of study | Choice | Yes for undergraduates | Show only if stage = Undergraduate |
-| 3 | Programme of study | Choice | Yes | Checkpoint field; can be removed later if lookup becomes fully reliable |
-| 4 | Enquiry type | Choice | Yes | Controlled list for classification |
-| 5 | Other enquiry type | Text | Yes when needed | Show only if enquiry type = Other |
-| 6 | Message | Long text | Yes | Student describes the issue |
+| 1 | Enquiry type | Choice | Yes | Controlled list for classification |
+| 2 | Other enquiry type | Text | Yes when needed | Show only if enquiry type = Other |
+| 3 | Message | Long text | Yes | Student describes the issue |
 
 ### Enquiry type values
 
-- Module enquiry
 - Academic advisor
 - Assessment query
-- Extension
-- Mitigating circumstances
 - Attendance
-- Timetable
-- IT / systems access
+- Extension
 - Fees / finance
+- IT / systems access
+- Mitigating circumstances
+- Module enquiry
+- Timetable
 - Other
-
-### Programme values for prototype
-
-- BSc Economics
-- BSc Economics and Management
-- BA Economics and Politics
-- BA PPE
-- Masters
 
 ### Identity note
 
@@ -98,6 +88,14 @@ Recommended behavior:
 - Use the recorded responder email as the acknowledgement address
 - Derive the CIS username from the recorded email prefix if needed for lookup, tags, or staff handling
 - Only add a separate `University email address` field if testing shows the flow cannot access the responder email
+
+### Stable student facts note
+
+Preferred version 1 rule:
+
+- Ask students only for the enquiry itself.
+- Pull stable student facts such as stage, year, programme, student ID, and advisor from Banner export or the lookup workbook.
+- Only add one checkpoint field later, such as `Programme of study`, if testing shows matching is unreliable.
 
 ### Submission behavior
 
@@ -155,6 +153,7 @@ Recommended version 1 lookup source:
 - Excel Online workbook in OneDrive or SharePoint
 - One table only
 - Unique key column: `UniversityEmailNormalized`
+- Prefer to populate the workbook from Banner export or another trusted student-record extract
 
 Recommended table shape for this department:
 
@@ -186,7 +185,9 @@ Preferred resolved fields from lookup:
 Recommended resolved-value rule:
 
 - If lookup succeeds, use Excel values as the main staff-facing values.
-- If lookup fails, fall back to the form answers where available.
+- If lookup fails, fall back to the recorded responder email and let staff check Banner or the student record manually.
+- If lookup fails in the preferred short-form build, do not populate programme, stage, or year from unrelated form answers such as enquiry type. Leave them blank or mark them as `Not matched`.
+- Do not rely on the spreadsheet as the normal staff working interface; use it as backend lookup data.
 
 ### Soft routing and tagging
 
@@ -217,10 +218,13 @@ The staff email should include:
 - reference number
 - lookup status
 - suggested owner
+- resolved enquiry type in the subject tags when `Other` was selected
 - student identity fields
 - study context fields
 - Banner identifiers or link
 - original student message
+
+If stage, year, or programme are unavailable because lookup fails, leave those fields blank or mark them as `Not matched` rather than asking the student to re-enter them in version 1.
 
 ### Student acknowledgement email
 
@@ -284,33 +288,35 @@ Operational note:
 - For this first department build, one active student table is simpler and safer than separate year-based tables.
 - Splitting the table by year or stage makes maintenance harder and adds avoidable lookup logic.
 - If the lookup later grows beyond a simple department roster or needs frequent automated refresh, replace the lookup block rather than adding multiple Excel files.
+- Use the spreadsheet to support the flow, not as the normal staff-facing screen.
 
 ## 7. draft staff email format
 
 ### Subject
 
-`[Enquiry][Module enquiry][UG][Year 2][Matched] DEPT-2026-000123 - hfnt93`
+`[Form submission] Jane Smith | Extension | Ref: DEPT-2026-000123`
 
 ### Body structure
 
-Reference number:
-Recorded responder email:
-Derived username:
-Student name:
-Student email:
-Student ID:
-Stage of study:
-Year of study:
-Programme of study:
-Enquiry type:
-Other enquiry type:
-Academic advisor:
-Banner link / code:
-Lookup status:
-Suggested owner:
-Student message:
+The first line should contain the staff actions:
 
-This should remain short, plain, and easy to scan on desktop or mobile Outlook.
+```html
+<p>
+  <strong><a href="{{ReplyLink}}">Reply to {{DisplayNameForStaff}}</a></strong>
+  &nbsp;|&nbsp;
+  <a href="{{DrafterLink}}">Open Email Drafter</a>
+</p>
+```
+
+Then include:
+
+- student message
+- lookup details: email, username, student ID, programme, stage, year, advisor, Banner link/code
+- uploaded file links, if the form has attachments
+
+The subject already contains the form-submission marker, student display name, enquiry type, and reference number. Do not repeat those as a second summary line in the body.
+
+`Open Email Drafter` belongs in this first staff notification email. The Outlook reply link should only open a clean reply draft addressed to the student.
 
 ## 8. draft student acknowledgement email
 
@@ -351,13 +357,14 @@ This version is quick to test and easy to replace later.
 ### Main assumptions
 
 - The form can reliably record responder identity when it is restricted to signed-in university users.
-- Programme and year are checkpoint fields, not permanent long-term requirements.
+- The department can maintain a Banner export or other trusted lookup extract with stable student facts.
 - Banner access is handled by staff permissions outside the flow.
 
 ### Main risks
 
 - Excel is acceptable for lookup in version 1, but it is not a high-scale transactional store.
 - Email aliases or stale lookup data may cause unmatched or incorrect enrichment.
+- If lookup fails, the staff email may contain less study-context detail because the form is intentionally short.
 - Sensitive information may be typed into free-text messages.
 - A response-ID-based reference number is simple but only sequential within the form.
 - If the form is copied or rebuilt, the reference sequence should be treated as a new series.
