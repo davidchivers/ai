@@ -1529,6 +1529,38 @@ This assumption allows us to abstract from any potential employment benefits der
 \end_layout
 
 \begin_layout Standard
+\color blue
+In the transition exercises below,
+ we relax this random-walk assumption in a controlled way.
+Households are instead evaluated along an annual transition path in which demographic composition,
+ household choices,
+ the distribution of housing ownership and political pressure evolve jointly.
+ In this version of the exercise,
+ households retain the paper's current-price expectation over future house prices,
+ while the realized price path evolves endogenously through the smoothed political supply channel.
+ This extension is computationally more demanding because the demographic state is not a single scalar:
+ the economy contains annual age cells from age 25 to age 80,
+ and a demographic shock changes the relative mass of voters at each age as the shocked cohort moves through the life cycle.
+ We therefore use the same annual timing as the calibrated steady state and solve the transition over an 80 year horizon,
+ which is long enough for an entering cohort to pass through the model's adult life cycle and for the induced political pressure to dissipate.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+The second change is that the political response is smoothed.
+ In the baseline formulation,
+ the median voter condition is a hard threshold:
+ an arbitrarily small majority in favor of higher house prices can imply the full policy response.
+ In an annual transition this discontinuity can create unstable price and permit dynamics even when the underlying economic force is small.
+ We therefore map the aggregate vote imbalance into a continuous measure of political pressure.
+ Small vote imbalances generate limited pressure,
+ while larger imbalances generate stronger pressure.
+ This preserves the direction of the median-voter mechanism but avoids treating a knife-edge political majority as equivalent to a large political mandate.
+\color inherit
+\end_layout
+
+\begin_layout Standard
 
 \emph on
 \begin_inset Float figure
@@ -1687,6 +1719,47 @@ We drop the
  is thus defined by the deterministic age and income processes,
  the stochastic income shocks and their optimal choices in response to these shocks.
  The full numerical computational method is outlined in detail in the Appendix.
+\end_layout
+
+\begin_layout Standard
+\color blue
+For the transition analysis,
+ let 
+\begin_inset Formula $m_{t}$
+\end_inset
+
+ denote the aggregate vote imbalance in year 
+\begin_inset Formula $t$
+\end_inset
+
+,
+ measured relative to the benchmark political target.
+ We summarize the political response by a bounded pressure index,
+ 
+\begin_inset Formula $\pi_{t}=\tanh\left(m_{t}/\tau\right)$
+\end_inset
+
+,
+ where 
+\begin_inset Formula $\tau$
+\end_inset
+
+ governs how quickly political pressure rises as the vote imbalance moves away from zero.
+ As 
+\begin_inset Formula $\tau$
+\end_inset
+
+ becomes small,
+ this rule approaches the hard sign rule in the static median-voter model.
+ For positive 
+\begin_inset Formula $\tau$
+\end_inset
+
+,
+ political pressure changes continuously with the strength of the vote imbalance.
+ The price and permit environment then updates according to one reduced-form pass-through parameter,
+ so that the transition remains tied to the paper's political supply channel without separately identifying several weakly disciplined supply-side parameters.
+\color inherit
 \end_layout
 
 \begin_layout Section
@@ -2964,6 +3037,36 @@ nolink "false"
  the effect of the spike in the birthrate starts to affect the demographic structure of households in the model.
  We then calculate the equilibrium response of the economy across the subsequent 80 years to see the effect of the baby boom through time.
  
+\end_layout
+
+\begin_layout Standard
+\color blue
+In the updated transition exercise,
+ this demographic shock is computed using the annual age distribution rather than broad age bins.
+ The shocked entrants move through the model one year at a time,
+ and the aggregate vote in each year is obtained by weighting age-specific voting decisions by the annual population share at that age.
+ This distinction matters because the political effect of a baby boom is not concentrated in the entry year.
+ The same cohort first changes the share of young renters,
+ then the share of middle-aged homeowners,
+ and finally the share of older households whose housing wealth and bequest motives make them more likely to support tighter supply.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+The paper version of this exercise will report three comparisons.
+ The benchmark uses the smoothed political-pressure rule described above.
+ A placebo exercise imposes exogenous or random house-price paths using the same annual voter weights,
+ which shows whether the political transition is doing more than fitting arbitrary price movements.
+ A hard-vote exercise sets 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+,
+ or equivalently uses the discontinuous sign rule,
+ which shows whether smoothing is merely cosmetic or is required for a stable annual transition.
+ These comparisons discipline the benchmark before using it to interpret the baby-boom and secular-decline demographic shocks.
+\color inherit
 \end_layout
 
 \begin_layout Standard
@@ -4305,6 +4408,35 @@ cleared
 
  by the political process,
  we iterate forward one period updating the age of each household and repeat the steps 1 through 5.
+\end_layout
+
+\begin_layout Standard
+\color blue
+For the annual transition extension with current-price house-price expectations,
+ we modify steps 4 through 6 in two ways.
+ First,
+ the cross-sectional distribution is moved forward using annual age cells,
+ so that voters age from 25 to 80 one year at a time and each year's aggregate vote is weighted by that year's annual age distribution.
+ Second,
+ instead of requiring the political vote to clear through a hard median-voter threshold in every year,
+ we allow the vote imbalance to create a bounded political-pressure term.
+ The numerical routine then updates the housing-price path through this pressure term and resolves the household problem and distribution along the transition.
+\color inherit
+\end_layout
+
+\begin_layout Standard
+\color blue
+The final paper exercises will use this algorithm to compare the benchmark smoothed transition with three alternatives:
+ a constant or no-feedback price path,
+ exogenous random price paths,
+ and the hard-sign political rule obtained when 
+\begin_inset Formula $\tau=0$
+\end_inset
+
+.
+ The random-price and hard-sign cases are not alternative structural models.
+ They are diagnostic comparisons that show whether the benchmark transition is driven by the demographic-political mechanism rather than arbitrary price movements or a numerical discontinuity in the voting rule.
+\color inherit
 \end_layout
 
 \end_body

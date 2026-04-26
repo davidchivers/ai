@@ -1,0 +1,49 @@
+﻿{
+    "checked_at":  "2026-04-26T20:09:08",
+    "ssh_host":  "hamilton8",
+    "job_ids":  [
+                    "16894032",
+                    "16894205",
+                    "16894209"
+                ],
+    "stages":  [
+                   "reT4BBTail_04261648",
+                   "reT80A_04262004",
+                   "reT80D_04262004"
+               ],
+    "squeue_exit":  0,
+    "active_jobs":  [
+                        "16894209_[0-1]|PENDING|0:00|(Priority)",
+                        "16894205_[3-5]|PENDING|0:00|(Priority)",
+                        "16894205_0|RUNNING|4:01|cn058",
+                        "16894205_1|RUNNING|4:01|cn006",
+                        "16894205_2|RUNNING|4:01|cn010",
+                        "16894032_0|RUNNING|3:19:57|cn011"
+                    ],
+    "remote_csv_pattern":  "summary_all.csv",
+    "fetched_csv_count":  1,
+    "fetched_summary_count":  1,
+    "expected_summary_count":  9,
+    "fetch_errors":  [
+
+                     ],
+    "all_jobs_inactive":  false,
+    "have_expected_summaries":  false,
+    "will_unregister_task":  false,
+    "summaries":  [
+                      {
+                          "stage":  "reT4BBTail_04261648",
+                          "run_name":  "reT4BBTail_04261648_t4_bb_tail_e09",
+                          "outer_iter":  "10",
+                          "report_T":  "4",
+                          "internal_T":  "84",
+                          "tail_years":  "80",
+                          "eta":  "0.09",
+                          "scenario":  "baby_boom",
+                          "max_abs_path_gap":  "0.00809749247608489",
+                          "max_abs_vote_resid":  "0.00334861033664302",
+                          "verdict":  "usable",
+                          "local_summary":  "original_annual_political_re/truth/annual_full_re_hamilton_poll/csv/reT4BBTail_04261648/reT4BBTail_04261648_t4_bb_tail_e09/summary_all.csv"
+                      }
+                  ]
+}

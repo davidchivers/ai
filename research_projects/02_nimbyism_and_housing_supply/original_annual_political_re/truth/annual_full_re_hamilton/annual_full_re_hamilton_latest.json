@@ -1,0 +1,33 @@
+{
+    "remote_alias":  "hamilton8",
+    "remote_run_dir":  "/nobackup/hfnt93/nimby_annual_runs/reT80D_04262004",
+    "remote_archive":  "/nobackup/hfnt93/nimby_annual_runs/reT80D_04262004/reT80D_04262004.tar.gz",
+    "submitted_at":  "2026-04-26T20:05:13",
+    "stage_name":  "reT80D_04262004",
+    "slurm_array_job_id":  "16894209",
+    "stage":  "T80SecDamp",
+    "walltime":  "36:00:00",
+    "outer_iter":  16,
+    "tail_years":  80,
+    "terminal_anchor":  "terminal_fixed_point",
+    "terminal_iter":  16,
+    "terminal_relaxation":  0.2,
+    "path_relaxation":  0.05,
+    "workflow":  "perfect-foresight-house-price-path-re",
+    "tasks":  [
+                  {
+                      "T":  80,
+                      "TailYears":  80,
+                      "Eta":  0.09,
+                      "Scenario":  "secular_decline",
+                      "Label":  "t80_dec_d900"
+                  },
+                  {
+                      "T":  80,
+                      "TailYears":  80,
+                      "Eta":  0.105,
+                      "Scenario":  "secular_decline",
+                      "Label":  "t80_dec_d1050"
+                  }
+              ]
+}

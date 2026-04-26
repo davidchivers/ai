@@ -145,6 +145,12 @@ switch mode
         demographic_path_full = build_original_5yr_demographic_path_from_age_state_csv(project_root);
     case "historical_1950"
         demographic_path_full = build_original_5yr_demographic_path_from_historical_age_shares(project_root);
+    case {"entrant_survival_boom", "entrant_survival_baby_boom", "entrant_survival_temporary_boom"}
+        demographic_path_full = build_original_5yr_demographic_entrant_survival_path(project_root, [], 'baby_boom');
+    case {"entrant_survival_decline", "entrant_survival_secular_decline", "entrant_survival_birth_decline"}
+        demographic_path_full = build_original_5yr_demographic_entrant_survival_path(project_root, [], 'secular_decline');
+    case {"entrant_survival_flat", "entrant_survival_baseline", "entrant_survival_constant"}
+        demographic_path_full = build_original_5yr_demographic_entrant_survival_path(project_root, [], 'flat');
     otherwise
         error('Unsupported demographic_source_mode: %s', demographic_source_mode);
 end

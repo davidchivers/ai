@@ -1,5 +1,9 @@
-function [distance,a_price,rbPos,totalvote,debtstock] = SolveSS_iter(x)
+function [distance,a_price,rbPos,totalvote,debtstock,vote_diagnostics] = SolveSS_iter(x,vote_params)
 
+if nargin < 2 || isempty(vote_params)
+    vote_params = struct();
+end
+vote_params = apply_vote_defaults_local(vote_params);
 
 %%Setting Model Parameters
 a_price=x(1); % Relative price of housing
@@ -14,7 +18,7 @@ r_price = (1)*(rbNeg-ra+0.02); %Rental price (last term is a fixed mark up)
 omega = 0.5;% Weight on houing in utility
 theta_r = 0.9;% Discount on rent utility
 beta=0.8; %Discount rate
-sigma=1.5;
+sigma_crra=1.5; %#ok<NASGU>
 eta = 2;
 
 
@@ -45,7 +49,27 @@ zmax=2;
 z=linspace(zmin,zmax,K);
 dz=z(2)-z(1);
 else
-    load TransitionMatrix transitionmatrix y_mid z_lifecycle initialdist
+    transition_file = which('TransitionMatrix.mat');
+    if isempty(transition_file)
+        error('SolveSS_iter:MissingTransitionMatrix','TransitionMatrix.mat is not on the MATLAB path.');
+    end
+    loaded_transition = load(transition_file,'transitionmatrix','initialdist');
+    transitionmatrix = loaded_transition.transitionmatrix;
+    initialdist = loaded_transition.initialdist;
+    if isfield(loaded_transition,'y_mid')
+        y_mid = loaded_transition.y_mid;
+    end
+    if isfield(loaded_transition,'z_lifecycle')
+        z_lifecycle = loaded_transition.z_lifecycle;
+    end
+    if ~exist('y_mid','var') || ~exist('z_lifecycle','var')
+        transition_builder = which('Code_transition_matrix.m');
+        if isempty(transition_builder)
+            error('SolveSS_iter:MissingTransitionInputs', ...
+                'Need y_mid and z_lifecycle, but Code_transition_matrix.m is not on the MATLAB path.');
+        end
+        run(transition_builder);
+    end
     z = y_mid;
     zmin=min(z);
     zmax=max(z);
@@ -388,6 +412,8 @@ density=zeros(I,J,K,L*M);
 totaldensity=zeros(I,J,K,L*M);
 vote=zeros(I,J,K,L*M);
 totalvote=zeros(I,J,K,L*M);
+pref4_hard=NaN(I,J,K,age_n);
+pref4_legacy=NaN(I,J,K,age_n);
 
 vote_age=NaN(age_n);
 iage=1;
@@ -400,6 +426,8 @@ for age=agemin:dage:agemax
     
     
     eval(strcat('d_valuefunction_dp = d_valuefunction_dp_',int2str(age),';'));
+    vote_value_gap_fd = d_valuefunction_dp;
+    vote_support = compute_vote_support_local(vote_value_gap_fd,vote_params);
     
     density=zeros(I,J,K,L*M);
     if age==agemin
@@ -410,7 +438,7 @@ for age=agemin:dage:agemax
             density_prev(bzero,1,iz)=g0(iz);
         end
         
-        vote=sign(d_valuefunction_dp).*density_prev;
+        vote=vote_support.*density_prev;
         
         for ilm=1:L*M
             for iz=1:K
@@ -428,7 +456,7 @@ for age=agemin:dage:agemax
         density_prev=Ztransition*density_prev(:);
         density_prev=reshape(density_prev,I,J,K,L*M);
         
-        vote=sign(d_valuefunction_dp).*density_prev;
+        vote=vote_support.*density_prev;
         
         for ilm=1:L*M
             for iz=1:K
@@ -458,7 +486,9 @@ for age=agemin:dage:agemax
     bbbb(:,:,:,iage-1)=bbb;
     zzzz(:,:,:,iage-1)=exp(zzz).*Zlifecycle(iage-1); 
     dens4(:,:,:,iage-1)=density/age_n;
-    pref4(:,:,:,iage-1)=sign(d_valuefunction_dp);
+    pref4(:,:,:,iage-1)=vote_support;
+    pref4_hard(:,:,:,iage-1)=sign(vote_value_gap_fd + vote_params.sigma);
+    pref4_legacy(:,:,:,iage-1)=sign(vote_value_gap_fd);
     sum(density,'all');
 end
 
@@ -490,6 +520,38 @@ distance = sum(dens4.*pref4,'all')^2;% + sum(bbbb.*dens4,'all')^2 ;
 
 totalvote=sum(dens4.*pref4,'all');
 debtstock=sum(bbbb.*dens4,'all');
+vote_diagnostics = struct( ...
+    'mode',vote_params.mode, ...
+    'sigma',vote_params.sigma, ...
+    'tau',vote_params.tau, ...
+    'totalvote_active',totalvote, ...
+    'totalvote_hard_shifted',sum(dens4.*pref4_hard,'all'), ...
+    'totalvote_hard_legacy',sum(dens4.*pref4_legacy,'all'));
 
 save SS_iter
+end
+
+function vote_params = apply_vote_defaults_local(vote_params)
+if ~isfield(vote_params,'mode') || isempty(vote_params.mode)
+    vote_params.mode = 'hard_sign';
+end
+if ~isfield(vote_params,'sigma') || isempty(vote_params.sigma)
+    vote_params.sigma = 0;
+end
+if ~isfield(vote_params,'tau') || isempty(vote_params.tau)
+    vote_params.tau = 0.25;
+end
+end
+
+function vote_support = compute_vote_support_local(vote_value_gap_fd,vote_params)
+shifted_gap = vote_value_gap_fd + vote_params.sigma;
+switch lower(char(vote_params.mode))
+    case "hard_sign"
+        vote_support = sign(shifted_gap);
+    case {"smooth_logit","smooth_tanh"}
+        vote_tau = max(vote_params.tau,1e-8);
+        vote_support = tanh(shifted_gap./(2.*vote_tau));
+    otherwise
+        error('SolveSS_iter:UnknownVoteMode','Unknown vote mode "%s".',vote_params.mode);
+end
 end

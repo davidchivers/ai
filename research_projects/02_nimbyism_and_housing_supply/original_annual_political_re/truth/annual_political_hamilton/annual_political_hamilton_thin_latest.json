@@ -1,0 +1,59 @@
+{
+    "remote_alias":  "hamilton8",
+    "remote_run_dir":  "/nobackup/hfnt93/nimby_annual_runs/annpol_thin_T80Decline_20260426_140310",
+    "remote_archive":  "/nobackup/hfnt93/nimby_annual_runs/annpol_thin_T80Decline_20260426_140310/annpol_thin_T80Decline_20260426_140310.tar.gz",
+    "submitted_at":  "2026-04-26T14:03:24",
+    "stage_name":  "annpol_thin_T80Decline_20260426_140310",
+    "slurm_array_job_id":  "16893937",
+    "stage":  "T80Decline",
+    "walltime":  "12:00:00",
+    "period_iter":  4,
+    "lagged_pass_through":  false,
+    "pass_through_lag_years":  1,
+    "age_weight_variant":  "baseline",
+    "tasks":  [
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.060 1.00]",
+                      "Label":  "T80_vs0p020_eta0p060",
+                      "AgeWeightVariant":  "baseline"
+                  },
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.075 1.00]",
+                      "Label":  "T80_vs0p020_eta0p075",
+                      "AgeWeightVariant":  "baseline"
+                  },
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.090 1.00]",
+                      "Label":  "T80_vs0p020_eta0p090",
+                      "AgeWeightVariant":  "baseline"
+                  },
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.105 1.00]",
+                      "Label":  "T80_vs0p020_eta0p105",
+                      "AgeWeightVariant":  "baseline"
+                  },
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.120 1.00]",
+                      "Label":  "T80_vs0p020_eta0p120",
+                      "AgeWeightVariant":  "baseline"
+                  },
+                  {
+                      "T":  80,
+                      "VoteScale":  0.02,
+                      "Candidate":  "[0 0.150 1.00]",
+                      "Label":  "T80_vs0p020_eta0p150",
+                      "AgeWeightVariant":  "baseline"
+                  }
+              ],
+    "workflow":  "thin-one-candidate-per-task-with-compecon-mexa64"
+}
