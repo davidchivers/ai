@@ -5,6 +5,8 @@
 - Project folder: `research_projects/04_exposure_attitudes`
 - Active AI repo branch: `research_projects/04_exposure_attitudes`
 - Dropbox source: `C:\Users\Dave_\Dropbox\exposure_attitudes`
+- Dropbox draft folder: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft`
+- Current compiled draft PDF: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`
 - Source folder name: `exposure_attitudes`
 - Main topic: exposure segregation, public-space mixing, social capital, and attitudes
 - Primary languages in Dropbox code: Stata, Python, R, LaTeX
@@ -23,6 +25,7 @@ Fastest files for future Codex sessions to read:
 7. `notes/05_stantcheva_regression_summary.md`
 8. `notes/06_land_unavailability_identification.md`
 9. `docs/hamilton_workflow.md` if working on Hamilton/HPC jobs
+10. Dropbox `Draft/notes/` for paper-kickoff notes, literature map, data inventory, and results audit
 
 Dropbox source files that were useful:
 
@@ -58,11 +61,12 @@ Dropbox source files that were useful:
 | 2026-04-27 | Treat POI/public-space inclusivity as a separate first arm from the outcome regressions. | User clarified the project structure and measurement motivation. | Dave / Codex |
 | 2026-04-27 | Record land-unavailability variability as the main candidate identification channel. | User clarified the Saiz-style supply-constraint mechanism and the first-stage intuition. | Dave / Codex |
 | 2026-04-27 | Add a Hamilton workflow guide. | Project may need large mobility-data processing and collaborators need shared naming and Slurm conventions. | Dave / Codex |
+| 2026-04-27 | Start the paper in Dropbox `Draft/`. | User wants Aaron/Eren, Diego, and Dave to begin a shared LaTeX/PDF paper draft from existing project evidence. | Dave / Codex |
 
 ## Open questions
 
 - Which exact Dropbox data file or folder should be deleted, if any?
 - Should the project later be renamed `04_exposure_segregation_social_capital` for paper clarity, or keep the Dropbox-aligned `04_exposure_attitudes`?
 - Which empirical strand is Dave joining first: social-capital paper, Stantcheva extension, or new CBG/POI exposure measures?
-- Should any safe code files be copied into this Git repo, or should this repo remain documentation-only for now?
 - Which exact Chandler Lutz/Luz source should be cited for the updated land-unavailability measure?
+- Which draft section should be upgraded first after coauthor review?

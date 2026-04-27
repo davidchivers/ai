@@ -20,3 +20,4 @@
 - 2026-04-27: Added `notes/06_land_unavailability_identification.md` from the team discussion of Saiz-style land-unavailability variability, first-stage logic, and exclusion concerns.
 - 2026-04-27: Moved the coordination layer into the shared AI repo as `research_projects/04_exposure_attitudes`.
 - 2026-04-27: Added `docs/hamilton_workflow.md` with Hamilton naming, storage, Slurm, and no-data-in-Git conventions.
+- 2026-04-27: Created Dropbox `Draft/`, launched section-specific drafting agents, and compiled the first LaTeX PDF. Output: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`.

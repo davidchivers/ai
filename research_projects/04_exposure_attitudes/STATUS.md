@@ -2,7 +2,7 @@
 
 ## Current status
 
-Stage: Active data/code audit and project intake.
+Stage: First paper draft kickoff.
 
 Organizer: Dave
 
@@ -28,6 +28,7 @@ This project studies the effect of experienced or exposure segregation on social
 | 2026-04-27 | Stantcheva results are most promising for ages-10-19 exposure segregation. | Aggregate workbook shows strongest associations for pro-redistribution and donation outcomes. | Dave / Codex |
 | 2026-04-27 | Treat land-unavailability variability as the candidate first-stage / IV spine, not as a settled causal design. | User clarified the Saiz-style mechanism: geography-driven land constraints generate local SES and amenity heterogeneity, which may lower exposure segregation. Exclusion remains the central challenge. | Dave / Codex |
 | 2026-04-27 | Use `docs/hamilton_workflow.md` for Hamilton/HPC conventions. | Shared guidance is needed for naming, Slurm jobs, storage locations, and safe handling of large data outputs. | Dave / Codex |
+| 2026-04-27 | Create the working paper draft in Dropbox `Draft/`. | User asked to begin a LaTeX/PDF draft from existing project ideas, literature, code, and aggregate outputs. | Dave / Codex |
 
 ## Data access
 
@@ -40,9 +41,9 @@ This project studies the effect of experienced or exposure segregation on social
 
 ## Next 3 tasks
 
-1. Locate and summarize the existing VARLU / land-unavailability first-stage outputs, especially the sign after population controls.
-2. Write the exclusion-restriction checklist: residential segregation, prices, density, amenity quality, local public goods, and geography channels.
-3. Decide whether the first outcome paper should be anchored on Chetty social capital, volunteering/donations, or Stantcheva attitudes.
+1. Review the new Dropbox draft sections, especially the introduction, data section, empirical strategy, and results language.
+2. Verify the literature citations flagged in `Draft/notes/literature_map.md`, especially Stantcheva et al. (2026), Chetty et al. (2022a,b), and any manuscript citations.
+3. Lock the next empirical target: final first-stage table, main social-capital outcome table, or Stantcheva attitude appendix.
 
 ## Active branches
 
@@ -57,9 +58,11 @@ This project studies the effect of experienced or exposure segregation on social
 - The Dropbox `data/` folder is too large and sensitive for Codex inspection.
 - The temporary separate `dewey_data` repo is superseded by this AI repo project folder.
 - The exact Dropbox cleanup action is not confirmed. No deletion was performed.
+- Several citations and source details remain to be verified before the paper can be treated as submission-grade.
 
 ## Session log
 
 - 2026-04-27: Created project 04 intake files in the shared AI repo from safe Dropbox documents and metadata. Did not open raw data.
 - 2026-04-27: Added a working identification note on land-unavailability variability, exposure segregation, and IV caveats.
 - 2026-04-27: Added Hamilton workflow guidance for naming conventions, storage, Slurm queues, and safe batch-job practice.
+- 2026-04-27: Created Dropbox `Draft/` with LaTeX source, section files, notes, bibliography, and compiled `exposure_segregation_social_capital.pdf`. No raw data were opened or copied.
