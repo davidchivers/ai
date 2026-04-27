@@ -21,3 +21,4 @@
 - 2026-04-27: Moved the coordination layer into the shared AI repo as `research_projects/04_exposure_attitudes`.
 - 2026-04-27: Added `docs/hamilton_workflow.md` with Hamilton naming, storage, Slurm, and no-data-in-Git conventions.
 - 2026-04-27: Created Dropbox `Draft/`, launched section-specific drafting agents, and compiled the first LaTeX PDF. Output: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`.
+- 2026-04-27: Revised the Dropbox draft after Dave's review: standard Durham author block, NIMBY-style abstract/introduction, inserted generated tables and figures, and recompiled the canonical PDF.

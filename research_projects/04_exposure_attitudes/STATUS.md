@@ -2,7 +2,7 @@
 
 ## Current status
 
-Stage: First paper draft kickoff.
+Stage: First paper draft revision.
 
 Organizer: Dave
 
@@ -41,9 +41,9 @@ This project studies the effect of experienced or exposure segregation on social
 
 ## Next 3 tasks
 
-1. Review the new Dropbox draft sections, especially the introduction, data section, empirical strategy, and results language.
-2. Verify the literature citations flagged in `Draft/notes/literature_map.md`, especially Stantcheva et al. (2026), Chetty et al. (2022a,b), and any manuscript citations.
-3. Lock the next empirical target: final first-stage table, main social-capital outcome table, or Stantcheva attitude appendix.
+1. Review the revised Dropbox paper draft, especially the title block, abstract, introduction, and results section with inserted tables.
+2. Build the missing public-space / POI-category mixing table so the first empirical arm has a visible descriptive result.
+3. Verify the literature citations flagged in `Draft/notes/literature_map.md`, especially Stantcheva et al. (2026), Chetty et al. (2022a,b), and any manuscript citations.
 
 ## Active branches
 
@@ -66,3 +66,4 @@ This project studies the effect of experienced or exposure segregation on social
 - 2026-04-27: Added a working identification note on land-unavailability variability, exposure segregation, and IV caveats.
 - 2026-04-27: Added Hamilton workflow guidance for naming conventions, storage, Slurm queues, and safe batch-job practice.
 - 2026-04-27: Created Dropbox `Draft/` with LaTeX source, section files, notes, bibliography, and compiled `exposure_segregation_social_capital.pdf`. No raw data were opened or copied.
+- 2026-04-27: Revised Dropbox paper draft to use a standard economics-paper author block, tighter academic voice, and inserted summary statistics, first-stage, economic-connectedness, volunteering, and first-stage figure outputs.

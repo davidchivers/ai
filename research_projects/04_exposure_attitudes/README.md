@@ -128,4 +128,6 @@ The project is active. Existing documents say:
 - the Stantcheva extension has detailed build and regression specs
 - newer POI/CBG exposure measures are under active design
 
+Dropbox now contains a revised paper draft at `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`. The current revision uses a standard Durham author block and includes the generated county summary table, standardized first-stage table, economic-connectedness table, volunteering table, and first-stage figures.
+
 See `STATUS.md` for the live task list.

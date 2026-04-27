@@ -7,6 +7,7 @@
 - Dropbox source: `C:\Users\Dave_\Dropbox\exposure_attitudes`
 - Dropbox draft folder: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft`
 - Current compiled draft PDF: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`
+- Latest draft revision note: title page now uses Cemal Eren Arbatli, Diego Marino Fages, and David Chivers with Durham economics affiliation; abstract and introduction are written in the NIMBY-style mechanism-first voice; results section now includes generated summary statistics, standardized first-stage, economic-connectedness, volunteering, and first-stage figure outputs.
 - Source folder name: `exposure_attitudes`
 - Main topic: exposure segregation, public-space mixing, social capital, and attitudes
 - Primary languages in Dropbox code: Stata, Python, R, LaTeX
@@ -69,4 +70,5 @@ Dropbox source files that were useful:
 - Should the project later be renamed `04_exposure_segregation_social_capital` for paper clarity, or keep the Dropbox-aligned `04_exposure_attitudes`?
 - Which empirical strand is Dave joining first: social-capital paper, Stantcheva extension, or new CBG/POI exposure measures?
 - Which exact Chandler Lutz/Luz source should be cited for the updated land-unavailability measure?
-- Which draft section should be upgraded first after coauthor review?
+- Which POI/public-space category aggregation should become the first descriptive table?
+- Should the Stantcheva attitude regressions be turned into a formal paper table or kept as a complementary appendix until identification is clearer?
