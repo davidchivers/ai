@@ -89,8 +89,12 @@ Current implementation:
 - Hamilton submitter: `submit_annual_full_re_price_path_hamilton.ps1`,
 - projection scenarios now wired in the runner:
   `forecast_low`, `forecast_median`, and `forecast_high`,
+- projection runs can now set `ReferenceYear = 2020`, which should be used for the
+  paper's 2020-2100 immigration forecast exercise,
 - Hamilton projection stages now available:
   `T4Proj`, `T20Proj`, `T40Proj`, and `T80Proj`,
+- the Hamilton submitter now defaults those projection stages to `ReferenceYear = 2020`;
+  non-projection stages keep `ReferenceYear = NaN`,
 - first Hamilton smoke submitted as job `16893956`,
 - stage name: `annre_T4_20260426_1445`,
 - tasks: `fixed_age_share`, `baby_boom`, and `secular_decline`, each with `T = 4`,
@@ -122,32 +126,56 @@ Current Hamilton poll automation:
 - registration script: `register_annual_full_re_hamilton_poll_task.ps1`,
 - local report: `truth/annual_full_re_hamilton_poll/latest_report.md`,
 - local state: `truth/annual_full_re_hamilton_poll/latest_state.json`,
-- current watched jobs: `16894032`, `16894205`, and `16894209`,
+- current watched jobs: `16894032`, `16894205`, and `16894254`,
 - current watched stages: `reT4BBTail_04261648`, `reT80A_04262004`, and
-  `reT80D_04262004`,
+  `reT40D_04262131`,
 - fetch rule: while jobs are active it fetches `summary_all.csv`; once the jobs are
   inactive it fetches all CSV outputs from the watched result folders,
-- stop rule: when Hamilton has no active rows for those job IDs and at least nine
+- stop rule: when Hamilton has no active rows for those job IDs and at least seven
   expected summary files have been fetched, the poll script unregisters the scheduled
   task itself.
 
 This replaces the sketchy recursive watcher path for the current run. It only polls and
 fetches summaries; it does not submit the next stage automatically.
 
-Aggressive T80 packet submitted on 2026-04-26:
+Aggressive T80 packet and T40 secular backup submitted on 2026-04-26:
 
 - broad run: job `16894205`, stage `reT80A_04262004`, six tasks at `eta = 0.090`:
   `fixed_age_share`, `baby_boom`, `secular_decline`, `forecast_low`,
   `forecast_median`, and `forecast_high`;
-- secular-decline backup: job `16894209`, stage `reT80D_04262004`, two tasks
-  (`eta = 0.090` and `0.105`) with more outer iterations and smaller path relaxation.
+- after user review, cancelled the low/high forecast array tasks (`16894205_3` and
+  `16894205_5`) and kept only the median forecast stress-test task (`16894205_4`);
+- cancelled mistaken secular-decline `T80` backup job `16894209` before it started;
+- correct secular-decline backup: job `16894254`, stage `reT40D_04262131`, two tasks
+  (`eta = 0.090` and `0.105`) with more outer iterations and smaller path relaxation at
+  `T = 40`.
 
 Interpretation:
 
 - the broad run answers whether the full paper package can go straight to the 80-year
   horizon;
-- the damping backup protects against the main known risk, which is secular decline
-  failing near the terminal end of the path.
+- the damping backup protects against the main known risk at the cheaper `T = 40` horizon
+  before deciding whether secular decline deserves a full `T80` rerun.
+
+Projection-path caveat:
+
+- the `forecast_low`, `forecast_median`, and `forecast_high` rows inside `T80All` should
+  be treated as an aggressive stress test, not the validated projection workflow;
+- after the first stress-test rows, only the median forecast task is still running. Low
+  and high should be attempted later, after the median projection path is solved or the
+  right damping/terminal setup is clear;
+- the paper projection exercise is conceptually a 2020-2100 forecast exercise using the
+  old low/medium/high immigration paths;
+- before relying on projection `T80` results, run `T4Proj` and then `T40Proj/T80Proj`
+  as a separate ladder;
+- the projection ladder should use a projection-specific terminal steady state, anchored
+  to the terminal forecast age composition, just as secular decline uses a terminal
+  fixed-point anchor rather than the old steady state.
+- local projection validation now starts with the median path only. The guarded local
+  ladder `run_local_median_projection_ladder.ps1` climbs `T = 4, 8, 12, 20` with
+  `forecast_median`, `ReferenceYear = 2020`, and a terminal fixed-point anchor. If this
+  ladder passes, patch the Hamilton projection submit path to pass `ReferenceYear = 2020`
+  before treating a Hamilton median projection as paper-ready.
 
 ## Gate 1: fix the benchmark
 

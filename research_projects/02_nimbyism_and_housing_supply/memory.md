@@ -113,11 +113,58 @@ Most recent session first.
   - `16894205`, stage `reT80A_04262004`: six-task `T80All` packet covering
     fixed-age, baby boom, secular decline, and low/medium/high immigration projections at
     `eta = 0.090`
-  - `16894209`, stage `reT80D_04262004`: two-task secular-decline backup at `eta = 0.090`
-    and `0.105`, with `OuterIter = 16` and `PathRelaxation = 0.05`
+  - Initially submitted `16894209`, stage `reT80D_04262004`, as the damped secular
+    backup, but this was the wrong horizon. User clarified that the intended backup was a
+    cheaper `T40` secular refinement. Cancelled `16894209` before it started.
+  - Submitted the correct backup: `16894254`, stage `reT40D_04262131`, two-task secular
+    backup at `eta = 0.090` and `0.105`, with `T = 40`, `OuterIter = 16`, and
+    `PathRelaxation = 0.05`.
 - Updated `poll_annual_full_re_hamilton_once.ps1` so the scheduled poller now watches the
-  live baby-tail job plus the two new T80 jobs and expects nine summary files before
-  self-stopping.
+  live baby-tail job, the broad `T80All` job, and the correct `T40` secular backup.
+- Important correction after user pushback: the projection rows inside the aggressive
+  `T80All` packet are only a stress test. The paper forecast exercise should still be
+  validated through its own `T4Proj -> T40Proj/T80Proj` ladder, because it is a
+  2020-2100 low/medium/high immigration forecast exercise and needs its own terminal
+  steady-state anchor based on the terminal forecast age composition.
+- User then noted we do not need low, medium, and high projection stress tests all at
+  once. Cancelled `T80All` forecast low/high array tasks `16894205_3` and `16894205_5`;
+  kept median forecast task `16894205_4` running. Poller expected summary count lowered
+  to 7 because low/high are no longer required for the active run to self-stop.
+- Added an explicit `ReferenceYear` option to
+  `original_annual_political_re/run_annual_political_full_re_price_path.m`. This avoids
+  mixing the old year-2000 reference column with the paper's 2020-2100 forecast exercise.
+  Local smoke `local_syntax_T1_projection_median_2020` passed with path gap about
+  `0.01636` and vote residual about `0.00368`.
+- Added `original_annual_political_re/run_local_median_projection_ladder.ps1` and started
+  hidden local run `local_medproj_2020_20260426_213908`. It climbs median projection
+  horizons `T = 4, 8, 12, 20`, uses `ReferenceYear = 2020`, terminal fixed-point anchor,
+  `OuterIter = 6`, `PathRelaxation = 0.08`, warm-starts each next rung from the previous
+  generated path, and stops if a rung is dead or the path gap exceeds `0.06`.
+- Patched `submit_annual_full_re_price_path_hamilton.ps1` so projection stages default to
+  `ReferenceYear = 2020`; non-projection stages keep the old default `NaN` reference
+  behavior. Syntax check passed.
+- Overnight local ladder `local_medproj_2020_20260426_213908` reached `T = 8` cleanly
+  but stopped at `T = 12`: `T4` survivor with path gap `0.03022`, `T8` usable with path
+  gap `0.01055`, and `T12` dead with path gap `0.06705` and vote residual `0.02308`.
+  This is not good enough for a `T80` Hamilton upload, but it is close enough to retry
+  with more damping rather than abandon the median projection lane.
+- Started safer hidden local retry `local_medproj_safe_20260427_054207`: `T = 4,8,12,20`,
+  `OuterIter = 10`, `PathRelaxation = 0.04`, `TailYears = 40/60`, `TerminalIter = 16`,
+  `TerminalRelaxation = 0.15`, `ReferenceYear = 2020`.
+- Hamilton live SSH is currently unreliable: TCP port 22 is open and both login IPs show
+  an SSH banner, but the session stalls during the handshake. The already-fetched CSVs
+  nevertheless contain later `T80All` rows than the stale report: fixed-age `T80` usable
+  with path gap `0.00316`; secular `T80` survivor with path gap `0.02681`; baby-boom
+  `T80` survivor with path gap `0.04974`; forecast-median `T80` survivor with path gap
+  `0.04955`. The median projection result remains a stress-test row, not paper-ready,
+  because it predates the `ReferenceYear = 2020` correction.
+- Added smoothing-function robustness modes to
+  `original_annual_political_re/run_annual_political_full_re_price_path.m`: `softnorm`,
+  `linear_clip`, and `logit`, while leaving the benchmark default `smooth`/`tanh`
+  unchanged. Started hidden smoke `smooth_func_smoke_20260427_061403`, which waits for the
+  active local median retry to finish and then tests `T = 12`, `forecast_median`,
+  `ReferenceYear = 2020`, using `smooth:0.030`, `smooth:0.040`, `softnorm:0.030`, and
+  `logit:0.030`.
 
 ---
 

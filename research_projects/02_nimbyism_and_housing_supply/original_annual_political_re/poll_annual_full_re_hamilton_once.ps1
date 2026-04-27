@@ -1,11 +1,11 @@
 [CmdletBinding()]
 param(
     [string]$SshHost = "hamilton8",
-    [string[]]$JobIds = @("16894032", "16894205", "16894209"),
-    [string[]]$Stages = @("reT4BBTail_04261648", "reT80A_04262004", "reT80D_04262004"),
+    [string[]]$JobIds = @("16894032", "16894205", "16894254"),
+    [string[]]$Stages = @("reT4BBTail_04261648", "reT80A_04262004", "reT40D_04262131"),
     [string]$RemoteRoot = "/nobackup/hfnt93/nimby_annual_runs",
     [string]$TaskName = "NimbyAnnualFullREPoll",
-    [int]$ExpectedSummaryCount = 9,
+    [int]$ExpectedSummaryCount = 7,
     [switch]$NoUnregister
 )
 

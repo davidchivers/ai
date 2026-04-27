@@ -21,6 +21,7 @@ p.addParameter('PressureMode', 'smooth');
 p.addParameter('DemographicScenario', 'fixed_age_share');
 p.addParameter('DemographicShockAmplitude', 0.25);
 p.addParameter('AgeWeightVariant', 'baseline');
+p.addParameter('ReferenceYear', NaN);
 p.addParameter('InitialPathCsv', '');
 p.addParameter('ModIrfDir', 'C:\Users\Dave_\Dropbox\Zac and David\Code\SteadyState\Mod_IRF');
 p.addParameter('SourceMat', 'loop101_output_extended.mat');
@@ -117,7 +118,15 @@ S = load(source_path, 'param', 'age_share', 'PriceHouse', 'VoteBaseline', 'indRe
 param = S.param;
 age_share = S.age_share;
 
-ref_col = min(51, size(age_share, 2));
+age_share_start_year = 1950;
+if isfinite(cfg.ReferenceYear)
+    ref_col = round(cfg.ReferenceYear - age_share_start_year + 1);
+else
+    ref_col = min(51, size(age_share, 2));
+end
+if ref_col < 1 || ref_col > size(age_share, 2)
+    error('ReferenceYear %.0f maps to invalid age_share column %d.', cfg.ReferenceYear, ref_col);
+end
 agevector0 = age_share(:, ref_col);
 agevector0 = apply_age_weight_variant(agevector0, cfg.AgeWeightVariant);
 reference_price = S.PriceHouse(S.indReference);
@@ -161,7 +170,8 @@ base.recomputed_target_vote = VoteAge * agevector0;
 base.reference_col = ref_col;
 base.agevector0 = agevector0;
 base.source_path = source_path;
-base.age_share_start_year = 1950;
+base.age_share_start_year = age_share_start_year;
+base.reference_year = base.age_share_start_year + ref_col - 1;
 base.forecast_start_year = 2020;
 base.forecast_low = [];
 base.forecast_median = [];
@@ -420,8 +430,16 @@ switch lower(string(pressure_mode))
         else
             pressure = 0;
         end
-    otherwise
+    case {"smooth", "tanh"}
         pressure = tanh(vote_resid ./ vote_scale);
+    case {"softnorm", "soft_norm"}
+        pressure = vote_resid ./ sqrt(vote_resid.^2 + vote_scale.^2);
+    case {"linear_clip", "clipped_linear"}
+        pressure = max(-1, min(1, vote_resid ./ vote_scale));
+    case "logit"
+        pressure = 2 ./ (1 + exp(-vote_resid ./ vote_scale)) - 1;
+    otherwise
+        error('Unknown PressureMode: %s', pressure_mode);
 end
 end
 
@@ -561,6 +579,7 @@ fprintf(fid, '- Terminal iterations: `%d`\n', cfg.TerminalIter);
 fprintf(fid, '- Outer iterations: `%d`\n', cfg.OuterIter);
 fprintf(fid, '- Eta: `%.6f`\n', cfg.Eta);
 fprintf(fid, '- Vote scale: `%.6f`\n', cfg.VoteScale);
+fprintf(fid, '- Reference year: `%d`\n', base.reference_year);
 fprintf(fid, '- Reference price: `%.6f`\n', base.reference_price);
 fprintf(fid, '- Target vote: `%.6f`\n', base.target_vote);
 fprintf(fid, '- Source: `%s`\n\n', base.source_path);

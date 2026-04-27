@@ -1,5 +1,5 @@
 param(
-    [ValidateSet("T4", "T4BBTail", "T4Proj", "T20", "T20Proj", "T40", "T40Proj", "T80", "T80All", "T80SecDamp", "T80Proj")]
+    [ValidateSet("T4", "T4BBTail", "T4Proj", "T20", "T20Proj", "T40", "T40SecDamp", "T40Proj", "T80", "T80All", "T80SecDamp", "T80Proj")]
     [string]$Stage = "T4",
     [string]$RemoteAlias = "hamilton8",
     [string]$RemoteBaseDir = "/nobackup/hfnt93/nimby_annual_runs",
@@ -16,6 +16,7 @@ param(
     [double]$PathRelaxation = 0.25,
     [double]$VoteScale = 0.020,
     [double]$DemographicShockAmplitude = 0.25,
+    [double]$ReferenceYear = [double]::NaN,
     [string]$MatlabModule = "matlab/R2025a",
     [string]$StatePath = ""
 )
@@ -69,12 +70,23 @@ $stageCode = switch ($Stage) {
     "T4Proj" { "T4P" }
     "T20Proj" { "T20P" }
     "T40Proj" { "T40P" }
+    "T40SecDamp" { "T40D" }
     "T80Proj" { "T80P" }
     "T80All" { "T80A" }
     "T80SecDamp" { "T80D" }
     default { $Stage }
 }
 $stageName = "re${stageCode}_${timestamp}"
+$effectiveReferenceYear = if ([double]::IsNaN($ReferenceYear) -and ($Stage -match "Proj$")) {
+    2020.0
+} else {
+    $ReferenceYear
+}
+$referenceYearLiteral = if ([double]::IsNaN($effectiveReferenceYear)) {
+    "NaN"
+} else {
+    $effectiveReferenceYear.ToString("G", [Globalization.CultureInfo]::InvariantCulture)
+}
 $packetRoot = Join-Path $env:TEMP "nimby_annre_ham_packets"
 $stageDir = Join-Path $packetRoot $stageName
 $annualDir = Join-Path $stageDir "annual"
@@ -157,6 +169,11 @@ if ($Stage -eq "T4") {
         [pscustomobject]@{ Scenario = "secular_decline"; Label = "dec" }
     )) {
         $tasks += [pscustomobject]@{ T = 40; TailYears = $TailYears; Eta = 0.090; Scenario = $spec.Scenario; Label = "t40_$($spec.Label)_e09" }
+    }
+} elseif ($Stage -eq "T40SecDamp") {
+    foreach ($eta in @(0.090, 0.105)) {
+        $etaTag = ("{0:F2}" -f (100 * $eta)).Replace(".", "")
+        $tasks += [pscustomobject]@{ T = 40; TailYears = $TailYears; Eta = $eta; Scenario = "secular_decline"; Label = "t40_dec_d$etaTag" }
     }
 } elseif ($Stage -eq "T40Proj") {
     foreach ($spec in @(
@@ -246,7 +263,7 @@ SCENARIO="${SCENARIOS[$IDX]}"
 LABEL="${LABELS[$IDX]}"
 RUNTAG="__STAGE_NAME___$LABEL"
 
-matlab -singleCompThread -batch "addpath(fullfile('$RUN_ROOT','COMPECON','CEtools')); rehash; fprintf('lookup path: %s\n', which('lookup')); run_annual_political_full_re_price_path('RunTag','$RUNTAG','T',str2double('$T'),'TailYears',str2double('$TAIL'),'TerminalAnchor','__TERMINAL_ANCHOR__','TerminalIter',__TERMINAL_ITER__,'TerminalRelaxation',__TERMINAL_RELAXATION__,'OuterIter',__OUTER_ITER__,'PathRelaxation',__PATH_RELAXATION__,'Eta',str2double('$ETA'),'VoteScale',__VOTE_SCALE__,'DemographicScenario','$SCENARIO','DemographicShockAmplitude',__DEMOGRAPHIC_SHOCK_AMPLITUDE__,'ModIrfDir','$RUN_ROOT/SteadyState/Mod_IRF','ModFunctionsDir','$RUN_ROOT/SteadyState/Mod_Functions','CompeconDir','$RUN_ROOT/COMPECON')"
+matlab -singleCompThread -batch "addpath(fullfile('$RUN_ROOT','COMPECON','CEtools')); rehash; fprintf('lookup path: %s\n', which('lookup')); run_annual_political_full_re_price_path('RunTag','$RUNTAG','T',str2double('$T'),'TailYears',str2double('$TAIL'),'TerminalAnchor','__TERMINAL_ANCHOR__','TerminalIter',__TERMINAL_ITER__,'TerminalRelaxation',__TERMINAL_RELAXATION__,'OuterIter',__OUTER_ITER__,'PathRelaxation',__PATH_RELAXATION__,'Eta',str2double('$ETA'),'VoteScale',__VOTE_SCALE__,'DemographicScenario','$SCENARIO','DemographicShockAmplitude',__DEMOGRAPHIC_SHOCK_AMPLITUDE__,'ReferenceYear',__REFERENCE_YEAR__,'ModIrfDir','$RUN_ROOT/SteadyState/Mod_IRF','ModFunctionsDir','$RUN_ROOT/SteadyState/Mod_Functions','CompeconDir','$RUN_ROOT/COMPECON')"
 '@
 
 $slurmContent = $slurmTemplate.
@@ -268,7 +285,8 @@ $slurmContent = $slurmTemplate.
     Replace("__OUTER_ITER__", [string]$OuterIter).
     Replace("__PATH_RELAXATION__", [string]$PathRelaxation).
     Replace("__VOTE_SCALE__", [string]$VoteScale).
-    Replace("__DEMOGRAPHIC_SHOCK_AMPLITUDE__", [string]$DemographicShockAmplitude)
+    Replace("__DEMOGRAPHIC_SHOCK_AMPLITUDE__", [string]$DemographicShockAmplitude).
+    Replace("__REFERENCE_YEAR__", $referenceYearLiteral)
 
 $slurmPath = Join-Path $hpcDir "annual_full_re_price_path_array.slurm"
 Set-Content -LiteralPath $slurmPath -Value $slurmContent -NoNewline
@@ -311,6 +329,7 @@ $state = [pscustomobject]@{
     terminal_iter = $TerminalIter
     terminal_relaxation = $TerminalRelaxation
     path_relaxation = $PathRelaxation
+    reference_year = $referenceYearLiteral
     workflow = "perfect-foresight-house-price-path-re"
     tasks = $tasks
 }

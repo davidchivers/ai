@@ -285,13 +285,69 @@
   current-price expectations against full price-path RE on the same axes, and adds a
   calibration table plan for the transition-only parameters (`tau`, `eta`, terminal-tail
   rule, and demographic source).
-- Submitted the aggressive full-RE T80 packet plus a secular-decline damping backup.
+- Submitted the aggressive full-RE T80 packet plus a cheaper secular-decline damping backup.
   Broad run: job `16894205`, stage `reT80A_04262004`, six tasks at `eta = 0.090`
   (`fixed_age_share`, `baby_boom`, `secular_decline`, `forecast_low`,
-  `forecast_median`, `forecast_high`). Backup run: job `16894209`, stage
-  `reT80D_04262004`, secular decline only at `eta = 0.090` and `0.105`, with
-  `OuterIter = 16` and `PathRelaxation = 0.05`. The poll automation now watches jobs
-  `16894032`, `16894205`, and `16894209`.
+  `forecast_median`, `forecast_high`). I initially submitted the secular backup at `T80`
+  as job `16894209`, then cancelled it before it started because the intended backup was
+  `T40`. Correct backup run: job `16894254`, stage `reT40D_04262131`, secular decline
+  only at `eta = 0.090` and `0.105`, with `T = 40`, `OuterIter = 16`, and
+  `PathRelaxation = 0.05`. The poll automation now watches jobs `16894032`, `16894205`,
+  and `16894254`.
+- Caveat on the `T80All` projection rows: these are an aggressive stress test, not the
+  validated paper projection workflow. The old paper forecast exercise is specifically
+  the 2020-2100 low/medium/high immigration projection. Before treating projection
+  results as paper-ready, run the separate `T4Proj -> T40Proj/T80Proj` ladder with the
+  projection terminal steady-state anchor.
+- Cancelled the low/high forecast tasks in the broad `T80All` array (`16894205_3` and
+  `16894205_5`) and kept the median forecast task (`16894205_4`) running. Rationale:
+  solve or diagnose the median projection first, then run low/high once the forecast
+  workflow is stable.
+- Patched `run_annual_political_full_re_price_path.m` with an explicit `ReferenceYear`
+  option. This matters for the forecast exercise: the paper projection lane should start
+  from the 2020 age distribution, not silently default to the old year-2000 reference
+  column. Local smoke `local_syntax_T1_projection_median_2020` passed with max path gap
+  `0.01636` and max vote residual `0.00368`.
+- Added and launched a guarded local median-projection ladder:
+  `original_annual_political_re/run_local_median_projection_ladder.ps1`. Active run
+  prefix `local_medproj_2020_20260426_213908` climbs `T = 4, 8, 12, 20` for
+  `forecast_median`, `ReferenceYear = 2020`, `TerminalAnchor = terminal_fixed_point`,
+  `OuterIter = 6`, and `PathRelaxation = 0.08`. It warm-starts each rung from the
+  previous generated path and stops if the verdict is `dead` or the price-path gap
+  exceeds `0.06`.
+- Patched `submit_annual_full_re_price_path_hamilton.ps1` so projection stages
+  (`T4Proj`, `T20Proj`, `T40Proj`, `T80Proj`) default to `ReferenceYear = 2020`;
+  non-projection stages still default to `NaN` and keep the old reference behavior.
+- Overnight local median projection ladder `local_medproj_2020_20260426_213908`
+  stopped at `T = 12`: `T4` was a survivor with path gap `0.03022`, `T8` was usable
+  with path gap `0.01055`, and `T12` was dead with path gap `0.06705` and vote residual
+  `0.02308`. Interpretation: the corrected 2020 median projection is not ready for a
+  paper `T80` upload, but the failure is close enough to justify another safer local
+  retry.
+- Started safer local retry `local_medproj_safe_20260427_054207` with slower path
+  relaxation (`0.04`), more outer iterations (`10`), longer tails (`40/60`), and stronger
+  terminal fixed-point work (`TerminalIter = 16`, `TerminalRelaxation = 0.15`).
+- Hamilton re-check from already-fetched CSVs shows the broad `T80All` stress run improved
+  materially after the stale early rows. Final fetched rows: fixed-age `T80` usable
+  (`0.00316` path gap), secular `T80` survivor (`0.02681`), baby-boom `T80` survivor
+  (`0.04974`), and forecast-median `T80` survivor (`0.04955`). The forecast-median row is
+  still not paper-ready because this was the aggressive stress test submitted before the
+  `ReferenceYear = 2020` projection correction. Direct SSH to Hamilton is currently
+  stalling during the handshake, so treat this as a fetched-results update rather than a
+  live queue verification.
+- Added smoothing-function robustness support to the full-RE runner:
+  `PressureMode = smooth/tanh`, `softnorm`, `linear_clip`, `logit`, and `hard_sign`.
+  The benchmark default remains `smooth`/`tanh`; this is for smoke diagnostics and
+  robustness.
+- Started local smoothing-function smoke `smooth_func_smoke_20260427_061403`. It waits
+  for the current MATLAB median retry to finish, then tests the corrected 2020
+  `forecast_median` path at the `T = 12` failure margin using `smooth:0.030`,
+  `smooth:0.040`, `softnorm:0.030`, and `logit:0.030`. Stop file:
+  `original_annual_political_re/truth/annual_full_re_smoothing_function_smoke/STOP.flag`.
+- Local safer median retry update: `T = 4` completed and became usable at iteration
+  `10/10` with path gap `0.01980` and vote residual `0.00643`. The run has moved to
+  `T = 8`, but no `T8` summary row has been written yet. If the machine is restarted now,
+  the saved `T4` result is preserved, but the in-progress `T8` work will be lost.
 - Added the annual comparison experiment workflow:
   `original_annual_political_re/annual_political_comparison_experiments_workflow.md`.
   It sets up the clean comparison against random/exogenous price paths and the hard-sign
@@ -396,14 +452,15 @@
 
 ## Next 3 Tasks
 
-1. Let scheduled task `NimbyAnnualFullREPoll` keep polling/fetching Hamilton jobs
-   `16894030` and `16894032` every 15 minutes until it self-stops.
-2. If the final baby-boom long-tail row stays usable, submit a baby-boom climb at `T20`
-   or `T40` before any baby-boom `T80` run. If it loses usability, stop adding horizon
-   and switch to a path-level solver update.
-3. If fixed-age and secular-decline finish cleanly at `T40`, promote those passers to
-   `T80`; also run the projection smoke `T4Proj` for the paper's low/medium/high
-   immigration forecast exercise before final figure production.
+1. Let safer local retry `local_medproj_safe_20260427_054207` finish or fail fast. If it
+   passes through `T = 20`, submit a corrected Hamilton median projection run with
+   `ReferenceYear = 2020`; do not upload median `T80` before this gate.
+2. After the safer median retry clears the machine, review smoothing-function smoke
+   `smooth_func_smoke_20260427_061403`; if a smoother pressure rule materially improves
+   `T = 12`, promote it only as a robustness/diagnostic candidate first.
+3. Once SSH to Hamilton behaves again, fetch final full outputs/logs for `T80All` and
+   `T40D`; then submit safer `T80` reruns for secular and baby-boom only if the fetched
+   paths confirm they need more damping.
 
 ## Blockers
 
@@ -423,9 +480,8 @@
 - The annual transition fail-safe is closer to the real model because it moves the
   household distribution forward, but it is still not the final structural solver: the
   permit/supply-to-price block remains reduced-form through `gamma`.
-- The full future-house-price-path RE Bellman problem is not yet implemented. The current
-  annual runner solves households under current-price/random-walk house-price expectations,
-  then moves realized prices forward through smoothed political pass-through.
+- The full future-house-price-path RE lane is implemented, but the corrected 2020 median
+  projection has not yet passed a clean long-horizon ladder.
 
 ## Open Decisions
 
