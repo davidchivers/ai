@@ -112,6 +112,10 @@ Do not copy raw or processed data into this Git repo.
 
 Dropbox currently contains a large `data/` tree, including Dewey raw and processed folders. That data tree should be treated as restricted. If the team wants it removed from Dropbox, do that as a deliberate Dropbox-side cleanup after confirming exactly what to delete.
 
+## Hamilton / HPC
+
+If large processing is moved to Durham Hamilton, use the project guide in `docs/hamilton_workflow.md`. The short version is: use lowercase underscore names, keep raw and intermediate data outside Git, run intensive work through Slurm rather than on login nodes, and check live queue/storage status before major jobs.
+
 ## Current status
 
 The project is active. Existing documents say:

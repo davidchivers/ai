@@ -19,3 +19,4 @@
 - 2026-04-27: Created `README.md`, `STATUS.md`, `WORKSTREAMS.md`, `memory.md`, notes, code README files, and workstream files for `04_exposure_attitudes`.
 - 2026-04-27: Added `notes/06_land_unavailability_identification.md` from the team discussion of Saiz-style land-unavailability variability, first-stage logic, and exclusion concerns.
 - 2026-04-27: Moved the coordination layer into the shared AI repo as `research_projects/04_exposure_attitudes`.
+- 2026-04-27: Added `docs/hamilton_workflow.md` with Hamilton naming, storage, Slurm, and no-data-in-Git conventions.

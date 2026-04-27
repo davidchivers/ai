@@ -33,6 +33,7 @@ Codex should then read:
 - `research_projects/04_exposure_attitudes/DATA_POLICY.md`
 - `research_projects/04_exposure_attitudes/WORKSTREAMS.md`
 - `research_projects/04_exposure_attitudes/workstreams/<your_name>.md`
+- `research_projects/04_exposure_attitudes/docs/hamilton_workflow.md` if using Hamilton/HPC
 
 ## Normal work session
 
@@ -61,6 +62,16 @@ Before sharing, say:
 ```text
 Check that no data or secrets are included, then push this branch and prepare a pull request.
 ```
+
+## If using Hamilton
+
+Before using Hamilton, read:
+
+```text
+research_projects/04_exposure_attitudes/docs/hamilton_workflow.md
+```
+
+Use lowercase underscore names, keep large data and intermediate outputs outside Git, and run intensive jobs through Slurm rather than on login nodes.
 
 ## What "pull" means
 

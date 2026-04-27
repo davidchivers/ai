@@ -22,6 +22,7 @@ Fastest files for future Codex sessions to read:
 6. `notes/04_two_arm_design_and_measurement_issues.md`
 7. `notes/05_stantcheva_regression_summary.md`
 8. `notes/06_land_unavailability_identification.md`
+9. `docs/hamilton_workflow.md` if working on Hamilton/HPC jobs
 
 Dropbox source files that were useful:
 
@@ -44,6 +45,9 @@ Dropbox source files that were useful:
 - Do not open files under Dropbox `data/` unless explicitly permitted and policy is updated.
 - Log Codex work in `workstreams/codex.md`.
 - Use `STATUS.md` for the canonical project state.
+- Use lowercase underscore names for Hamilton paths, job names, scripts, logs, and outputs.
+- Put future Hamilton scripts under `code/hpc/` only when the first script is added.
+- Keep Hamilton logs and outputs in ignored local folders such as `logs/hpc/`, `outputs/hpc/`, `scratch/`, or `/nobackup/<username>/exposure_attitudes/`.
 
 ## Decisions
 
@@ -53,6 +57,7 @@ Dropbox source files that were useful:
 | 2026-04-27 | Do not delete Dropbox data automatically. | Dropbox deletion is destructive and the folder contains many data sources, not a single clearly identified file. | Codex |
 | 2026-04-27 | Treat POI/public-space inclusivity as a separate first arm from the outcome regressions. | User clarified the project structure and measurement motivation. | Dave / Codex |
 | 2026-04-27 | Record land-unavailability variability as the main candidate identification channel. | User clarified the Saiz-style supply-constraint mechanism and the first-stage intuition. | Dave / Codex |
+| 2026-04-27 | Add a Hamilton workflow guide. | Project may need large mobility-data processing and collaborators need shared naming and Slurm conventions. | Dave / Codex |
 
 ## Open questions
 

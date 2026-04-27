@@ -15,6 +15,12 @@ At the start of a session, read these files in order:
 
 Then check `STATUS.md` for the current "Next 3 tasks" before proposing or making a plan.
 
+If the task involves Hamilton, HPC, Slurm, batch jobs, or remote compute, also read:
+
+```text
+research_projects/04_exposure_attitudes/docs/hamilton_workflow.md
+```
+
 ## Data rule
 
 Do not read, copy, commit, paste, or summarize raw Dewey, Advan, SafeGraph, or other restricted row-level data.

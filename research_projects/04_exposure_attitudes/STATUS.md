@@ -27,6 +27,7 @@ This project studies the effect of experienced or exposure segregation on social
 | 2026-04-27 | Frame the project as two arms: POI/public-space mixing and downstream outcomes. | User clarified that one arm documents which places are inclusive and the second links exposure to outcomes such as social capital and attitudes. | Dave / Codex |
 | 2026-04-27 | Stantcheva results are most promising for ages-10-19 exposure segregation. | Aggregate workbook shows strongest associations for pro-redistribution and donation outcomes. | Dave / Codex |
 | 2026-04-27 | Treat land-unavailability variability as the candidate first-stage / IV spine, not as a settled causal design. | User clarified the Saiz-style mechanism: geography-driven land constraints generate local SES and amenity heterogeneity, which may lower exposure segregation. Exclusion remains the central challenge. | Dave / Codex |
+| 2026-04-27 | Use `docs/hamilton_workflow.md` for Hamilton/HPC conventions. | Shared guidance is needed for naming, Slurm jobs, storage locations, and safe handling of large data outputs. | Dave / Codex |
 
 ## Data access
 
@@ -61,3 +62,4 @@ This project studies the effect of experienced or exposure segregation on social
 
 - 2026-04-27: Created project 04 intake files in the shared AI repo from safe Dropbox documents and metadata. Did not open raw data.
 - 2026-04-27: Added a working identification note on land-unavailability variability, exposure segregation, and IV caveats.
+- 2026-04-27: Added Hamilton workflow guidance for naming conventions, storage, Slurm queues, and safe batch-job practice.
