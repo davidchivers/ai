@@ -128,6 +128,8 @@ The project is active. Existing documents say:
 - the Stantcheva extension has detailed build and regression specs
 - newer POI/CBG exposure measures are under active design
 
-Dropbox now contains a revised paper draft at `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`. The current revision uses a standard Durham author block and includes the generated county summary table, standardized first-stage table, economic-connectedness table, volunteering table, and first-stage figures.
+Dropbox now contains a revised paper draft at `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`. The current revision uses a standard Durham Department of Economics author block and includes the generated county summary table, standardized first-stage table, compact preferred county-outcomes table, Stantcheva adolescent-exposure table, first-stage figures, and appendix copies of the generated regression fragments.
+
+The current ranked workflow from the Oracle review is saved at `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\notes\oracle_revision_workflow.md`. Its main recommendation is to make the paper a measurement and mechanism paper about activity-space exposure, with the missing POI-category/public-space mixing table as the highest-priority next empirical output. The IV should remain diagnostic until the first stage, exclusion restrictions, reduced forms, and weak-IV checks are stronger.
 
 See `STATUS.md` for the live task list.

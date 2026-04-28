@@ -2,7 +2,7 @@
 
 ## Current status
 
-Stage: First paper draft revision.
+Stage: First paper draft revision with Oracle-ranked next workflow.
 
 Organizer: Dave
 
@@ -16,6 +16,8 @@ Known collaborators and contributors from Dropbox notes:
 - Dave: joining project and setting up Git coordination in `research_projects/04_exposure_attitudes`
 
 This project studies the effect of experienced or exposure segregation on social capital and attitudes. It already has substantial Stata, Python, and LaTeX code in Dropbox, plus a large `data/` tree that should not be read by Codex or committed to Git.
+
+The current Dropbox draft now has a corrected Durham economics author block, a revised academic front half, a compact preferred county-outcomes table, a Stantcheva adolescent-exposure table, the generated regression fragments in the appendix, and an Oracle-ranked revision workflow at `Draft/notes/oracle_revision_workflow.md`.
 
 ## Decisions
 
@@ -41,9 +43,9 @@ This project studies the effect of experienced or exposure segregation on social
 
 ## Next 3 tasks
 
-1. Review the revised Dropbox paper draft, especially the title block, abstract, introduction, and results section with inserted tables.
-2. Build the missing public-space / POI-category mixing table so the first empirical arm has a visible descriptive result.
-3. Verify the literature citations flagged in `Draft/notes/literature_map.md`, especially Stantcheva et al. (2026), Chetty et al. (2022a,b), and any manuscript citations.
+1. Build the missing public-space / POI-category mixing table and coefficient plot so the first empirical arm has a visible descriptive result.
+2. Lock the exposure-measure provenance for `expo_segr_n23` and `expo_segr_smo_n23`, including timing window, smoothing method, geography, source, and interpretation.
+3. Rebuild the county and Stantcheva evidence around standardized effects, residential-segregation controls, multiple-testing discipline, and IV diagnostics.
 
 ## Active branches
 
@@ -59,6 +61,8 @@ This project studies the effect of experienced or exposure segregation on social
 - The temporary separate `dewey_data` repo is superseded by this AI repo project folder.
 - The exact Dropbox cleanup action is not confirmed. No deletion was performed.
 - Several citations and source details remain to be verified before the paper can be treated as submission-grade.
+- The POI-category/public-space table remains the main missing empirical object for the paper spine.
+- The land-unavailability IV remains diagnostic rather than a settled causal design.
 
 ## Session log
 
@@ -67,3 +71,4 @@ This project studies the effect of experienced or exposure segregation on social
 - 2026-04-27: Added Hamilton workflow guidance for naming conventions, storage, Slurm queues, and safe batch-job practice.
 - 2026-04-27: Created Dropbox `Draft/` with LaTeX source, section files, notes, bibliography, and compiled `exposure_segregation_social_capital.pdf`. No raw data were opened or copied.
 - 2026-04-27: Revised Dropbox paper draft to use a standard economics-paper author block, tighter academic voice, and inserted summary statistics, first-stage, economic-connectedness, volunteering, and first-stage figure outputs.
+- 2026-04-28: Corrected the title-page affiliation to Department of Economics, added the full generated county outcome set to the appendix, created compact preferred county and Stantcheva tables, recompiled the PDF, and saved Oracle's ranked revision workflow in Dropbox `Draft/notes/oracle_revision_workflow.md`.

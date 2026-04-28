@@ -22,3 +22,4 @@
 - 2026-04-27: Added `docs/hamilton_workflow.md` with Hamilton naming, storage, Slurm, and no-data-in-Git conventions.
 - 2026-04-27: Created Dropbox `Draft/`, launched section-specific drafting agents, and compiled the first LaTeX PDF. Output: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`.
 - 2026-04-27: Revised the Dropbox draft after Dave's review: standard Durham author block, NIMBY-style abstract/introduction, inserted generated tables and figures, and recompiled the canonical PDF.
+- 2026-04-28: Revised again after Dave's critique: corrected the affiliation to Department of Economics, added compact preferred county and Stantcheva tables, moved the full generated regression exports into appendices, recompiled the PDF, ran Oracle with extended review, and saved the ranked workflow at Dropbox `Draft/notes/oracle_revision_workflow.md`.

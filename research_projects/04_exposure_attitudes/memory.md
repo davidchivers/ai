@@ -7,7 +7,8 @@
 - Dropbox source: `C:\Users\Dave_\Dropbox\exposure_attitudes`
 - Dropbox draft folder: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft`
 - Current compiled draft PDF: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`
-- Latest draft revision note: title page now uses Cemal Eren Arbatli, Diego Marino Fages, and David Chivers with Durham economics affiliation; abstract and introduction are written in the NIMBY-style mechanism-first voice; results section now includes generated summary statistics, standardized first-stage, economic-connectedness, volunteering, and first-stage figure outputs.
+- Latest draft revision note: title page now uses Cemal Eren Arbatli, Diego Marino Fages, and David Chivers with Durham economics affiliation; abstract and introduction are written in the NIMBY-style mechanism-first voice; results section now includes generated summary statistics, standardized first-stage, compact preferred county outcomes, Stantcheva adolescent-exposure results, first-stage figures, and full generated regression appendices.
+- Latest Oracle workflow note: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\notes\oracle_revision_workflow.md`
 - Source folder name: `exposure_attitudes`
 - Main topic: exposure segregation, public-space mixing, social capital, and attitudes
 - Primary languages in Dropbox code: Stata, Python, R, LaTeX
@@ -72,3 +73,4 @@ Dropbox source files that were useful:
 - Which exact Chandler Lutz/Luz source should be cited for the updated land-unavailability measure?
 - Which POI/public-space category aggregation should become the first descriptive table?
 - Should the Stantcheva attitude regressions be turned into a formal paper table or kept as a complementary appendix until identification is clearer?
+- Oracle recommendation: prioritize POI-category/public-space evidence first, then exposure-provenance documentation, exposure-versus-residential distinctiveness, standardized county associations, IV diagnostics, and Stantcheva timing plots.
