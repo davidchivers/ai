@@ -17,7 +17,7 @@ Known collaborators and contributors from Dropbox notes:
 
 This project studies the effect of experienced or exposure segregation on social capital and attitudes. It already has substantial Stata, Python, and LaTeX code in Dropbox, plus a large `data/` tree that should not be read by Codex or committed to Git.
 
-The current Dropbox draft now has a corrected Durham economics author block, a revised academic front half, a compact preferred county-outcomes table, a Stantcheva adolescent-exposure table, the generated regression fragments in the appendix, and an Oracle-ranked revision workflow at `Draft/notes/oracle_revision_workflow.md`.
+The current Dropbox draft now has a corrected Durham economics author block, an integrated one-section literature review, revised academic prose throughout the front half, data, empirical strategy, results, discussion, and conclusion, a compact preferred county-outcomes table, a Stantcheva adolescent-exposure table, the generated regression fragments in the appendix, and an Oracle-ranked revision workflow at `Draft/notes/oracle_revision_workflow.md`.
 
 ## Decisions
 
@@ -72,3 +72,4 @@ The current Dropbox draft now has a corrected Durham economics author block, a r
 - 2026-04-27: Created Dropbox `Draft/` with LaTeX source, section files, notes, bibliography, and compiled `exposure_segregation_social_capital.pdf`. No raw data were opened or copied.
 - 2026-04-27: Revised Dropbox paper draft to use a standard economics-paper author block, tighter academic voice, and inserted summary statistics, first-stage, economic-connectedness, volunteering, and first-stage figure outputs.
 - 2026-04-28: Corrected the title-page affiliation to Department of Economics, added the full generated county outcome set to the appendix, created compact preferred county and Stantcheva tables, recompiled the PDF, and saved Oracle's ranked revision workflow in Dropbox `Draft/notes/oracle_revision_workflow.md`.
+- 2026-04-28: Reworked the paper draft in response to Dave's critique: removed code/export/process language from the manuscript, rewrote the literature review as one integrated academic section, tightened the data/empirical/results prose, and recompiled the canonical PDF.

@@ -7,7 +7,7 @@
 - Dropbox source: `C:\Users\Dave_\Dropbox\exposure_attitudes`
 - Dropbox draft folder: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft`
 - Current compiled draft PDF: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\exposure_segregation_social_capital.pdf`
-- Latest draft revision note: title page now uses Cemal Eren Arbatli, Diego Marino Fages, and David Chivers with Durham economics affiliation; abstract and introduction are written in the NIMBY-style mechanism-first voice; results section now includes generated summary statistics, standardized first-stage, compact preferred county outcomes, Stantcheva adolescent-exposure results, first-stage figures, and full generated regression appendices.
+- Latest draft revision note: title page now uses Cemal Eren Arbatli, Diego Marino Fages, and David Chivers with Durham economics affiliation; the literature review is a single integrated section; the manuscript has been scrubbed of code/export/process narration; results section now includes generated summary statistics, standardized first-stage, compact preferred county outcomes, Stantcheva adolescent-exposure results, first-stage figures, and full generated regression appendices.
 - Latest Oracle workflow note: `C:\Users\Dave_\Dropbox\exposure_attitudes\Draft\notes\oracle_revision_workflow.md`
 - Source folder name: `exposure_attitudes`
 - Main topic: exposure segregation, public-space mixing, social capital, and attitudes
