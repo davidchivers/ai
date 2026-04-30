@@ -1,32 +1,20 @@
-# Publish guide (GitHub branches)
+# Publish guide (starter ZIPs)
 
-Use this from a clean local clone of `davidchivers/ai_install`.
+Historical note:
 
-## 1. Create repo
+- The old standalone repo `davidchivers/ai_install` has been deleted.
+- Do not follow the old branch-based publish flow unless a new dedicated distribution repo is created on purpose.
+- Starter ZIP downloads are now static website assets published from `other/davidchivers_site/ai_install/downloads/`.
 
-1. Create empty GitHub repo: `davidchivers/ai_install`
-2. Clone it locally.
+Use `teaching/install_ai/REPO_MAP.md` as the canonical repo-location reference.
 
-## 2. Publish `starter_basic`
-
-1. Copy contents of `starter_basic/` into the repo root.
-2. Commit and push to branch `starter_basic`.
-
-## 3. Publish `starter_advanced`
-
-1. Create/switch to branch `starter_advanced`.
-2. Replace repo-root files with contents of `starter_advanced/`.
-3. Commit and push.
-
-## 4. Stable links
-
-- `https://github.com/davidchivers/ai_install/archive/refs/heads/starter_basic.zip`
-- `https://github.com/davidchivers/ai_install/archive/refs/heads/starter_advanced.zip`
-
-## 5. Update workflow
+## Current source folders
 
 1. Edit local source folders in this workspace:
-   - `projects/teaching/ai_teaching_starter/starter_basic/`
-   - `projects/teaching/ai_teaching_starter/starter_advanced/`
-2. Sync each folder to its matching GitHub branch.
-3. Keep branch names stable so workshop links never change.
+   - `teaching/ai_teaching_starter/starter_basic/`
+   - `teaching/ai_teaching_starter/starter_advanced/`
+2. Before publishing, open each root `README.md` and make sure the handover text still matches what you want workshop participants to see first.
+3. Rebuild:
+   - `other/davidchivers_site/ai_install/downloads/starter_basic.zip`
+   - `other/davidchivers_site/ai_install/downloads/starter_advanced.zip`
+4. Keep the website links in `teaching/install_ai/website/app.js` pointed at `downloads/starter_basic.zip` and `downloads/starter_advanced.zip`.

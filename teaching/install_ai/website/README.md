@@ -50,10 +50,12 @@ If in doubt, paste the full terminal error into the AI tool you installed and as
 
 Set these in `app.js` under `distribution`:
 
-- `github.owner`
-- `github.repo`
-- `github.branchBasic`
-- `github.branchAdvanced`
+- `starterZipUrls.basic`
+- `starterZipUrls.advanced`
+- `github.owner` (optional branch-ZIP fallback only)
+- `github.repo` (optional branch-ZIP fallback only)
+- `github.branchBasic` (optional branch-ZIP fallback only)
+- `github.branchAdvanced` (optional branch-ZIP fallback only)
 - `oneDriveFolderUrlBasic` (optional fallback)
 - `oneDriveFolderUrlAdvanced` (optional fallback)
 - `vscodeProfileUrl` (optional)
@@ -61,10 +63,11 @@ Set these in `app.js` under `distribution`:
 - `teachingSlidesUrl` (optional)
 - `githubEducationUrl` (optional)
 
-Example ZIP outputs:
+Historical note:
 
-- `https://github.com/davidchivers/ai_install/archive/refs/heads/starter_basic.zip`
-- `https://github.com/davidchivers/ai_install/archive/refs/heads/starter_advanced.zip`
+- The old standalone starter-pack repo `davidchivers/ai_install` has been deleted.
+- Starter ZIP downloads now point at static website assets under `/ai_install/downloads/`, generated from the current local starter folders.
+- If GitHub branch ZIP downloads are reintroduced, point `distribution.github.owner` and `distribution.github.repo` at the new deliberate target instead of assuming the old repo still exists.
 
 ## Slide link auto-update
 
@@ -87,6 +90,9 @@ You can use:
 - Starter-pack source folders:
   - `teaching/ai_teaching_starter/starter_basic/`
   - `teaching/ai_teaching_starter/starter_advanced/`
+- Published starter ZIPs:
+  - `other/davidchivers_site/ai_install/downloads/starter_basic.zip`
+  - `other/davidchivers_site/ai_install/downloads/starter_advanced.zip`
 - Workshop slides:
   - `teaching/ai_workshop/ai_coding_agents_workshop_slides.pptx`
   - `teaching/ai_workshop/slides_outline.md`
@@ -97,10 +103,11 @@ Use this on download pages/docs:
 
 `This is a starter pack, not a locked system. You can use it as-is, copy only parts of it, or start a brand-new folder anytime.`
 
-## Deployment note (2026-03-17)
+## Deployment note (2026-04-08)
 
-- Evidence: the live files at `https://davidchivers.co.uk/ai_install/index.html` and `https://davidchivers.co.uk/ai_install/app.js` match `thomshutt/davidchivers` on branch `master`, with cache-buster `app.js?v=20260310-1`.
-- Evidence: `thomshutt/davidchivers` `master` contains the active `ai_install/` website; its `gh-pages` branch is a separate older academic site.
-- Evidence: `https://github.com/davidchivers/davidchivers` is a different repo and should not be treated as the live `ai_install` source.
-- Operational rule: update the live installer in `thomshutt/davidchivers` `master`.
-- Local note: the previously recorded Desktop clone path no longer exists on this machine, so verify the live-repo clone location before editing or deploying.
+- Canonical repo-location map for this workspace: `teaching/install_ai/REPO_MAP.md`.
+- Canonical personal-site source repo: `davidchivers/davidchivers.co.uk`.
+- Main workspace repo: `davidchivers/ai`.
+- Deleted standalone starter repo: `davidchivers/ai_install`.
+- Temporary live-domain bridge: `thomshutt/davidchivers`. Treat this as a Pages bridge only until the custom domain is unpaired from it.
+- When asked to publish to the website, use `davidchivers/davidchivers.co.uk` as the source repo, not `thomshutt/davidchivers`.
