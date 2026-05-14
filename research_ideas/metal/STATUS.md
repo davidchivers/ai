@@ -1,8 +1,8 @@
-# STATUS - Metal
+﻿# STATUS - Metal
 
 ## Snapshot
 
-- Last updated: 2026-04-13 (field-paper wording pass compiled cleanly)
+- Last updated: 2026-05-13 (D-drive data restored and external-arrival final audit rerun)
 - Current phase: the main paper is `scene -> genre emergence`. The headline result is now limited
   to local spawning flow, target-genre active bands, and target-genre multi-band musicians.
   Broker or connector language is background only. The live draft now also frames the preferred
@@ -25,6 +25,16 @@
   hub formation and spread than a one-origin narrative. That branch is still descriptive and
   secondary. The paper should stay economics-first and scene-first, with heavy metal as the
   empirical laboratory for creativity and innovation.
+  A 2026-05-13 recovery pass traced the missing `D:\AI_data\research_ideas\metal` raw/processed
+  contents to an April 30 local cleanup of `C:\Users\Dave_\AI\.claude\worktrees`, whose
+  `research_ideas_metal` worktree contained junctions into the real `D:` data targets. The
+  band-level all-metal outcome, treatment-side outputs, country-genre diagnostics, and
+  `city_genre_first_appearance.csv` were regenerated. The missing raw archives were later found in
+  local downloads/Outlook attachment cache and moved to `D:\AI_data\research_ideas\metal\raw`.
+  Known C-drive copies of those two recovered archives were removed. The member dump now ingests
+  again from `data/raw/band_members_20260325.zip`, producing `971,877` unique member-band edges,
+  and the downstream scene-network and external-arrival files have been rebuilt on the D-backed
+  processed-data junction.
   There is also a band-level world animation prototype in `notes/13_band_world_animation_workflow.md`
   using `black_metal` band activity spans. It renders `101,092` matched band-year observations on a
   `3`-year grid and is useful as a visual check on whether the genre can be shown as a moving world
@@ -95,9 +105,17 @@
   restricted to cells that are still far below the cutoff, the pattern attenuates sharply and the
   target-genre multi-band coefficient is no longer distinguishable from zero. The safest current
   paper read is therefore late-stage local niche consolidation rather than the earliest seed stage
-  of scene formation. A focal labor-pool specificity check still helps the mechanism read:
-  target-genre multi-band musicians remain positive once target-genre active musicians are added,
-  while total target-genre active musicians turn negative.
+  of scene formation. The mechanism read is now sharper as well. A focal niche-specificity check
+  still keeps target-genre multi-band musicians positive once target-genre active musicians are
+  added, while target-genre active musicians turn negative. In a companion specification, a
+  residual outside-focal multi-band margin also turns negative while the focal same-genre overlap
+  term stays positive. That makes the overlap result look more niche-specific rather than more
+  generic. A final referee-style stabilization pass has also now tightened the paper on
+  presentation rather than expansion: claim language is slightly more disciplined, the city-level
+  clustering choice is now explained explicitly in the method section, and the data section no
+  longer overstates the archive universe as a literally complete census of metal. There is now
+  also a final stop-or-stabilize memo in `referee/field_journal_stop_or_stabilize_memo.md`, and
+  its recommendation is to stabilize rather than widen the paper again.
   The measurement-validation package now also exists in live paper form. The preferred exact-year
   sample is already geography-clean on the current audit rule, with zero region-like rows and zero
   malformed-label rows surviving into the live fixed-effects panel. Tightening the geography screen
@@ -149,26 +167,28 @@
   differential response within the treated country-genre. The central-musician-loss idea remains
   interesting, but only as a second-ranked feasibility audit. That branch has now also been pushed
   into real workflow form. Under the strict top-10 first-breakout screen, the operational stack
-  now reaches `5` events and `63` positive-capability city-event cells at `t = -1` after the
-  Swedish `Sabaton - Carolus Rex` recovery. A relaxed peak-20 extension grows that to `9` events
-  and `153` positive-capability city-event cells. That relaxed stack is now better grounded on
-  both margins: the retained Italian gothic-metal first breakout is `Lacuna Coil - Karmacode` in
+  now reaches `6` events and `97` positive-capability city-event cells at `t = -1`. Promoting
+  `Angra - Temple of Shadows` into the live branch via the archived `Epoca` page publication date
+  as observed event timing also lifts the relaxed peak-20 extension to `10` events and `187`
+  positive-capability city-event cells. That relaxed stack is now better grounded on three
+  margins: the retained Italian gothic-metal first breakout is `Lacuna Coil - Karmacode` in
   `2006`, recovered directly from official FIMI chart pages with entry `W14-2006`, peak `17`, and
-  a run reaching `20` weeks, and the retained Swedish power-metal first breakout is `Sabaton -
-  Carolus Rex` in `2012`, recovered from official Sverigetopplistan pages with first placement
-  `W22-2012`, peak `2`, and a run reaching `31` weeks. But the branch still fails the descriptive
-  gate because positive-capability cities remain dramatically different before the breakout and the
-  margin is still partly driven by `DEU x power_metal x 2012`.
-  Brazil has improved on both source quality and treatment timing, though not enough to change the
-  breakout stack: `Angra - Rebirth` is now pinned to a December `2001` gold-award report,
-  corroborated by official Aquiles Priester press bios, while `Angra - Temple of Shadows` is now
-  tied directly to an archived `Epoca` chart page published on `2005-11-17` for the sales period
-  `2005-11-08` to `2005-11-15`.
-  The final bounded recovery pass then clarified the stopping point. `Lacuna Coil - Comalies`
-  remains an official dead end under the current FIMI workflow, and the Brazil upgrades improved
-  the broader country-year treatment file more than they improved the stacked breakout-event
-  branch. So the breakout-demand branch is now a useful feasibility object, not a
-  regression-ready causal paper, and it should stay parked unless the explicit re-entry rule in
+  a run reaching `20` weeks; the retained Swedish power-metal first breakout is `Sabaton - Carolus
+  Rex` in `2012`, recovered from official Sverigetopplistan pages with first placement `W22-2012`,
+  peak `2`, and a run reaching `31` weeks; and the retained Brazilian power-metal first breakout
+  is now `Angra - Temple of Shadows` in `2005`, with observed event date `2005-11-17`, `39`
+  positive-capability cities, and `117` years with genre starts. But the branch still fails the
+  descriptive gate because positive-capability cities remain dramatically different before the
+  breakout and the margin is still partly driven by `DEU x power_metal x 2012`.
+  Brazil is therefore no longer just a source-recovery margin for this branch. The live retained
+  row is now in place. But the earlier Brazilian target still matters: `Angra - Rebirth` is now
+  anchored on an archived official Angra-site gold report dated `2001-12-20`, with additional
+  official-site launch traces on `2001-09-15` and `2001-11-26`, while the live Pro-Musica
+  certificate search still returns zero results for `Angra`, so `Rebirth` remains a weaker
+  certification-timed earlier-breakout candidate rather than a chart-entry event.
+  `Lacuna Coil - Comalies` also remains an official dead end under the current FIMI workflow. So the
+  breakout-demand branch is still a useful feasibility object rather than a regression-ready causal
+  paper, and it should stay parked unless the explicit re-entry rule in
   `notes/29_breakout_branch_parking_memo.md` is met.
   The central-musician-loss branch has now also moved past pure first-pass audit. The original
   precision-first shortlist built from the live member-edge data still recovers `31` audit-ready
@@ -186,7 +206,9 @@
   as false positives or current-musician mismatches rather than left as live possibilities. The
   broader recovery workflow has now also been stress-tested to a real stopping point: the
   `any-current` recovery shortlist is fully audited and no longer contains open cases, leaving
-  only `9` unresolved identity-heavy names rather than a broad hidden obituary frontier. The
+  only `6` unresolved identity-heavy names after a small follow-up pass ruled out `Domjan Laszlo`,
+  `Eliud Tamez`, and `Q_Snc` as supportable death events rather than a broad hidden obituary
+  frontier. The
   branch therefore now looks genuinely feasible as a bounded causal-audit project. But the preview
   panel still keeps the interpretation narrow: only `9` of the `20` verified deaths have a
   minimally usable short post window in the live `city x genre x year` panel, and `18` of the
@@ -205,6 +227,33 @@
   show the same negative treated-by-post pattern. So the branch still does not look like a
   plausible causal design for scene emergence itself. If it survives, it now looks most plausible
   as a post-emergence design for focal same-genre entry rather than for broad scene collapse.
+  A new causal-channel reassessment in `notes/31_causal_channel_reassessment.md` now ranks
+  experienced outside-musician arrivals as the best new follow-on causal audit. A quick scan of the
+  member-edge data finds `3,763` cross-city experienced-arrival `city x genre x year` cells within
+  five years before observed emergence, and `479` under the stricter cross-country definition.
+  That makes the arrival channel much richer than the verified-death design while staying closer
+  to the paper's recombination mechanism than the breakout-demand branch. The memo's rule is still
+  conservative: this is a follow-on audit, not a reason to reopen the stabilized main draft unless
+  the first arrival event-study has credible pre-trends and is not mechanically counting the
+  arriving musician's own band.
+  The first operational arrival pass now exists in `notes/32_external_arrival_first_pass.md` and
+  scripts `code/83_build_external_arrival_event_study.py` and
+  `code/84_build_external_arrival_matched_control.py`. The event build recovers `55,183`
+  cell-level first-arrival events across four definitions. In the strict `cross_country_same_genre`
+  analysis sample, there are `212` subthreshold pre-emergence events, and raw local same-genre
+  starts rise from `0.234` in years `-3` to `-1` to `0.500` in years `+1` to `+3`. A stricter
+  same-country matched-control pass recovers matched controls for `184` events. The treated
+  change is `0.199`, the matched-control change is `0.100`, and the DID-style difference is
+  `0.099`, but only `48.9` percent of event-level DID changes are positive. The branch is
+  therefore alive and substantially more feasible than deaths, but the first controlled read is
+  suggestive rather than decisive. The final audit in
+  `code/85_build_external_arrival_final_audit.py` now also runs on the restored data. It excludes
+  the arriving musician's own band from treated outcomes and computes a matched event-study with
+  `t-1` as the baseline. In the strict matched stack, it keeps `184` treated events, removes `97`
+  arrival-associated event-year bands, and leaves the mean own-band-excluded normalized post
+  coefficient over `t=+1` to `t=+3` at `0.130`; the mean normalized pre coefficient over `t=-5`
+  to `t=-2` is `0.016`. That is the best live causal follow-on read, but it still needs country
+  and genre concentration checks before it can be treated as more than a sidecar.
   The empirical-motivation section has now also been tightened without changing the figure set.
   The long subgenre-by-subgenre walk-through has been cut back so the section now reads more like
   setup for the panel result and less like a second paper on genre taxonomy.
@@ -847,7 +896,7 @@
       - `Bilbao` black metal
       - `Brussels` metalcore
     - still-live but more mixed cases:
-      - `Córdoba` black metal
+      - `CÃ³rdoba` black metal
       - `Nagoya` grindcore
     - weak-on-topology or weak-on-lead cases:
       - `Girona` black metal
@@ -1463,14 +1512,12 @@
 
 ## Next 3 Tasks
 
-1. Decide whether to stop the revision cycle at field-journal positioning:
-   the draft now has a stable field-paper framing, so do not reopen exploratory branches unless
-   they directly strengthen the bounded main result.
-2. If one more revision pass is wanted, make it a final referee-style read:
-   test whether the compressed draft now looks stable enough to stop rather than adding more
-   material.
-3. If the paper is ready to stabilize, use the field-journal memo as the live positioning note:
-   keep further revisions consistent with that bounded contribution.
+1. Run leave-country-out and leave-genre-out sensitivity checks on
+   `external_arrival_final_audit_event_study.csv`.
+2. Manually inspect the largest positive and negative strict arrival events to separate plausible
+   local arrivals from database artifacts.
+3. Decide whether the arrival branch remains a parked sidecar or becomes a separate follow-on
+   paper object; do not reopen the stabilized main draft unless the sensitivity checks hold up.
 
 ## Open Decisions
 

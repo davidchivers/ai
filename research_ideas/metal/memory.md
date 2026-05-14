@@ -4,6 +4,114 @@ Most recent session first.
 
 ---
 
+### Session: 2026-05-13 (member dump restored and external-arrival final audit rerun)
+- Found the two missing delivered archives in local downloads/Outlook attachment cache:
+  - `band_members_20260325.zip`
+  - `bands_and_first_releases.zip`
+- Moved both archives to the D-drive project raw-data target:
+  - `D:\AI_data\research_ideas\metal\raw`
+  - Known C-drive copies in Downloads and Outlook attachment cache were removed after the D copies
+    were verified.
+- Reingested the restored member dump:
+  - raw member-role rows: `1,038,533`
+  - unique member-band edges: `971,877`
+  - matched bands: `156,729`
+  - unmatched bands: `29,469`
+- Rebuilt the scene-network inputs needed by the external-arrival branch:
+  - `city_year_network_snapshots.csv`
+  - `community_vs_label_timing.csv`
+  - `city_year_scene_cluster_richer_features.csv`
+  - `city_genre_scene_cluster_richer_features.csv`
+- Reran the external-arrival workflow:
+  - `code/83_build_external_arrival_event_study.py`
+  - `code/84_build_external_arrival_matched_control.py`
+  - `code/85_build_external_arrival_final_audit.py`
+- Final-audit read:
+  - strict matched treated stacks: `184`
+  - event-window rows: `10,604`
+  - arrival-associated bands removed at event year: `97`
+  - mean normalized pre coefficient, `t=-5` to `t=-2`: `0.016`
+  - event-year normalized coefficient, `t=0`: `0.011`
+  - mean normalized post coefficient, `t=+1` to `t=+3`: `0.130`
+- Practical implication:
+  - the data are no longer missing for the arrival branch.
+  - the own-band-excluded result is positive and the pre-period path is not obviously rising, so
+    this remains the best live causal follow-on candidate.
+  - it is still not ready for the stabilized main paper; the next gate is leave-country-out,
+    leave-genre-out, and manual inspection of the largest event-level positives and negatives.
+
+---
+
+### Session: 2026-05-13 (data-loss forensics and partial rebuild)
+- Located the likely loss mechanism for the missing metal raw/processed data.
+  - The raw and processed project folders are junction targets on `D:\AI_data\research_ideas\metal`.
+  - Archived logs show `data/raw/band_members_20260325.zip`,
+    `data/processed/metal_archives_all_metal_band_clean.csv`, and
+    `data/processed/scene_networks/full_musician_band_edges.csv` still existed on `2026-04-24`.
+  - On `2026-04-30 10:11:41-10:11:51` local time, a cleanup session recursively removed
+    `C:\Users\Dave_\AI\.claude\worktrees`; that root included
+    `C:\Users\Dave_\AI\.claude\worktrees\research_ideas_metal` on branch `research_ideas/metal`.
+  - The real `D:` target folders `raw` and `processed` have `LastWriteTime =
+    2026-04-30 10:11:51`, the same second the cleanup completed.
+  - Inference: the recursive worktree deletion followed the project data junctions and emptied the
+    real `D:` raw/processed targets.
+- Recovery checks did not find a restorable member dump or processed scene-network copy.
+  - Searched local `C:`/`D:`, local Dropbox/OneDrive folders, Git history/LFS/object history,
+    Dropbox active/deleted search, Google Drive search, and both recycle bins.
+  - Windows shadow-copy listing required elevation, and Gmail search was blocked by insufficient
+    OAuth scope.
+- Rebuilt the parts that are reproducible from existing local sources.
+  - Restored the expected pointer from the learning-by-viewing raw DB path to the existing
+    `D:\research_data\learning_by_viewing\music\strategy_8_music_pilot\raw\metal_archives`
+    SQLite snapshot.
+  - Reran `code/02_build_all_metal_outcome.py`:
+    `163,965` snapshot rows, `161,945` matched countries, `130,108` matched-and-dated rows.
+  - Reran `code/03_build_core_treatment_panel.py` and `code/04_build_band_influence_memo.py`.
+  - Reran `code/05_analyze_genre_trends.py`, `code/06_build_country_genre_growth_panel.py`, and
+    `code/22_build_genre_emergence.py`.
+- At that point, unresolved before the later download-cache restore:
+  - `data/raw/band_members_20260325.zip`
+  - `data/processed/scene_networks/full_musician_band_edges.csv`
+  - downstream scene-network, central-loss, and external-arrival outputs that depend on the member
+    dump.
+- Practical implication:
+  - the main reduced-form paper's band census and treatment-side objects are back.
+  - the external-arrival last attempt cannot be rerun faithfully until the member dump is restored
+    or re-obtained; the old SQLite band snapshot does not contain member/lineup records.
+  - Superseded later on `2026-05-13` by the successful download-cache restore recorded above.
+
+---
+
+### Session: 2026-05-13 (external-arrival last attempt scaffold)
+- Reopened the experienced outside-musician arrival branch for one last bounded check.
+- Confirmed the current machine still lacks the required processed inputs at the project D-drive
+  junction targets:
+  - `data/processed/metal_archives_all_metal_band_clean.csv`
+  - `data/processed/scene_networks/external_arrival_events.csv`
+  - `data/processed/scene_networks/external_arrival_matched_controls.csv`
+- A broader targeted search across `D:\` and `C:\Users\Dave_` did not recover the raw member dump,
+  the processed scene-network files, or the prior external-arrival outputs.
+- Updated `code/83_build_external_arrival_event_study.py` so future event files preserve full
+  pipe-delimited `arriving_band_ids`; the older event schema did not contain enough information to
+  exclude arrival-associated bands from treated outcomes.
+- Added `code/85_build_external_arrival_final_audit.py`.
+  - It rebuilds band-level local starts.
+  - It excludes the arriving musician's own band from treated event-window outcomes.
+  - It computes a matched event-study using the existing strict matched-control sample and `t-1`
+    as the baseline.
+- Verification:
+  - `python -m py_compile code\83_build_external_arrival_event_study.py code\84_build_external_arrival_matched_control.py code\85_build_external_arrival_final_audit.py`
+    succeeded.
+  - Running `code\85_build_external_arrival_final_audit.py` correctly stopped at the missing-input
+    preflight check rather than producing a partial result.
+- Practical implication:
+  - the arrival branch remains feasible and suggestive on the April first-pass numbers, but it is
+    not cleared for the main paper.
+  - unless the processed data are restored, this causal follow-on should be parked with the deaths
+    and breakout branches rather than used to reopen the stabilized field-paper draft.
+
+---
+
 ### Session: 2026-04-13 (field-paper wording pass for the main draft)
 - Updated:
   - `drafts/metal.tex`
@@ -2934,6 +3042,76 @@ Most recent session first.
 
 ---
 
+### Session: 2026-04-13 (breakout branch re-entry check on the highest-payoff target)
+- Reopened the highest-chance causal side branch through the documented top recovery target:
+  `Lacuna Coil - Comalies` in `ITA x gothic_metal x 2002`.
+- Ran a fresh direct pass against the live official FIMI query path:
+  - `https://www.fimi.it/top-of-the-music/music/?artist=LACUNA+COIL&title=COMALIES`
+  - result still shows `IN CLASSIFICA (0)` and `CERTIFICAZIONI (0)`
+  - by contrast, the same archive path still resolves `Karmacode`, so this does not look like a
+    generic FIMI outage
+- Practical implication:
+  - `Comalies` remains blocked under the current official archive workflow
+  - the breakout branch is still not ready to leave feasibility stage
+  - if the branch is pushed again, the active next recovery targets are now:
+    - `Angra - Rebirth`
+    - `Angra - Temple of Shadows`
+  - another Italy retry under the same direct FIMI path is probably low value unless a new source
+    path appears
+- Updated:
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `notes/29_breakout_branch_parking_memo.md`
+  - `data/processed/country_genre_analysis/breakout_seed_recovery_targets.csv`
+
+- Continued immediately to the next live Brazil targets.
+- Fresh Pro-Música Brasil check:
+  - `https://pro-musicabr.org.br/home/certificados/?busca_artista=Angra`
+  - current live search returns `0 resultados`
+  - a sanity check on `Tihuana` returns `2 resultados`, so this does not look like a generic site
+    failure
+- Practical implication:
+  - `Angra - Rebirth` remains blocked on the live official certificate route
+  - `Angra - Temple of Shadows` is now the stronger active Brazil row because it still has:
+    - the archived `Epoca` top-10 chart window
+    - a BraveWords relay of an official Angra website update reporting the same result
+  - the active breakout recovery order is now:
+    - `Temple of Shadows`
+    - `Rebirth`
+    - `Comalies` only if a genuinely new Italy source path appears
+
+---
+
+### Session: 2026-04-13 (targeted follow-up on remaining central-loss unresolved names)
+- Ran one more bounded search pass on the remaining obituary-side unresolved names instead of
+  reopening a broad death search.
+- Reclassified three names into `not_loss_or_false_positive`:
+  - `Domjan Laszlo`
+    Metal Archives still lists him under an active band (`Soul Terror`), with no RIP marker.
+  - `Eliud Tamez`
+    Metal Archives gives a birth date, current age, and present-tense affiliation, with no RIP
+    marker.
+  - `Q_Snc`
+    Metal Archives lists Vassilis "Q-Snc" in current bands and on later credits through `2022`.
+- The obituary workflow now leaves:
+  - `20` `death_verified`
+  - `108` `not_loss_or_false_positive`
+  - `2` `possible_permanent_exit`
+  - `6` `unresolved`
+- The remaining unresolved names are now:
+  - `Wizard`
+  - `Roger Stachow`
+  - `Marcelo Bartolozzi`
+  - `Andrey Kapachev`
+  - `Sinister`
+  - `Dawidek`
+- Practical implication:
+  - the search frontier now looks even thinner than it did on April 10
+  - another broad obituary hunt is probably not the best use of time
+  - the higher-value next move is robustness on the existing `9` usable post-emergence death
+    windows
+
+---
+
 ### Session: 2026-04-10 (matched-control prototype for central-loss branch)
 - Built the first matched-control descriptive prototype:
   - `code/81_build_central_loss_matched_control_prototype.py`
@@ -2956,3 +3134,230 @@ Most recent session first.
   - the branch now has a clearer live estimand
   - if it continues, the right target is post-death suppression of focal same-genre entry
   - not a broad scene-collapse narrative
+
+---
+
+### Session: 2026-04-13 (Temple of Shadows enters the live breakout stack)
+- Promoted `Angra - Temple of Shadows` from a dated Brazil country-year row into the live breakout
+  branch by filling `entry_date = 2005-11-17` in
+  `data/blockbuster_album_country_hits_bra_manual.csv`.
+- The timing choice is conservative rather than aggressive:
+  - it uses the archived `Epoca` page publication date already documented in the notes
+  - it does **not** claim a cleaner direct ABPD / Pro-Musica chart-entry week than the source
+    actually provides
+- Rebuilt the treatment and breakout objects:
+  - `code/03_build_core_treatment_panel.py`
+  - `code/73_audit_breakout_event_candidates.py`
+  - `code/72_build_breakout_event_panel.py`
+  - `code/74_build_breakout_branch_descriptive_summary.py`
+  - `code/76_build_breakout_expansion_targets.py`
+  - plus the strict and `peak20` parallel output files in
+    `data/processed/country_genre_analysis/`
+- Main branch effect:
+  - strict top-10 retained stack rises from `5` to `6`
+  - strict positive-capability city-event cells at `t = -1` rise from `63` to `97`
+  - relaxed peak-20 retained stack rises from `9` to `10`
+  - relaxed positive-capability city-event cells at `t = -1` rise from `153` to `187`
+  - `Temple of Shadows` enters as `bra_power_metal_2005_temple_of_shadows`
+  - live audit support for that row:
+    - `positive_capability_cities = 39`
+    - `years_with_genre_starts = 117`
+- Interpretation:
+  - the breakout branch is materially stronger than it was before this pass
+  - Brazil is no longer only a recovery frontier; it now contributes a live retained event
+  - but the branch still fails the descriptive gate because pre-period differences remain large
+    and the margin is still partly driven by `DEU x power_metal x 2012`
+- Practical next-target map after this promotion:
+  - `Rebirth` is now the main Brazil target because it could move the retained Brazil power-metal
+    breakout earlier from `2005` to `2001`
+  - `Comalies` remains the main Italy target, but still looks like an official FIMI dead end
+  - `Temple of Shadows` stays on the machine-generated target list only as a timing-refinement
+    target, not as a missing retained-event target
+- Updated notes and trackers:
+  - `notes/27_breakout_peak20_relaxed_extension.md`
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `notes/29_breakout_branch_parking_memo.md`
+  - `STATUS.md`
+
+---
+
+### Session: 2026-04-14 (Rebirth upgraded to archived official-source certification timing)
+- Reopened the highest-value remaining Brazil recovery target, `Angra - Rebirth`, and pushed the
+  official-site archive path rather than stopping at the older journalistic fallback.
+- Recovered a stronger archived official Angra-site source environment:
+  - `https://web.archive.org/web/20011226084243/http://www.angra.net/rebirth.asp`
+  - `https://web.archive.org/web/20011212163756/http://www.angra.net/news.asp`
+- Main source findings:
+  - the archived `Rebirth` page reports on `2001-12-20` that Angra had received a gold record in
+    Brazil only `45` days after the launch of `Rebirth`
+  - the archived `news.asp` page also contains the `2001-09-15` album announcement with world
+    release marked for `2001-10-29`
+  - the same official news page includes a `2001-11-26` post-launch press note for `Rebirth`
+- Practical interpretation:
+  - `Rebirth` now has a better source-quality certification timing anchor than the older
+    `Whiplash`-plus-bio path
+  - but it still does **not** become a chart-entry breakout event, because no real Brazil chart
+    table or direct official chart-entry object was recovered
+- Rebuilt the relevant treatment and breakout files:
+  - `code/03_build_core_treatment_panel.py`
+  - `code/73_audit_breakout_event_candidates.py`
+  - `code/72_build_breakout_event_panel.py`
+  - `code/74_build_breakout_branch_descriptive_summary.py`
+  - `code/76_build_breakout_expansion_targets.py`
+- Post-rebuild branch implication:
+  - the strict retained breakout stack stays at `6` events
+  - positive-capability city-event cells at `t = -1` stay at `97`
+  - `Rebirth` upgrades the source quality of the core treatment file, but not the event-study
+    feasibility verdict
+- Applied the source-quality upgrade to:
+  - `data/blockbuster_album_country_hits_bra_manual.csv`
+  - `notes/04_empirical_notes.md`
+  - `notes/28_breakout_seed_recovery_targets.md`
+  - `notes/29_breakout_branch_parking_memo.md`
+  - `STATUS.md`
+
+---
+
+### Session: 2026-04-14 (main-result niche-specificity strengthening pass)
+- Switched back to the main `scene -> genre emergence` paper and took the most bounded remaining
+  strengthening move on the live result rather than reopening side branches.
+- Extended the threshold-response workflow in `code/70_build_scene_threshold_response.py` with a
+  sharper falsification-style check:
+  - keep the preferred fifth-band FE structure
+  - add target-genre active musicians
+  - add a residual outside-focal multi-band margin constructed as city-wide multi-band musicians
+    minus focal same-genre multi-band musicians, clipped at zero
+- Important implementation fix:
+  - first pass at the new residual margin accidentally rolled the variable only after the risk-set
+    filter, which shrank the sample too much
+  - corrected the code so the residual outside-focal overlap variable is rolled on the full merged
+    panel before the preferred at-risk filter, matching the rest of the workflow
+- Final empirical read from the strengthened specificity package:
+  - in the active-pool check, target-genre multi-band musicians stay positive at `0.0121` while
+    target-genre active musicians are `-0.1049`
+  - in the sharper outside-focal check, target-genre multi-band musicians stay positive at
+    `0.0114` while the residual outside-focal multi-band margin is `-0.0129`
+  - this strengthens the interpretation that the overlap margin is niche-specific rather than a
+    generic city-wide overlap proxy
+- Rebuilt:
+  - `code/70_build_scene_threshold_response.py`
+  - `data/processed/scene_networks/scene_threshold_response_results.csv`
+  - `data/processed/scene_networks/scene_threshold_response_summary.md`
+- Folded the stronger result into the live paper draft:
+  - `drafts/metal.tex`
+  - `drafts/sections/introduction.tex`
+  - `drafts/sections/results.tex`
+  - `drafts/sections/appendix.tex`
+  - `drafts/tables/appendix_threshold_specificity.tex`
+- Verification:
+  - `latexmk -pdf -interaction=nonstopmode -halt-on-error metal.tex` succeeded
+  - the updated draft compiles cleanly to `drafts/metal.pdf`
+
+---
+
+### Session: 2026-04-14 (final referee-style stabilization pass)
+- Ran the promised final referee-style read on the live draft with the goal of compressing and
+  disciplining the paper rather than finding new results.
+- Main referee-style fixes applied:
+  - clarified in `drafts/sections/method.tex` why the live specification clusters standard errors
+    by city: the dependence concern is city-level serial and cross-genre correlation from shared
+    local shocks
+  - softened the opening of `drafts/sections/data.tex` so the paper no longer overstates the
+    Metal Archives universe as a literally complete census of all metal activity
+  - tightened `drafts/sections/results.tex` so the main coefficient comparison is between
+    focal-niche thickness and broader city-level stock terms, not a loose `city size` shorthand
+- Verification:
+  - reran `latexmk -pdf -interaction=nonstopmode -halt-on-error metal.tex`
+  - `drafts/metal.pdf` rebuilt cleanly after the stabilization edits
+- Practical read after this pass:
+  - the draft now looks more like a stable field-journal paper than an expanding working memo
+  - the highest-value next move is a final rendered-PDF stop check, not another empirical branch
+
+---
+
+### Session: 2026-04-14 (field-journal stop-or-stabilize memo written)
+- Added `referee/field_journal_stop_or_stabilize_memo.md`.
+- Purpose:
+  - put the current referee-style stop recommendation into a concrete project note rather than
+    leave it only in chat or implicit in `STATUS.md`
+- Memo verdict:
+  - `Stabilize`
+- Main practical rule recorded there:
+  - if the rendered PDF does not reveal a new overclaim, confusing caption, or obvious excess
+    paragraph, stop and do not reopen exploratory branches
+
+---
+
+### Session: 2026-04-24 (causal-channel reassessment)
+- Reopened the causal-channel question after the deaths, breakout, broadband, and main-result
+  strengthening passes.
+- Added `notes/31_causal_channel_reassessment.md`.
+- Main conclusion:
+  - do not put more effort into broad death searching or breakout chart recovery by default
+  - the best new causal follow-on candidate is experienced outside-musician arrivals into
+    subthreshold local `city x genre` cells
+- Quick feasibility scans run on live processed data:
+  - band split, changed-name, or on-hold rows with inferred end years: `52,723`
+  - distinct band-ending `city x genre x year` cells: `46,716`
+  - cross-city experienced member-band-genre arrival rows: `145,798`
+  - cross-city experienced-arrival `city x genre x year` cells within five years before observed
+    emergence: `3,763`
+  - stricter cross-country experienced-arrival `city x genre x year` cells within five years before
+    observed emergence: `479`
+  - post-socialist emergence cells excluding Germany: `692`, with `58` in `1989-1994` and `107` in
+    `1995-2000`
+- Ranking after the reread:
+  - first causal audit to try: experienced outside-musician arrivals
+  - cheap secondary probe: global digital platform timing interacted with pre-digital isolation
+    and capability
+  - interesting separate paper idea: post-socialist cultural or market opening
+  - mechanism-only sidecar: band dissolution and spinouts
+  - parked unless better timing data appear: historical label shocks, venues, festivals, studios,
+    and touring infrastructure
+- Practical implication:
+  - the stabilized main paper should remain closed for now
+  - the next causal branch, if pursued, should start with an arrival event file and a tight
+    pre-trend/mechanical-counting audit
+
+---
+
+### Session: 2026-04-24 (external-arrival first pass)
+- Built the first operational experienced outside-musician arrival workflow:
+  - `code/83_build_external_arrival_event_study.py`
+  - `code/84_build_external_arrival_matched_control.py`
+- Output files:
+  - `data/processed/scene_networks/external_arrival_events.csv`
+  - `data/processed/scene_networks/external_arrival_event_windows.csv`
+  - `data/processed/scene_networks/external_arrival_relative_year_summary.csv`
+  - `data/processed/scene_networks/external_arrival_event_study_summary.md`
+  - `data/processed/scene_networks/external_arrival_matched_controls.csv`
+  - `data/processed/scene_networks/external_arrival_matched_event_comparison.csv`
+  - `data/processed/scene_networks/external_arrival_matched_control_summary.md`
+- Added `notes/32_external_arrival_first_pass.md`.
+- Operational definition:
+  - the data do not observe literal migration
+  - the event is first observed membership in a local `city x genre` cell after strictly earlier
+    band experience in another city or country
+- Event-count read:
+  - all cell-level first-arrival events across four definitions: `55,183`
+  - analysis-sample events:
+    - `cross_city_any`: `2,269`
+    - `cross_city_same_genre`: `1,383`
+    - `cross_country_any`: `456`
+    - `cross_country_same_genre`: `212`
+- Raw strict `cross_country_same_genre` event-window read:
+  - local same-genre starts rise from `0.234` in years `-3` to `-1` to `0.500` in years `+1` to
+    `+3`
+  - `57.5` percent of strict events cross the operational emergence threshold within five years
+- Matched-control strict read:
+  - matched treated events: `184`
+  - matched control rows: `780`
+  - treated change in local same-genre starts: `0.199`
+  - matched-control change: `0.100`
+  - DID-style difference: `0.099`
+  - share of event-level DID changes above zero: `0.489`
+- Practical interpretation:
+  - this is the best live causal follow-on candidate by event-count feasibility and mechanism fit
+  - the first controlled read is positive on average but not decisive
+  - next check should exclude the arriving musician's own band from the entry outcome and run a
+    matched stacked event-study

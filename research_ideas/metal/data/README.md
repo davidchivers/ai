@@ -19,9 +19,12 @@ Current rule:
 
 - `raw/`
   - read-only delivered source archives used by the active workflow
-  - currently includes:
+  - stored on `D:\AI_data\research_ideas\metal\raw` via the local junction
+  - restored on `2026-05-13` from local downloads/Outlook attachment cache:
     - `band_members_20260325.zip`
       - full Metal Archives member dump delivered on `2026-03-26`
+    - `bands_and_first_releases.zip`
+      - delivered band/release source archive
 - `source_matrix.csv`
   - official-source audit for the first core country set
 - `blockbuster_album_seed_template.csv`
@@ -64,14 +67,16 @@ Current rule:
   - current all-metal outcome build from the full Metallum snapshot
   - includes cleaned band-level rows, an all-metal country-year panel, a core-country summary, and
     an all-metal overview note
-  - now also includes the scene-network branch unlocked by the full member dump:
+  - restored scene-network outputs from the `2026-05-13` rebuild include:
     - `scene_networks/full_musician_band_edges.csv`
     - `scene_networks/full_member_ingest_summary.md`
-    - `scene_networks/city_network_stats.csv`
-    - `scene_networks/city_band_band_edges.csv`
-    - `scene_networks/city_network_summary.md`
-    - `scene_networks/mechanism_test_merged.csv`
-    - `scene_networks/mechanism_test_results.md`
+    - `scene_networks/city_year_network_snapshots.csv`
+    - `scene_networks/community_vs_label_timing.csv`
+    - `scene_networks/city_year_scene_cluster_richer_features.csv`
+    - `scene_networks/city_genre_scene_cluster_richer_features.csv`
+    - `scene_networks/external_arrival_events.csv`
+    - `scene_networks/external_arrival_matched_controls.csv`
+    - `scene_networks/external_arrival_final_audit_summary.md`
   - now also includes the current multi-market treatment build:
     - `blockbuster_album_country_hits_core.csv`
       - now includes seed-linked home-versus-foreign exposure columns

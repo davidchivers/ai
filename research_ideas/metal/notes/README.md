@@ -33,6 +33,9 @@ This folder is the canonical workspace for brainstorming and pre-paper planning.
 - `28_breakout_seed_recovery_targets.md`
 - `29_breakout_branch_parking_memo.md`
 - `30_central_musician_loss_first_pass.md`
+- `31_causal_channel_reassessment.md`
+- `32_external_arrival_first_pass.md`
+- `33_data_recovery_forensics.md`
 
 ## Workflow
 1. Brainstorm in `01`-`04`.
@@ -78,4 +81,9 @@ This folder is the canonical workspace for brainstorming and pre-paper planning.
     recovery pass on the breakout-demand branch.
 27. Use `30_central_musician_loss_first_pass.md` for the first feasibility audit on death or exit
     shocks to highly central local musicians.
-28. Sync next tasks in `STATUS.md`.
+28. Use `31_causal_channel_reassessment.md` for the ranked causal-channel reassessment after the
+    death, breakout, broadband, and main-result strengthening passes.
+29. Use `32_external_arrival_first_pass.md` for the experienced outside-musician arrival workflow
+    and its own-band-excluded final audit.
+30. Use `33_data_recovery_forensics.md` for the data-loss and recovery record.
+31. Sync next tasks in `STATUS.md`.
