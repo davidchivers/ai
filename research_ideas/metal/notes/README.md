@@ -37,6 +37,7 @@ This folder is the canonical workspace for brainstorming and pre-paper planning.
 - `32_external_arrival_first_pass.md`
 - `33_data_recovery_forensics.md`
 - `34_external_arrival_robustness_verdict.md`
+- `35_journal_target_and_polish_workflow.md`
 
 ## Workflow
 1. Brainstorm in `01`-`04`.
@@ -89,4 +90,6 @@ This folder is the canonical workspace for brainstorming and pre-paper planning.
 30. Use `33_data_recovery_forensics.md` for the data-loss and recovery record.
 31. Use `34_external_arrival_robustness_verdict.md` for the first robustness gate and sidecar
     promotion decision.
-32. Sync next tasks in `STATUS.md`.
+32. Use `35_journal_target_and_polish_workflow.md` for the target-journal and next paper-polish
+    workflow.
+33. Sync next tasks in `STATUS.md`.

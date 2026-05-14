@@ -1523,9 +1523,9 @@
    no treated/control region-like labels and at least `5` matched controls.
 2. Manually audit the top `10` positive and top `10` negative events in that clean stack for
    musician identity, city label quality, and database-artifact risk.
-3. In parallel, return to the main paper as a field-journal draft: run a rendered-PDF polish pass
-   and write a short journal-target memo rather than reopening the main paper around the arrival
-   sidecar.
+3. Start the main-paper polish pass using `notes/35_journal_target_and_polish_workflow.md` as the
+   target memo: default to `Journal of Cultural Economics`, add substance to the setting/data and
+   institutional-mechanism sections, and keep the arrival branch out of the main text for now.
 
 ## Open Decisions
 

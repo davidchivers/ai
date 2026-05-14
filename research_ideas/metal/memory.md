@@ -31,6 +31,11 @@ Most recent session first.
     `98`-event stack.
   - in parallel, the main draft should be polished toward a field-journal target instead of being
     reopened around the sidecar.
+- Added `notes/35_journal_target_and_polish_workflow.md`.
+  - Default target: `Journal of Cultural Economics`.
+  - Higher-risk alternative: `Industrial and Corporate Change`.
+  - Do not aim first at `Regional Science and Urban Economics` unless the paper gains a cleaner
+    causal design.
 
 ---
 
