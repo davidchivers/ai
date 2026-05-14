@@ -1,5 +1,5 @@
 function ensure_external_matlab_data_paths()
-% Prefer large external MATLAB asset folders on D:, with Dropbox fallback.
+% Prefer explicit/D: external asset folders, with user Dropbox fallback.
 
 persistent configured;
 if ~isempty(configured) && configured
@@ -9,8 +9,20 @@ end
 base_candidates = {
     getenv('ZAC_DAVID_EXTERNAL_ROOT')
     'D:\research_data\zac_and_david'
-    'C:\Users\Dave_\Dropbox\Zac and David'
 };
+
+user_profile = getenv('USERPROFILE');
+if ~isempty(user_profile)
+    base_candidates{end + 1} = fullfile(user_profile, 'Dropbox', 'Zac and David');
+end
+
+home_dir = getenv('HOME');
+if ~isempty(home_dir)
+    base_candidates{end + 1} = fullfile(home_dir, 'Dropbox', 'Zac and David');
+end
+
+% Legacy Dave machine fallback. Keep last so collaborators do not need this path.
+base_candidates{end + 1} = 'C:\Users\Dave_\Dropbox\Zac and David';
 
 subdirs = {
     fullfile('Code', 'SteadyState')

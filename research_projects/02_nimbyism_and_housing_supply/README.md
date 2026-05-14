@@ -4,7 +4,7 @@
 **Journal**: Journal of Monetary Economics (published 2025)
 **Status**: Published - post-publication maintenance / extension base
 **Last updated**: 2026-04-11
-**Canonical status tracker**: `research_projects/02_nimbyism_and_housing_supply/STATUS.md`
+**Canonical status tracker**: `STATUS.md` (in David's full AI monorepo this same folder lives at `research_projects/02_nimbyism_and_housing_supply/`)
 
 ---
 
@@ -62,6 +62,34 @@ Authoritative live status is maintained in `STATUS.md`. This section is a brief 
   document yet
 - [ ] Code review of MATLAB code (`SteadyState/`, `Codes_ABB/`) not yet started
 - [ ] Any fixes found here should be logged in `UPSTREAM_FIX_LOG.md` for porting to project 03
+
+## Coauthor setup and portability
+
+For the Zac/David collaboration repo, this folder is copied as `nimby_housing_supply/`.
+Treat that folder as the project root; older notes may still refer to the original
+monorepo path `research_projects/02_nimbyism_and_housing_supply/`.
+
+Start by reading:
+
+1. `COAUTHOR_SETUP.md`
+2. `STATUS.md`
+3. `memory.md`
+4. the current route notes under `drafts_re/`, especially
+   `drafts_re/moll_direct_price_beliefs/route_options.md`
+
+External NIMBY assets are not all stored in git. The current local-path convention is:
+
+- `ZAC_DAVID_EXTERNAL_ROOT`: optional override; set this to the folder containing
+  `Data/`, `Code/SteadyState/`, and `Code/Codes_ABB/` if your machine uses a
+  different layout.
+- `D:\research_data\zac_and_david`: preferred large-data mirror on David's machine.
+- `%USERPROFILE%\Dropbox\Zac and David`: normal collaborator Dropbox fallback.
+- `C:\Users\Dave_\Dropbox\Zac and David`: Dave-only legacy fallback.
+
+Large generated outputs and scratch folders are intentionally not part of the
+GitHub repo. Notes mentioning `D:\AI_storage\spillover\...` or Hamilton
+`/nobackup/hfnt93/...` are usually historical run locations, not paths that Zac
+must have locally.
 
 ## Next 3 concrete tasks
 
