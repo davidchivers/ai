@@ -23,17 +23,7 @@ end
 benchmark_cfg = fertility_benchmark_config();
 benchmark_overrides = benchmark_cfg.overrides;
 
-repro_overrides = struct( ...
-    'C', 1, ...
-    'birth_utility', 0, ...
-    'child_utility', 0, ...
-    'birth_cost', 0, ...
-    'lambda_crowd', 0, ...
-    'psi_crowd', 0, ...
-    'p_leave', 0, ...
-    'logit_scale', 0.15, ...
-    'I', benchmark_overrides.I, ...
-    'J', benchmark_overrides.J);
+repro_overrides = build_nimby_shutoff_overrides(benchmark_overrides);
 
 x_repro = [2.0, 0.03];
 distance_upstream = SolveSS_function(x_repro);
@@ -111,15 +101,17 @@ price_table = table(price_grid(:), distance, totalvote, debtstock, avg_birth_rat
     'share_parity_0', 'share_parity_1', 'share_parity_2', 'share_parity_3plus', ...
     'share_home_any_40', 'share_home_any_50', 'mean_home_children_40', 'mean_home_children_50'});
 
-[market_table, crossing] = ClearMarkets_fertility(benchmark_cfg.market_price_grid, benchmark_cfg.rbPos, benchmark_overrides);
+[market_table, crossing_coarse] = ClearMarkets_fertility(benchmark_cfg.market_price_grid, benchmark_cfg.rbPos, benchmark_overrides);
+[local_market_table, crossing] = ClearMarkets_fertility(benchmark_cfg.local_market_price_grid, benchmark_cfg.rbPos, benchmark_overrides);
 [~, ~, ~, ~, ~, diagnostics_benchmark] = SolveSS_fertility([benchmark_cfg.eval_price, benchmark_cfg.rbPos], benchmark_overrides);
 fertility_benchmark = load('SS_fertility.mat');
 
 writetable(repro_table, fullfile(out_dir, 'fertility_reproduction_check.csv'));
 writetable(price_table, fullfile(out_dir, 'fertility_price_sweep.csv'));
 writetable(market_table, fullfile(out_dir, 'fertility_market_clearing_grid.csv'));
+writetable(local_market_table, fullfile(out_dir, 'fertility_local_benchmark_search.csv'));
 save(fullfile(out_dir, 'fertility_run_ge_results.mat'), 'repro_table', 'price_table', 'market_table', ...
-    'crossing', 'fertility_repro', 'fertility_benchmark', 'diagnostics_benchmark');
+    'local_market_table', 'crossing', 'crossing_coarse', 'fertility_repro', 'fertility_benchmark', 'diagnostics_benchmark');
 
 report_path = fullfile(out_dir, 'fertility_run_ge_report.md');
 fid = fopen(report_path, 'w');
@@ -143,24 +135,44 @@ for i = 1:n
         share_home_any_40(i), share_home_any_50(i), mass_error(i));
 end
 fprintf(fid, '\n## Market clearing\n\n');
+if crossing_coarse.exists
+    fprintf(fid, '- Sign changes on common market grid: %d\n', crossing_coarse.sign_change_count);
+    if crossing_coarse.is_unique
+        fprintf(fid, '- Coarse-grid sign change: %.2f (%.6f) to %.2f (%.6f)\n', ...
+            crossing_coarse.lower_price, crossing_coarse.lower_vote, crossing_coarse.upper_price, crossing_coarse.upper_vote);
+    else
+        fprintf(fid, '- Non-unique zero crossings on the common market grid.\n');
+        for i = 1:numel(crossing_coarse.lower_prices)
+            fprintf(fid, '- Common-grid bracket %d: %.2f (%.6f) to %.2f (%.6f)\n', ...
+                i, crossing_coarse.lower_prices(i), crossing_coarse.lower_votes(i), ...
+                crossing_coarse.upper_prices(i), crossing_coarse.upper_votes(i));
+        end
+    end
+else
+    fprintf(fid, '- No zero crossing found on the common market grid.\n');
+end
 if crossing.exists
-    fprintf(fid, '- Sign changes on supplied market grid: %d\n', crossing.sign_change_count);
+    fprintf(fid, '- Local benchmark search sign changes: %d\n', crossing.sign_change_count);
     if crossing.is_unique
-        fprintf(fid, '- Vote crosses zero between %.2f (%.6f) and %.2f (%.6f)\n', ...
+        fprintf(fid, '- Local benchmark bracket: %.3f (%.6f) to %.3f (%.6f)\n', ...
             crossing.lower_price, crossing.lower_vote, crossing.upper_price, crossing.upper_vote);
-        fprintf(fid, '- Refined equilibrium price estimate: %.6f (%s)\n', ...
+        fprintf(fid, '- Refined local equilibrium price estimate: %.6f (%s)\n', ...
             crossing.refined_price, crossing.method);
     else
-        fprintf(fid, '- Non-unique zero crossings on the supplied market grid.\n');
+        fprintf(fid, '- Non-unique zero crossings on the local benchmark grid.\n');
         for i = 1:numel(crossing.lower_prices)
-            fprintf(fid, '- Crossing bracket %d: %.2f (%.6f) to %.2f (%.6f)\n', ...
+            fprintf(fid, '- Local bracket %d: %.3f (%.6f) to %.3f (%.6f)\n', ...
                 i, crossing.lower_prices(i), crossing.lower_votes(i), ...
                 crossing.upper_prices(i), crossing.upper_votes(i));
         end
     end
 else
-    fprintf(fid, '- No zero crossing found on the supplied price grid.\n');
+    fprintf(fid, '- No zero crossing found on the local benchmark grid.\n');
 end
+fprintf(fid, '\n## How to read this report\n\n');
+fprintf(fid, '- The corrected 5-year benchmark still has a usable local market-clearing region, so it remains the live benchmark object for project 03.\n');
+fprintf(fid, '- The common market grid has multiple sign changes, so the local benchmark search is the operative equilibrium summary.\n');
+fprintf(fid, '- Treat any annual exercise as a separate calibration object rather than pooling annual conclusions into this 5-year report.\n');
 fclose(fid);
 end
 

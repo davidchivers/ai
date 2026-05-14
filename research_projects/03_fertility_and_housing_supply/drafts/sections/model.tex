@@ -1,0 +1,197 @@
+\section{Model}\label{sec:model}
+
+This section presents the full model. The framework nests the political-economy housing-supply model of Gross and Chivers (2025) and augments the household problem with endogenous fertility, children at home, and a crowding margin that reduces effective housing services. When the fertility block is shut off, the model reproduces the earlier benchmark exactly. When it is active, the household problem changes in two ways: family state enters the value function, and a new birth decision generates endogenous fertility outcomes across the life cycle.
+
+\subsection{Environment}
+
+The economy is populated by overlapping generations of households who live from age 25 to age 90 in five-year periods, giving 14 periods of active life. In each period a household chooses non-housing consumption, housing tenure (rent or own), net financial wealth, and whether to have a child. Housing supply is determined by competitive real-estate firms that operate subject to political constraints. A median-voter condition applied to the stationary distribution of household preferences determines the equilibrium level of supply restrictions and, through them, the equilibrium house price.
+
+The environment has three blocks: (i)~a household problem with endogenous fertility, (ii)~a competitive real-estate sector, and (iii)~a political equilibrium that closes the model. The household problem is the main object of interest. The real-estate and political blocks follow Gross and Chivers (2025) without modification.
+
+\subsection{Household problem}
+
+A household entering a period is characterized by the state vector $(b, a, z, h, p, t)$, where $b$ is net financial wealth, $a$ is housing services, $z$ is an idiosyncratic income state following an age-dependent Markov chain, $h \in \{0, 1, 2, 3\}$ is the number of children currently at home, $p \in \{0, 1, 2, 3^{+}\}$ is parity (children ever born), and $t$ is the household's age. The distinction between $h$ and $p$ matters for the mechanism. Parity is permanent: once a child is born, $p$ increases for the rest of the household's life. Children at home $h$ is temporary: a child raises housing demand only while living at home and can leave according to a reduced-form departure schedule.
+
+Household income is $y_t = e^{z_t} \cdot \zeta_t$, where $\zeta_t$ is a deterministic life-cycle profile. The income process is inherited from Gross and Chivers (2025). The household can rent or own housing, subject to a loan-to-value constraint $(-b \leq q \cdot a \cdot 0.90)$ and a two-percentage-point borrowing spread. The housing tenure choice---rent, hold, or adjust---follows the same structure as Gross and Chivers (2025), including the rental services discount ($\theta_r = 0.85$) and the housing adjustment cost ($\kappa_a = 0.06$). The full budget constraints and rate parameters are reported in Table~\ref{tab:nimby_params}.
+
+\subsection{Effective housing services and crowding}
+
+The central innovation of the fertility extension is that children at home reduce effective housing services. The household values effective housing
+\begin{equation}\label{eq:crowding}
+H_t^{\text{eff}} = \frac{H_t}{(1 + \lambda_c \, h_t)^{\psi_c}},
+\end{equation}
+where $H_t$ is raw housing services, $h_t$ is the number of children currently at home, $\lambda_c = 0.18$ governs the strength of the crowding effect, and $\psi_c = 0.70$ controls its curvature.
+
+This specification generates two channels through which children affect housing demand:
+
+\begin{enumerate}
+\item \textit{Direct crowding.} A child at home reduces effective space today. For a household with one child at home, effective housing falls by a factor of $(1 + 0.18)^{0.70} \approx 1.125$, so the household loses roughly 12.5 percent of its effective housing services. A second child at home reduces effective housing by a factor of $(1 + 0.36)^{0.70} \approx 1.243$, a further decline. The direct channel raises the shadow cost of housing space whenever children are present.
+
+\item \textit{Anticipatory delay.} The household is forward-looking and understands that a birth today will crowd the dwelling in future periods. A household that anticipates wanting multiple children has an incentive to delay the first birth until it can afford more housing space, because the crowding penalty applies to all children simultaneously at home. This anticipatory channel generates the first-birth delay that is the paper's main object of interest.
+\end{enumerate}
+
+The two channels interact. The direct channel means that children make housing more expensive in the period they are at home. The anticipatory channel means that the expectation of this cost feeds backward into the birth decision, causing households to postpone fertility until they occupy larger or cheaper housing.
+
+\subsection{Flow utility}
+
+In a period without a birth, the household receives flow utility
+\begin{equation}\label{eq:flow_nobirth}
+u_t^{F,0} = \log c_t + s_h \log H_t^{\text{eff}} + \nu_h \, h_t - \text{penalty}_t,
+\end{equation}
+where $s_h = 1$ is the weight on housing services in utility, $\nu_h = 0.02$ is the direct flow value of having children at home, and $\text{penalty}_t$ is a large penalty imposed when the loan-to-value constraint is violated.
+
+When a birth occurs, the newborn enters both the crowding state and the family-utility term immediately:
+\begin{equation}\label{eq:flow_birth}
+u_t^{F,1} = \log c_t + s_h \log\!\left(\frac{H_t}{(1 + \lambda_c(h_t + 1))^{\psi_c}}\right) + \nu_h (h_t + 1) + \phi(p_t) - \kappa_0 - \kappa_q \, q_t - \text{penalty}_t.
+\end{equation}
+The birth-period utility differs from the no-birth utility in four terms:
+\begin{itemize}
+\item The crowding denominator uses $h_t + 1$ rather than $h_t$, reflecting the newborn's immediate presence in the dwelling.
+\item The child-at-home flow value applies to $h_t + 1$ children.
+\item The household receives parity-specific birth utility $\phi(p_t)$, which captures the value of having the $(p_t + 1)$-th child. The calibrated values are $\phi(0) = 1.05$ for the first birth, $\phi(1) = 1.15$ for the second, and $\phi(2) = 0.95$ for the third.
+\item The household pays a common birth cost $\kappa_0 = 0.06$ and a price-sensitive birth cost $\kappa_q \, q_t$ with $\kappa_q = 0.24$. The price-sensitive term $\kappa_q q_t$ is a reduced form for the resource cost of space reallocation at birth---the cost of moving to a larger dwelling, furnishing a child's room, or absorbing higher rent on the marginal square metre. While the linear specification is a simplification, the implied semi-elasticity is consistent with external evidence: Dettling and Kearney (2014) estimate that a 10~percent increase in local house prices reduces birth rates among renters by approximately 3--5~percent, which corresponds to the range of $\kappa_q$ values explored in Appendix~\ref{app:sensitivity}.
+\end{itemize}
+
+The birth decision is modeled as a logistic choice. Conditional on the household's state, the probability of a birth is
+\begin{equation}\label{eq:birth_prob}
+\Pr(\text{birth}) = \frac{1}{1 + \exp\!\bigl(-(V^{\text{birth}} - V^{\text{no birth}})/\sigma\bigr)},
+\end{equation}
+where $V^{\text{birth}}$ and $V^{\text{no birth}}$ are the continuation values associated with having and not having a birth, and $\sigma = 0.15$ is a scale parameter that governs the smoothness of the birth choice. The logistic specification avoids the bang-bang behavior of a discrete choice and generates interior birth probabilities that vary continuously with the household's state.
+
+\subsection{Child dynamics}
+
+Children leave home according to a reduced-form departure schedule calibrated to US Census co-residence rates. The schedule is defined over three departure ages, each measured from the child's birth:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Departure age (child's age) & 20 & 25 & 30 \\
+Departure probability & 0.588 & 0.147 & 0.265 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These probabilities imply that a child born when the parent is age 25 may leave home when the parent is 45, 50, or 55. Because the model uses five-year periods, the departure schedule generates a well-defined transition for $h_t$: in each period, the number of children at home can decrease by one as earlier children depart, while it can increase by one if a birth occurs.
+
+Parity $p$ never decreases. It records the permanent count of children ever born. Children at home $h$ can decrease as children leave. This asymmetry is what allows the model to distinguish between completed fertility (a parity outcome) and contemporaneous crowding (a children-at-home outcome).
+
+Births can occur at parent ages 25, 30, 35, and 40. The finite reproductive window is a
+biological constraint: fecundity declines sharply after age 35 and is near zero by age 45
+(Leridon, 2004; te Velde and Pearson, 2002). In the current benchmark, parity-zero births
+also use age-specific realized-birth shifters calibrated to the recent US first-birth
+distribution, so the entry-into-parenthood hazard is no longer flat within the birth window. This
+means that the birth window spans four of the fourteen life-cycle periods, but later first births
+are less likely to realize than earlier first births. After age 40, no further births are
+possible, but children may still be at home and continue to affect housing demand through the
+crowding channel.
+
+\subsection{Bequest and terminal condition}
+
+At the terminal age (90), the household receives bequest utility
+\begin{equation}
+u^{\text{bequest}} = \beta_{\text{beq}} \cdot \log(\text{net worth}),
+\end{equation}
+where $\beta_{\text{beq}} = 0.98$ and net worth is the sum of financial wealth and housing equity. The value function is solved by standard backward induction from the terminal period. In each period, the household evaluates each feasible combination of housing tenure, housing level, bond holdings, and birth decision, and selects the combination that maximizes expected discounted utility.
+
+\subsection{Real estate firms}
+
+The supply side follows Gross and Chivers (2025) without modification. Competitive real-estate firms supply housing. Each firm takes the house price $q$ as given and chooses how much to build. The aggregate supply function depends on the house price and on the regulatory environment, which is determined endogenously through the political block. Higher house prices induce more construction, but the response is attenuated by political restrictions on new supply.
+
+\subsection{Housing supply and median voter}
+
+The political equilibrium determines the level of supply restrictions. Following Gross and Chivers (2025), each household evaluates the effect of a small persistent increase in the house price on its expected lifetime utility. Specifically, the model computes the value function at the current price $q$ and at a perturbed price $q \cdot d$, where $d = 1.01$ represents a one-percent persistent price increase. A household supports tighter supply restrictions---and therefore higher house prices---if $V(q \cdot d) > V(q)$.
+
+Aggregating these binary preferences across the stationary distribution of households yields a vote object. The median-voter condition requires that the aggregate vote switches sign at the equilibrium price: below the crossing price, a majority of households (weighted by stationary mass) support tighter supply; above it, a majority opposes further restrictions.
+
+With the fertility extension, family state changes voter preferences. A young renter planning a first birth values lower house prices more than the same renter without children would, because the renter internalizes both the direct housing cost and the crowding penalty that a child will impose. Family-forming households are less willing to tolerate high house prices once they account for both housing costs and the effect of crowding on effective space. Section~\ref{sub:voter} quantifies the resulting shift in the political crossing price.
+
+\subsection{Equilibrium definition}
+
+A stationary equilibrium consists of:
+\begin{enumerate}
+\item A house price $q$ and a rental rate $r$.
+\item Value functions $V(b, a, z, h, p, t)$ for each age $t$ and family state $(h, p)$, solving the household's dynamic programming problem by backward induction.
+\item Policy functions for consumption, housing tenure, housing level, bond holdings, and birth probability, all functions of the state $(b, a, z, h, p, t)$.
+\item A stationary distribution $\mu(b, a, z, h, p, t)$ over household states, generated by forward iteration of the policy functions and child-departure transitions from an initial distribution of young households.
+\item A median-voter condition: the aggregate vote object
+\begin{equation}
+\mathcal{V}(q) = \sum_{b, a, z, h, p, t} \mu(b, a, z, h, p, t) \cdot \text{sign}\!\bigl[V(b, a, z, h, p, t; q \cdot d) - V(b, a, z, h, p, t; q)\bigr]
+\end{equation}
+switches sign at the equilibrium price $q^{*}$. The crossing price $q^{*}$ is where $\mathcal{V}$ passes through zero.
+\end{enumerate}
+
+In the NIMBY benchmark without fertility, the state space is $(b, a, z, t)$ and the vote object aggregates over that smaller distribution. The fertility extension enlarges the state space and changes the value function, but the equilibrium definition retains the same structure.
+
+\subsection{Calibration}
+
+The model inherits all housing, income, voting, and supply parameters from the NIMBY benchmark of Gross and Chivers (2025). Table~\ref{tab:nimby_params} reports these inherited parameters. The fertility extension adds a second set of parameters governing births, child dynamics, and crowding. Table~\ref{tab:fertility_calibration_full} reports those parameters.
+
+\begin{table}[htbp]
+\centering
+\caption{Parameters inherited from the NIMBY benchmark (Gross and Chivers, 2025)}
+\label{tab:nimby_params}
+\small
+\begin{tabular}{lcp{0.45\textwidth}}
+\toprule
+Parameter & Value & Description \\
+\midrule
+Discount factor $\beta$ & 0.98 & Standard life-cycle calibration \\
+Housing preference $s_h$ & 1 & Weight on housing in utility \\
+Borrowing spread $r_{\text{spread}}$ & 0.02 & Wedge between borrowing and saving rates \\
+Risk-free rate $r_a$ & $-0.03$ & Net of depreciation \\
+Rent markup & 0.02 & Rental rate markup over user cost \\
+LTV ratio & 0.90 & Maximum loan-to-value \\
+Adjustment cost $\kappa_a$ & 0.06 & Housing transaction cost \\
+Bequest weight $\beta_{\text{beq}}$ & 0.98 & Terminal bequest utility weight \\
+Age range & 25--90 & In 5-year periods (14 periods) \\
+Financial grid & 60 points & $b \in [-20, 20]$ \\
+Housing grid & 14 points & $a \in [0, 15]$ \\
+Rental option & $\theta_r = 0.85$ & Rental housing services fraction \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Fertility-extension calibration}
+\label{tab:fertility_calibration_full}
+\small
+\begin{tabular}{p{0.30\textwidth}cp{0.42\textwidth}}
+\toprule
+Parameter & Value & Role \\
+\midrule
+Birth utility $\phi(p)$ by parity & 1.05, 1.15, 0.95 & Parity-specific birth incentives \\
+Child-at-home utility $\nu_h$ & 0.02 & Direct flow value of children while at home \\
+Common birth cost $\kappa_0$ & 0.06 & Baseline utility cost of a birth \\
+Price-sensitive birth cost $\kappa_q$ & 0.24 & Links house prices to fertility decisions \\
+Crowding parameter $\lambda_c$ & 0.18 & How children reduce effective housing \\
+Crowding curvature $\psi_c$ & 0.70 & Curvature of crowding function \\
+Logistic scale $\sigma$ & 0.15 & Smoothness of birth choice \\
+Leave-home ages & 20, 25, 30 & Reduced-form departure grid \\
+Leave-home probabilities & 0.588, 0.147, 0.265 & Calibrated to Census co-residence rates \\
+Birth-eligible ages & 25, 30, 35, 40 & Age-specific realized-birth shifters for parity zero: $[1.00, 0.55, 0.22, 0.06]$; unit weights for higher parities \\
+Max children at home $C$ & 4 & Including 0 (so 0--3 children) \\
+Max parity $P$ & 4 & Including 0 (so 0--3+ children) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The key calibration targets for the fertility block are the parity distribution at age~50, targeted to approximate US Census shares. Table~\ref{tab:calibration_fit} reports the target and model moments. The model matches the broad shape of the parity distribution---the two-child mode and the declining tail---with the main discrepancy being an overprediction of childlessness (0.312 versus the 0.165 target) and a corresponding underprediction of three-or-more. The two most important mechanism parameters are the price-sensitive birth cost $\kappa_q$ and the crowding parameter $\lambda_c$. The price-sensitive birth cost governs the direct channel from house prices to fertility decisions: a higher $\kappa_q$ makes births more costly when housing is expensive. The crowding parameter governs the indirect channel through which children reduce effective housing services: a higher $\lambda_c$ strengthens the crowding penalty and amplifies the incentive to delay births until the household can afford more space. Together, these two parameters determine the quantitative strength of the fertility--housing mechanism.
+
+\begin{table}[htbp]
+\centering
+\caption{Calibration fit: parity distribution at age 50}
+\label{tab:calibration_fit}
+\small
+\begin{tabular}{l cccc}
+\toprule
+ & Childless & 1 child & 2 children & 3+ children \\
+\midrule
+US Census target & 0.165 & 0.193 & 0.357 & 0.285 \\
+Model (at $q \approx 1.824$) & 0.312 & 0.079 & 0.449 & 0.160 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Nesting result}
+
+A methodological property of the fertility extension is that it nests the NIMBY benchmark of Gross and Chivers (2025) exactly. When the fertility block is shut off---setting $C = 1$, $\phi(p) = 0$, $\nu_h = 0$, $\kappa_0 = 0$, $\kappa_q = 0$, $\lambda_c = 0$, and $\psi_c = 0$---the fertility solver reproduces every upstream object: the distance, the aggregate vote, and the debt stock all match at the same $(q, r_b^{+})$ to numerical precision. This exact nesting is not automatic in models that augment the state space. It requires the fertility extension to enter the household problem additively and to leave the real-estate and political blocks unchanged. The payoff is a clean identification claim: any difference in outcomes between the fertility model and the NIMBY benchmark is driven entirely by the fertility channel, not by a different equilibrium definition, supply structure, or numerical approximation.

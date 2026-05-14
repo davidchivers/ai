@@ -6,10 +6,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from resolve_zac_david_paths import resolve_zac_david_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "notes" / "build"
-DROPBOX_DATA = Path(r"C:\Users\Dave_\Dropbox\Zac and David\Data")
+
+
+def nimby_data_dir() -> Path:
+    return resolve_zac_david_path("Data")
 
 
 def set_style() -> None:
@@ -38,8 +43,9 @@ def load_model_series() -> tuple[pd.DataFrame, pd.DataFrame]:
 
 
 def load_actual_series() -> tuple[pd.DataFrame, pd.DataFrame]:
+    data_dir = nimby_data_dir()
     metro = pd.read_stata(
-        DROPBOX_DATA / "merged_birthrates_migrationweights.dta",
+        data_dir / "merged_birthrates_migrationweights.dta",
         convert_categoricals=False,
     )
     metro = metro[metro["metarea"].astype(str).str.strip() == "0"].copy()
@@ -49,7 +55,7 @@ def load_actual_series() -> tuple[pd.DataFrame, pd.DataFrame]:
     metro["birthrate_index"] = metro["weightedbirthrate"] / metro_base
 
     state = pd.read_stata(
-        DROPBOX_DATA / "birthrates_updated.dta",
+        data_dir / "birthrates_updated.dta",
         convert_categoricals=False,
     )
     state = state[["year", "birthrate"]].dropna().copy()
@@ -144,6 +150,7 @@ def write_summary(
 def write_note(summary: pd.DataFrame) -> None:
     rmse = summary.loc[summary["metric"] == "rmse_postboom"].copy()
     rmse["horizon_years"] = rmse["horizon_years"].astype(int)
+    data_source = nimby_data_dir() / "merged_birthrates_migrationweights.dta"
 
     lines = [
         "# Historical baby-boom validation",
@@ -153,7 +160,7 @@ def write_note(summary: pd.DataFrame) -> None:
         "",
         "## Data and alignment",
         "",
-        "- Historical data source: `C:/Users/Dave_/Dropbox/Zac and David/Data/merged_birthrates_migrationweights.dta`",
+        f"- Historical data source: `{data_source}`",
         "- Aggregate series used in the main figure: `metarea == 0`, `weightedbirthrate`, `1940-1995`",
         "- Robustness series: state-average `birthrates_updated.dta`",
         "- Normalization: divide by the mean pre-boom birth rate over `1940-1945`",

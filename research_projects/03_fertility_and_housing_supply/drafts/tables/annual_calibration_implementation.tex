@@ -1,0 +1,37 @@
+\begin{table}[H]
+\caption{Annual branch calibration: implementation objects}
+\label{tab:annual_calibration_implementation}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{1.03}
+\begin{tabularx}{0.98\linewidth}{@{}>{\raggedright\arraybackslash}p{1.70cm}>{\raggedright\arraybackslash}p{1.70cm}>{\centering\arraybackslash}p{2.10cm}>{\raggedright\arraybackslash}p{2.70cm}>{\raggedright\arraybackslash}X@{}}
+\toprule
+Block & Parameter & Value & Description & Calibration basis \\
+\midrule
+annualized\_nimby\_block & beta & 0.9960 & Discount factor & Inherited from the 5-year benchmark and annualized into annual time. \\
+annualized\_nimby\_block & bequest weight & 0.9960 & Bequest weight & Inherited from the 5-year benchmark and annualized into annual time. \\
+annualized\_nimby\_block & ra & -0.0061 & Saving rate & Inherited from the 5-year benchmark and annualized into annual time. \\
+annualized\_nimby\_block & rspread & 0.0039 & Borrowing spread & Inherited from the 5-year benchmark and annualized into annual time. \\
+annualized\_nimby\_block & ka & 0.0123 & Housing adjustment cost & Inherited from the 5-year benchmark and annualized into annual time. \\
+annualized\_nimby\_block & d price & 1.0020 & Vote-shock price multiplier & Inherited from the 5-year benchmark and annualized into annual time. \\
+annual\_anchor & phi by parity & [1.120, 1.240, 1.170] & Parity-specific birth utility & Fixed annual fertility anchor from the narrow annual timing-stock frontier. \\
+annual\_anchor & child utility & 0.0200 & Child-at-home utility & Fixed annual fertility anchor. \\
+annual\_anchor & birth cost & 0.0500 & Common birth cost & Fixed annual fertility anchor. \\
+annual\_anchor & birth price coeff & 0.1600 & Price-sensitive birth cost & Fixed annual fertility anchor. \\
+annual\_anchor & lambda crowd & 0.1000 & Crowding strength & Fixed annual fertility anchor. \\
+annual\_anchor & theta r & 0.7000 & Renter housing-services conversion & Owner-access anchor carried into the annual ownership branch. \\
+annual\_anchor & housingmax & 15.0000 & Maximum housing grid point & Owner-access anchor carried into the annual ownership branch. \\
+annual\_anchor & rent markup & 0.0100 & Rental-rate markup & Owner-access anchor carried into the annual ownership branch. \\
+annual\_anchor & ka anchor & 0.0123 & Anchor housing adjustment cost & Annual owner-side anchor used in the live ownership / balance-sheet branch. \\
+annual\_anchor & first-birth realized weights & [1.000, 0.250, 0.040, 0.008] & Age-profile shifters for first births by five-year bin & Mapped to the CDC 2020-2024 first-birth timing profile. \\
+heterogeneity\_screen & constrained share grid & [0.100, 0.200, 0.300] & Share of constrained entrants & Screened to recover young-homeownership and wealth shape without forcing one-off wedges. \\
+heterogeneity\_screen & helped share grid & [0.100, 0.200, 0.300] & Share of helped entrants & Screened to recover young-homeownership and wealth shape without forcing one-off wedges. \\
+heterogeneity\_screen & constrained a\_{max} & [10.000, 12.000] & Constrained entrant owner-grid cap & Reduced-form owner-access screen. \\
+heterogeneity\_screen & helped a\_{max} & [15.000, 18.000] & Helped entrant owner-grid cap & Reduced-form owner-access screen. \\
+heterogeneity\_screen & constrained \theta\_r & [0.350, 0.400, 0.450] & Constrained entrant renter disadvantage & Reduced-form renter-side screen. \\
+heterogeneity\_screen & helped \theta\_r & [0.700, 0.850] & Helped entrant renter disadvantage & Reduced-form renter-side screen. \\
+heterogeneity\_screen & helped transfer boost & [4.000, 6.000, 8.000] & Helped entrant initial asset boost & Reduced-form down-payment help screen around the entrant mixture branch. \\
+\bottomrule
+\end{tabularx}
+\end{table}

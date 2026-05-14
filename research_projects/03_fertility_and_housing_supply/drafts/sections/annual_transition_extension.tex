@@ -1,0 +1,139 @@
+% annual_transition_extension.tex --- annualised transition variant only
+
+\section{Annual Transition Extension}
+\label{sec:annual_transition}
+
+The five-year benchmark remains the paper's main steady-state object, but it compresses the
+early family-formation window into a coarse transition block. The annualised branch is useful
+because it opens that window back up. It now does so with a cleaner closure than before. On
+the upgraded annual permits-starts-completions-stock block, the paper now has a stationary
+annual no-drift endpoint plus a full rational-expectations transition around that endpoint.
+The annual branch is therefore no longer only a drifting short-horizon stress test. It is a
+stationary annual closure with additional short-window support experiments layered on top.
+
+The annual transition still starts from a time-zero cross section that matches the observed
+age distribution of four balance-sheet states by construction: renter without debt, renter
+with debt, owner with mortgage, and owner outright. The annual cases are then frozen around
+two support regimes. The \emph{benchmark} case uses qualification weight $0.25$ and
+family-help weight $0.15$. The \emph{robustness} case uses qualification weight $0.40$ and
+family-help weight $0.30$. Table~\ref{tab:annual_transition_calibration_targets} collects the
+resulting annual transition calibration layer. Those targets still discipline the first five
+annual periods most tightly, but they no longer exhaust the annual branch because the same
+calibrated construction-flow block now admits a stationary annual endpoint.
+
+Two reduced-form annual entry mechanisms are allowed to operate for young first-time buyers.
+The first is a broad help-to-buy / qualification margin that proxies for low-down-payment
+products, flexible underwriting, and co-borrower style qualification support. The second is a
+narrower family-help margin that acts like a deposit gift at the point of purchase. In the
+short-window annual exercises these remain transition objects: they explain how some young
+households still enter ownership with mortgage debt despite high house prices, not why house
+prices are high in the first place. In the paper's interpretation, high prices still come from
+persistent supply restriction; the annual entry channels are coping mechanisms.
+
+\input{tables/annual_transition_calibration_targets}
+
+The stationary no-drift endpoints on the calibrated construction-flow block are now
+economically sensible and numerically stable. In the benchmark case the annual stationary
+equilibrium has $q^{ss} \approx 1.974$ and young mortgaged ownership for ages 25--34 of about
+$0.269$; the corresponding baseline and robustness endpoints are $q^{ss} \approx 1.993$ and
+$1.961$. That stationary endpoint matters because it turns the annual branch into a genuine
+closure rather than a transition that only lives off an imposed drift path and an eventual
+price cap.
+
+Figures~\ref{fig:annual_transition_paths} and~\ref{fig:annual_transition_sensitivity} still
+report the drifted support experiments, but they should now be read as short-window policy
+diagnostics layered on top of the stationary annual closure rather than as the closure itself.
+Under the central $+5$ percent drift calibration, the benchmark regime raises the young owner
+share from $0.610$ to $0.657$ at $t=5$ and raises the young mortgaged-owner share from
+$0.367$ to $0.407$. The robustness case is stronger, moving those same objects to $0.684$ and
+$0.430$. At $t=20$ the effect is smaller but still positive. Across drift rates of $+2$,
+$+5$, and $+8$ percent, the benchmark and robustness regimes remain ordered the same way. So
+the support margins still matter most in the annual crunch window, even though the live annual
+closure is now the stationary no-drift branch.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{annual_transition_benchmark_paths.png}
+\caption{Annual transition benchmark paths under the central $+5$ percent drift calibration.
+These drifted support experiments are now read as short-horizon policy diagnostics layered on
+top of the stationary annual closure. The benchmark support regime raises young mortgaged
+ownership materially in the main calibration window, while the robustness case provides a
+stronger data-facing upper bound.}
+\label{fig:annual_transition_paths}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{annual_transition_benchmark_sensitivity.png}
+\caption{Annual transition sensitivity across drift calibrations. The benchmark and robustness
+regimes remain ordered the same way under $+2$, $+5$, and $+8$ percent annual housing drift.
+This bounded grid is now a robustness layer around the stationary annual full-RE closure.}
+\label{fig:annual_transition_sensitivity}
+\end{figure}
+
+The core annual RE object is now the stationary full-path transition from the observed
+snapshot to that endpoint. In the benchmark case the no-drift full-RE path gives
+$q_1 \approx 1.001$, $q_5 \approx 1.010$, $q_{10} \approx 1.031$, $q_{20} \approx 1.101$, and
+$q_{80} \approx 1.721$. The early and middle years are almost identical to the corresponding
+no-RE no-drift anchor, while by $t=80$ the ownership distribution is essentially at its
+stationary endpoint and prices are still converging upward toward it. The annualised model can
+therefore now be described as a genuine full-RE annual transition around a stationary annual
+equilibrium.
+
+At the solver level, the compiled-sidecar Bellman RE workflow also now has a clean staged
+$T=4$ diagnostic frontier. The corrected branch-corrector packet survives a clean staged
+validation on the intended hybrid path, with the best stage-2 residual at about $0.0039$.
+That is a numerical validation benchmark for the transition solver, not yet a claim that the
+full long-horizon transition problem has been solved.
+
+For paper-facing exposition, the annual RE objects are best grouped into four layers. First,
+the \emph{core closure} is the stationary annual endpoint plus the no-drift full-RE transition
+around it. That is the live annual equilibrium object. Second, the \emph{simple bridge
+objects} ask what happens when one extra forward-looking margin is added without making the
+whole annual system recursive. The fertility-side bridge is the exogenous fertility-demand
+shock: relative to no-shock full RE, the benchmark price path is about $0.021$ higher at
+$t=5$ and about $0.028$ higher at $t=20$, with only tiny changes in ownership composition. The
+policy-side bridge is the imposed regime-path RE exercise. A known switch from baseline
+support to benchmark support at $t=5$ leaves the price path almost unchanged relative to the
+always-benchmark full-RE case, but it lowers young mortgaged ownership by about $0.026$ at
+$t=1$ and about $0.038$ at $t=5$ before the switch arrives.
+
+Third, the \emph{reduced-form recursive extensions} put forecasted aggregate states inside the
+fixed point without yet embedding the literal annual household recursion. The main
+``beyond-$q$-only'' fertility object is the reduced-form endogenous fertility state. In the
+benchmark run the fertility multiplier reaches about $1.026$ at $t=5$ and $1.037$ at $t=20$,
+which pushes prices about $0.009$ above the no-shock path at $t=5$ and about $0.055$ above it
+at $t=20$, again with only modest ownership effects. On the policy side, the forecasted
+political-easing state, the recursive support-state object, and the joint fertility-plus-
+politics run all belong in this class: they are genuinely recursive in aggregate states, but
+those states are still reduced-form forecast rules rather than full household or voting
+problems solved anew each period.
+
+Fourth, there is now a \emph{structural-implied extension}. The structural-fertility operator
+version no longer feeds back only through an aggregate birth multiplier. It now also uses
+first-birth timing moments to tilt purchase transitions away from ages 25--34 and toward ages
+35--44 as prices rise, while higher implied childlessness tilts entrant tenure composition
+toward renting. Quantitatively, the enriched structural operator lowers the benchmark annual RE
+price path by about $0.026$ at $t=20$, $0.113$ at $t=40$, and $0.349$ at $t=80$ relative to
+the no-structural RE benchmark. By $t=80$ the benchmark young purchase scale is down to about
+$0.76$, the mid-age purchase scale is up to about $1.15$, and the entrant owner scale is down
+to about $0.82$. That is a more genuinely micro structural object than the earlier
+birth-multiplier-only bridge. But it is still an operator bridge rather than a literal
+household-state recursion, because the Python annual branch does not yet carry explicit parity
+or children-at-home states.
+
+The older drifting bounded-RE exercises therefore move down one level in the paper's
+hierarchy. The drifting $k=3$ solve remains the main robustness case on the older annual
+pressure experiment; the drifting $k=5$ case remains the aggressive robustness version; and
+the drifting $k=20$ plus $T=40$ full-path solves are appendix / feasibility material only.
+They still show that the upgraded stock-flow block cures the thin-price instability, but the
+stationary endpoint plus the $T=80$ full-RE no-drift transition is now the live annual
+closure.
+
+The annual branch therefore changes the interpretation of the model rather than overturning the
+five-year benchmark. The five-year branch remains the paper's main steady-state equilibrium
+object. The annual branch now adds a stationary annual closure, a model-consistent RE
+transition around that closure, and a short-horizon housing-access layer that isolates the
+crunch years the five-year model smooths over: early family formation, low liquid buffers,
+and young ownership entry with mortgage debt. In that sense, the annualised model extends the
+paper's main mechanism rather than replacing the baseline five-year result.

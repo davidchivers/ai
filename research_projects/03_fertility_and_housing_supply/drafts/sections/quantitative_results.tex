@@ -1,0 +1,310 @@
+% quantitative_results.tex — standalone fragment, \input'd into main paper
+% No preamble; assumes booktabs, amsmath, graphicx, hyperref loaded
+
+\section{Quantitative Results}
+\label{sec:quantitative_results}
+
+This section presents the model's quantitative predictions. Section~\ref{sub:timing}
+examines steady-state first-birth timing. Section~\ref{sub:scarcity} turns to persistent
+housing scarcity. Section~\ref{sub:voter} compares voter preferences in the fertility and
+NIMBY benchmarks. Section~\ref{sub:evidence} closes with brief supporting evidence.
+
+%% ============================================================
+\subsection{Steady-state first-birth timing}
+\label{sub:timing}
+
+The cleanest result from the fertility extension is a steady-state comparison across
+house-price levels. Because parity is an explicit household state, the model can trace
+first births directly rather than only tracking total or completed fertility.
+Figure~\ref{fig:first_birth_timing} plots the three timing objects---mean age at first
+birth, share of first births at age 30 or later, and the first-birth rate---against the
+steady-state house price~$q$.
+
+The central result is a comparison of fertility outcomes at the two political-equilibrium
+prices. The NIMBY benchmark (fertility shut off) crosses at $q = 2.326$; the refreshed
+fertility benchmark now crosses locally at $q = 1.750$. Table~\ref{tab:equilibrium_comparison}
+reports the demographic consequences of this gap, evaluating the fertility model at those
+two benchmark prices. Moving from the fertility-model crossing to the higher NIMBY
+crossing price delays mean first birth by about 1.4~years, doubles the share of first
+births at age 30 or later, raises the childless share by about 19.8 percentage points,
+and lowers the first-birth rate from about 0.213 to about 0.163. The large completed-
+fertility adjustment comes mainly through a collapse in the share of households with three
+or more children, from about 41.7 to about 15.3~percent. These are still meaningful
+differences in completed family size, but the cleaner and better-disciplined model object
+is the timing margin itself: expensive housing pushes entry into parenthood later, and
+that delay carries through into fewer realized births by age 50.
+
+\begin{table}[htbp]
+\centering
+\caption{Fertility-model outcomes at the two benchmark crossing prices}
+\label{tab:equilibrium_comparison}
+\small
+\begin{tabular}{l cc c}
+\toprule
+ & Fertility crossing & NIMBY crossing & \\
+ & ($q = 1.750$) & ($q = 2.326$) & Difference \\
+\midrule
+\multicolumn{4}{l}{\textit{First-birth timing}} \\
+Mean age at first birth & 26.22 & 27.60 & $+1.38$ years \\
+Share of first births at 30+ & 0.202 & 0.405 & $+0.204$ \\
+First-birth rate & 0.213 & 0.163 & $-0.050$ \\
+\addlinespace
+\multicolumn{4}{l}{\textit{Parity distribution at age 50}} \\
+Childless & 0.148 & 0.347 & $+19.8$ pp \\
+One child & 0.027 & 0.075 & $+4.7$ pp \\
+Two children & 0.407 & 0.425 & $+1.8$ pp \\
+Three or more & 0.417 & 0.153 & $-26.4$ pp \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This comparison characterises how the political equilibrium shifts when the household
+problem includes fertility, not a policy counterfactual. The NIMBY benchmark has no
+fertility margin---it is a different model, not a world where housing policy ignores
+fertility. The within-model counterfactual is the scarcity experiment in
+Section~\ref{sub:scarcity}, which compares the same fertility-aware economy under different
+supply regimes.
+
+The mechanism operates through both the direct and indirect housing channels identified in
+the model section. The price-sensitive birth cost $\kappa_q q_t$ makes births more
+expensive in high-price environments. The crowding margin $\lambda_c$ raises the shadow
+cost of space when children are present. Together, these channels push first births later
+and reduce the share of households who have children at all.
+
+Figure~\ref{fig:first_birth_timing} plots the three timing objects against the full range
+of steady-state house prices. The gradients are steep: moving from $q = 1.50$ to
+$q = 3.00$ raises mean first-birth age by about 4.0~years and cuts the first-birth
+rate by more than half. The wide-range comparative statics are reported in Appendix
+Table~\ref{tab:timing_wide}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{nimby_vs_fertility_first_birth_timing.png}
+\caption{First-birth timing in the fertility benchmark. Higher house prices shift first births
+to older ages, increase the share of first births occurring at age 30+, and lower the
+first-birth rate.}
+\label{fig:first_birth_timing}
+\end{figure}
+
+%% ============================================================
+\subsection{Persistent housing scarcity and fertility}
+\label{sub:scarcity}
+
+A single political-tightness parameter is not enough for the claim that housing scarcity
+lowers fertility, because it embeds the supply-tightening result in one dial that may be
+doing too much work. A more disciplined comparison calibrates three different
+supply-tightening shocks to the same housing outcome: a 15~percent higher house-price
+index after 40~periods. The three margins are:
+\begin{enumerate}
+\item A reduction in supply elasticity ($\epsilon_0$ reduced by 6.2~percent);
+\item A reduction in baseline supply ($s_0$ reduced by 2.4~percent);
+\item A shift in baseline political tightness ($\theta_0$ increased by $+0.019$).
+\end{enumerate}
+
+This calibration strategy does two things. First, it shows that the result is not tied to
+a single primitive. Second, it anchors the long-run exercise to a common housing target
+rather than to an arbitrary parameter movement. Figure~\ref{fig:persistent_scarcity}
+reports the resulting comparison.
+
+Table~\ref{tab:scarcity_results} summarizes the quantitative outcomes. At horizon $t=40$,
+all three shocks lower the fertility rate from 0.248 to 0.241---a reduction of roughly
+0.007. The effect is modest but remarkably consistent across margins. On the historical
+comparison, the calibrated shocks improve RMSE against the aggregate 1956--1995 fertility
+decline by 3.4 to 4.0~percent and close roughly 5.4~percent of the baseline-to-data
+end-gap.
+
+\begin{table}[htbp]
+\centering
+\caption{Persistent housing scarcity: three supply-tightening margins}
+\label{tab:scarcity_results}
+\small
+\begin{tabular}{l l cc c}
+\toprule
+Supply margin & Calibration & \multicolumn{2}{c}{Fertility at $t=40$} & RMSE \\
+\cmidrule(lr){3-4}
+ & & Baseline & Shock & improvement \\
+\midrule
+$\epsilon_0$ reduction & $\epsilon_0$ reduced 6.2\% & 0.248 & 0.241 & 4.0\% \\
+$s_0$ reduction        & $s_0$ reduced 2.4\%        & 0.248 & 0.241 & 3.6\% \\
+$\theta_0$ shift       & $\theta_0$ $+0.019$        & 0.248 & 0.241 & 3.4\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+To put the 0.007 reduction in perspective: the model birth rate of 0.248 corresponds
+roughly to a total fertility rate of 1.7 children per woman.%
+\footnote{The transition birth rate of 0.248 is a population-weighted average across all age
+groups, including those past childbearing. With the model's demographic structure, this maps
+to approximately 1.7 births per woman over the reproductive window. The parity distribution
+at the steady-state crossing implies completed fertility of approximately 1.46, which is
+lower because the crossing is evaluated at a single price level rather than along the
+transition path.} A 2.8~percent reduction
+therefore translates to approximately 0.05 TFR points. Applied to the approximately
+3.6~million annual US births, this implies roughly 100,000 fewer births per year
+attributable to the housing-scarcity channel alone. Against the recent US fertility
+decline (TFR fell from approximately 2.0 in 2007 to 1.62 in 2023, a drop of 0.38 points),
+the housing channel accounts for roughly 13~percent of the observed decline---modest but
+not negligible for a single mechanism operating through one margin of housing policy.
+
+The effect also compounds over time. Table~\ref{tab:projection_results} reports the forward
+projections under a medium-immigration demographic scenario. At the 40-period calibration
+horizon, the fertility gap is 0.007 across all three margins. By 2050, the gap narrows
+slightly as the direct shock effect stabilizes. But by 2100, the gap widens to
+0.006--0.014, reflecting the interaction between housing scarcity and demographic aging:
+restricted supply raises house prices further, which lowers realized fertility below what
+aging alone would produce.
+
+\begin{table}[htbp]
+\centering
+\caption{Compounding effect: fertility gap widens over time}
+\label{tab:projection_results}
+\small
+\begin{tabular}{l cccc}
+\toprule
+ & Baseline & $\epsilon_0$ shock & $s_0$ shock & $\theta_0$ shock \\
+\midrule
+\multicolumn{5}{l}{\textit{Fertility rate}} \\
+$t = 40$ (calibration) & 0.248 & 0.241 & 0.241 & 0.241 \\
+2050 projection & 0.194 & 0.191 & 0.190 & 0.192 \\
+2100 projection & 0.188 & 0.179 & 0.174 & 0.182 \\
+\addlinespace
+\multicolumn{5}{l}{\textit{House-price index}} \\
+$t = 40$ (calibration) & 1.000 & 1.150 & 1.150 & 1.150 \\
+2050 projection & 1.066 & 1.134 & 1.162 & 1.103 \\
+2100 projection & 1.254 & 1.606 & 1.819 & 1.450 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These projections are illustrative; at a 75-year horizon, structural changes in technology,
+preferences, and policy make point forecasts unreliable.
+
+The widening price gap in the bottom panel of Table~\ref{tab:projection_results} explains
+the compounding: each supply margin that starts at a 15~percent price premium amplifies
+over time, and the $s_0$ reduction reaches an 82~percent premium by 2100.
+
+Housing scarcity therefore moves fertility in the right direction, and the effect grows
+rather than dissipates. The model is better understood as identifying a compounding
+channel---persistent underbuilding delays and discourages family formation, and the
+demographic consequences feed back into housing demand---rather than as a complete account
+of postwar fertility trends.
+
+This also clarifies the relationship to the baby-boom exercise in Gross and Chivers
+(2025). The baby-boom experiment asks how a larger cohort pushes on housing demand,
+prices, and politics over time. The present paper asks the reverse question: how tighter
+housing supply pushes back on fertility. The two mechanisms are therefore complementary,
+not competing. A large cohort raises housing pressure through the children-at-home demand
+channel; sustained housing scarcity then feeds back into later and lower realized
+fertility. In that sense, the baby-boom transition is best read as a dynamic stress test
+of the family-housing-demand mechanism, while the persistent-scarcity exercise is the main
+causal direction emphasized here.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{nimby_shock_calibrated_supply_margins.png}
+\caption{Persistent housing scarcity calibrated to a common housing target. Three different
+supply-tightening shocks are chosen to raise the 40-period house-price index by 15 percent.
+All three lower fertility.}
+\label{fig:persistent_scarcity}
+\end{figure}
+
+%% ============================================================
+\subsection{Voter preference comparison}
+\label{sub:voter}
+
+The fertility extension changes the political equilibrium because family-forming households
+evaluate house-price increases differently from otherwise identical households without
+children. Table~\ref{tab:voter_comparison} reports the net support index at selected price
+levels in both the NIMBY benchmark (fertility shut off) and the fertility benchmark
+(fertility active). The reported object is vote per unit mass, which ranges from $-1$ (all
+households oppose higher prices) to $+1$ (all households support them). A positive value
+means a net majority supports tighter supply restrictions at that price.
+
+\begin{table}[htbp]
+\centering
+\caption{Net support for higher prices: NIMBY vs.\ fertility benchmarks}
+\label{tab:voter_comparison}
+\small
+\begin{tabular}{l cc l}
+\toprule
+House price $q$ & NIMBY & Fertility & Interpretation \\
+\midrule
+1.50 & $+0.84$ & $+0.22$ & Both support higher prices; fertility support is much weaker \\
+1.75 & $+0.79$ & $-0.00$ & NIMBY still supports; fertility is essentially at its local crossing \\
+2.25 & $+0.23$ & $-0.28$ & NIMBY still supports; fertility opposes \\
+2.50 & $-0.53$ & $-0.75$ & Both oppose; fertility more strongly \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The comparison reveals a sharp divergence, but the headline should come from the local
+benchmark search rather than from a monotone reading of the coarse common grid. On the
+common grid, households in the fertility benchmark are already close to indifferent at
+$q = 1.75$ and oppose further price increases by $q = 2.25$, while the NIMBY benchmark
+still supports higher prices at that point. The local search then places the political
+crossing---the price at which the median voter switches from supporting to opposing tighter
+supply---at 2.326 in the NIMBY benchmark versus 1.750 in the fertility benchmark.
+
+The mechanism is straightforward. When household utility depends on family state, younger
+households planning children place a higher value on affordable housing. The crowding
+margin amplifies this: each additional child at home raises the shadow cost of housing
+space, making price increases more costly. The fertility benchmark therefore shifts
+political weight toward lower prices.
+
+Two caveats apply. First, this is a within-model comparison, not an empirical claim about
+actual voting behavior. The model does not include an explicit ballot or referendum
+mechanism; it uses the same median-voter condition as Gross and Chivers (2025). Second, the
+comparison assumes the same income process and demographic structure in both benchmarks. In
+practice, the fertility decision itself could feed back into income and wealth accumulation
+in ways the current model does not capture. The comparison is best read as showing that
+endogenous fertility shifts the political equilibrium toward more permissive supply, not as
+a prediction about the magnitude of that shift in any specific jurisdiction.
+
+%% ============================================================
+\subsection{Supporting evidence}
+\label{sub:evidence}
+
+The model implies that expensive housing should delay first births and lower fertility. The
+paper does not rest on a settled empirical design, but two supporting pieces of evidence
+point in the same direction as the model. The goal here is discipline and sign-checking, not
+a definitive causal estimate.
+
+Two pieces of evidence point in the same direction as the model. First, a panel of 28
+European countries with joint OECD house-price and Eurostat first-birth data (486
+country-year observations, country and year fixed effects) shows that higher real house
+prices predict later first births: a one-unit increase in the OECD real house-price index
+is associated with a 0.00033-year increase in the mean age at first birth ($p = 0.038$).
+In a parallel specification covering 557 country-year observations, the same index predicts
+lower total fertility ($\hat{\beta} = -0.00022$, $p = 0.006$). Both regressions include
+country and year fixed effects, which absorb most of the overall variation. The implied
+magnitudes are
+small---a one-standard-deviation increase in the house-price index shifts mean first-birth
+age by roughly 0.03~years---but the signs are correct and statistically significant. This
+is best read as supportive evidence for the mechanism rather than as a tight calibration
+target: within-country, within-year variation in house prices predicts the timing and level
+of fertility in the direction the model implies, but the design is not the paper's main
+contribution.
+
+Second, the aggregate postwar comparison provides limited but informative context. Three
+calibrated housing-scarcity shocks---each designed to raise the house-price index by
+15~percent---improve the model's fit to the 1956--1995 fertility decline by 3.4 to
+4.0~percent RMSE and close roughly 5.4~percent of the baseline-to-data end-gap.
+Figure~\ref{fig:historical_validation} shows that the fertility extension fits the aligned
+post-boom decline modestly better than the flat return path of the benchmark model. Housing
+scarcity alone does not explain the full decline, but it adds a margin in the right
+direction.
+
+The overall evidence is consistent with the model but not yet conclusive. The cross-country
+panel confirms the sign of the housing--fertility relationship but does not identify the
+mechanism cleanly, since house prices covary with income, urbanisation, and educational
+attainment. A fuller empirical design is left for future work. For the current paper, these
+facts are best read as supporting context around a model-driven contribution rather than as a
+fixed empirical core.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{nimby_vs_fertility_historical_validation.png}
+\caption{Historical fertility validation. The fertility extension fits the aligned post-boom
+decline modestly better than the flat return path of the benchmark model.}
+\label{fig:historical_validation}
+\end{figure}

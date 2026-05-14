@@ -1,619 +1,3450 @@
-# Project Memory - Fertility and Housing Supply
+# Project memory - fertility and housing supply
 
 Most recent session first.
 
 ---
 
-### Session: 2026-03-20 (persistent NIMBY-shock scenario grid)
-- Added a scenario-grid builder for the long-run NIMBY counterfactual:
-  - `code/build_nimby_shock_scenarios.py`
-- New outputs:
-  - `notes/build/nimby_shock_scenario_grid.csv`
-  - `notes/build/nimby_shock_calibration_sensitivity.csv`
-  - `notes/build/nimby_shock_scenarios.md`
-  - `notes/build/nimby_shock_scenarios.png`
-  - `notes/build/nimby_shock_scenarios.pdf`
-- Main quantitative lock:
-  - medium-immigration `2100` fertility falls monotonically with persistent NIMBY intensity:
-    - `theta0 + 0.03`: `0.180`
-    - `theta0 + 0.05`: `0.175`
-    - `theta0 + 0.08`: `0.170`
-    - `theta0 + 0.10`: `0.167`
-    - baseline: `0.188`
-  - corresponding medium-immigration `2100` house-price indices are:
-    - `1.562`, `1.767`, `2.075`, `2.281`
-    - baseline: `1.254`
-- Calibration lock after the grid:
-  - the sign of the long-run fertility result survives nearby changes in fertility-price
-    sensitivity and family-demand strength
-  - `lambda_crowd` itself does not move the current forward bridge because that object's fertility
-    decision depends on prices, not directly on the housing-burden proxy
-- Writing lock after this pass:
-  - the paper can now describe the long-run result as monotone in persistent NIMBY intensity, not
-    as a single benchmark counterfactual
+### Session: 2026-04-17 (recovered the completed `T = 16` deep-tail transition rung; Hamilton command-mode transport is the real bug, not reachability)
+- The Bellman RE transition solve is now back on hard ground:
+  - the supposedly “missing” `T = 16` deep-tail rung was in fact completed on Hamilton
+  - root cause:
+    - `ssh` reachability, DNS, port `22`, and public-key auth were all fine
+    - the failure happened only after login on non-interactive command-mode `ssh` and `scp`
+    - PTY-backed `ssh -tt` command execution worked immediately
+- Recovered `T = 16` deep-tail result:
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251`
+  - synced locally:
+    - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/summary.txt`
+    - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/status.txt`
+    - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/t16_cases.csv`
+  - best case:
+    - `late2_16`
+  - best residual:
+    - `maxres ~= 0.0961867911`
+  - full ladder read:
+    - `late8_16`, `late7_16`, `late6_16`, `late5_16`, `late3_16`, `late2_16` all land at `~0.0961867911`
+    - `late4_16` is much worse at `~0.3039892963`
+    - suffix-anchor variants mirror the same pattern
+  - comparison to earlier `T = 16` attempts:
+    - standard-tail best: `~0.2492322724`
+    - broad-tail best: `~0.1355985514`
+    - deep-tail best: `~0.0961867911`
+  - implication:
+    - the tail-mask retry ladder still improves `T = 16`, but not enough to clear the `0.05` promote threshold
+    - `T = 16` is therefore the current Bellman RE wall
+    - do not auto-promote to `T = 17` from the current solver
+- Workflow / transport fixes:
+  - patched:
+    - `code/bellman_re_horizon_autopilot.ps1`
+    - `code/bellman_re_horizon_update_reporter.py`
+    - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+  - watcher/reporter changes:
+    - remote command capture now uses PTY-backed `ssh -tt`
+    - “Connection ... closed” noise is filtered out before parsing
+    - autopilot text-file sync no longer hangs on recursive `outputs/` copy
+  - submitter changes:
+    - remote command path also uses PTY-backed SSH
+    - upload transport moved off brittle `scp`
+    - a chunked base64-over-command-path smoke test succeeded locally against Hamilton
+- Active Bellman RE state after cleanup:
+  - `active_bellman_re_horizon_autopilot.txt` now cleanly reports:
+    - `state=STOPPED`
+    - `current_horizon=16`
+    - `best_case=late2_16`
+    - `best_maxres=0.0961867911`
+  - so the project state is no longer “waiting on a missing live read”; it is “confirmed `T = 16` wall at `~0.0962`”
 
 ---
 
-### Session: 2026-03-20 (persistent NIMBY-shock counterfactual)
-- Added a direct supply-tightening counterfactual builder:
-  - `code/build_nimby_shock_fertility_counterfactual.py`
-- Extended the bridge library with two new utilities:
-  - persistent NIMBY-shock transition from a shared initial state
-  - forward age-scenario projection under a shared initial state plus persistent NIMBY shock
-  - file: `code/nimby_fertility_transition_bridge.py`
-- New outputs:
-  - `notes/build/nimby_shock_transition_series.csv`
-  - `notes/build/nimby_shock_projection_series.csv`
-  - `notes/build/nimby_shock_fertility_counterfactual_summary.csv`
-  - `notes/build/nimby_shock_fertility_counterfactual.md`
-  - `notes/build/nimby_shock_fertility_counterfactual.png`
-  - `notes/build/nimby_shock_fertility_counterfactual.pdf`
-- Main result:
-  - a persistent NIMBY shift now gives the long-run object the project actually needs
-  - under a permanent `theta0 + 0.05` shift, house prices rise and fertility falls both in the
-    stylized transition and in the forward age-scenario bridge
-  - medium-immigration projection:
-    - `2050` price index `1.163` versus `1.066` baseline
-    - `2050` fertility `0.190` versus `0.194` baseline
-    - `2100` price index `1.767` versus `1.254` baseline
-    - `2100` fertility `0.175` versus `0.188` baseline
-- Writing lock after this pass:
-  - the old aging-only projection is not the core long-run result anymore
-  - the manuscript and the model-comparison note should both center the long-run section on
-    persistent housing scarcity lowering realized fertility
+### Session: 2026-04-16 (stationary benchmark timing robustness recalibrated locally; Hamilton upload packet prepared but remote staging is blocked by SSH resets)
+- The annual timing robustness mismatch is now diagnosed and fixed locally:
+  - old problem:
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md` was evaluating the timing block under the stationary benchmark scenario
+    - but it was still reusing the nonstationary/base calibration from:
+      - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated_search.csv`
+  - implication:
+    - the old benchmark row looked looser (`starts / permits ~= 0.962`, `completions / starts ~= 0.944`) not because the calibration failed, but because the scenario changed
+- Source fix:
+  - `code/build_annual_full_re_stationary_transition_timing_robustness.py`
+  - now runs a benchmark-specific local recalibration under:
+    - `benchmark_d00_stock_data`
+  - kept intentionally local to this benchmark note rather than changing the shared calibrated-params resolver for all annual objects
+- Benchmark selection rule is now ridge-aware rather than pure minimum-loss:
+  - admissible set:
+    - all rows with `loss <= min_loss + 2e-5`
+  - selection:
+    - choose the admissible row closest to the inherited baseline calibration
+  - reason:
+    - the completion side sits on a shallow `completion_hazard / uc_inventory_years` ridge, so the old `0.36 / 0.90` minimum-loss row was a boundary winner rather than a robust benchmark point
+- New stationary benchmark timing result:
+  - note:
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+  - supporting tables:
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_cases.csv`
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_checkpoints.csv`
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_benchmark_recalibration.csv`
+  - current stationary benchmark row:
+    - `start_hazard = 0.65`
+    - `completion_hazard = 0.40`
+    - `permit_inventory_years = 0.125`
+    - `uc_inventory_years = 0.70`
+  - achieved fit over `t = 1-5` under the stationary benchmark scenario:
+    - starts / permits `~= 0.931`
+    - completions / starts `~= 0.891`
+    - permit inventory years `~= 0.501`
+    - under-construction inventory years `~= 1.336`
+- Interpretation rule:
+  - the permit/start side is well disciplined
+  - the completion side is only weakly identified
+  - so `completion_hazard` and `uc_inventory_years` should be treated as a scenario-conditional reduced-form normalization, not a portable technology estimate
+- The faster/slower robustness cases are now centered on that stationary benchmark-specific calibration, not on the old base calibration.
+- Local upload packet is ready:
+  - `notes/build/logs/annual_timing_robustness_stationary_packet_20260416_121451`
+  - contents:
+    - corrected script
+    - core dependency scripts
+    - rebuilt timing robustness note
+    - rebuilt case/checkpoint/recalibration csvs
+    - `manifest.txt`
+- Remote state:
+  - attempted Hamilton staging via the standard `hamilton8` SSH path
+  - current blocker is transport, not content:
+    - repeated `client_loop: send disconnect: Connection reset`
+  - so the packet is ready to push as soon as Hamilton connectivity stops resetting
 
 ---
 
-### Session: 2026-03-20 (standalone manuscript draft)
-- Wrote a standalone manuscript draft in LaTeX:
-  - `drafts/fertility_and_housing_supply.tex`
-  - `drafts/fertility_and_housing_supply.pdf`
-- Draft structure:
-  - introduction
-  - model
-  - steady-state benchmark
-  - temporary baby boom
-  - historical validation
-  - robustness
-  - future demographic projections
-  - conclusion
-- Main writing lock:
-  - the manuscript is now framed as a standalone fertility-and-housing paper rather than as a
-    technical extension memo
-  - the benchmark comparison note remains the supporting model pack in `notes/build/`
-- Important interpretation lock carried into the draft:
-  - baby boom: fertility amplifies the medium-run house-price response
-  - long-run aging: fertility flattens the projected price path relative to the NIMBY proxy
-  - projection section is still a matched bridge, not the full upstream forecast solver
+### Session: 2026-04-15 (edge cleanup broke `T = 14`, `T = 15` also promoted, and the overnight chain is now live on `T = 16`)
+- The edge-polish-enabled `T = 14` rerun was a real breakthrough:
+  - completed Hamilton job:
+    - `16800246`
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_134329`
+  - best case:
+    - `late3_14`
+  - best residual:
+    - `maxres ~= 0.0079791185`
+  - read:
+    - the old `T = 14` wall at `~0.0586992` is gone
+    - the front-edge plus terminal-date cleanup was exactly the missing solver move
+- `T = 15` also cleared the promote threshold on the first pass under the same upgraded workflow:
+  - completed Hamilton job:
+    - `16803723`
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t15_suffix_ladder_hamilton_20260415_192438`
+  - best case:
+    - `late3_15`
+  - best residual:
+    - `maxres ~= 0.0184594270`
+- The overnight autopilot gap after a successful promote was a plumbing bug, not a solver failure:
+  - cause:
+    - `submit_hamilton_bellman_re_suffix_ladder.ps1` could print `export_transition_input.ps1` output before the final submission-path line
+    - `bellman_re_horizon_autopilot.ps1` then treated that first line as the path to parse and died after promotion
+  - fixes:
+    - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+      - pipes `export_transition_input.ps1` output to `Out-Null`
+    - `code/bellman_re_horizon_autopilot.ps1`
+      - now takes the last non-empty line of the submitter output as the submission path
+- Overnight continuation is now set up properly:
+  - autopilot restarted from the completed `T = 15` rung with:
+    - `StartingHorizon = 15`
+    - `MaxHorizon = 17`
+  - current live Hamilton rung:
+    - `T = 16`
+    - job:
+      - `16803844`
+    - remote dir:
+      - `/nobackup/hfnt93/fert_runs/bellman_re_t16_suffix_ladder_hamilton_20260415_211641`
+  - reporter restarted as well and is again tied to:
+    - `notes/build/logs/active_bellman_re_horizon_autopilot.txt`
 
 ---
 
-### Session: 2026-03-20 (robustness and projection bridge)
-- Added a shared Python bridge for the current transition and projection equations:
-  - `code/nimby_fertility_transition_bridge.py`
-- Added a bounded baby-boom robustness builder:
-  - `code/build_nimby_vs_fertility_transition_robustness.py`
-- New robustness outputs:
-  - `notes/build/nimby_vs_fertility_transition_robustness.png`
-  - `notes/build/nimby_vs_fertility_transition_robustness.pdf`
-  - `notes/build/nimby_vs_fertility_transition_robustness.csv`
-  - `notes/build/nimby_vs_fertility_transition_robustness_checks.csv`
-- Important robustness lock:
-  - the Python bridge matches the MATLAB benchmark policy runs to machine precision
-  - the price-amplification result is robust across the bounded sweep
-  - the access ranking is less uniform than the price ranking, so the draft should lean on the
-    robust price result first
-- Added an upstream forecast-age exporter and a projection comparison builder:
-  - `code/export_nimby_forecast_reference_main.m`
-  - `code/build_nimby_vs_fertility_projection_comparison.py`
-- New projection outputs:
-  - `notes/build/nimby_projection_age_groups_all_scenarios.csv`
-  - `notes/build/nimby_projection_reference.csv`
-  - `notes/build/nimby_vs_fertility_projection_comparison.png`
-  - `notes/build/nimby_vs_fertility_projection_comparison.pdf`
-  - `notes/build/nimby_vs_fertility_projection_summary.csv`
-  - `notes/build/nimby_projection_bridge.csv`
-  - `notes/build/nimby_vs_fertility_projection_bridge.csv`
-- Important projection lock:
-  - the saved upstream `Price_Trend` vectors in accessible forecast MAT files are too coarse/flat
-    to use directly as the paper comparison line
-  - the usable current object is therefore a matched bridge driven by the upstream forecast age
-    weights, with a NIMBY proxy on one side and the fertility bridge on the other
-  - under that bridge, projected aging raises NIMBY-proxy prices but leaves the fertility bridge
-    much flatter
+### Session: 2026-04-15 (the `T = 14` tail-mask ladder topped out, so the next Bellman RE move is now edge cleanup and the upgraded rung is live)
+- The completed `T = 14` deep-tail Hamilton rung is now fully confirmed:
+  - job:
+    - `16799314`
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_093733`
+  - best case:
+    - `late2_14`
+  - best residual:
+    - `maxres ~= 0.0586992104`
+  - read:
+    - deep-tail improved materially beyond broad-tail (`~0.0748841`)
+    - but it still missed the `0.05` promote threshold, so the current tail-mask retry ladder is exhausted
+- The best `T = 14` case reveals the remaining geometry clearly:
+  - best `q_path`:
+    - `1.3239023688 1.2585264162 1.2501272778 1.2257256841 1.8000000000 1.4596566666 1.4386503333 1.4355253333 1.4261503333 1.4292753333 1.4094836667 1.4303170000 1.4545824000 1.7812911943`
+  - best implied path:
+    - `1.3826015792 1.2987720135 1.2865670498 1.2257256841 1.8000000000 1.4596566666 1.4386503333 1.4355253333 1.4261503333 1.4292753333 1.4094836667 1.4303170000 1.4545824000 1.8000000000`
+  - residual path:
+    - `0.0586992104 0.0402455973 0.0364397720 0 0 0 0 0 0 0 0 0 0 0.0187088057`
+  - interpretation:
+    - dates `4-13` are effectively exact
+    - the remaining Bellman RE miss is now front-edge dates `1-3` plus the last date
+    - this is no longer a pure late-tail masking problem
+- Solver change now in source:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+    - added:
+      - `coordinate_edge_polish`
+      - `coordinate_edge_head_periods`
+      - `coordinate_edge_tail_periods`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+    - added a reusable final coordinate polish helper
+    - added an edge-focused final polish pass after the ranked coordinate cleanup
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+    - added:
+      - `--coordinate-edge-polish`
+      - `--coordinate-edge-head-periods`
+      - `--coordinate-edge-tail-periods`
+  - local rebuild succeeded:
+    - `compiled_sidecar/build/fertility_transition_re_cli.exe`
+- Workflow changes:
+  - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+    - now supports optional edge-polish CLI flags and passes them through to the remote shell script
+  - `code/bellman_re_horizon_autopilot.ps1`
+    - standard / broad / deep profiles now all carry:
+      - `CoordinateEdgePolish = true`
+      - `CoordinateEdgeHeadPeriods = 3`
+      - `CoordinateEdgeTailPeriods = 1`
+- Current live rerun:
+  - submitted from the completed best `T = 14` seed (`late2_14`)
+  - Hamilton job:
+    - `16800246`
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_134329`
+  - profile:
+    - `standard_tail`
+  - autopilot:
+    - restarted and watching the new rung from:
+      - `notes/build/logs/active_bellman_re_horizon_autopilot.txt`
+  - reporter:
+    - restarted and updating:
+      - `notes/build/compiled_sidecar_bellman_re_live_progress.md`
 
 ---
 
-### Session: 2026-03-20 (transition tenure and cohort proxy pass)
-- Extended the project-03 transition runner so each model run now emits:
-  - age-bin shares
-  - young, old, and aggregate homeownership-access proxies
-  - boom, parent, and child generation homeownership-access levels
-  - boom, parent, and child generation housing-burden proxy levels
-  - file: `code/run_experiments_matlab_main.m`
-- Updated the transition figure builder:
-  - `code/plot_nimby_vs_fertility_transition_figures.py`
-- New or refreshed transition outputs:
-  - `notes/build/nimby_vs_fertility_baby_boom_transition.png`
-  - `notes/build/nimby_vs_fertility_baby_boom_transition.pdf`
-  - `notes/build/nimby_vs_fertility_generation_homeownership.png`
-  - `notes/build/nimby_vs_fertility_generation_homeownership.pdf`
-  - `notes/build/nimby_vs_fertility_transition_proxy_series.csv`
-  - updated `notes/build/nimby_vs_fertility_baby_boom_summary.csv`
-- Main dynamic read after the proxy pass:
-  - young homeownership access falls much more in the fertility transition than in NIMBY
-  - trough young-homeownership response is about `-0.0107` in the fertility transition versus
-    about `-0.0019` in NIMBY
-  - cohort access ranking on the fertility side is parent least affected, boom generation next,
-    child generation most affected
-- Important implementation lock:
-  - the homeownership comparison gap is now closed with explicit proxy objects
-  - the remaining missing dynamic object is a true savings / net-worth block, not another tenure
-    plot
+### Session: 2026-04-15 (the Bellman RE supervisor survived the stale `T = 14` handoff and relaunched the deeper retry)
+- The completed `T = 14` broad-tail Hamilton rung is now confirmed:
+  - job:
+    - `16798223`
+  - remote dir:
+    - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260414_174937`
+  - best case:
+    - `late2_14`
+  - best residual:
+    - `maxres ~= 0.0748840550`
+  - read:
+    - broadening the tail materially improved the failed standard pass
+    - but it still missed the `0.05` promote threshold, so the right next step is deeper same-horizon control, not promotion to `T = 15`
+- The detached local supervisor had died before reacting to that finished broad-tail run:
+  - evidence:
+    - the autopilot status log stopped at a stale `WAIT ... state=missing`
+    - launcher stderr showed transient Hamilton SSH resets:
+      - `client_loop: send disconnect: Connection reset`
+- Workflow hardening now in source:
+  - `code/bellman_re_horizon_autopilot.ps1`
+    - remote polling and sync now retry SSH/SCP instead of dying on the first reset
+  - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+    - remote mkdir / upload / submit steps now retry as well
+  - `code/bellman_re_horizon_update_reporter.py`
+    - reporter-side SSH polling now retries instead of treating a transient remote failure as terminal
+- Relaunch result:
+  - the autopilot was restarted from the completed `T = 14` broad-tail rung:
+    - `StartingHorizon = 14`
+    - `CurrentJobId = 16798223`
+    - `CurrentProfileName = broad_tail`
+    - `CurrentAttemptIndex = 1`
+  - it immediately recognized the completed result and auto-submitted the next retry:
+    - new job:
+      - `16799314`
+    - new remote dir:
+      - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_093733`
+    - profile:
+      - `deep_tail`
+    - attempt index:
+      - `2`
+- Current live pointers after restart:
+  - autopilot:
+    - `notes/build/logs/active_bellman_re_horizon_autopilot.txt`
+  - reporter:
+    - `notes/build/logs/active_bellman_re_horizon_update_reporter.txt`
+  - live note:
+    - `notes/build/compiled_sidecar_bellman_re_live_progress.md`
 
 ---
 
-### Session: 2026-03-20 (historical validation and projection input bridge)
-- Extended the upstream NIMBY exporter so the build folder now has both a lean reference CSV and a
-  fuller transition export:
-  - `code/export_nimby_baby_boom_reference_main.m`
-  - `notes/build/nimby_baby_boom_reference.csv`
-  - `notes/build/nimby_baby_boom_reference_full.csv`
-- Added a historical baby-boom validation builder:
-  - `code/build_nimby_vs_fertility_historical_validation.py`
-- New historical-validation outputs:
-  - `notes/build/nimby_vs_fertility_historical_validation.png`
-  - `notes/build/nimby_vs_fertility_historical_validation.pdf`
-  - `notes/build/nimby_vs_fertility_historical_validation.md`
-  - `notes/build/nimby_vs_fertility_historical_validation_summary.csv`
-  - `notes/build/nimby_vs_fertility_historical_validation_series.csv`
-- Main historical-validation read:
-  - data source is the aggregate `metarea == 0` fertility series from
-    `C:/Users/Dave_/Dropbox/Zac and David/Data/merged_birthrates_migrationweights.dta`
-  - normalization uses the pre-boom mean over `1940-1945`
-  - post-boom comparison aligns historical `1956+` to model `t >= 10`
-  - fertility extension RMSE beats the NIMBY line at `10`, `20`, `30`, and `40` year horizons,
-    but the improvement is modest
-- Added a projection-input bridge:
-  - `code/build_nimby_projection_age_groups.py`
-  - `notes/build/nimby_projection_age_groups.png`
-  - `notes/build/nimby_projection_age_groups.pdf`
-  - `notes/build/nimby_projection_age_groups.md`
-  - `notes/build/nimby_projection_age_groups.csv`
-- Updated the main comparison note:
-  - `notes/build/nimby_vs_fertility_model_comparison.tex`
-  - `notes/build/nimby_vs_fertility_model_comparison.pdf`
-- Important implementation lock after this pass:
-  - upstream NIMBY transition data are no longer the main bottleneck for a fuller comparison
-  - after the later proxy pass, the remaining blocker is no longer homeownership but net-worth and
-    future-forecast objects
+### Session: 2026-04-14 (the Bellman RE ladder now reaches `T = 12`, and the deeper `T = 13` search is running on Hamilton)
+- Annual timing interpretation is now explicit:
+  - benchmark should be the annual calibrated `permits -> starts -> completions -> stock` block
+  - benchmark anchors already in-project:
+    - starts / permits about `0.932`
+    - completions / starts about `0.895`
+    - permit-inventory lag about `0.50` years
+  - new note:
+    - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+  - new script:
+    - `code/build_annual_full_re_stationary_transition_timing_robustness.py`
+  - interpretation rule:
+    - benchmark timing from data first
+    - then `faster_timing` / `slower_timing` as robustness
+    - do not present those timing cases as point-identified political-delay estimates
+- Deferred NIMBY interpretation note:
+  - the current construction / permit timing object is still a numerical placeholder
+  - it is not yet well disciplined by direct permits / completions / build-duration evidence
+  - do not over-interpret it yet as a clean political-delay or literal construction-cost-duration parameter
+  - after the Bellman RE solve is stabilized, revisit the upstream NIMBY paper / literature on permitting and build lags, then run a sensitivity exercise on this timing object
+- The late-tail continuation ladder improved again:
+  - `T = 11`
+    - deep best case:
+      - `late5_11`
+      - `maxres ~= 0.0299503221`
+  - `T = 12`
+    - first direct tail-controlled probe works well:
+      - `late6_12`
+      - `maxres ~= 0.0193857649`
+    - note:
+      - `notes/build/compiled_sidecar_bellman_re_t12_suffix_probe.md`
+- `T = 13` is now the live widening rung:
+  - first local suffix probe cases:
+    - `late7_13`
+      - `0.0924844247`
+    - `late6_13`
+      - `0.0628766301`
+    - `late7_13_suffix_anchor`
+      - `0.0924844247`
+  - best local case:
+    - `late6_13`
+  - note:
+    - `notes/build/compiled_sidecar_bellman_re_t13_suffix_probe.md`
+  - read:
+    - the `T = 12 -> T = 13` jump needs a deeper tail family than the minimal three-case local probe
+- Hamilton setup is now working:
+  - direct ssh/scp works with:
+    - `ssh -F NUL -o IdentitiesOnly=yes -i $HOME\\.ssh\\id_ed25519 ...`
+  - two wrapper bugs were fixed:
+    - Slurm spool-directory path issue:
+      - remote script now uses `SLURM_SUBMIT_DIR`
+    - archive extraction layout:
+      - submitter now untars into `compiled_sidecar/`
+  - one portability fix was also needed:
+    - `compiled_sidecar/CMakeLists.txt` now links `stdc++fs` when GNU `< 9.0`
+  - current remote run:
+    - active pointer:
+      - `notes/build/logs/active_bellman_re_t13_deep_suffix_hamilton.txt`
+    - remote dir:
+      - `/nobackup/hfnt93/fert_runs/bellman_re_t13_deep_suffix_hamilton_20260414_085458`
+    - Slurm job:
+      - `16786759`
+    - last confirmed status:
+      - configure/build complete
+      - first case started:
+        - `late6_13`
+- Detached completion watcher is now live too:
+  - watcher:
+    - `code/hamilton_bellman_re_t13_deep_suffix_handoff.ps1`
+  - launcher:
+    - `code/start_hamilton_bellman_re_t13_deep_suffix_handoff.ps1`
+  - active pointer:
+    - `notes/build/logs/active_hamilton_bellman_re_t13_deep_suffix_handoff.txt`
+  - behavior:
+    - polls the Hamilton job
+    - syncs `status.txt`, `summary.txt`, `t13_deep_cases.csv`, slurm logs, and `outputs/` back to a local handoff run dir when the job finishes
+    - writes `notes/build/compiled_sidecar_bellman_re_t13_deep_suffix_hamilton_handoff.md`
+- Continuation is now split into two detached lanes:
+  - runner / launcher:
+    - `code/bellman_re_horizon_autopilot.ps1`
+    - `code/start_bellman_re_horizon_autopilot.ps1`
+  - behavior:
+    - watches the active Hamilton rung
+    - syncs the completed rung locally
+    - promotes and submits the next horizon automatically when `best maxres <= 0.05`
+    - if the rung finishes above the threshold, it no longer stops immediately
+    - it now escalates across a same-horizon profile ladder:
+      - `standard_tail`: `6,5,4,3`
+      - `broad_tail`: `7,6,5,4,3,2`
+      - `deep_tail`: `8,7,6,5,4,3,2`
+  - reporter / launcher:
+    - `code/bellman_re_horizon_update_reporter.py`
+    - `code/start_bellman_re_horizon_update_reporter.ps1`
+  - behavior:
+    - follows the runner pointer instead of a fixed horizon
+    - polls remote status on the current rung
+    - refreshes `notes/build/compiled_sidecar_bellman_re_live_progress.md`
+  - active pointers:
+    - `notes/build/logs/active_bellman_re_horizon_autopilot.txt`
+    - `notes/build/logs/active_bellman_re_horizon_update_reporter.txt`
+- Current live `T = 13` deep Hamilton status:
+  - best completed case so far:
+    - `late4_13`
+    - `maxres ~= 0.0484151282`
+  - latest completed anchor case:
+    - `late5_13_suffix_anchor`
+    - `maxres ~= 0.0628766301`
+  - current active case when the reporter was wired:
+    - `late4_13_suffix_anchor`
+
+### Session: 2026-04-13 (the Bellman RE horizon ladder now reaches `T = 11`)
+- The corrected staged Bellman RE workflow is now reproducible directly through:
+  - `compiled_sidecar/run_transition_re_staged_grid.ps1`
+  - with the promoted `T = 4` hybrid:
+    - coarse stage `1`: `maxres ~= 0.0086648244`
+    - corrected enriched stage `2`: `maxres ~= 0.0039036178`
+- The staged wrapper now matches the validated packet:
+  - it uses the right default seed for dynamic horizon modes
+  - it uses the coarse stage-`1` search grid `1.5,2.0,2.5`
+  - it applies case-specific aggressive logic only in stage `2`
+- Dynamic horizon support is now generic:
+  - `compiled_sidecar/matlab/export_transition_input_pack.m`
+  - `compiled_sidecar/export_transition_input.ps1`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+  - `compiled_sidecar/run_transition_re_staged_grid.ps1`
+  - now accept dynamic modes like:
+    - `t6_diag`
+    - `t9_diag`
+    - `t10_diag`
+    - etc.
+- New horizon-ladder note:
+  - `notes/build/compiled_sidecar_bellman_re_horizon_ladder.md`
+- Main ladder results:
+  - `T = 6`
+    - seeded from promoted `T = 4` endpoint:
+      - stage `1`: `0.0372157985`
+      - corrected stage `2`: `0.0212606561`
+      - one more local continuation: `0.0209305281`
+  - `T = 7`
+    - direct staged solve from the `T = 6` seed still failed
+    - but earlier backtracking rescued the rung:
+      - coarse controlled: `0.0329315141`
+      - corrected enriched follow-up: `0.0143136216`
+  - `T = 8`
+    - seeded from improved `T = 7`:
+      - coarse controlled: `0.0128911309`
+      - corrected enriched follow-up: `0.0127670628`
+  - `T = 9`
+    - seeded from improved `T = 8`:
+      - coarse controlled: `0.0492666860`
+      - corrected enriched follow-up worsens slightly to `0.0524668215`
+  - `T = 10`
+    - seeded from the `T = 9` coarse endpoint:
+      - coarse controlled: `0.0659652679`
+      - corrected enriched follow-up improves modestly to `0.0541249408`
+  - `T = 11`
+    - seeded from the improved `T = 10` endpoint:
+      - coarse controlled: `0.0650049923`
+      - corrected enriched follow-up is basically neutral at `0.0650299536`
+- Main read:
+  - the Bellman RE method now genuinely extends past `T = 4`
+  - the live continuation method is:
+    - shorter-horizon solved path as the seed
+    - earlier backtracking turned on for the longer horizon
+  - the next live frontier is no longer whether the ladder can leave `T = 4`
+  - it is how to stop residuals widening again in the `T = 9-11` region
 
 ---
 
-### Session: 2026-03-20 (baby-boom transition comparison added)
-- Found the missing upstream NIMBY transition object in Dropbox:
-  - `C:/Users/Dave_/Dropbox/Zac and David/Code/SteadyState/Mod_IRF/irfs_smoothed.mat`
-- Added exporter for the upstream NIMBY baby-boom reference:
-  - `code/export_nimby_baby_boom_reference_main.m`
-- Updated the project-03 transition run to match the NIMBY shock timing and scale:
-  - temporary `+10%` shock
-  - periods `t = 0` to `9`
-  - file: `code/run_experiments_matlab_main.m`
-- Added transition plotting script:
-  - `code/plot_nimby_vs_fertility_transition_figures.py`
-- New transition comparison outputs:
-  - `notes/build/nimby_baby_boom_reference.csv`
-  - `notes/build/nimby_baby_boom_reference_source.txt`
-  - `notes/build/nimby_vs_fertility_baby_boom_transition.png`
-  - `notes/build/nimby_vs_fertility_baby_boom_transition.pdf`
-  - `notes/build/nimby_vs_fertility_baby_boom_summary.csv`
-- Main transition readout:
-  - normalized average post-window house-price response is about `0.020` in the NIMBY reference
-  - normalized average post-window house-price response is about `0.051` in the fertility transition
-  - fertility rises during the boom and then falls modestly below baseline later
-- Updated:
-  - `notes/build/nimby_vs_fertility_model_comparison.tex`
-  - `notes/build/nimby_vs_fertility_model_comparison.pdf`
-- Important interpretation lock:
-  - the steady-state comparison remains the exact household-to-household benchmark comparison
-  - the new baby-boom section is a direct matched transition comparison, but it still uses the
-    current project-03 transition block rather than a fully unified household-DP transition solver
+### Session: 2026-04-13 (branch-corrector packet improved stage 2 locally; staged validation leak is fixed and a clean rerun is live)
+- First branch-corrector packet is complete:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_branch_corrector_16_hour_packet.md`
+  - local staged result from the promoted coarse endpoint:
+    - baseline stage-`2` stays at `maxres ~= 0.0039778925`
+    - best corrector stage-`2` case improves to `maxres ~= 0.0039036178`
+    - improved endpoint:
+      - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960963822]`
+      - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+- Important workflow diagnosis:
+  - the packet's old default-seed validation was not testing the intended hybrid staged workflow
+  - each workflow script fed case-specific stage-`2` flags into coarse stage `1` as well
+  - that contaminated the validation read:
+    - old validation stage `1` `maxres ~= 0.1403493366`
+    - old validation stage `2` `maxres ~= 0.3625106287`
+- Workflow fix:
+  - patched:
+    - `code/bellman_re_branch_corrector_16_hour_workflow.ps1`
+    - `code/bellman_re_branch_continuity_16_hour_workflow.ps1`
+    - `code/bellman_re_branch_lookahead_16_hour_workflow.ps1`
+  - case specs now carry stage-specific extras so:
+    - coarse stage `1` can stay baseline
+    - aggressive flags apply only in enriched stage `2`
+- New live workflow:
+  - worker:
+    - `code/bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - launcher:
+    - `code/start_bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_branch_corrector_16_hour_workflow.txt`
+  - run directory at relaunch:
+    - `notes/build/logs/bellman_re_branch_corrector_16_hour_workflow_20260413_074931`
+  - purpose:
+    - retest the branch-corrector on the actual intended hybrid workflow:
+      - baseline coarse stage `1`
+      - branch-corrected enriched stage `2`
 
 ---
 
-### Session: 2026-03-20 (NIMBY-style model comparison note compiled)
-- Built a separate model-comparison note in LaTeX rather than continuing to overload the current
-  LyX manuscript:
-  - `notes/build/nimby_vs_fertility_model_comparison.tex`
-  - `notes/build/nimby_vs_fertility_model_comparison.pdf`
-- The note follows the Gross and Chivers model-section order:
-  - `The Model`
-  - `Household's Problem`
-  - `Real Estate Firms`
-  - `Housing Supply`
-  - `The Median Voter Theorem`
-  - `Equilibrium`
-  - benchmark comparison
-- Important writing decision from the user:
-  - keep implementation and coding material out of the main text
-  - move solver details to an appendix
-- Added a dedicated figure builder:
-  - `code/plot_nimby_vs_fertility_model_figures.py`
-- New genuine comparison figures:
-  - `notes/build/nimby_vs_fertility_household_support.png`
-  - `notes/build/nimby_vs_fertility_household_support.pdf`
-  - `notes/build/nimby_vs_fertility_benchmark_objects.png`
-  - `notes/build/nimby_vs_fertility_benchmark_objects.pdf`
-- Main content decision:
-  - use the exact household benchmark equations from `SolveSS_function.m` and
-    `SolveSS_fertility.m`
-  - do not reuse the older blue prototype equations from the current LyX draft as the main
-    comparison object
-- Main scope decision:
-  - keep the note focused on model structure and verified steady-state comparison
-  - do not pretend the current repo has a full direct upstream NIMBY transition stack ready for
-    Figure-7-style dynamic comparisons
+### Session: 2026-04-13 (the solver now has a branch-switch corrector and a new 16-hour packet is running)
+- Source change:
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - continuity selection can now augment bracket choices with raw near-root candidates inside the continuity vote-slack band
+  - the outer solve now runs a second branch-corrector pass when masked late-period implied prices or policy rows jump enough to indicate a branch switch
+- Immediate diagnostics after the patch:
+  - aggressive period-`3` continuity plus lookahead with `vote_slack = 1.0` now changes the bad cliff seed at `q4 = 2.39605` from:
+    - old implied `q3 ~= 2.29375`
+    - to new implied `q3 ~= 2.00000`
+  - but one-step max residual still stays around `1.6443825561` because period `1` still blows up
+  - implication:
+    - the selector family still has room to move
+    - but the economic test now needs a longer staged continuation rather than a one-step cliff check
+- Continuity packet is now complete:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_branch_continuity_16_hour_packet.md`
+  - result:
+    - all continuity variants tied the old staged wall at `maxres ~= 0.0039778925`
+    - no promoted improvement
+- New live workflow:
+  - worker:
+    - `code/bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - launcher:
+    - `code/start_bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - workflow note:
+    - `notes/build/bellman_re_branch_corrector_16_hour_workflow.md`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_branch_corrector_16_hour_workflow.txt`
+  - run directory at launch:
+    - `notes/build/logs/bellman_re_branch_corrector_16_hour_workflow_20260413_051538`
+  - launch phase:
+    - `baseline_stage2`
+  - packet purpose:
+    - test whether the new branch-corrector refresh can turn the only selector family that moved the cliff branch into a better staged continuation from the promoted coarse endpoint
+- STATUS.md updated for the live corrector packet.
 
 ---
 
-### Session: 2026-03-20 (comparison refresh completed and trackers updated)
-- Regenerated the full corrected benchmark comparison bundle:
-  - `notes/build/fertility_vs_nimby_benchmark_report.md`
-  - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
-  - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
-  - `notes/build/fertility_vs_nimby_common_price_grid.csv`
-  - `notes/build/fertility_vs_nimby_benchmark_panels.png`
-  - `notes/build/fertility_vs_nimby_benchmark_panels.pdf`
-- Main comparison result after the refresh:
-  - the public note now reports both raw `totalvote` and normalized `vote_per_mass`
-  - stationary mass is shown explicitly, so the scale difference across models is transparent
-  - the corrected benchmark still crosses at `a_price = 1.751853`
-- Practical execution note:
-  - `powershell ... refresh_corrected_benchmark_outputs.ps1` hit the shell timeout even though
-    MATLAB kept running
-  - the reliable rerun path was direct `matlab.exe -batch "cd(...); write_fertility_vs_nimby_benchmark_main"`
-    followed by `python code/plot_fertility_vs_nimby_benchmark.py`
-    and a `pandoc` call from `notes/build/`
-- Documentation updates:
-  - `notes/03_model_notes.md` now reflects the confirmed March 20 benchmark numbers
-  - `code/write_fertility_vs_nimby_benchmark_main.m` now stamps the report frontmatter date
-    dynamically instead of hard-coding `2026-03-18`
-  - `STATUS.md` and `README.md` now treat the comparison refresh as completed, not pending
+### Session: 2026-04-12 (explicit period-3 branch continuity is now wired into the live compiled Bellman RE selector and a new 16-hour packet is running)
+- Source change:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+- New workflow:
+  - `code/bellman_re_branch_continuity_16_hour_workflow.ps1`
+  - `code/start_bellman_re_branch_continuity_16_hour_workflow.ps1`
+  - `notes/build/bellman_re_branch_continuity_16_hour_workflow.md`
+- Solver change:
+  - active root selection now normalizes and reads `branch_continuity_mask`
+  - bracket candidates can now be ranked by policy-row continuity against the previous selected row for the same period
+  - no-bracket fallback can now choose among near-best-vote candidates using continuity, controlled by `branch_continuity_vote_slack`
+  - the live CLI and PowerShell runner now expose:
+    - `--branch-continuity-mask`
+    - `--branch-continuity-vote-slack`
+- Cheap smoke from the promoted coarse endpoint:
+  - baseline stage-`2`, `1` iteration:
+    - `q ~= [1.7296202033, 1.7542903475, 1.8750762607, 2.3960221075]`
+    - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+    - `maxres ~= 0.0039778925`
+  - continuity stage-`2`, `1` iteration with `branch_continuity_mask = [0,0,1,0]` and `vote_slack = 0.02`:
+    - same `q`, `q_implied`, and `maxres`
+  - read:
+    - the continuity path is live and stable
+    - any benefit has to come from the full staged multi-case workflow, not a one-step smoke
+- Live workflow:
+  - run label:
+    - `bellman_re_branch_continuity_16_hour_workflow`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_branch_continuity_16_hour_workflow.txt`
+  - run directory at launch:
+    - `notes/build/logs/bellman_re_branch_continuity_16_hour_workflow_20260412_222153`
+  - launch phase:
+    - `baseline_stage2`
+  - packet purpose:
+    - test whether explicit period-`3` branch continuity, with and without previous-implied anchoring and lookahead, can beat the staged wall or change the local `q4` cliff in a way that survives staged continuation
+- STATUS.md updated for the live continuity packet.
 
 ---
 
-### Session: 2026-03-20 (corrected calibration sweep confirmed benchmark; comparison refresh queued)
-- The detached corrected-code calibration sweep completed successfully:
-  - `notes/build/logs/corrected_calibration_20260319_122358.log`
-  - `notes/build/fertility_calibration_report.md`
-  - `notes/build/fertility_calibration_sweep.csv`
-  - `notes/build/fertility_calibration_market_checks.csv`
-- Main result:
-  - current defaults survived the corrected recalibration sweep
-  - candidate `1` and current defaults are the same benchmark object
-  - the promoted benchmark remains:
-    - `I = 60`, `J = 14`
-    - `birth_utility_by_parity = [0.85, 1.10, 1.20]`
-    - `child_utility = 0.02`
-    - `birth_cost = 0.06`
-    - `birth_price_coeff = 0.24`
-    - `lambda_crowd = 0.18`
-  - unique crossing remains at about `a_price = 1.751853`
-  - age-50 completed fertility remains `[0.223716, 0.255603, 0.292729, 0.227952]`
-- Reporting layer patched after the mass-scaling bug fix:
-  - `code/write_fertility_vs_nimby_benchmark_main.m`
-    now records raw `totalvote`, normalized `vote_per_mass`, and total stationary mass
-  - `code/plot_fertility_vs_nimby_benchmark.py`
-    now builds a six-panel figure with raw vote, normalized vote, debt, mass, and family objects
-  - `code/refresh_corrected_benchmark_outputs.ps1`
-    now reruns the benchmark reports, comparison build, figure generation, and PDF compile
-- Important cleanup:
-  - killed two stale timed-out MATLAB calibration jobs so they could not race the detached run
-- Immediate pending item:
-  - the benchmark comparison report/figure/PDF in `notes/build/` are still stale relative to the
-    patched raw-vs-normalized comparison layer until `refresh_corrected_benchmark_outputs.ps1`
-    is run
+### Session: 2026-04-12 (staged coarse-to-enriched standalone Bellman RE workflow promotes the bounded frontier to `~0.0039779`)
+- New note:
+  - `notes/build/compiled_sidecar_transition_re_enriched_grid_probe.md`
+  - `notes/build/bellman_re_branch_lookahead_16_hour_workflow.md`
+- New script:
+  - `compiled_sidecar/run_transition_re_staged_grid.ps1`
+  - `code/bellman_re_branch_lookahead_16_hour_workflow.ps1`
+  - `code/start_bellman_re_branch_lookahead_16_hour_workflow.ps1`
+- Workflow integration:
+  - `compiled_sidecar/src/transition_re_cli.cpp` now supports staged continuation directly via:
+    - `--stage2-q-search-grid`
+    - `--stage2-max-iter`
+  - `compiled_sidecar/run_transition_re_cli.ps1` now just forwards the staged flags to the compiled CLI
+  - verified on `transition_input_t4_diag`: the binary-backed staged path reproduces the same promoted result as the thin wrapper
+- Stable stage 1 coarse-grid solve from scratch on `transition_input_t4_diag`:
+  - `q ~= [1.7280288619, 1.7542903475, 1.8750762607, 2.3960221075]`
+  - `q_implied ~= [1.7336949273, 1.7542903475, 1.8750762607, 2.4046869318]`
+  - residuals `~= [0.0056660654, 0.0000000000, 0.0000000000, 0.0086648244]`
+  - `maxres ~= 0.0086648244`
+- Stable stage 2 enriched-grid continuation from that coarse endpoint:
+  - enriched grid:
+    - `1.5, 1.70, 1.72, 1.73, 1.74, 1.75, 1.80, 1.85, 1.90, 2.00, 2.25, 2.35, 2.40, 2.50`
+  - result:
+    - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+    - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+    - residuals `~= [0.0033948617, 0.0000000000, 0.0000000000, 0.0039778925]`
+    - `maxres ~= 0.0039778925`
+    - `stalled = 1`
+- Exact local enriched geometry still points to the same floor:
+  - balanced point:
+    - `q ~= [1.7293554408, 1.7542903475, 1.8750762607, 2.3960221075]`
+    - residuals `~= [0.0039778925, 0.0000000000, 0.0000000000, 0.0039778925]`
+    - `maxres ~= 0.0039778925`
+- Direct enriched-grid solve from scratch is still worse:
+  - `q ~= [1.7442578009, 1.7778789006, 1.7890643862, 2.0047080153]`
+  - residuals `~= [0.0047851659, 0.0036868499, 0.0109356138, -0.0109580153]`
+  - `maxres ~= 0.0109580153`
+- Slightly denser stage-2 local grids do not improve the frontier:
+  - more `q1` points only reshaped the slack residual and still ended at `maxres ~= 0.0039778925`
+  - more `q4` points worsened the active branch in one representative case to `~0.0049778925`
+- Direct local branch mapping around the staged endpoint sharpens the read:
+  - any upward move in `q4` beyond `2.3960221075` leaves the good branch immediately
+  - `q4 = 2.3961000000` triggers a period-3 jump to about `2.3416666667`
+  - `q4 >= 2.3962000000` triggers a period-2 jump to about `1.8083333333` with `maxres ~= 0.0540429858`
+  - that cliff is effectively invariant to the local `q1` choice
+- Local `q3` adjustments do not rescue the enriched branch:
+  - raising `q3` at the baseline endpoint leaves the same `~0.0039778925` floor
+  - once `q4` moves up, the same period-3 or period-2 branch jumps still appear
+- The first nonlocal repaired branch seeds are worse under the live accepted-step schedule:
+  - `q2`-repair seed drifts after 10 iterations to `maxres ~= 0.9603451808`
+  - `q3`-repair seed drifts after 10 iterations to `maxres ~= 0.7377938394`
+- The standalone basin-hop probe is now extended in source:
+  - explicit `basin_hop_pivot_period`
+  - explicit `basin_hop_partner_period`
+  - short `basin_hop_followup_iters` scoring under the live accepted-step schedule
+  - CLI and PowerShell runner now expose those probe controls
+- First targeted period-`4` to period-`2` continuation probes are negative:
+  - tiny upward `q4` plus modest upward `q2` repair gives best raw hop around `maxres ~= 0.0971679858`
+  - the best 2-iteration follow-up from that seed is much worse, `maxres ~= 0.8667098319`
+  - a slightly larger `q4` hop is worse still, with best follow-up `maxres ~= 0.5480208443`
+- Repaired-suffix continuation is also negative on the same wall:
+  - the smallest repaired period-`4` to period-`2` seed bottoms out only at `maxres ~= 0.4417143782`
+  - the corresponding period-`4` to period-`3` repaired suffix is worse at `maxres ~= 0.7421708443`
+  - rerunning from the best repaired seed still lands in a worse basin at `maxres ~= 0.3171606218`
+- Tried an anchor-centered coarse-grid seeding patch around the active root-selection anchor and reverted it:
+  - the direct enriched endpoint still reproduced `~0.0039778925`
+  - but the full staged workflow degraded badly, with coarse stage around `0.0375` and enriched stage around `0.0309465910`
+  - so the branch is back on the last clean staged baseline solver logic
+- Diagnostic:
+  - the mid-loop coordinate backtracking block is nested inside the main backtracking gate
+  - so zero-damping enriched restarts do not use that block
+  - the enriched local gain comes from the final exact local polish
+- Main read:
+  - the live bounded Bellman RE workflow is now compiled-CLI-backed coarse-to-enriched continuation, not direct enriched solve from scratch
+  - workflow plumbing is now basically done for this branch
+  - the `~0.0039779` staged endpoint is now best treated as a real local branch wall
+  - raw and repaired-suffix period-`4` bridge families are not enough to cross it
+  - anchor-centered discovery seeding is also not a safe improvement path
+  - the next task is a broader nonlocal branch/root continuation rule beyond that wall, not more local grid densification
+  - no project-03 Bellman RE process is running now
+- Follow-up branch:
+  - the active source now wires `root_selection_lookahead` into the live selector rather than only exposing it through the CLI surface
+  - a one-iteration cliff smoke at `q4 = 2.3961000000` changes the period-3 branch under lookahead, from implied `q3 ~= 2.29375` without lookahead to implied `q3 ~= 1.85` with lookahead, but the seed is still globally bad because period 1 blows up
+  - a clean baseline enriched restart from the promoted coarse endpoint still reproduces the old staged wall at `maxres ~= 0.0039778925`
+  - a full enriched restart with lookahead was too slow for the interactive pass, so the next step was packaged as a bounded unattended workflow instead of being promoted manually
+- Live workflow:
+  - worker:
+    - `code/bellman_re_branch_lookahead_16_hour_workflow.ps1`
+  - launcher:
+    - `code/start_bellman_re_branch_lookahead_16_hour_workflow.ps1`
+  - workflow note:
+    - `notes/build/bellman_re_branch_lookahead_16_hour_workflow.md`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_branch_lookahead_16_hour_workflow.txt`
+  - run directory at launch:
+    - `notes/build/logs/bellman_re_branch_lookahead_16_hour_workflow_20260412_200947`
+  - launch phase check:
+    - `baseline_stage2`
+  - canonical packet:
+    - `notes/build/compiled_sidecar_bellman_re_branch_lookahead_16_hour_packet.md`
+  - completed result:
+    - all stage-2 variants tie the same promoted wall:
+      - baseline
+      - lookahead
+      - lookahead with previous-implied masks on periods `3-4`
+      - lookahead with previous-implied masks on periods `2-4`
+    - tied endpoint:
+      - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+      - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+      - `maxres ~= 0.0039778925`
+  - cliff map:
+    - at the balanced stage-2 seed, lookahead does change the bad middle cliff seeds:
+      - baseline implied `q3 ~= 2.29375` for `q4 = 2.39605-2.39610`
+      - lookahead implied `q3 ~= 1.85` for the same seeds
+    - but period `1` still blows up there, so max residual remains `~1.6448489807`
+    - at `q4 = 2.3960221075`, both selectors land at `maxres ~= 0.0540429858`
+    - at `q4 >= 2.396125`, both selectors again tie on the higher bad branch with `maxres ~= 0.4415904060`
+  - main read:
+    - wiring the dormant lookahead flag into the live selector was a real code change, not a no-op
+    - but plain one-step suffix lookahead is not enough to beat the staged wall
+    - the next solver change should be explicit period-`3` branch continuity / predictor-corrector logic rather than more bridge-family probing or more plain lookahead variants
 
 ---
 
-### Session: 2026-03-18 (household benchmark freeze and corrected-code recalibration)
-- Stabilized the steady-state household fertility block around the corrected-code benchmark:
-  - `code/SolveSS_fertility.m`
-  - `code/ClearMarkets_fertility.m`
-  - `code/run_ge_fertility_main.m`
-  - `code/calibrate_fertility_block_main.m`
-- Added `code/fertility_benchmark_config.m` as the single source of truth for:
-  - benchmark parameter overrides
-  - verification price grids
-  - calibration target parity shares
-  - stage-1 coarse solver settings
-- Correctness fixes now live in the active solver stack:
-  - reproduction check is a real comparison against upstream `SolveSS_function.m`
-  - newborn utility is counted on the birth branch
-  - multiple market crossings are reported honestly rather than collapsed to the first root
-  - aggregate child-state summaries are age-mass weighted
-- Current promoted benchmark:
-  - solver grid: `I = 60`, `J = 14`
-  - `birth_utility_by_parity = [0.85, 1.10, 1.20]`
-  - `child_utility = 0.02`
-  - `birth_cost = 0.06`
-  - `birth_price_coeff = 0.24`
-  - `lambda_crowd = 0.18`
-- Current benchmark verification from `notes/build/fertility_run_ge_report.md`:
-  - reproduction gaps are exactly zero
-  - birth rates decline from `0.655463` at `a_price = 1.5` to `0.197750` at `3.0`
-  - one vote sign change on the supplied market grid
-  - refined equilibrium price `1.774665`
-- Main interpretation lock:
-  - parity = `children ever born` (permanent state)
-  - children-at-home = temporary crowding state for housing demand
-  - leave-home timing remains reduced-form and Census-disciplined, not structural
-- Main numerical finding:
-  - old `I = 50`, `J = 10` created vote wiggles on the market grid
-  - `I = 60`, `J = 14` removes that wiggle for the promoted benchmark candidate
-- Main remaining model-side tradeoff:
-  - the equilibrium-clean benchmark fits completed fertility less tightly than the stronger
-    demographic-fit candidate
-  - empirical geography cleanup is still the main paper bottleneck
-- Added an explicit benchmark-comparison write-up against project 02:
-  - `code/write_fertility_vs_nimby_benchmark_main.m`
-  - `notes/build/fertility_vs_nimby_benchmark_report.md`
-  - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
-  - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
-  - `notes/build/fertility_vs_nimby_common_price_grid.csv`
-  - `notes/build/nimby_market_clearing_grid.csv`
-  - `notes/build/fertility_vs_nimby_benchmark_panels.png`
-  - `notes/build/fertility_vs_nimby_benchmark_panels.pdf`
-- Main comparison result:
-  - upstream NIMBY crossing price on the same `rbPos = 0.03` convention is about `2.326287`
-  - project-03 fertility benchmark crossing price is about `1.774665`
-  - the project-03 solver still nests NIMBY exactly in the shutoff case
+### Session: 2026-04-12 (automated coordinate cleanup now works from scratch; enriched grid lowers one-step error further but is not yet stable)
+- New notes:
+  - `notes/build/compiled_sidecar_transition_re_targeted_cleanup.md`
+  - `notes/build/compiled_sidecar_transition_re_enriched_grid_probe.md`
+- Source change:
+  - activated the dormant `coordinate_backtracking_*` path in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - new behavior:
+    - once the usual late-stage accepted-step search reaches a small-error region, the solver can test one-period coordinate cleanup moves using the original damping scale
+    - with `max_coordinate_backtracking_periods = 1`, that reproduces the successful manual sequence:
+      - period `1` cleanup first
+      - then period `4`
+- New automated coarse-grid baseline from scratch on `transition_input_t4_diag`:
+  - backtracking baseline plus coordinate cleanup
+  - result:
+    - `q ~= [1.7280288619, 1.7542903475, 1.8750762607, 2.3960221075]`
+    - `q_implied ~= [1.7336949273, 1.7542903475, 1.8750762607, 2.4046869318]`
+    - residuals `~= [0.0056660654, 0.0000000000, 0.0000000000, 0.0086648244]`
+    - `maxres ~= 0.0086648244`
+    - `stalled = 1`
+- Enriched-grid probe from that automated endpoint:
+  - modestly richer grid:
+    - `1.5, 1.70, 1.72, 1.73, 1.74, 1.75, 1.80, 1.85, 1.90, 2.00, 2.25, 2.35, 2.40, 2.50`
+  - one-step reevaluation improves sharply to:
+    - `q ~= [1.7290897562, 1.7542903475, 1.8750762607, 2.3968176860]`
+    - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+    - residuals `~= [0.0053044714, 0.0000000000, 0.0000000000, 0.0039778925]`
+    - `maxres ~= 0.0053044714`
+- But enriched-grid continuation is not yet stable:
+  - same richer grid under the live multi-iteration schedule drifts to a different high-price basin:
+    - `q ~= [2.2804498306, 2.2968507058, 2.3026739508, 2.4016653970]`
+    - `maxres ~= 0.0189935294`
+  - lower uniform damping is worse:
+    - `maxres ~= 0.8486135686`
+- Main read:
+  - the coarse-grid late-stage automation problem is basically solved for the bounded `T = 4` object
+  - the next live bottleneck is enriched-grid outer-control stability
+  - no project-03 Bellman RE process is running now
 
 ---
 
-### Session: 2026-03-13 (path portability pass and three-way comparison refresh)
-- Updated the three legacy-source import scripts so they can find the project-02 data roots
-  without hard-coding Dropbox as the only location:
-  - `code/06_import_nimby_birthrates_to_raw.py`
-  - `code/07_import_nimby_housing_controls_to_raw.py`
-  - `code/08_import_nimby_population_policy_to_raw.py`
-- New source-root rule:
-  - use `ZAC_DAVID_DATA_DIR` if present
-  - otherwise prefer `D:\research_data\zac_and_david\Data`
-  - otherwise fall back to `C:\Users\Dave_\Dropbox\Zac and David\Data`
-- Refreshed the MATLAB comparison write-up so the current reduced-form, old-proxy, and
-  structural-FOC objects are all captured in one updated report:
-  - `notes/build/old_vs_new_model_comparison_report.md`
-  - `notes/build/comparison_summary_old_vs_new.csv`
-  - `notes/build/comparison_phase_summary.csv`
-  - `notes/build/old_vs_new_paths.png`
-  - `notes/build/old_vs_new_policy_effects.png`
-  - `notes/build/model_experiment_paths.png`
-- Practical read after the refresh:
-  - the structural FOC version remains much more fertility- and price-responsive than the
-    reduced-form or old-proxy variants
-  - empirical cleanup still dominates the near-term agenda, so this remains a diagnostic
-    comparison rather than the main current workstream
+### Session: 2026-04-12 (two-stage late-stage fallback plus targeted cleanup lowers the rebuilt standalone Bellman RE frontier to `~0.0086648`)
+- New note:
+  - `notes/build/compiled_sidecar_transition_re_targeted_cleanup.md`
+- Source change:
+  - updated the late-stage backtracking logic in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - new rule:
+    - keep the usual full-path accepted-step search as the baseline
+    - if that late-stage search fails, retry with a focus mask on the current worst-residual period(s)
+  - negative experiment:
+    - a stronger version that let focused trials compete every late iteration was worse and was reverted
+- Rebuilt standalone source result on `transition_input_t4_diag`:
+  - `max_iter = 30`
+  - `backtracking_activate_residual = 0.05`
+  - `max_backtracking_rounds = 6`
+  - `min_damping_path = [0.0125, 0.0125, 0.0125, 0.0125]`
+  - result:
+    - `q ~= [1.7219850510, 1.7542903475, 1.8750762607, 2.3959272742]`
+    - `q_implied ~= [1.7334301688, 1.7542903475, 1.8750762607, 2.4046000014]`
+    - residuals `~= [0.0115899927, 0.0000000000, 0.0000000000, 0.0086727271]`
+    - `maxres ~= 0.0115899927`
+    - `stalled = 0`
+- Short targeted cleanup sequence from that source-level endpoint:
+  - period `1` cleanup:
+    - `damping_path = [0.20, 0.00, 0.00, 0.00]`
+    - result:
+      - `q ~= [1.7288776658, 1.7542903475, 1.8750762607, 2.3959272742]`
+      - residuals `~= [0.0056483820, 0.0000000000, 0.0000000000, 0.0086727272]`
+      - `maxres ~= 0.0086727272`
+  - period `4` cleanup:
+    - `damping_path = [0.00, 0.00, 0.00, 0.20]`
+    - result:
+      - `q ~= [1.7288776658, 1.7542903475, 1.8750762607, 2.3960085669]`
+      - residuals `~= [0.0056483820, 0.0000000000, 0.0000000000, 0.0086659528]`
+      - `maxres ~= 0.0086659528`
+  - one micro period `4` continuation:
+    - result:
+      - `q ~= [1.7288776658, 1.7542903475, 1.8750762607, 2.3960221075]`
+      - residuals `~= [0.0056483820, 0.0000000000, 0.0000000000, 0.0086648244]`
+      - `maxres ~= 0.0086648244`
+- Main read:
+  - the rebuilt standalone Bellman RE branch is now below the `1%` error line on the bounded `T = 4` object
+  - periods `2` and `3` stay exact on the promoted branch
+  - the remaining live task is no longer broad stabilization
+  - it is to automate the successful period-`1` then period-`4` cleanup schedule inside source
+  - no project-03 Bellman RE process is running now
 
 ---
 
-### Session: 2026-03-09 (live CDC WONDER pull, rebuild, and state-year exploratory bridge)
-- Added direct CDC WONDER puller:
-  - `code/12_pull_cdc_wonder_first_births.py`
-- Ran the live natality pull from official CDC WONDER dataset `D66`:
-  - output: `data/raw/cdc_wonder_first_births_export.csv`
-  - years: `2007-2024`
-  - grouping: county, year, age of mother 10
-  - filter: first births only
-- Fixed two importer issues in `code/11_import_cdc_wonder_first_births.py`:
-  - accepted `Age of Mother 10` as the age column label
-  - fixed county-derived `state_fips` fallback so blank state codes do not become `00`
-- Re-imported fertility:
-  - `data/raw/cdc_fertility_county_year.csv`
-  - rows: `10,890`
-  - years: `2007-2024`
-- Ran ACS nativity backfill:
-  - `code/09_backfill_nativity_from_acs_api.py`
-  - updated `data/raw/population_immigration_county_year.csv`
-- Rebuilt the main panel:
-  - `code/05_build_us_panel_from_sources.ps1`
-  - refreshed:
-    - `data/processed/us_fertility_housing_panel_v1.csv`
-    - `notes/build/us_panel_source_coverage.md`
-    - `notes/build/us_panel_missingness_report.md`
-- Main empirical alignment finding:
-  - fertility now overlaps with population denominators, but not with the legacy housing/control block at local geography because the housing files are metro-year despite county-style filenames
-- Rewrote exploratory regressions around a temporary state-year bridge:
-  - `code/10_exploratory_empirical_regressions.py`
-  - new bridge file: `notes/build/exploratory_state_year_panel.csv`
-  - refreshed outputs:
-    - `notes/build/exploratory_regression_summary.md`
-    - `notes/build/exploratory_regression_results.csv`
-- Current readout from the state-year exploratory pass:
-  - `first_birth_rate_15_44` on rent index: negative but imprecise (`coef -9.31`, `p 0.186`, `2010-2017`)
-  - `mean_age_first_birth` on rent index: positive but imprecise (`coef 1.00`, `p 0.263`, `2007-2017`)
-  - `share_first_birth_30_plus` on rent index: positive but imprecise (`coef 0.0267`, `p 0.652`, `2007-2017`)
-  - permits sample is much thinner and not yet persuasive
+### Session: 2026-04-12 (accepted-step outer control keeps the restored standalone Bellman RE solver inside the good `T = 4` basin)
+- New note:
+  - `notes/build/compiled_sidecar_transition_re_accepted_step.md`
+- Source change:
+  - added a narrow accepted-step outer control in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - rule:
+    - activate only once current max residual is already small
+    - test the proposed outer step
+    - if it worsens max residual, shrink and retry
+    - if no non-worsening step exists, keep the best iterate and stop
+- Promoted bounded run on `transition_input_t4_diag`:
+  - `max_iter = 30`
+  - `backtracking_activate_residual = 0.05`
+  - `backtracking_accept_worsen_ratio = 1.0`
+  - `backtracking_accept_worsen_abs_tol = 0.0`
+  - `backtracking_shrink_factor = 0.5`
+  - `max_backtracking_rounds = 6`
+  - `min_damping_path = [0.0125, 0.0125, 0.0125, 0.0125]`
+  - result:
+    - `q ~= [1.7208966188, 1.7542903475, 1.8750762607, 2.3959272742]`
+    - `q_implied ~= [1.7383405802, 1.7542903475, 1.8750762607, 2.4046000014]`
+    - residuals `~= [0.0174439613, 0.0000000000, 0.0000000000, 0.0086727271]`
+    - `maxres ~= 0.0174439613`
+    - `stalled = 1`
+- One continuation from that endpoint with a smaller late-stage floor improves slightly again:
+  - `backtracking_activate_residual = 0.03`
+  - `max_backtracking_rounds = 8`
+  - `min_damping_path = [0.00625, 0.00625, 0.00625, 0.00625]`
+  - result:
+    - `q ~= [1.7210056436, 1.7542903475, 1.8750762607, 2.3959814787]`
+    - `q_implied ~= [1.7384427908, 1.7542903475, 1.8750762607, 2.4046496888]`
+    - residuals `~= [0.0174371473, 0.0000000000, 0.0000000000, 0.0086682101]`
+    - `maxres ~= 0.0174371473`
+- Main read:
+  - the recovered standalone Bellman RE solver is now materially better than the plain restored baseline
+  - the unstable plain `30`-iteration drift is no longer the live workflow
+  - the remaining residual is now concentrated in periods `1` and `4`
+  - periods `2` and `3` are exact at the promoted endpoint
+- Next live task:
+  - stay within the accepted-step family
+  - either a slightly more permissive late-stage accept rule
+  - or a period-targeted accepted-step variant for periods `1` and `4`
+  - no project-03 Bellman RE process is running now
 
-### Session: 2026-03-09 (CDC WONDER timing-build scaffold implemented)
-- Added a modern natality importer:
-  - `code/11_import_cdc_wonder_first_births.py`
-- Added pull instructions:
-  - `notes/build/cdc_wonder_first_birth_pull_instructions.md`
-- Extended the fertility schema in:
-  - `code/04_build_us_panel_scaffold.ps1`
-  - `code/05_build_us_panel_from_sources.ps1`
-- New timing fields now supported in the panel schema:
-  - `first_births_total`
-  - `first_birth_rate_15_44`
-  - `mean_age_first_birth`
-  - `median_age_first_birth`
-  - `share_first_birth_15_19`
-  - `share_first_birth_20_24`
-  - `share_first_birth_25_29`
-  - `share_first_birth_30_34`
-  - `share_first_birth_35_44`
-  - `share_first_birth_30_plus`
-- Builder improvement:
-  - `state_fips` can now act as the merge key fallback when county/CBSA ids are absent
+---
+
+### Session: 2026-04-12 (standalone Bellman RE source recovered; rebuilt `T = 4` baseline reaches `~0.0239` before drifting)
+- New recovery note:
+  - `notes/build/compiled_sidecar_transition_re_source_recovery.md`
+- Source recovery:
+  - rebuilt the missing exported standalone RE surface in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - recovered the core helper path:
+    - stationary cross-section seed
+    - period vote-root search
+    - bracket expansion / fill / polish
+    - cross-section advance
+    - damped outer RE update
+  - rebuilt:
+    - `compiled_sidecar/build/fertility_transition_re_cli.exe`
+- Bounded verification after rebuild:
+  - smoke pack, `1` outer iteration:
+    - `maxres ~= 1.5000000000`
+  - `t4_diag`, plain recovered baseline:
+    - `10` iterations:
+      - `maxres ~= 0.1525999053`
+    - `20` iterations:
+      - `q ~= [1.7184817870, 1.7542903475, 1.8750762607, 2.3947239543]`
+      - `q_implied ~= [1.7375677675, 1.7542903475, 1.8750762607, 2.4018613133]`
+      - `maxres ~= 0.0238574757`
+    - `30` iterations:
+      - `maxres ~= 0.7129682759`
+- Main read:
+  - the compiled-sidecar Bellman RE path is live again from source
+  - the restored plain outer map is not dead or broken
+  - it reaches a good `T = 4` basin by about iteration `20`
+  - but it does not stay there without extra outer-loop control
+- Negative checks on the restored solver:
+  - previous-implied anchor plus date-4 hysteresis / tie-break:
+    - `maxres ~= 1.7225041854`
+  - lower damping `0.10` at `10` iterations:
+    - `maxres ~= 0.1996711464`
+  - simple adaptive shrink control at `10` iterations:
+    - `maxres ~= 0.5547580348`
+  - simple rollback-to-best-on-jump source hook was added, but with the current threshold settings it triggers too early and is not yet a promoted control
+- Workflow implication:
+  - the source-recovery blocker is gone
+  - the next live task is a narrow keep-best / accepted-step outer control for the restored standalone solver, not another packet loop and not another continuity-only rule
+  - no project-03 Bellman RE process is running now
+
+---
+
+### Session: 2026-04-12 (search-grid sensitivity overturns the old `~0.04736` Bellman RE plateau; source rebuilds now blocked)
+- New diagnostic note:
+  - `notes/build/compiled_sidecar_bellman_re_search_grid_sensitivity.md`
+- Starting plateau seed for the sensitivity check:
+  - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+  - `q_implied ~= [1.7294173376, 1.7009593299, 1.7052363005, 2.1145140048]`
+  - `maxres ~= 0.0473622232`
+- Exact reevaluation is not robust to modest search-grid enrichment:
+  - minimal enrichment
+    - `1.5, 1.70, 1.705, 1.75, 2.0, 2.25, 2.5`
+    changes the exact reevaluation to:
+    - `q_implied ~= [1.7050000000, 1.7000000000, 1.6937500000, 2.1335996722]`
+    - `maxres ~= 0.0588485237`
+  - denser enrichment
+    - `1.5, 1.58, 1.62, 1.66, 1.68, 1.69, 1.695, 1.70, 1.705, 1.71, 1.72, 1.74, 2.0, 2.25, 2.5`
+    changes it further to:
+    - `q_implied ~= [1.7050000000, 1.7050000000, 1.7000000000, 2.0763426698]`
+    - `maxres ~= 0.0763426699`
+- A bounded 4-iteration continuation under the minimally enriched grid also moves away from the old wall:
+  - final `q ~= [1.7229139343, 1.7430688392, 1.7461552045, 2.1477449526]`
+  - final `q_implied ~= [1.6500000000, 1.6750000000, 1.7050000000, 2.0647294425]`
+  - final `maxres ~= 0.0832235690`
+- Main read:
+  - the old `~0.0473622232` Bellman RE plateau is a coarse search-grid artifact, not a robust frontier
+  - the next live task is a source-level root-search / branch-resolution repair, not another basin hop or packet loop
+- Important blocker:
+  - `compiled_sidecar/src/transition_re_kernel.cpp` is currently zero-byte after a failed patch in this session
+  - the file is untracked at the workspace root, so repo git cannot restore it
+  - no local backup or VS Code history copy was found
+  - all diagnostics in this pass therefore use the last good compiled binary, not a rebuilt source tree
+  - no project-03 Bellman RE process is running now
+
+### Session: 2026-04-12 (local q3/q4 map plus short bridge continuation show the current micro-hop family is exhausted)
+- New diagnostic note:
+  - `notes/build/compiled_sidecar_bellman_re_plateau_seed_q34_map.md`
+- Starting exact plateau seed remains:
+  - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+  - `q_implied ~= [1.7294173376, 1.7009593299, 1.7052363005, 2.1145140048]`
+  - residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+  - `maxres ~= 0.0473622232`
+- Exact local `q_3/q_4` map around that seed with `q_1` and `q_2` fixed:
+  - local `q_4` changes at fixed `q_3 = 1.7525985237` are flat:
+    - `q_4 = 2.1520000000` gives the same `~0.0473622232`
+    - `q_4 = 2.1535000000` gives the same `~0.0473622232`
+  - raising `q_3` worsens monotonically on the checked grid:
+    - `q_3 = 1.7532235237` gives `~0.0474794107`
+    - `q_3 = 1.7540000000` gives `~0.0476250000`
+    - `q_3 = 1.7550000000` gives `~0.0478125000`
+- Best local basin-hop trial from that seed is still:
+  - `q ~= [1.7294173376, 1.7648345599, 1.7532235237, 2.1525681522]`
+  - one-step probe `maxres ~= 0.0579325600`
+- Short continuation test from that basin-hop trial:
+  - bounded `2`-iteration continuation worsens to:
+    - `q ~= [1.7286107923, 1.7636759087, 1.7504613101, 2.1521867318]`
+    - residuals `~= [-0.0285763490, -0.0576791050, -0.0630091346, -0.0190233415]`
+    - `maxres ~= 0.0630091346`
+- Main read:
+  - the current local `q_3/q_4` micro-hop family is now empirically exhausted
+  - the best local basin-hop trial is not a useful sacrificial bridge
+  - the next solver move should reopen the period-`3` root / branch problem itself rather than another local path update
+- Two narrow solver experiments were tested and reverted in the same pass:
+  - post-hop plateau snap inside the basin-hop path
+  - raw-bridge-versus-support-bridge comparison plus residual-directed sign pruning
+  - neither changed the best local basin-hop result from `~0.0579325600`
+  - the compiled-sidecar solver is back on the last clean baseline logic
+  - no project-03 Bellman RE process is running now
+
+### Session: 2026-04-12 (corrected overnight plateau-branch workflow completed; no accepted micro-hop from the improved exact seed)
+- Read the corrected overnight run:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_plateau_branch_overnight_workflow.txt`
+  - run directory:
+    - `notes/build/logs/bellman_re_plateau_branch_overnight_workflow_20260412_040434`
+  - canonical packet:
+    - `notes/build/compiled_sidecar_bellman_re_plateau_branch_overnight_packet.md`
+- Exact starting seed for the corrected overnight run:
+  - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+  - `q_implied ~= [1.7294173376, 1.7009593299, 1.7052363005, 2.1145140048]`
+  - residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+  - `maxres ~= 0.0473622232`
+- Corrected overnight timing:
+  - `2026-04-12 04:04:36`
+    - baseline exact recorded at `0.0473622232`
+  - `2026-04-12 04:05:26`
+    - `01_cycle_1_probe` finished with `accepted=0`
+    - best trial max residual `0.0579325600`
+  - `2026-04-12 04:06:06`
+    - final micro probe also not accepted
+    - packet ended with `SUCCESS`
+- Best failed trial from that run:
+  - `q ~= [1.7294173376, 1.7648345599, 1.7532235237, 2.1525681522]`
+  - residuals `~= [-0.0215078754, -0.0579325600, -0.0474794107, -0.0381420380]`
+- Main read:
+  - the corrected overnight workflow did not fail because of a bad stop rule
+  - it stopped because the first micro-hop probe from the improved exact plateau seed was not accepted
+  - the improved exact plateau seed sharpened support geometry, but it also removed the previously accepted micro-hop route
+  - no project-03 Bellman RE process is running now
+- Immediate workflow implication:
+  - stop cloning unattended packet loops from this seed
+  - the next move has to be a solver-side change aimed at the period-`3` branch itself
+  - likely target:
+    - new `q_3/q_4` micro-hop geometry from the improved exact plateau seed
+    - or a different local bridge / repair step after the hop
+
+### Session: 2026-04-11 (support-plateau edge plus bridge acceptance improves the exact seed, but not the max residual)
+- Added two more narrow standalone Bellman RE changes in:
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - an exact support-plateau edge step before basin hop
+  - near-wall basin-hop bridge acceptance for micro `q_3/q_4` hops
+- New note:
+  - `notes/build/compiled_sidecar_bellman_re_bridge_plateau.md`
+- Exact local plateau geometry around the current wall is now explicit from the pico packet CSVs:
+  - best exact tied `q_2` point:
+    - `q ~= [1.7303548376, 1.7482037006, 1.7525985237, 2.1532712772]`
+    - residuals `~= [-0.0143971774, -0.0465381939, -0.0473622232, -0.0383178193]`
+  - best exact tied mixed `q_2/q_4` point:
+    - `q ~= [1.7303548376, 1.7482818256, 1.7525985237, 2.1532322147]`
+    - residuals `~= [-0.0143971774, -0.0465528423, -0.0473622232, -0.0383080537]`
+  - implication:
+    - exact plateau ties already prefer lower `q_2`, and sometimes lower `q_4`
+- Direct micro-hop probe from the old wall with:
+  - pivot multiplier `0.015625`
+  - partner multiplier `0.0078125`
+  now accepts:
+  - `q ~= [1.7303548376, 1.7483599506, 1.7532235237, 2.1531540897]`
+  - residuals `~= [-0.0143971774, -0.0465674907, -0.0474794107, -0.0382885224]`
+  - but that bridge candidate is still worse on max residual than the wall
+- The useful result is the continuation seed it unlocks:
+  - bounded `4`-iteration continuation from the old wall under the live solver stack, followed by exact reevaluation, gives:
+    - `q ~= [1.7294173376, 1.7475396381, 1.7525985237, 2.1531540897]`
+    - `q_implied ~= [1.7294173376, 1.7011259560, 1.7052363005, 2.1148655673]`
+    - residuals `~= [0.0000000000, -0.0464136821, -0.0473622232, -0.0382885224]`
+    - `maxres ~= 0.0473622232`
+- Starting from that improved exact plateau seed, the direct micro basin-hop probe with:
+  - pivot multiplier `0.015625`
+  - partner multiplier `0.0078125`
+  now accepts:
+    - `q ~= [1.7294173376, 1.7475396381, 1.7532235237, 2.1530369022]`
+    - `q_implied ~= [1.7150787540, 1.7011259560, 1.7057441130, 2.1147776767]`
+    - residuals `~= [-0.0143385836, -0.0464136821, -0.0474794107, -0.0382592256]`
+    - `maxres ~= 0.0474794107`
+- Main read:
+  - still no max-residual improvement
+  - but the exact Bellman RE plateau seed is now strictly better than the old wall on periods `2` and `4`
+  - bounded continuation from that improved plateau seed plus exact reevaluation now gives a monotone plateau walk:
+    - first exact continuation point:
+      - `q ~= [1.7294173376, 1.7474029193, 1.7525985237, 2.1529197147]`
+      - residuals `~= [0.0000000000, -0.0463880474, -0.0473622232, -0.0382299287]`
+    - second exact continuation point:
+      - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+      - residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+  - the next live seed should therefore be:
+    - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+  - the first micro hop is no longer rejected once the solver stands on that better support plateau
+  - the next solver change still has to target the period-3 branch itself, but future local diagnostics should start from the improved exact plateau seed rather than the original wall
+
+---
+
+### Session: 2026-04-11 (overnight plateau-branch workflow launched)
+- Launched a bounded overnight Bellman RE workflow from the improved exact plateau seed:
+  - worker:
+    - `code/bellman_re_plateau_branch_overnight_workflow.ps1`
+  - launcher:
+    - `code/start_bellman_re_plateau_branch_overnight_workflow.ps1`
+  - workflow note:
+    - `notes/build/bellman_re_plateau_branch_overnight_workflow.md`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_plateau_branch_overnight_workflow.txt`
+  - run directory:
+    - `notes/build/logs/bellman_re_plateau_branch_overnight_workflow_20260411_211241`
+- Current live seed for that workflow:
+  - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+  - exact residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+- Workflow design:
+  - repeat bounded `4`-iteration continuation from the current exact seed under the live micro-hop stack
+  - exact-evaluate each returned path
+  - keep the new seed only if max residual falls or the same max residual comes with better secondary residual geometry
+  - run one final direct micro `q_3/q_4` probe from the last exact seed
+  - stop when exact plateau continuation no longer improves, or when the packet note exists, or on timeout/error
+
+---
+
+### Session: 2026-04-12 (corrected overnight plateau-branch workflow relaunched)
+- The first overnight plateau workflow was too strict and terminated in about 4 minutes because it stopped after the first flat exact round.
+- Corrected the workflow in:
+  - `code/bellman_re_plateau_branch_overnight_workflow.ps1`
+  - `notes/build/bellman_re_plateau_branch_overnight_workflow.md`
+- New logic:
+  - exact seed
+  - accepted micro-hop probe
+  - bounded `4`-iteration continuation from the accepted probe seed
+  - exact reevaluation
+  - keep cycling while the exact seed improves on max residual or secondary geometry
+- Relaunched corrected run:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_plateau_branch_overnight_workflow.txt`
+  - run directory:
+    - `notes/build/logs/bellman_re_plateau_branch_overnight_workflow_20260412_040434`
+  - first live read:
+    - entered `01_cycle_1_probe`
+  - live seed remains:
+    - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+
+---
+
+### Session: 2026-04-11 (parallel diagnostics plus basin-hop support repair)
+- Used parallel bounded diagnostics on the standalone Bellman RE wall:
+  - exact nonlocal `q_3/q_4` scan
+  - branch-cliff review
+  - minimal solver-design review
+- The three diagnostics now agree on the same local read:
+  - the current wall is still:
+    - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+    - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+    - `maxres ~= 0.0473622232`
+  - this is a real period-3 branch-disappearance cliff
+  - lowering `q_3` by about `4.88e-06` still drops implied `q_3` to about `1.6894452307` and raises max residual to about `0.0631484102`
+  - local `q_2` moves still do not move implied `q_3` in a useful way
+  - local `q_4` moves are the only live local lever, but they act through a costly branch jump
+- Exact nonlocal result:
+  - bounded exact `q_3/q_4` scans did not beat the wall
+  - the best tested nonlocal candidate was only a tie at slightly lower `q_4`
+- Solver change:
+  - kept the basin-hop insertion point unchanged in `solve_transition_re_case`
+  - patched `attempt_basin_hop_step` in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - each raw `q_3/q_4` basin-hop candidate now gets one cheap support-period repair pass on the non-hop periods before accept / reject
+  - support repair uses the existing active update caps, keeps hop periods fixed, and scores the repaired candidate rather than the raw hop
 - Verification:
-  - end-to-end temp test passed for WONDER-style county-year input through panel merge
-  - the main repo panel was not rebuilt to completion in-session because the full PowerShell build is slow on the large historical files
+  - `compiled_sidecar/build.ps1` passed cleanly
+  - a clean `2`-iteration standalone restart from the wall stayed stable but did not beat the wall:
+    - `q ~= [1.7294173376, 1.7478130756, 1.7525985237, 2.1532712772]`
+    - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+    - `maxres ~= 0.0473622232`
+  - a longer `4`-iteration verification did not finish inside the local interactive timeout and was killed
+- Workflow consequence:
+  - keep the support-repair patch
+  - do not reopen packet cloning
+  - the next useful test is a cheaper basin-hop-specific debug mode or a bounded restart guaranteed to hit the repeated-stall branch, before widening the helper again
 
-### Session: 2026-03-09 (fertility source decision locked)
-- Added source-decision note:
-  - `notes/build/fertility_source_decision.md`
-- Decision:
-  - do not use the historical metro `gfr_15_44` sample as the baseline empirical panel
-  - use a modern natality-based build as the main empirical path
-  - keep the old metro sample only for provisional sign checks
-- Basis for the decision:
-  - current processed panel has zero overlap between historical fertility observations and modern nativity/population observations
-  - legacy Dropbox fertility files only contain aggregate birth-rate series, not maternal-age-at-birth or birth-order variables
-- Updated:
-  - `notes/04_empirical_notes.md`
-  - `notes/05_research_plan.md`
+---
+
+### Session: 2026-04-11 (basin-hop probe mode shows the default hop scales were too coarse)
+- Added a direct probe mode for the standalone basin-hop helper:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+- New note:
+  - `notes/build/compiled_sidecar_bellman_re_basin_hop_probe.md`
+- The probe evaluates one basin-hop pass directly from the wall and reports:
+  - base wall path
+  - accepted basin-hop candidate if any
+  - best tried basin-hop candidate even if the hop is rejected
+- Main probe read:
+  - support repair is directionally helpful:
+    - same narrow hop pattern:
+      - with repair: best tried max residual about `0.1005807425`
+      - without repair: best tried max residual about `0.1027958781`
+  - the much more important margin is hop size:
+    - smaller asymmetric `q_3/q_4` hops are much better than the old coarse defaults
+    - best probed pattern so far:
+      - pivot multiplier `0.25`
+      - partner multiplier `0.0625-0.125`
+      - best tried max residual about `0.0574434271`
+    - larger patterns are much worse:
+      - `0.5 / 0.125` gives about `0.0681496309`
+      - `1 / 1` gives about `0.1828740773`
+- Solver update:
+  - narrowed the default basin-hop multiplier lists in:
+    - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - new default region:
+    - pivot multipliers `{0.25, 0.50, 1.0, 2.0}`
+    - partner multipliers `{0.0625, 0.125, 0.25, 0.50, 1.0}`
+- additional micro-hop probe ladder:
+  - `0.125 / 0.0625` gives best tried max residual about `0.0498487407`
+  - `0.0625 / 0.03125` gives about `0.0478309732`
+  - `0.03125 / 0.015625` gives about `0.0475965982`
+  - `0.015625 / 0.0078125` gives about `0.0474794107`
+  - all of these remain above the wall `0.0473622232`
+- Follow-up bounded restart from the wall with:
+  - the narrowed default basin-hop multipliers
+  - `max_basin_hop_rounds = 1`
+  - `max_stall_probe_rounds = 1`
+  still stalled after `2` iterations at the same wall:
+  - `maxres ~= 0.0473622232`
+  - final path unchanged from the wall seed
+- Main consequence:
+  - the next bounded full solve should use those smaller asymmetric defaults
+  - that full solve has now been tried and still stalls
+  - the micro-hop ladder now shows geometry alone only approaches the wall from above
+  - so the next solver change should be bridge-style acceptance logic or a qualitatively different second-stage repair, not a return to wider raw hop grids
+
+---
+
+### Session: 2026-04-11 (root-selection lookahead confirms the wall is a real period-3 branch-disappearance problem)
+- Added a standalone root-selection diagnostic / lookahead option:
+  - `--debug-root-selection`
+  - `--root-selection-lookahead`
+  - `--root-selection-lookahead-min-brackets`
+- Code paths:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+- New note:
+  - `notes/build/compiled_sidecar_bellman_re_branch_diagnostics.md`
+- Current wall used for the test:
+  - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+  - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+  - `maxres ~= 0.0473622232`
+- Exact diagnostic result at the wall:
+  - all four periods still have two live brackets
+  - the new one-step suffix lookahead still chooses the same branches as the old selector
+  - so the wall is not coming from a simple bad tie-break among coexisting nearby roots
+- Exact cliff result just below the wall:
+  - lowering `q_3` by about `4.88e-06` changes implied `q_3` from about `1.7052363005` to about `1.6894452307`
+  - implied `q_1` also jumps from about `1.7159576602` to about `1.7303548376`
+  - max residual jumps from about `0.0473622232` to about `0.0631484102`
+  - the old upper period-3 branch is therefore disappearing, not merely being mis-selected
+- Local coupling read:
+  - changing `q_2` does not move implied `q_3` near the wall
+  - changing `q_4` does move implied `q_3`, but only through a costly branch jump
+  - a coarse exact alternate-basin `q_3/q_4` map did not find anything close to the current wall
+- Workflow consequence:
+  - keep the lookahead selector only as a diagnostic tool for now
+  - the next solver move should be a controlled nonlocal `q_3/q_4` basin-hop diagnostic or a broader exact branch map
+  - do not reopen packet cloning or more plateau-geometry tweaks from the current wall
+
+---
+
+### Session: 2026-04-11 (plateau-aware stall probe removes the hard local stall, but still does not lower the top residual)
+- Added a narrow standalone solver rule:
+  - when a stall-probe trial ties on max residual within a tiny tolerance,
+  - and improves the sorted secondary residual geometry,
+  - it can now be accepted instead of being rejected as a non-improving tie
+- then strengthened that rule so the stall probe can compare coordinated plateau candidates rather than only one-coordinate moves
+- Code paths:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+- New note:
+  - `notes/build/compiled_sidecar_bellman_re_plateau_walk.md`
+- Current wall used for the test:
+  - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+  - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+  - `maxres ~= 0.0473622232`
+- Verification:
+  - with the stronger plateau rule, a short bounded continuation reaches:
+    - `q ~= [1.7298860876, 1.7480865131, 1.7525985237, 2.1532712772]`
+  - exact reevaluation at that point gives:
+    - `q_implied ~= [1.7298860876, 1.7015702919, 1.7052363005, 2.1149534579]`
+    - residuals `~= [0.0000000000, -0.0465162212, -0.0473622232, -0.0383178193]`
+    - `maxres ~= 0.0473622232`
+- Main read:
+  - the old wall was partly an artificial hard stall
+  - the patched solver can now move along the ridge
+  - the stronger plateau search now moves more than one support coordinate
+  - it does not yet lower the top period-3 residual
+- Next solver design implication:
+  - packet cloning should stay off
+  - the next local rule should target the top period-3 residual itself, not just improve support-period geometry
+
+---
+
+### Session: 2026-04-11 (pico-wall packet completed; packet ladder now flat)
+- The parameterized pico-wall packet finished cleanly:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_pico_packet.md`
+  - run directory:
+    - `notes/build/logs/bellman_re_pico_wall_12_hour_workflow_20260411_093108`
+  - baseline:
+    - `maxres ~= 0.0473622232`
+    - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+    - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+- Exact local result:
+  - `q_2/q_3`, `q_3/q_4`, and `q_2/q_3/q_4` exact grids all tied at the same max residual
+  - lowering `q_3` still jumps to the bad lower branch
+  - small `q_2` and `q_4` moves sit on a flat plateau
+- Variant result:
+  - all bounded stall-probe variants in the pico packet tied at `maxres ~= 0.0473622232`
+  - none beat the baseline enough to justify a continuation stage
+- Useful plateau geometry read:
+  - among equal-max-residual exact ties, the best secondary residual geometry is slightly lower `q_2` and slightly lower `q_4`, with `q_3` unchanged
+  - so the next move should not be another packet clone
+  - it should be a solver-side plateau-aware local rule or tie-break using secondary residual geometry
+- Main read:
+  - the packet ladder is now exhausted
+  - the next Bellman RE workflow should move back into `compiled_sidecar/src/transition_re_kernel.cpp`, not into another micro / nano / pico workflow script
+
+---
+
+### Session: 2026-04-11 (nano packet frontier corrected; parameterized pico-wall packet launched)
+- Corrected the live bounded Bellman RE frontier after the nano packet finished:
+  - the packet note is still useful:
+    - `notes/build/compiled_sidecar_bellman_re_nano_wall_packet.md`
+  - but the true current floor is slightly lower than the packet note because direct continuation from the best non-stalled nano variant improved again:
+    - best direct continuation floor:
+      - `maxres ~= 0.0473622232`
+      - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+    - repeating that same continuation reproduces the same `~0.0473622232` floor
+  - interpretation:
+    - the packet ladder is still moving, but only at the `1e-7` level
+    - the older `1e-6` packet promotion threshold is now too coarse and was discarding real micro gains
+- Pinned down the best nano packet variant precisely:
+  - `notes/build/logs/bellman_re_nano_wall_12_hour_workflow_20260411_075420/06_nano_variant_sweep.csv`
+  - best non-stalled variant:
+    - `nano_p3_r12_step0015625`
+    - `maxres ~= 0.0473622518`
+    - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+    - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052364245, 2.1149534579]`
+- Negative results now fixed in memory:
+  - extending the branch tie-break mask from `[0,0,0,1]` to `[0,0,1,1]` does not improve the current floor
+  - an internal standalone stall-probe refinement patch in:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+    did not beat the direct continuation floor and was reverted immediately
+- Reused the latest packet worker instead of cloning another script:
+  - updated:
+    - `code/bellman_re_nano_wall_12_hour_workflow.ps1`
+    - `code/start_bellman_re_nano_wall_12_hour_workflow.ps1`
+  - changes:
+    - custom seed path / seed label / note target parameters
+    - lower continuation tolerance:
+      - `ImprovementTolerance = 1e-8`
+    - tie-breaking in the packet now prefers non-stalled variants when residuals tie
+- Launched the next bounded follow-up from the true current frontier:
+  - run label:
+    - `bellman_re_pico_wall_12_hour_workflow`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_pico_wall_12_hour_workflow.txt`
+  - current run directory:
+    - `notes/build/logs/bellman_re_pico_wall_12_hour_workflow_20260411_093108`
+  - first live read:
+    - exact pico baseline reproduced at `0.0473622232`
+    - `01_nano_exact_line_q3` started
+- Main read:
+  - the standalone Bellman RE branch is now best described as a `q_3` micro-step ladder near the frontier
+  - this pico packet is the last clean workflow test of that ladder under corrected thresholds
+  - if it still only finds `1e-7` scale `q_3` gains, the next step should be a new local-rule search inside the solver rather than another packet clone
+
+---
+
+### Session: 2026-04-11 (ultra-micro packet completed; nano-wall follow-up packet launched)
+- Read the completed third Bellman RE packet:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_ultra_micro_wall_packet.md`
+  - main result:
+    - exact local grids around the improved ultra-micro wall did not beat it
+    - the best surviving improvement came from longer stall-probe rounds:
+      - `maxres ~= 0.0473624807`
+      - `q ~= [1.7303548376, 1.7483599506, 1.7525998970, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052374163, 2.1149534579]`
+    - the continuation from that endpoint stalled immediately at the same `~0.0473624807` wall
+  - local geometry read from the exact grids:
+    - the wall is now dominated by date-3
+    - moving `q_3` down even modestly below the new center still kicks the solve onto the bad lower branch and jumps the residual to about `0.063+`
+    - `q_2` and `q_4` moves are mostly flat ties in the narrow neighborhood of the new wall
+- Built the next unattended packet around that improved nano endpoint:
+  - `code/bellman_re_nano_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_nano_wall_12_hour_workflow.ps1`
+  - `notes/build/bellman_re_nano_wall_12_hour_workflow.md`
+- Scope lock of the nano packet:
+  - project `03` only
+  - compiled-sidecar Bellman RE branch only
+  - exact nano-scale local probes around the `q_3 = 1.7525998970` wall
+  - bounded continuation sweep under still smaller stall-probe steps and longer round budgets
+  - one follow-up exact grid only if the continuation improves further
+  - no MATLAB, no annual branch, no benchmark-grid RE push
+- Live run launched:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_nano_wall_12_hour_workflow.txt`
+  - current run directory:
+    - `notes/build/logs/bellman_re_nano_wall_12_hour_workflow_20260411_075420`
+  - first live status read:
+    - exact nano baseline already reproduced at max residual about `0.0473624807`
+    - `01_nano_exact_line_q3` completed
+    - packet moved into `02_nano_exact_grid_q23`
+- Main read:
+  - the Bellman RE frontier is now moving only through a `q_3` micro-step ladder
+  - the next clean question is whether that ladder has one more genuine rung or whether the local wall is effectively exhausted
+  - do not start another sidecar build or Bellman RE packet in parallel with this run
+
+### Session: 2026-04-11 (micro-wall packet completed; ultra-micro follow-up packet launched)
+- Read the completed second Bellman RE packet:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_micro_wall_packet.md`
+  - main result:
+    - exact local grids around the improved micro-wall did not beat it
+    - a smaller stall-probe step produced another one-step improvement to about `0.0473643117`
+    - that improvement corresponds to:
+      - `q ~= [1.7303548376, 1.7483599506, 1.7526096626, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052453509, 2.1149534579]`
+    - the continuation from that new endpoint stalled immediately at the same `~0.0473643117` wall, so it is a micro improvement but still not a promoted structural break
+- Built the next unattended packet around that improved ultra-micro endpoint:
+  - `code/bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+  - `notes/build/bellman_re_ultra_micro_wall_12_hour_workflow.md`
+- Scope lock of the ultra-micro packet:
+  - project `03` only
+  - compiled-sidecar Bellman RE branch only
+  - exact ultra-fine local probes around the `q_3 = 1.7526096626` wall
+  - bounded continuation sweep under even smaller stall-probe steps
+  - one follow-up exact grid only if the continuation improves further
+  - no MATLAB, no annual branch, no benchmark-grid RE push
+- Live run launched:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_ultra_micro_wall_12_hour_workflow.txt`
+  - current run directory:
+    - `notes/build/logs/bellman_re_ultra_micro_wall_12_hour_workflow_20260411_072824`
+  - first live status read:
+    - exact ultra-micro baseline already reproduced at max residual about `0.0473643117`
+    - `01_ultra_micro_exact_line_q3` completed
+    - packet moved into `02_ultra_micro_exact_grid_q23`
+- Main read:
+  - the next clean numerical question is whether the smaller `q_3` step is just another isolated tie-break or the edge of a real local continuation
+  - do not start another sidecar build or Bellman RE packet in parallel with this run
+
+### Session: 2026-04-11 (wall packet completed; micro-wall follow-up packet launched)
+- Read the completed first Bellman RE packet:
+  - canonical note:
+    - `notes/build/compiled_sidecar_bellman_re_12_hour_packet.md`
+  - main result:
+    - exact local grids around the promoted `~0.0474376` wall did not beat it
+    - wall-variant sweep found a narrow one-step improvement to about `0.0473789602`
+    - that improvement corresponds to:
+      - `q ~= [1.7303548376, 1.7483599506, 1.7526877876, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7053088274, 2.1149534579]`
+    - the staged full-seed rerun returned to the old `~0.0474376` wall, so the micro-step was not yet a promoted new frontier
+- Built the follow-up unattended packet around that improved local endpoint:
+  - `code/bellman_re_micro_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_micro_wall_12_hour_workflow.ps1`
+  - `notes/build/bellman_re_micro_wall_12_hour_workflow.md`
+- Scope lock of the micro-wall packet:
+  - project `03` only
+  - compiled-sidecar Bellman RE branch only
+  - exact fine local probes around the improved `q_3` micro-step wall
+  - bounded continuation sweep under stronger stall-probe controls
+  - one follow-up exact grid only if the continuation improves further
+  - no MATLAB, no annual branch, no benchmark-grid RE push
+- Live run launched:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_micro_wall_12_hour_workflow.txt`
+  - current run directory:
+    - `notes/build/logs/bellman_re_micro_wall_12_hour_workflow_20260411_063009`
+  - first live status read:
+    - exact micro-wall baseline already reproduced at max residual about `0.0473789602`
+    - `01_micro_wall_exact_line_q3` completed
+    - packet moved into `02_micro_wall_exact_grid_q23_fine`
+- Main read:
+  - the next clean numerical question is whether the improved `q_3` micro-step opens a real local continuation, not whether the old wall packet should be rerun again
+  - do not start another sidecar build or Bellman RE packet in parallel with this run
+
+### Session: 2026-04-11 (12-hour Bellman RE packet resumed after a workflow-control bug)
+- Read the failed packet run at:
+  - `notes/build/logs/bellman_re_12_hour_workflow_20260410_211432`
+- Diagnosis:
+  - the exact local grids had completed cleanly
+  - the packet stopped at `06_variant_baseline_wall_stage1`
+  - that was a workflow-control bug, not a new Bellman RE economics failure:
+    - the staged CLI wrote parseable output
+    - the worker treated the nonzero stalled exit as a hard error instead of a valid staged result
+- Workflow fixes:
+  - `code/bellman_re_12_hour_workflow.ps1`
+    - now accepts parseable nonzero staged exits as valid results
+    - now supports `-ResumeRunDir`
+    - now reuses completed exact-grid CSVs from an existing run directory
+  - `code/start_bellman_re_12_hour_workflow.ps1`
+    - now forwards `-ResumeRunDir` to the worker
+- Relaunch:
+  - resumed the existing run directory instead of starting over:
+    - `notes/build/logs/bellman_re_12_hour_workflow_20260410_211432`
+  - resumed status read:
+    - exact wall baseline reproduced again
+    - `01-04` exact grids skipped and reused
+    - packet re-entered `06_variant_baseline_wall_stage1`
+- Process state:
+  - resumed workflow is intentionally still running at handoff
+  - do not start another sidecar build or another Bellman RE packet in parallel with this run
+
+### Session: 2026-04-10 (bounded Bellman RE 12-hour workflow packet created and launched)
+- Built a reusable away-workflow packet for the standalone compiled-sidecar Bellman RE branch:
+  - `code/bellman_re_12_hour_workflow.ps1`
+  - `code/start_bellman_re_12_hour_workflow.ps1`
+  - `notes/build/bellman_re_12_hour_workflow.md`
+- Scope lock of the packet:
+  - project `03` only
+  - compiled-sidecar Bellman RE branch only
+  - exact local probe packet around the promoted `~0.0474376` wall
+  - bounded wall-variant sweep on the current stall-probe controls
+  - staged front-loaded rerun under the promoted settings
+  - optional full-seed rerun for the best wall variant only if justified
+  - no MATLAB, no annual branch, no benchmark-grid RE push
+- Live run launched:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_12_hour_workflow.txt`
+  - current run directory:
+    - `notes/build/logs/bellman_re_12_hour_workflow_20260410_211432`
+  - first live status read:
+    - exact wall baseline already reproduced at max residual about `0.0474375539`
+    - packet moved into `01_wall_exact_grid_q23`
+- Main read:
+  - the live numerical branch is now protected by a bounded unattended packet, so the next work does not depend on ad hoc manual commands
+  - the next decision should be made after the packet note and CSVs exist, not before
+- Process state:
+  - workflow is intentionally still running at handoff
+  - do not start another sidecar build or another Bellman RE packet in parallel with this run
+
+### Session: 2026-04-10 (standard front-loaded standalone Bellman RE workflow is now promoted to a `~0.047438` local wall)
+- Continued only on the standalone compiled-sidecar Bellman RE branch after the signed stall probe had lowered the choke-point basin to `~0.0653106`.
+- Main result:
+  - the standard front-loaded seed now reaches a materially better bounded frontier under staged standalone runs
+  - promoted staged path:
+    - stage 1 from `[2.0, 2.05, 2.08, 2.10]` for `20` iterations:
+      - `q ~= [1.732535, 1.785369, 1.751140, 2.153655]`
+      - max residual about `0.0816377`
+    - stage 2 continuation for `12` iterations:
+      - `q ~= [1.730355, 1.752784, 1.748000, 2.153271]`
+      - max residual about `0.0557845`
+    - stage 3 continuation for `4` iterations:
+      - `q ~= [1.730355, 1.748360, 1.753000, 2.153271]`
+      - `q_implied ~= [1.715958, 1.701792, 1.705563, 2.114953]`
+      - max residual about `0.0474376`
+    - restart from the stage-3 endpoint:
+      - reproduces the same `~0.0474376` basin and stalls there in `2` iterations
+- Exact local follow-up around the new wall:
+  - small `q_2` moves alone do not beat the new `~0.0474376` wall
+  - small joint `q_2/q_3` moves also do not beat it
+  - so there is no obvious easy continuation in the local `q_2/q_3` neighborhood of the promoted endpoint
+- Main read:
+  - the signed stall probe is now a promoted part of the standalone Bellman RE workflow, not just a choke-point patch
+  - the live bounded local wall is now about:
+    - `q ~= [1.730355, 1.748360, 1.753000, 2.153271]`
+    - `q_implied ~= [1.715958, 1.701792, 1.705563, 2.114953]`
+    - max residual about `0.0474376`
+  - the next task is a new local-rule search beyond this wall, not revalidating the old late-basin workflow
+- Saved note:
+  - `notes/build/compiled_sidecar_transition_re_front_loaded_staged.md`
+- Process cleanup:
+  - no project-03 standalone or MATLAB jobs were left running at stop
+
+### Session: 2026-04-10 (signed stall probe lowers the standalone bounded Bellman RE floor to `~0.065311`)
+- Continued only on the standalone compiled-sidecar Bellman RE branch after the paired late-basin fallback had stalled near `~0.073852`.
+- Diagnosis:
+  - the old local read was still incomplete:
+    - the paired late-basin fallback improved the bounded floor materially
+    - but the repeated-stall state at `q ~= [1.729817, 1.759602, 1.747619, 2.147704]` was still not the true bounded local frontier
+  - exact local residual evaluations showed:
+    - a small upward period-2 jump alone is enough to flip date 4 onto a better implied branch
+    - candidate `q ~= [1.729817, 1.762102, 1.747619, 2.147704]` has implied path about `[1.686727, 1.696576, 1.708928, 2.083084]`
+    - that lowers the exact max residual from about `0.0738522` to about `0.0655255`
+- New standalone rule:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+  - added a signed late-stage stall probe:
+    - activates only after a repeated rejected backtracking state
+    - probes small signed jumps on the top non-continuity residual periods
+    - trial step starts at a fraction of the active update cap and shrinks by the existing backtracking factor
+    - accepts a trial only if it lowers the exact current-candidate max residual
+- Integrated choke-point validation:
+  - starting from the old `~0.073852` basin with the new stall probe enabled:
+    - the solver accepts signed period-2 jumps automatically
+    - after `6` iterations it stalls at:
+      - `q ~= [1.729817, 1.761243, 1.747619, 2.147704]`
+      - `q_implied ~= [1.686727, 1.695932, 1.708928, 2.083084]`
+      - max residual about `0.0653106`
+  - restarting from that improved seed reproduces the same `~0.0653106` basin in `2` iterations
+- Main read:
+  - the old `~0.073852` stall basin is no longer the live bounded standalone frontier
+  - the current bounded local wall is around `~0.0653106`
+  - the next task is to show that the standard front-loaded seed reaches this new basin cleanly under a bounded run budget
+  - a full `60`-iteration front-loaded standalone batch with the new rule timed out and was terminated, so that full-seed promotion is still pending
+- Saved note:
+  - `notes/build/compiled_sidecar_transition_re_stall_probe.md`
+- Process cleanup:
+  - timed-out project-03 standalone runs were terminated
+  - no project-03 standalone or MATLAB jobs were left running at stop
+
+### Session: 2026-04-10 (paired late-basin fallback in the standalone sidecar beats the old `~0.074179` floor)
+- Continued only on the standalone compiled-sidecar Bellman RE branch after establishing parity with the live bounded MATLAB workflow.
+- Diagnosis:
+  - the old local story was too pessimistic:
+    - one-period date-4 coordinate moves really are exhausted at the `~0.074179` floor
+    - but a better local move still exists if the solver is allowed to move periods `2` and `4` together
+  - direct one-step probes showed:
+    - period-4-only moves below `q_4 ≈ 2.148358` jump immediately to the bad lower branch near `2.009`
+    - small period-3 moves either do nothing or push the system into a worse basin
+    - but paired `(q_2, q_4)` moves can preserve the good date-4 branch and lower the max residual
+- New standalone rule:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+  - added a paired late-basin fallback:
+    - updates the top `2` residual periods together
+    - continuity-masked periods still use the date-4 continuity guard and micro-step shrink
+    - non-continuity support periods in the pair are restored to their configured damping / cap rather than the heavily shrunken active late-basin values
+- Direct floor validation:
+  - starting floor:
+    - `q_guess ≈ [1.729817, 1.770306, 1.747619, 2.148358]`
+    - `q_implied ≈ [1.693909, 1.702730, 1.708928, 2.074179]`
+    - max residual about `0.0741792`
+  - accepted pair move:
+    - `q_next ≈ [1.729817, 1.764900, 1.747619, 2.148173]`
+  - re-evaluated next-step residual:
+    - `q_implied ≈ [1.686727, 1.698675, 1.708928, 2.074086]`
+    - max residual about `0.0740865`
+- Full bounded standalone pass from the standard front-loaded seed:
+  - `40` iterations
+  - no stall stop
+  - final path:
+    - `[1.729817, 1.759602, 1.747619, 2.147722]`
+  - final implied path:
+    - `[1.686727, 1.698675, 1.708928, 2.074046]`
+  - max residual about `0.0740460`
+- Short continuation from that endpoint:
+  - after `2` more iterations:
+    - final path about `[1.729817, 1.759602, 1.747619, 2.147710]`
+    - final implied path about `[1.686727, 1.694701, 1.708928, 2.073861]`
+    - max residual about `0.0738609`
+- Main read:
+  - the old `~0.074179` floor was not a true local optimum
+  - the missing object was a paired local fallback, not another one-period date-4 micro-step
+  - the bounded Bellman RE path is now still improving inside the standalone compiled sidecar
+- Saved note:
+  - `notes/build/compiled_sidecar_transition_re_pair_backtracking.md`
+- Process cleanup:
+  - no project-03 standalone or MATLAB jobs were left running at stop
+
+### Session: 2026-04-10 (standalone compiled sidecar now matches the live bounded Bellman RE frontier)
+- Continued on the compiled-sidecar branch inside project `03` to answer whether the current Bellman RE workflow still needed MATLAB orchestration.
+- Verified the gap first:
+  - the standalone C++ outer loop already had:
+    - adaptive damping / caps
+    - date-4 tie-breaks
+    - accepted-step backtracking
+    - stall-stop
+    - rollback
+  - but it did **not** yet have:
+    - coordinate backtracking fallback
+    - coordinate-only minimum damping / step caps
+    - coordinate branch continuity controls
+- Ported the missing late-basin controls into the standalone sidecar:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+    - added coordinate-backtracking options and coordinate continuity / minimum-step fields
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+    - added masked outer updates
+    - ported the coordinate backtracking fallback from the live MATLAB solver
+    - ported coordinate-only minimum damping / cap logic
+    - ported the date-4 continuity guard inside coordinate trials
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+    - exposed the new coordinate-control flags on the standalone CLI
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+    - exposed the same controls in the PowerShell wrapper
+- Built the sidecar cleanly with `compiled_sidecar/build.ps1`.
+- Standalone validation on `compiled_sidecar/truth/transition_input_t4_diag`:
+  - baseline accepted-step backtracking stall:
+    - `24` iterations
+    - `stalled = 1`
+    - max residual about `0.0790855`
+    - implied path about `[1.701090, 1.702107, 1.701190, 2.076252]`
+  - coordinate fallback continuation:
+    - `35` iterations
+    - max residual about `0.0743651`
+    - `q_path` reaches about `[1.729817, 1.770306, 1.747619, 2.148358]`
+  - date-4 continuity continuation:
+    - `37` iterations
+    - `stalled = 1`
+    - max residual about `0.0741792`
+    - implied path about `[1.693909, 1.702730, 1.708928, 2.074179]`
+- Main read:
+  - the current bounded Bellman RE frontier no longer depends on MATLAB orchestration
+  - the standalone C++ outer loop now matches the best bounded MATLAB path on the `T = 4` diagnostic object
+  - the active blocker is unchanged economically:
+    - the next date-4 local wall after the first continuity-preserving micro-step
+- Process cleanup:
+  - killed the timed-out standalone validation processes before rerunning with bounded iteration targets
+  - no project-03 standalone or MATLAB jobs were left running at stop
+
+### Session: 2026-04-10 (date-4 continuity-preserving coordinate micro-step lowers the Bellman floor again, but only modestly)
+- Continued only on the live Bellman RE branch in project `03`.
+- Diagnosis before the patch:
+  - the saved `debug40 ... coordinate` workflow had a real late-stage date-4 improvement available, but it could not take it inside the live solver
+  - direct probes showed why:
+    - the first date-4 continuity-preserving micro-step exists and lowers the floor slightly
+    - but the coordinate fallback was pinned by the same late-stage minimum damping / step caps as the main outer loop
+- Solver / driver changes:
+  - `code/solve_transition_re_fertility.m`
+    - added coordinate-only controls:
+      - `max_coordinate_backtracking_rounds`
+      - `coordinate_min_damping_path`
+      - `coordinate_min_max_q_update_step`
+      - `coordinate_branch_continuity_mask`
+      - `coordinate_branch_continuity_q_tolerance`
+    - coordinate backtracking can now shrink selected periods below the main outer-loop minimums
+    - kept a narrow optional debug hook:
+      - `debug_coordinate_backtracking`
+  - `code/run_transition_re_fertility_main.m`
+    - added saved mode:
+      - `t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate_p4continuity`
+    - note writer now records:
+      - coordinate-only minimum damping / step settings
+- Exact late-basin diagnostic:
+  - at the old floor state:
+    - `q_guess ≈ [1.729817, 1.770306, 1.747619, 2.148730]`
+    - `q_implied ≈ [1.693909, 1.702730, 1.708928, 2.074365]`
+  - with the old shared minimums, coordinate trials could not shrink below the branch-jump threshold
+  - with the new coordinate-only date-4 floor:
+    - round `1` still jumps to the bad lower branch
+    - round `2` finds a continuity-preserving date-4 micro-step and improves the bounded floor from about `0.074365` to about `0.074179`
+- Saved read:
+  - `debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate_p4continuity`
+    - note:
+      - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate_p4continuity.md`
+    - read:
+      - reproduces the earlier bounded path through iteration `35`
+      - then accepts one extra date-4-only micro-step at iteration `35`
+      - best bounded residual now reaches about `0.074179`
+      - final implied path remains about `[1.694, 1.703, 1.709, 2.074]`
+      - the run stalls again at iteration `37`
+- Additional unsaved follow-up:
+  - at the new `~0.074179` floor, even much smaller date-4 micro-steps immediately jump to the bad lower branch
+  - period-2-only coordinate moves remain non-improving there
+  - interpretation:
+    - the Bellman blocker is now even narrower than before:
+      - not just “date-4 branch jump”
+      - specifically the next date-4 local wall after the first continuity-preserving micro-step
+- Process cleanup:
+  - no project-03 MATLAB processes were left running after the saved full run
+  - project-02 runs were left alone
+
+### Session: 2026-04-10 (coordinate late-stage backtracking breaks the old `~0.079` Bellman basin)
+- Continued only on the live Bellman RE branch in project `03`.
+- Diagnostic read before coding:
+  - at the old stall state from `debug40 ... backtrackstall`, a direct one-step probe showed:
+    - full-path residual-direction move fails
+    - period-2-only move improves the max residual from about `0.079086` to about `0.078641`
+    - period-4-only move does not help there
+  - interpretation:
+    - the first late-basin blocker was joint-path acceptance, not lack of shrink rounds
+- Solver / driver changes:
+  - `code/solve_transition_re_fertility.m`
+    - added masked outer updates via `apply_outer_update_with_mask_local(...)`
+    - added coordinate late-stage fallback inside backtracking:
+      - tries one-period local steps on the highest-residual periods after the full-path backtracking step fails
+      - requires strict improvement relative to the current max residual
+      - reuses the same silent trial-solve path as the existing backtracking logic
+    - iteration history now also records:
+      - `backtracking_coordinate_used`
+  - `code/run_transition_re_fertility_main.m`
+    - added saved mode:
+      - `t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate`
+    - note writer now reports coordinate-backtracking settings
+- Saved read:
+  - `debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate`
+    - note:
+      - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate.md`
+    - read:
+      - breaks the old `iteration 23-24` stall
+      - period-2-only coordinate steps keep the path improving through iteration `35`
+      - best bounded residual now reaches about `0.074365`
+      - final implied path at the new floor about `[1.694, 1.703, 1.709, 2.074]`
+- Additional unsaved late-floor probe:
+  - at the new stalled state around iteration `35`:
+    - period-2-only and period-1-only steps do not improve the residual further
+    - any period-4 move of the current step size collapses the date-4 selected root toward about `2.009`
+    - that blows the max residual back up to about `0.139`
+  - interpretation:
+    - the live Bellman blocker is now a very narrow date-4 local branch-jump problem
+    - not a generic backtracking-depth issue
+- Process cleanup:
+  - no project-03 MATLAB processes were left running after the saved coordinate pass
+  - live project-02 runs were left alone
+
+### Session: 2026-04-10 (standalone C++ outer RE loop now mirrors the bounded MATLAB control layer)
+- Continued on the separate `fertility/compiled-sidecar` acceleration branch inside project `03`.
+- Standalone C++ RE changes:
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+    - expanded `TransitionReOptions` to carry the bounded outer-control surface used by the live MATLAB branch:
+      - `damping_path`
+      - `max_q_update_step`
+      - `root_selection_anchor`
+      - `root_selection_previous_implied_mask`
+      - `branch_hysteresis_mask`
+      - `branch_tie_break_mask`
+      - adaptive tightening controls
+      - backtracking controls
+      - rollback controls
+    - expanded `TransitionReResult` to report:
+      - `final_damping_path`
+      - `final_max_q_update_step`
+      - `rollback_count`
+      - `stalled`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+    - ported the current bounded outer-loop control logic from `solve_transition_re_fertility.m` into native C++:
+      - previous-implied branch anchoring
+      - date-specific tie-break / hysteresis branch selection
+      - per-period capped updates
+      - adaptive shrink of active damping / step caps
+      - accepted-step backtracking
+      - rollback-to-best
+      - repeated rejected-state stall stop
+    - refactored the implied-path build into a reusable helper so backtracking trials no longer duplicate the period-root loop in ad hoc code
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+    - CLI now exposes the advanced bounded-control flags needed to reproduce the live branch modes from the terminal
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+    - wrapper now forwards the advanced option set and supports:
+      - `-SkipBuild`
+- Bounded standalone validation:
+  - exported a fresh bounded input pack:
+    - `compiled_sidecar/truth/transition_input_t4_diag`
+  - one-step standalone `t4_diag` run now gives:
+    - implied path about `[1.727, 1.758, 1.781, 2.394]`
+    - updated path about `[1.945, 1.992, 2.020, 2.159]`
+  - direct live MATLAB progress on the same `t4_diag` object matched the standalone first three dates exactly before MATLAB stopped during the final date / summary stage
+  - the stronger standalone check is the saved bounded rollback workflow:
+    - on the same `t4_diag` pack, the standalone equivalent of `t4_front_loaded_iter_debug32_sidecar_adaptive_tiebreak_rollback` produced:
+      - `2` rollbacks
+      - max residual about `0.105`
+      - final implied path about `[1.701, 1.675, 1.701, 2.076]`
+      - final active damping path about `[0.056, 0.023, 0.038, 0.015]`
+  - the accepted-step backtracking branch also aligns on the same bounded pack:
+    - standalone equivalent of `t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall` produced:
+      - early stop at iteration `24`
+      - `stalled = 1`
+      - max residual about `0.079`
+      - final implied path about `[1.701, 1.702, 1.701, 2.076]`
+    - this is the same bounded basin reported in the live MATLAB note
+  - overall read:
+    - the standalone RE loop is now behaviorally aligned on both bounded control branches:
+      - rollback-to-best
+      - accepted-step backtracking with stall-stop
+- Workflow read:
+  - the sidecar is no longer just a compiled Bellman kernel plus MATLAB orchestration
+  - it now has a real standalone C++ outer RE solver for the bounded `T = 4` object
+  - the next compiled step, if needed, is no longer basic option parity:
+    - it is either benchmark-scale standalone timing / profiling
+    - or moving the accepted-step / stall-stop branch all the way into the benchmark-grid RE push
+
+### Session: 2026-04-10 (accepted-step backtracking with stall-stop is now the clean bounded Bellman RE baseline)
+- Continued only on the live Bellman RE branch in project `03`.
+- Solver / driver changes:
+  - `code/solve_transition_re_fertility.m`
+    - added explicit repeated-stall detection for rejected backtracking states:
+      - `stop_on_backtracking_stall`
+      - `max_backtracking_stall_iters`
+      - `backtracking_stall_q_tolerance`
+    - added helper:
+      - `update_backtracking_stall_local(...)`
+    - backtracking trial solves now suppress verbose progress so the outer log is readable
+  - `code/run_transition_re_fertility_main.m`
+    - added saved modes:
+      - `t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall`
+      - `t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_round5`
+    - note writer now records:
+      - backtracking stall-stop settings
+      - whether the run stopped early on a repeated stall
+- Saved reads:
+  - `debug40_sidecar_adaptive_tiebreak_backtrackstall`
+    - note:
+      - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall.md`
+    - read:
+      - reproduces the same low-residual accepted-step basin as the earlier `debug32 ... backtrack` pass
+      - best bounded residual reaches about `0.079086` at iteration `23`
+      - the run then hits the same rejected late-stage state twice and stops cleanly at iteration `24`
+      - final implied path about `[1.701, 1.702, 1.701, 2.076]`
+  - `debug40_sidecar_adaptive_tiebreak_backtrackstall_round5`
+    - note:
+      - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_round5.md`
+    - read:
+      - raising `max_backtracking_rounds` from `3` to `5` changes nothing economically useful
+      - same best residual about `0.079086`
+      - same stall point
+      - same final implied path
+      - rejected-state best trial residual remains about `0.113592`
+- Interpretation:
+  - accepted-step backtracking is now clearly better than rollback-to-best as the live bounded workflow
+  - explicit stall-stop makes the run honest:
+    - the solver no longer pretends to make progress after it has reached a repeated rejected state
+  - the late Bellman RE problem is now even narrower:
+    - not source loss
+    - not missed roots
+    - not branch selection
+    - not lack of shrink rounds
+    - specifically the local acceptance / trust-region geometry around the `[1.70, 1.70, 1.70, 2.08]` basin
+- Process cleanup:
+  - stopped stale project-03 MATLAB `t4_diag` processes after the saved runs finished
+  - left live project-02 frontier batches alone
+
+### Session: 2026-04-10 (date-4 tie-break plus rollback keeps the Bellman sidecar pass bounded)
+- Continued only on the live Bellman RE branch in project `03`.
+- Solver / driver changes:
+  - `code/solve_transition_re_fertility.m`
+    - kept the estimated-root bracket ranking patch
+    - added a date-4-only previous-implied tie-break:
+      - `branch_tie_break_mask`
+      - `branch_tie_break_q_tolerance`
+    - added a rollback-to-best safeguard for the outer loop:
+      - `rollback_to_best_on_jump`
+      - `rollback_worsen_ratio`
+      - `rollback_worsen_abs_tol`
+      - `rollback_shrink_factor`
+      - `max_rollbacks`
+    - iteration history now records:
+      - `rollback_applied`
+      - `rollback_count`
+  - `code/run_transition_re_fertility_main.m`
+    - added saved modes:
+      - `t4_front_loaded_iter_debug24_sidecar_adaptive_tiebreak`
+      - `t4_front_loaded_iter_debug32_sidecar_adaptive_tiebreak`
+      - `t4_front_loaded_iter_debug32_sidecar_adaptive_tiebreakwide`
+      - `t4_front_loaded_iter_debug32_sidecar_adaptive_tiebreak_rollback`
+    - note writer now reports tie-break and rollback settings
+- Saved reads:
+  - `debug24_sidecar_adaptive_tiebreak`
+    - date-4-only tie-break at tolerance `0.010`
+    - removes the old iteration-24 jump onto the bad upper date-4 branch
+    - final residual about `0.139`
+    - final implied path about `[1.680, 1.635, 1.726, 2.009]`
+  - `debug32_sidecar_adaptive_tiebreak`
+    - tolerance `0.010`
+    - delays the collapse but still exits the good basin after iteration `24`
+  - `debug32_sidecar_adaptive_tiebreakwide`
+    - tolerance `0.030`
+    - also remains unstable on its own; widening the tie-break window is **not** a sufficient fix
+  - `debug32_sidecar_adaptive_tiebreak_rollback`
+    - tie-break tolerance `0.030`
+    - rollback ratio `1.50`
+    - rollback abs tol `0.05`
+    - rollback shrink factor `0.50`
+    - uses `2` rollbacks
+    - best residual remains about `0.080` at iteration `21`
+    - after rollback, the run stays in a bounded band about `0.080-0.105` instead of collapsing
+    - final implied path at iteration `32` about `[1.701, 1.675, 1.701, 2.076]`
+- Negative result kept out of the saved workflow:
+  - one unsaved earlier-rollback probe (`ratio = 1.25`, `abs tol = 0.03`, `max_rollbacks = 5`) is clearly worse
+  - it spends rollback budget while the run is still in the coarse high-residual phase and never reaches the low-`0.08` basin
+- Interpretation:
+  - the source-loss blocker is resolved
+  - date-4 branch selection is no longer the main failure mode
+  - the current live issue is outer-step acceptance:
+    - the rollback guard is useful as a bounded safety device
+    - but it does not yet produce contraction below the best observed residual
+  - next useful change should be an accepted-step / backtracking rule on the same outer iteration, not more root-search or continuity hacks
+
+### Session: 2026-04-10 (solver restored; lean-return sidecar modes cut bounded RE runtime further)
+- Recovered the live transition solver after an accidental zero-byte overwrite during a patch attempt:
+  - `code/solve_household_path_fertility.m`
+    - rebuilt the file and re-verified that the live sidecar backend runs again
+    - aligned the default lifecycle horizon with the actual matrix file on disk:
+      - `agemax = 80`
+    - fixed five-year cohort weights to expand from the active age grid instead of relying on a stale hard-coded length
+- Added narrow sidecar return modes so the RE loop only asks for objects it actually uses:
+  - compiled sidecar:
+    - `compiled_sidecar/include/fertility_sidecar/transition_path_kernel.hpp`
+    - `compiled_sidecar/src/transition_path_kernel.cpp`
+    - `compiled_sidecar/src/fertility_transition_path_mex.cpp`
+    - new MEX modes:
+      - `tail_only`
+      - `path_only`
+      - `path_value_only`
+    - `tail_only` now solves only the stationary tail instead of solving an unnecessary scalar path
+  - live MATLAB RE wrapper:
+    - `code/solve_transition_re_fertility.m`
+      - stationary seed now requests:
+        - `return_tail_solution = true`
+        - `return_path_solution = false`
+      - iteration-cache and future-tail cache solves now request:
+        - `return_tail_solution = false`
+        - `return_path_solution = true`
+        - `path_solution_scope = 'value_only'`
+      - uncached candidate solves now request:
+        - `return_tail_solution = false`
+        - `return_path_solution = true`
+        - `path_solution_scope = 'full'`
+  - benchmark helper update:
+    - `compiled_sidecar/matlab/benchmark_transition_re_components.m`
+      - now times the same lean-return scopes that the live RE wrapper uses
+- Validation:
+  - rebuilt `fertility_transition_path_mex`
+  - direct smoke checks confirm:
+    - `tail_only` returns tail with no path payload
+    - `path_value_only` returns value cells with no policy payload
+  - `compiled_sidecar/matlab/validate_transition_path_backend.m`
+    - `smoke` still passes exactly against the MATLAB backend
+- Updated bounded timing references with the lean-return path active:
+  - `compiled_sidecar/matlab/benchmark_transition_re_cache.m`
+  - `t4_diag`:
+    - no cache: about `20.28s`
+    - front-row only: about `5.59s`
+    - full stack: about `5.22s`
+    - full-stack speedup: about `3.88x`
+    - implied `q` path unchanged
+  - `t4_iter_debug`:
+    - no cache: about `64.39s`
+    - front-row only: about `12.33s`
+    - full stack: about `11.42s`
+    - full-stack speedup: about `5.64x`
+    - implied `q` path and residual unchanged
+- Additional RE-wrapper speed pass:
+  - compiled sidecar:
+    - `compiled_sidecar/src/fertility_transition_path_mex.cpp`
+      - added combined cached mode:
+        - `front_row_vote`
+      - this mode solves:
+        - base front row
+        - `dp` front row
+        - vote aggregation
+        - inside one MEX call
+    - new MATLAB helpers:
+      - `compiled_sidecar/matlab/build_transition_front_row_vote_case_struct.m`
+      - `compiled_sidecar/matlab/run_transition_front_row_vote_sidecar_mex.m`
+  - live RE wrapper:
+    - `code/solve_transition_re_fertility.m`
+      - cached candidate grid points now keep only:
+        - `q`
+        - `totalvote`
+        - `total_mass`
+      - non-selected candidate solver outputs are discarded immediately
+      - the selected base row is re-solved once after root selection so the transition cross section can still advance exactly
+- Stability read:
+  - before discarding candidate solver objects, the uncached `t4_iter_debug` pass hit an intermittent MEX-side `bad allocation`
+  - after dropping stored candidate solver outputs and re-solving only the selected row, the bounded `t4_iter_debug` pass completed cleanly again
+- Updated benchmark-scale component read with lean-return scopes:
+  - `benchmark_scalar`:
+    - stationary seed solve: about `28.74s`
+    - stationary cross-section build: about `0.17s`
+    - scalar base solve: about `56.46s`
+    - scalar `dp` solve: about `56.55s`
+    - compiled vote-row aggregation: about `0.11s`
+- Interpretation:
+  - the source-loss blocker is resolved on this branch
+  - the new sidecar modes materially reduce bounded RE runtime and cut the stationary seed roughly in half at benchmark scale
+  - the combined cached front-row vote path and the discard-after-evaluation policy move the bounded RE object further and remove the observed candidate-storage instability
+  - the remaining benchmark bottleneck is still the base / `dp` Bellman solve itself, not vote aggregation or stationary-cross-section construction
+
+### Session: 2026-04-10 (estimated-root bracket ranking helps, then the workflow hits a source-loss blocker)
+- Continued the bounded away-workflow on the live Bellman RE branch only.
+- Solver change:
+  - `code/solve_transition_re_fertility.m`
+    - changed the multiple-bracket selector so it ranks brackets by an estimated root location
+      from endpoint interpolation rather than by raw bracket midpoint before polishing
+    - reason:
+      - some low branches were very wide
+      - midpoint ranking could therefore prefer the wrong branch even when the implied root was actually close to the current guess
+- Saved improvement:
+  - refreshed `notes/build/structural_transition_re_t4_front_loaded_iter_debug12_sidecar_controlled.md`
+  - read:
+    - the selector patch improves the saved `12`-iteration controlled pass
+    - final residual now lands at about `0.139` rather than the earlier `0.149`
+    - final implied path about `[1.706, 1.717, 1.679, 2.131]`
+- Partial adaptive read:
+  - one direct `16`-iteration adaptive sidecar run, started before the later file failure, reached residual about `0.097` by iteration `16`
+  - inference:
+    - the estimated-root selector likely helps the adaptive map materially too
+  - caveat:
+    - this `16`-step run did not finish into the normal note / csv output layer because the session later hit a source-file blocker
+- Hard blocker discovered during rerun attempts:
+  - `code/solve_household_path_fertility.m` is now a zero-byte file on disk
+  - it is untracked in git, so there is no recoverable `HEAD` version
+  - no local recovery copy was found in:
+    - the repo tree
+    - `_playground/backups/`
+    - VS Code local history
+- Interpretation:
+  - the Bellman RE branch should currently be treated as **blocked by source loss**
+  - the selector change itself looks worth keeping
+  - but no more RE verification should be trusted until the household transition solver is restored from an external clean copy
+- Clean stop rule reached:
+  - remained inside project `03`
+  - did not broaden scope
+  - stopped once the missing-source blocker became material and unrecoverable locally
+
+### Session: 2026-04-09 (sidecar vote-row is exact; benchmark bottleneck is still Bellman solving)
+- Continued the separate `fertility/compiled-sidecar` acceleration branch for the structural five-year Bellman RE object.
+- Sidecar / solver changes:
+  - compiled sidecar:
+    - added a compiled vote-aggregation kernel:
+      - `compiled_sidecar/include/fertility_sidecar/vote_row_kernel.hpp`
+      - `compiled_sidecar/src/vote_row_kernel.cpp`
+    - extended the MEX boundary in:
+      - `compiled_sidecar/src/fertility_transition_path_mex.cpp`
+      - new MEX mode: `vote_row`
+    - added MATLAB helpers:
+      - `compiled_sidecar/matlab/build_transition_vote_row_case_struct.m`
+      - `compiled_sidecar/matlab/run_transition_vote_row_sidecar_mex.m`
+      - `compiled_sidecar/matlab/benchmark_transition_re_components.m`
+      - `compiled_sidecar/benchmark_transition_re_components.ps1`
+  - live MATLAB RE wrapper:
+    - `code/solve_transition_re_fertility.m`
+      - added option:
+        - `transition_vote_row_sidecar`
+      - candidate vote aggregation can now call the compiled `vote_row` MEX when `transition_backend='sidecar_mex'`
+      - refactored sidecar path setup into a shared local helper used by both `front_row` and `vote_row`
+      - stopped re-solving the stationary seed through `forward_distribution_path_fertility`
+      - added progress markers around:
+        - iteration-cache build
+        - stationary-seed solve
+    - new shared helper:
+      - `code/build_stationary_cross_section_fertility.m`
+        - builds the stationary pre/post age cross sections directly from a constant Bellman solution
+  - benchmarking helper:
+    - `compiled_sidecar/matlab/benchmark_transition_re_cache.m`
+      - now reports:
+        - no-cache
+        - front-row-only
+        - full-stack (`front_row` + `vote_row`)
+- Validation / bounded timing:
+  - full live backend validation still passes on `smoke`
+  - bounded RE equivalence also holds with compiled vote aggregation:
+    - `t4_diag`: exact same `q` path, residual, and vote grid as the MATLAB vote loop
+    - `t4_iter_debug`: exact same `q` path, residual, and vote grid as the MATLAB vote loop
+  - updated bounded timing references:
+    - `t4_diag`:
+      - no cache: about `18.77s`
+      - front-row only: about `5.71s`
+      - full stack: about `5.49s`
+      - speedup vs no cache: about `3.42x`
+    - `t4_iter_debug`:
+      - no cache: about `43.77s`
+      - front-row only: about `14.60s`
+      - full stack: about `14.35s`
+      - speedup vs no cache: about `3.05x`
+- Benchmark-scale component timing read:
+  - `benchmark_scalar`:
+    - stationary seed solve: about `53.60s`
+    - stationary cross-section build: about `0.14s`
+    - scalar base solve: about `51.38s`
+    - scalar `dp` solve: about `51.77s`
+    - compiled vote-row aggregation: about `0.09s`
+  - stripped-down benchmark RE timing:
+    - `T=1`, one candidate, no expand/fill/polish: about `156.21s`
+    - `T=4`, one candidate per period, no expand/fill/polish: about `565.12s`
+    - the coarse three-point benchmark RE grid still does not finish within `20` minutes on this branch
+- Interpretation:
+  - the compiled vote row is correct, but it is not the main benchmark bottleneck
+  - benchmark runtime is still dominated by Bellman solves:
+    - iteration-cache full-path solves
+    - per-period current-row solves
+    - especially the last-period scalar solves
+  - the next speed pass should therefore stay on the Bellman side rather than spending more time compiling vote / distribution bookkeeping
+
+---
+
+### Session: 2026-04-09 (adaptive trust-region guard helps; continuity anchors are negative results)
+- Continued the live Bellman RE workflow on the structural five-year transition object and targeted the outer-update rule directly.
+- Solver / driver changes:
+  - `code/solve_transition_re_fertility.m`
+    - added an adaptive outer-control layer:
+      - `adaptive_update_control`
+      - `adaptive_worsen_ratio`
+      - `adaptive_worsen_abs_tol`
+      - `adaptive_shrink_factor`
+      - `min_damping_path`
+      - `min_max_q_update_step`
+    - iteration records now also store the active damping / cap path and whether any periods were tightened on that outer step
+    - added root-selection anchor controls:
+      - `root_selection_anchor`
+      - `root_selection_previous_implied_mask`
+  - `code/run_transition_re_fertility_main.m`
+    - added:
+      - `t4_front_loaded_iter_debug16_sidecar_adaptive`
+      - `t4_front_loaded_iter_debug16_sidecar_adaptive_continuity`
+      - `t4_front_loaded_iter_debug16_sidecar_adaptive_p4_continuity`
+    - notes now report:
+      - root-selection anchor
+      - previous-implied anchor mask when used
+      - final active adaptive damping / cap paths
+- New output:
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive.md`
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive_continuity.md`
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive_p4_continuity.md`
+  - corresponding `..._iterations.csv`, `..._periods.csv`, `..._vote_grid.csv`, `..._results.mat`
+- Main adaptive read:
+  - the per-period trust-region guard is worth keeping:
+    - it progressively tightens only the periods whose residuals worsen
+    - by iteration `16`, active damping is down to about `[0.112, 0.060, 0.075, 0.013]`
+    - active caps are down to about `[0.090, 0.053, 0.060, 0.009]`
+  - on the saved adaptive `16`-iteration pass:
+    - last residual is about `0.145`
+    - best residual is about `0.144`
+    - period `4` still re-expands late, but the run stays in a much tighter band than the old uncontrolled oscillation
+- Negative continuity results:
+  - full previous-implied root anchoring is a bad idea in the current object:
+    - last / best residual about `0.166`
+    - it pulls periods `2-3` onto low-q branches and degrades the whole map
+  - date-4-only previous-implied anchoring is also worse:
+    - last / best residual about `0.176`
+    - the run still drifts onto worse branches and loses the earlier adaptive gain
+- Interpretation:
+  - the branch-continuity idea was worth testing, but the broad versions should not be kept
+  - the live Bellman RE problem is now narrower than before:
+    - adaptive control is useful
+    - the remaining instability is specifically about how to stay on the economically relevant date-4 branch when two brackets coexist
+  - the next candidate fix should therefore be a **narrow hysteresis rule**:
+    - only for periods with multiple live brackets
+    - only when the previously selected branch is still present
+    - and without changing root selection for periods `1-3`
+
+### Session: 2026-04-09 (sidecar-backed Bellman RE recheck now survives three outer steps; benchmark sensitivity block completed)
+- Continued the live Bellman RE workflow on the structural five-year transition object with the compiled sidecar backend rather than the pure MATLAB path.
+- Driver / workflow changes:
+  - `code/run_transition_re_fertility_main.m`
+    - added:
+      - `t4_iter_debug3`
+      - `t4_iter_debug3_sidecar`
+      - `t4_step_iter_debug5_sidecar_lowdamp`
+      - `t4_front_loaded_iter_debug5_sidecar_lowdamp`
+      - `t4_front_loaded_iter_debug8_sidecar_controlled`
+      - `t4_front_loaded_iter_debug12_sidecar_controlled`
+    - notes now record:
+      - `transition_backend`
+      - `transition_front_row_cache`
+      - `damping_path`
+      - `max_q_update_step`
+  - `code/run_transition_benchmark_validation_packet_fertility_main.m`
+    - added explicit report-only note-refresh support:
+      - `section = "report"` or `"report_only"`
+- Root-selection change:
+  - `code/solve_transition_re_fertility.m`
+    - the chosen sign-change bracket is now polished internally before the update is taken
+    - the outer update now also supports:
+      - `damping_path`
+      - `max_q_update_step`
+    - added options:
+      - `root_polish_rounds`
+      - `root_vote_tolerance`
+      - `root_q_tolerance`
+    - the sidecar future-tail cache is now passed through the bracket-polish evaluations rather than rebuilt point-by-point
+- New RE output:
+  - `notes/build/structural_transition_re_t4_iter_debug3_sidecar.md`
+  - corresponding `..._iterations.csv`, `..._periods.csv`, `..._vote_grid.csv`, `..._results.mat`
+  - `notes/build/structural_transition_re_t4_step_iter_debug5_sidecar_lowdamp.md`
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug5_sidecar_lowdamp.md`
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug8_sidecar_controlled.md`
+  - `notes/build/structural_transition_re_t4_front_loaded_iter_debug12_sidecar_controlled.md`
+- Main RE read from `t4_iter_debug3_sidecar`:
+  - compiled sidecar + front-row cache completes the three-step bounded run in about two minutes on the local machine
+  - the outer residual now declines across the bounded pass rather than showing the old "roots vanish after iteration 1" pathology:
+    - iteration `1`: about `0.322`
+    - iteration `2`: about `0.297`
+    - iteration `3`: about `0.238`
+  - iteration-3 implied path:
+    - about `[1.720, 1.697, 1.721, 2.138]`
+  - all four dates still have sign changes by iteration `3`
+  - selected votes are now modest rather than wildly inconsistent with the chosen `q`:
+    - about `[+0.049, -0.050, -0.0016, +0.023]`
+- Interpretation:
+  - the old diagnosis "iteration 2 loses the early roots" is no longer the main blocker
+  - the live blocker is now a narrower fixed-point problem:
+    - the map is still oscillatory / slow
+    - but it is no longer failing because the root search misses the interior bracket
+  - one extra direct probe with lower damping (`0.15`) and five bounded iterations is also informative:
+    - the run still jumps in the middle
+    - but it stays bracketed throughout and ends back down at residual about `0.184`
+    - so the update rule now looks more like a dampable oscillatory map than a broken root-finding problem
+  - the saved five-iteration low-damping comparison sharpened that further:
+    - sharp-step seed `[2.0, 2.1, 2.1, 2.1]`
+    - front-loaded seed `[2.0, 2.05, 2.08, 2.10]`
+    - both behave almost identically
+    - both suffer the same iteration-3 collapse in period `2` to about `1.148`
+    - both recover to a path near `[1.69, 1.66-1.67, 1.72, 2.14]`
+    - both end near residual `0.18-0.19`
+  - so the seed is not the main Bellman RE issue
+  - one more direct front-loaded low-damping probe out to `8` iterations says the map still does not settle cleanly:
+    - residual path about `0.322 -> 0.305 -> 0.818 -> 0.279 -> 0.184 -> 0.189 -> 0.126 -> 0.264`
+    - by iteration `8`, the implied path widens again toward about `[1.717, 1.779, 1.758, 2.404]`
+    - this is the clearest sign so far that the next improvement has to be in the outer update rule rather than in longer raw iteration counts
+  - the controlled-update pass then sharpened that again:
+    - first controlled pass:
+      - damping path `[0.15, 0.08, 0.10, 0.08]`
+      - step caps `[0.12, 0.07, 0.08, 0.06]`
+    - this removes the catastrophic period-2 crash entirely
+    - saved `8`-iteration read:
+      - residual narrows to about `0.198`
+      - implied path about `[1.686, 1.686, 1.721, 2.130]`
+      - selected votes are all small in magnitude
+    - saved `12`-iteration read:
+      - residual reaches about `0.142` by iteration `10`
+      - then widens to about `0.264` at iteration `11`
+      - then narrows again to about `0.149` at iteration `12`
+      - implied path at iteration `12` about `[1.701, 1.724, 1.679, 2.131]`
+    - interpretation:
+      - update control clearly helps
+      - but the Bellman map still re-expands after improving, mainly through the back end of the path
+  - tighter date-4 control improved that again:
+    - updated controlled settings:
+      - damping path `[0.15, 0.08, 0.10, 0.04]`
+      - step caps `[0.12, 0.07, 0.08, 0.03]`
+    - refreshed saved `12`-iteration read:
+      - residual path improves to about `0.149` by iteration `12`
+      - implied path about `[1.719, 1.723, 1.680, 2.130]`
+      - selected votes remain small
+    - one extra direct `16`-iteration probe with those tighter settings is the current best numerical read:
+      - residual falls to about `0.098` by iteration `14`
+      - then jumps to about `0.239` at iteration `15`
+      - then falls again to about `0.116` at iteration `16`
+    - interpretation:
+      - tighter date-4 control is helpful
+      - but the map still widens intermittently, so one more stabilization layer is still needed
+- Benchmark validation update:
+  - reran the remaining sensitivity case serially:
+    - `positive_amortization = 0.02`
+  - refreshed:
+    - `notes/build/structural_transition_benchmark_validation_sensitivities.csv`
+    - `notes/build/structural_transition_benchmark_validation.md`
+  - read:
+    - owner share `25-34` at `t = 1` falls to about `0.138`
+    - owner share `25-34` at `t = 3` falls to about `0.001`
+    - renter-to-owner flip mass at `t = 1` still stays at about `0.114`
+    - the flip is still concentrated entirely in `z5`
+  - together with the earlier cases:
+    - `higher_transaction_cost`
+    - `higher_owner_spread`
+    - `positive_amortization`
+    - all three reduce the ownership surge materially but do **not** eliminate the benchmark flip margin
+
+---
+
+### Session: 2026-04-09 (RE wrapper now caches future tails and solves only the current row in compiled code)
+- Continued the compiled-backend integration by targeting the remaining RE bottleneck after the live MEX path was wired in.
+- Main diagnosis:
+  - the RE root search was still recomputing the entire truncated future path for every candidate `q`
+  - but within a given period-root problem, only the current date changes; the future tail is fixed
+  - so the expensive redundancy was in repeated tail/path solves, not in MATLAB path setup or MEX loading
+- C++ sidecar extension:
+  - `compiled_sidecar/include/fertility_sidecar/transition_path_kernel.hpp`
+  - `compiled_sidecar/src/transition_path_kernel.cpp`
+  - added `solve_transition_front_row_case(...)`
+    - solves only the current transition row given precomputed next-value tensors by age
+  - `compiled_sidecar/src/fertility_transition_path_mex.cpp`
+    - added MEX mode: `front_row`
+    - input:
+      - scalar in-memory transition-case struct
+      - required `front_row_next_value` cell field
+    - output:
+      - one-row `path_solution`
+      - timing / throughput / checksum summary
+  - regression checks:
+    - full-path MEX validation still passes after the new mode
+    - the compiled front-row solve matches the full compiled solve's first row exactly on the smoke check
+- New MATLAB sidecar helpers:
+  - `compiled_sidecar/matlab/build_transition_front_row_case_struct.m`
+  - `compiled_sidecar/matlab/run_transition_front_row_sidecar_mex.m`
+  - `compiled_sidecar/matlab/benchmark_transition_re_cache.m`
+  - `compiled_sidecar/benchmark_transition_re_cache.ps1`
+- RE wrapper optimization:
+  - `code/solve_transition_re_fertility.m`
+  - new option:
+    - `transition_front_row_cache`
+  - default:
+    - `true` when `transition_backend='sidecar_mex'`
+    - `false` otherwise
+  - workflow when enabled:
+    - precompute the future base tail once per period-root problem
+    - precompute the future `dp` tail once per period-root problem
+    - evaluate each candidate `q` by solving only the current row in compiled code
+  - important:
+    - the last-period root still falls back to the full solve because its continuation is the constant-price tail at the candidate `q`
+- Timing results from reproducible RE-side benchmarks:
+  - `t4_diag` with `transition_backend='sidecar_mex'`
+    - no cache: about `80.38s`
+    - cache: about `44.41s`
+    - speedup: about `1.81x`
+    - implied `q` path unchanged exactly
+  - `t4_iter_debug` with `transition_backend='sidecar_mex'`
+    - no cache: about `292.99s`
+    - cache: about `101.83s`
+    - speedup: about `2.88x`
+    - implied `q` path unchanged exactly
+    - residual unchanged exactly
+- Interpretation:
+  - the compiled-backend integration is now doing more than just replacing the household Bellman kernel
+  - it also removes a large chunk of redundant RE work by reusing fixed future tails within each root-search problem
+  - this materially improves the live Bellman RE workflow without changing the economic object
+
+---
+
+### Session: 2026-04-09 (live in-memory sidecar backend wired into the MATLAB solver and RE wrapper)
+- Extended the compiled sidecar beyond the pack-based MEX boundary and wired it into the live MATLAB solver as an opt-in backend.
+- C++ MEX change:
+  - `compiled_sidecar/src/fertility_transition_path_mex.cpp`
+  - the MEX now accepts either:
+    - an input-pack directory string, or
+    - a scalar in-memory transition-case struct matching `TransitionPathCase`
+  - added MATLAB-to-C++ parsing for:
+    - scalar metadata
+    - nested `base_branch` parameters
+    - vectors
+    - `age_n x P` realized birth-weight matrices
+    - `K x K x S` transition-slice arrays
+  - preserved the existing pack-based interface and revalidated it after the parser change
+- New MATLAB sidecar helper:
+  - `compiled_sidecar/matlab/build_transition_path_case_struct.m`
+  - builds the in-memory `TransitionPathCase` contract directly from `(q_path, rb_pos_path, params, env)` without exporting CSV packs
+- Live solver integration:
+  - `code/solve_household_path_fertility.m`
+  - new options:
+    - `transition_backend = 'matlab' | 'sidecar_mex'`
+    - `sidecar_mex_toolchain_root`
+    - `sidecar_mex_force_rebuild`
+  - default behavior remains the pure MATLAB solver
+  - when `transition_backend='sidecar_mex'`, the solver:
+    - adds the sidecar MATLAB folder temporarily to path
+    - builds / locates the MEX
+    - builds the in-memory transition-case struct
+    - calls `fertility_transition_path_mex(..., 'full')`
+    - returns the usual `tail_solution` and `path_solution` objects
+  - result structs now also report:
+    - `transition_backend`
+    - `backend_summary`
+- Outer RE wrapper integration:
+  - `code/solve_transition_re_fertility.m`
+  - added backend pass-through so the wrapper can forward the same compiled backend settings into all inner `solve_household_path_fertility` calls
+- New live-backend validation workflow:
+  - `compiled_sidecar/matlab/validate_transition_path_backend.m`
+  - `compiled_sidecar/validate_transition_path_backend.ps1`
+  - compares:
+    - `solve_household_path_fertility(..., 'transition_backend', 'matlab')`
+    - `solve_household_path_fertility(..., 'transition_backend', 'sidecar_mex')`
+  - checks exact agreement on:
+    - tail value / birth probabilities / policy indices
+    - full path value / birth probabilities / policy indices
+- Validation run results:
+  - pack-based MEX validator still passes on `smoke`
+  - pack-based MEX validator still passes on `medium`
+  - live-backend validator passes on `smoke`
+    - solve seconds about `0.64`
+    - machine-precision value / birth-prob differences
+    - zero policy-index drift
+  - live-backend validator passes on `medium`
+    - solve seconds about `3.74`
+    - machine-precision value / birth-prob differences
+    - zero policy-index drift
+  - bounded RE smoke check:
+    - `solve_transition_re_fertility(..., 'transition_backend', 'sidecar_mex')` runs successfully with `compute_final_summary=false`
+- Interpretation:
+  - the compiled transition-path kernel is no longer just a sidecar executable or pack-based MEX
+  - the live MATLAB household solver and the RE wrapper can now opt into the compiled backend directly, while keeping MATLAB as the default truth path
+
+---
+
+### Session: 2026-04-09 (MATLAB MEX boundary added for the compiled transition-path kernel)
+- Continued the compiled-sidecar branch by adding a true MATLAB boundary around the validated transition-path solver rather than only standalone executables.
+- Shared C++ refactor:
+  - added `include/fertility_sidecar/transition_input_io.hpp`
+  - added `src/transition_input_io.cpp`
+  - moved the transition-input pack loader out of `src/transition_path_timing.cpp` so the standalone timing executable and the MEX use the exact same input contract
+- New MEX source:
+  - `src/fertility_transition_path_mex.cpp`
+  - contract:
+    - input: transition-input pack directory plus mode `summary` or `full`
+    - output:
+      - timing / throughput / checksum summary
+      - optional `tail_solution` and `path_solution` structs shaped like the MATLAB solver objects
+- New MATLAB helpers:
+  - `compiled_sidecar/matlab/build_transition_path_mex.m`
+  - `compiled_sidecar/matlab/run_transition_path_sidecar_mex.m`
+  - `compiled_sidecar/matlab/run_transition_path_sidecar_mex_from_input.m`
+  - `compiled_sidecar/matlab/validate_transition_path_mex.m`
+- New shell wrappers:
+  - `compiled_sidecar/run_transition_path_mex.ps1`
+  - `compiled_sidecar/validate_transition_path_mex.ps1`
+- MATLAB-side exporter change:
+  - `compiled_sidecar/matlab/export_transition_input_pack.m` now returns the written input-pack path so the MEX helpers can chain export -> build -> run cleanly
+- Toolchain outcome:
+  - MATLAB could detect the existing LLVM-MinGW toolchain via `MW_MINGW64_LOC`, but MEX linking failed because MATLAB's MinGW linker flags are not compatible with LLVM `lld`
+  - installed a second portable GCC-based toolchain:
+    - `D:\codex_tools\winlibs-posix-ucrt\mingw64`
+  - the MEX helpers now default to that WinLibs GCC toolchain
+  - the standalone `CMake` path still uses the faster LLVM-MinGW executable toolchain
+- Validation:
+  - `validate_transition_path_mex.ps1 -Mode smoke` passes
+  - `validate_transition_path_mex.ps1 -Mode medium` passes
+  - both validations show exact agreement against `solve_household_path_fertility` on:
+    - tail value
+    - tail birth probabilities
+    - tail policy indices
+    - full path value
+    - full path birth probabilities
+    - full path policy indices
+- MEX timing references:
+  - `smoke`: about `0.64s`
+  - `medium`: about `3.61s`
+  - `benchmark`: about `169.37s` using `run_transition_path_sidecar_mex_from_input` on the existing `transition_input_benchmark` pack
+  - benchmark checksum matches the standalone executable:
+    - about `-70000144.0018349588`
+- Interpretation:
+  - the MATLAB MEX boundary now exists and is end-to-end usable
+  - it is slower than the standalone executable because MATLAB compatibility currently requires the GCC-based WinLibs toolchain rather than the faster LLVM-MinGW standalone compiler
+- Workflow note:
+  - benchmark MEX runs should reuse the exported `transition_input_benchmark` directory rather than re-exporting it, because the MATLAB export remains much slower than the compiled solve
+
+---
+
+### Session: 2026-04-09 (compiled sidecar transition solver optimized from ~348s to ~128s on benchmark timing)
+- Continued the separate compiled-sidecar branch under `compiled_sidecar/` and kept MATLAB as the truth source.
+- Inner-kernel optimizations added:
+  - `src/branch_kernel.cpp`
+    - added a max-only branch solver for age/path recursion so the compiled path no longer materializes a full `I x J` value plane at every state
+    - precomputed state-level crowding, rental, and mortgage-screen scalars inside the branch scan instead of recomputing them for every candidate choice
+    - switched hot `Matrix` element access from bounds-checked `std::vector::at` to unchecked indexed access
+  - `src/age_block_kernel.cpp`
+    - age-block recursion now reuses one mutable `BranchCase` per `(ih, ip, iz)` block instead of copying a full state bundle for every `(ii, ij)` state
+    - switched hot `Tensor5` element access from bounds-checked `std::vector::at` to unchecked indexed access
+  - `include/fertility_sidecar/age_block_kernel.hpp`
+  - `include/fertility_sidecar/transition_path_kernel.hpp`
+  - `src/transition_path_kernel.cpp`
+    - age cases now borrow `next_value` tensors instead of copying continuation tensors between backward blocks
+  - `src/age_block_probe.cpp`
+    - probe loader now owns its imported `next_value` tensor on the heap so the age-block API can borrow or own continuation tensors safely
+- Validation after each optimization stage:
+  - branch probe still passes on `smoke`
+  - age-block probe still passes on `smoke`
+  - full transition-path probe still passes on `smoke`
+  - full transition-path probe still passes on `medium`
+  - max value errors remain around `5e-9` with zero policy-index and birth-probability differences at tolerance
+- Updated timing-only compiled references on current hardware/toolchain:
+  - `smoke`: about `0.47s` for `322,560` solved states
+  - `medium`: about `2.65s` for `806,400` solved states
+  - `benchmark`: about `127.93s` for `5,644,800` solved states
+- Timing interpretation:
+  - the benchmark compiled transition solve is now down from the first sidecar timing of about `347.77s` to about `127.93s`
+  - that is roughly a `2.7x` speedup inside the current C++ path solver without changing the MATLAB truth contract
+- Workflow note:
+  - the sidecar PowerShell wrappers all reuse the same `build/` directory
+  - running two wrapper scripts in parallel can race in `llvm-ar` / `llvm-ranlib`, so build/timing wrappers should be run sequentially in one checkout
+- Next sensible sidecar step:
+  - either expose the validated compiled transition-path kernel behind a MATLAB MEX boundary
+  - or profile one more round of remaining hotspots such as expected-value-plane construction before wiring MEX
+
+---
+
+### Session: 2026-04-09 (transition support object normalized; first-pass Bellman RE roots recovered, but the outer map is still unstable)
+- Bellman RE code changes:
+  - `code/solve_transition_re_fertility.m`
+    - fixed a real transition vote normalization bug:
+      - the simulated transition cross sections were already in cohort-weighted units
+      - the vote aggregator was multiplying by `cohortsize / age_n` a second time
+      - after the fix, transition vote mass is `1.000` rather than about `0.092`
+    - changed the transition `dp` comparison so the higher-price perturbation applies from date `t` onward rather than only to the current date
+    - this makes the transition support object much closer to the steady-state permanent higher-price vote object
+  - `code/run_transition_re_fertility_main.m`
+    - added a reproducible `t4_iter` mode
+    - notes now record the transition vote-perturbation scope
+- New or refreshed outputs:
+  - `notes/build/structural_transition_re_diag.md`
+  - `notes/build/structural_transition_re_diag_vote_grid.csv`
+  - `notes/build/structural_transition_re_t4_diag.md`
+  - `notes/build/structural_transition_re_t4_diag_vote_grid.csv`
+  - `notes/build/structural_transition_re_t4_iter.md`
+  - `notes/build/structural_transition_re_t4_iter_iterations.csv`
+  - `notes/build/structural_transition_re_t4_iter_periods.csv`
+  - `notes/build/structural_transition_re_t4_iter_vote_grid.csv`
+- RE diagnostics read:
+  - `diag` now brackets in both dates on the first pass:
+    - implied path about `[1.737, 2.404]`
+  - `t4_diag` now brackets in all four dates on the first pass:
+    - implied path about `[1.737, 1.766, 1.769, 2.416]`
+  - but `t4_iter` shows the outer map is not yet stable:
+    - iteration 1 implied `[1.737, 1.766, 1.769, 2.416]`
+    - after damping, iteration 2 implied `[1.500, 1.000, 1.500, 2.004]`
+    - periods `1-3` then lost their brackets and fell back to boundary picks
+- Follow-up diagnosis:
+  - `code/run_transition_re_period2_diagnosis_main.m`
+  - outputs:
+    - `notes/build/structural_transition_re_period2_diagnosis.md`
+    - `notes/build/structural_transition_re_period2_diagnosis_summary.csv`
+    - `notes/build/structural_transition_re_period2_diagnosis_votes.csv`
+  - main read:
+    - the period-2 root did **not** actually vanish under the iteration-2 incoming mass and iteration-2 future tail
+    - the old root search was missing a narrow interior positive pocket around `q = 1.625-1.75`
+    - so at least part of the iteration-2 collapse was search resolution, not only tail economics
+- Search fix after that diagnosis:
+  - `code/solve_transition_re_fertility.m`
+    - after expanding outward, the root search now fills the interior of the explored interval before falling back to `closest_no_bracket`
+  - full `t4_iter` revalidation under the newer search has **not** yet completed cleanly inside one serial run, so treat this as a promising but still unverified fix
+- Interpretation:
+  - the live blocker is no longer "the early-date roots do not exist even locally"
+  - it is now a narrower mix of:
+    - genuine tail sensitivity in the support map
+    - and root-search misspecification on narrow interior brackets
+- Smoke status:
+  - `run_transition_re_fertility_main('smoke')` was attempted
+  - it did not finish within the 30-minute budget and the timed-out MATLAB batch was stopped manually rather than left running
+- Benchmark validation packet:
+  - the original run `notes/build/logs/transition_benchmark_validation_20260409_115634/` did not fail on economics
+  - it failed in `04_sensitivity_case1` because `run_transition_benchmark_validation_packet_fertility_main.m` passed a cell value into `fprintf` while writing the markdown note
+  - that writer bug is now patched
+  - the workflow was relaunched from steps `4-7` only:
+    - run dir `notes/build/logs/transition_benchmark_validation_20260409_144809/`
+    - active pointer `notes/build/logs/active_transition_benchmark_validation.txt`
+  - the restarted run completed:
+    - `04_sensitivity_case1`
+    - `05_sensitivity_case2`
+  - live partial read from `structural_transition_benchmark_validation_sensitivities.csv`:
+    - `higher_transaction_cost` cuts owner share `25-34` at `t = 1` from about `0.321` to about `0.138`
+    - but the renter-to-owner flip mass still stays concentrated in `z5` at about `0.114`
+  - the restarted run then failed in:
+    - `06_sensitivity_case3`
+    - exit code `-1`
+    - empty stderr
+    - stdout shows the crash happened during the flat reference solve
+- Next task:
+  - rerun `06-07` sensitivity cases serially
+  - then revalidate the full `t4_iter` Bellman map under the newer interior-fill root search on a clean MATLAB session
+
+---
+
+### Session: 2026-04-09 (compiled sidecar branch scaffolded)
+- Dedicated git branch created for the performance side project:
+  - `fertility/compiled-sidecar`
+- New sidecar workspace added under:
+  - `compiled_sidecar/`
+- Intent:
+  - keep MATLAB as the truth source
+  - treat the compiled work as a bounded sidecar rather than a second free-floating model
+  - replicate aggregate transition summaries first, then consider moving the hot Bellman kernel into compiled code
+- Added files:
+  - `compiled_sidecar/README.md`
+  - `compiled_sidecar/CMakeLists.txt`
+  - `compiled_sidecar/include/fertility_sidecar/model_config.hpp`
+  - `compiled_sidecar/src/model_config.cpp`
+  - `compiled_sidecar/src/main.cpp`
+  - `compiled_sidecar/src/truth_summary.cpp`
+  - `compiled_sidecar/matlab/export_truth_pack.m`
+  - `compiled_sidecar/.gitignore`
+  - `compiled_sidecar/bootstrap_portable_toolchain.ps1`
+  - `compiled_sidecar/configure.ps1`
+  - `compiled_sidecar/build.ps1`
+  - `compiled_sidecar/run_smoke.ps1`
+  - `compiled_sidecar/export_truth.ps1`
+  - `compiled_sidecar/run_truth_summary.ps1`
+- Validation contract:
+  - the sidecar now has a MATLAB exporter that can write compact truth packs for:
+    - `diag`
+    - `smoke`
+    - `medium`
+    - `benchmark`
+  - those truth packs are intentionally aggregate-level first:
+    - `avg_birth_rate`
+    - `avg_first_birth_rate`
+    - `mean_age_first_birth`
+    - `share_first_birth_30_plus`
+    - `owner_share_25_34`
+    - `mortgaged_owner_share_under_35`
+    - `total_mass`
+- Portable toolchain workflow:
+  - because `C:` is effectively full on this machine, the sidecar now uses portable tools on `D:`
+  - tool root:
+    - `D:\codex_tools`
+  - temp root:
+    - `D:\codex_temp\compiled_sidecar`
+  - working wrappers now exist for:
+    - portable toolchain bootstrap
+    - CMake configure
+    - build
+    - smoke run
+    - MATLAB truth export
+    - compiled truth-summary readback
+- Verification:
+  - `run_smoke.ps1` now configures and builds successfully against the portable `LLVM-MinGW` toolchain
+  - `run_truth_summary.ps1 -Mode smoke` now runs end to end:
+    - exports the MATLAB smoke truth pack
+    - reads the resulting CSV in compiled code
+    - reports stable aggregate summary values with total mass exactly `1.000000`
+- Recommended next sidecar step:
+  - the first compiled reader / validator now exists
+  - next port one bounded kernel, most likely the transition age-block Bellman rather than the whole model
+
+---
+
+### Session: 2026-04-09 (overnight transition-policy packet completed)
+- Overnight run:
+  - completed successfully in `notes/build/logs/transition_policy_overnight_20260408_223339/`
+  - medium anticipation menu, value-wedge audit, and benchmark anticipation menu all finished
+- New outputs:
+  - `notes/build/structural_transition_anticipation_menu_benchmark_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_benchmark_z_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_benchmark.md`
+- Main read:
+  - the value-wedge audit now pins down the mechanism:
+    - the owner-entry surge is mainly continuation-value driven
+    - current-period owner utility at the unchanged `t = 1` price is still worse than renting for the key middle states
+    - what changes under the permanent future price increase is the continuation value from already owning when prices are higher later
+  - the medium-grid anticipation menu still looks too sharp:
+    - `2.0 -> 2.05` flips `z = 3`
+    - `2.0 -> 2.10` flips both `z = 3` and `z = 4`
+    - delayed steps move the surge later
+    - transitory steps do not create the same jump
+  - the benchmark-grid menu is materially more disciplined:
+    - only `z = 5` flips at `t = 1`
+    - flip mass is about `0.114`
+    - owner share `25-34` rises from about `0.077` to about `0.321` under the permanent `2.0 -> 2.1` step
+- Inference:
+  - the remaining question is no longer "is this a coding bug?"
+  - it is "is the benchmark-grid anticipation margin economically acceptable, or is the five-year Bellman still too lumpy for transition RE?"
+- Next task:
+  - decide whether to trust the benchmark-grid anticipation result enough to wrap an outer RE loop around it
+  - or first soften the transition geometry / timing before any outer RE solve
+
+---
+
+### Session: 2026-04-08 (transition-policy overnight packet built and launched)
+- Added:
+  - `code/run_transition_anticipation_menu_fertility_main.m`
+  - `code/run_transition_value_wedge_audit_fertility_main.m`
+  - `code/transition_policy_overnight_workflow.ps1`
+  - `code/start_transition_policy_overnight.ps1`
+- New outputs already built locally:
+  - `notes/build/structural_transition_anticipation_menu_medium_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_medium_z_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_medium.md`
+  - `notes/build/structural_transition_value_wedge_audit.csv`
+  - `notes/build/structural_transition_value_wedge_audit.md`
+- Script fixes:
+  - `run_transition_value_wedge_audit_fertility_main.m` had an unmatched parenthesis in the state-row constructor
+  - the same script was also passing the sparse override struct into the local value-gap decomposition instead of the completed `solver_results.params`
+  - both fixes are now in place, and the script runs end to end
+- Verification:
+  - local MATLAB completion:
+    - `run_transition_value_wedge_audit_fertility_main`
+    - `run_transition_anticipation_menu_fertility_main('medium')`
+  - first overnight launch failed immediately because the default `C:` temp directory had no free space to start `matlab.exe`
+  - launcher and worker now redirect `TEMP` and `TMP` to `D:\codex_temp\03_fertility_and_housing_supply\transition_policy_overnight`
+  - bounded overnight launcher restarted:
+    - `code/start_transition_policy_overnight.ps1`
+    - active pointer `notes/build/logs/active_transition_policy_overnight.txt`
+    - run directory `notes/build/logs/transition_policy_overnight_20260408_223339/`
+    - current phase after relaunch check: `01_anticipation_menu_medium`
+- Intent of the overnight packet:
+  - keep the task inside the five-year structural Bellman transition diagnosis
+  - run only:
+    - medium anticipation menu
+    - value-wedge audit
+    - benchmark anticipation menu
+  - stop after that chain or on the first timeout / blocker
+- Next task after the overnight run:
+  - read the medium and benchmark anticipation menus together with the value-wedge audit
+  - then decide whether the live middle-state ownership surge is a coherent anticipation margin or still a structural pathology
+
+---
+
+### Session: 2026-04-08 (both solvers now enforce feasibility; remaining PE surge comes from broad middle-state flips)
+- Added:
+  - `code/run_stationary_owner_policy_audit_fertility_main.m`
+  - `code/run_transition_policy_flip_audit_fertility_main.m`
+  - `notes/build/structural_stationary_owner_policy_audit.md`
+  - `notes/build/structural_stationary_owner_policy_audit_summary.csv`
+  - `notes/build/structural_stationary_owner_policy_audit_age25_states.csv`
+  - `notes/build/structural_stationary_owner_policy_audit_results.mat`
+  - `notes/build/structural_transition_path_pe_medium_grid_check.md`
+  - `notes/build/structural_transition_policy_flip_audit.md`
+  - `notes/build/structural_transition_policy_flip_audit_summary.csv`
+  - `notes/build/structural_transition_policy_flip_audit_z_summary.csv`
+  - `notes/build/structural_transition_policy_flip_audit_states.csv`
+- Solver instrumentation:
+  - `SolveSS_fertility.m` now returns optional transition objects when `return_transition_objects = true`
+  - exposed objects include:
+    - pre-policy age densities
+    - post-policy age densities
+    - age-specific policy indices
+    - birth probabilities
+- Household-feasibility fix:
+  - `SolveSS_fertility.m` now hard-penalizes negative-consumption choices instead of letting them survive through `max(..., 1e-20)`
+  - `solve_household_path_fertility.m` now does the same inside the transition Bellman
+- Main read:
+  - the hard feasibility change clears the benchmark Bellman corner on the dimensions that were failing
+  - after the fix:
+    - benchmark age-25 renter-entry top-h share is `0.000`
+    - benchmark age-25 renter-entry top-b share is `0.000`
+    - benchmark age-25 infeasible-owner share is `0.000`
+    - the same is true at age `30`
+  - the age-25 state map is now sensible:
+    - low-income renter states stay renters
+    - higher-income states enter ownership with feasible levered choices rather than top-cell corners
+  - the remaining PE problem survives even after the transition-feasibility fix:
+    - at `I = 30`, `J = 14`, the step-up path gives owner share `25-34 = 0.929` at `t = 1`
+    - then `0.430` at `t = 2`
+    - then `0.002` at `t = 3-4`
+  - the new policy-flip audit shows the source:
+    - `0.813` of the age-25 entrant mass flips renter-to-owner between the flat and step-up paths
+    - that is **not** a tail-state or low-income-corner artifact
+    - it comes entirely from the two middle income states:
+      - `z = -0.5625` contributes `0.370`
+      - `z = 0.0625` contributes `0.442`
+- Inference:
+  - the stationary feasibility bug is no longer the main blocker
+  - the next task before any outer RE loop should be:
+    - explain why anticipated higher future `q` makes ownership too attractive for a wide middle entrant region
+    - distinguish between:
+      - continuation value from carrying owned housing into a high-price future
+      - five-year timing lumpiness
+      - leverage / bequest geometry
+    - then only return to the outer RE loop
+
+---
+
+### Session: 2026-04-08 (timing-definition gap fixed; stationary decomposition points to an asset-grid / upper-boundary problem)
+- Added:
+  - `code/run_stationary_grid_decomposition_fertility_main.m`
+  - `notes/build/structural_stationary_grid_decomposition.md`
+  - `notes/build/structural_stationary_grid_decomposition.csv`
+  - `notes/build/structural_stationary_grid_decomposition_results.mat`
+- Main read:
+  - the earlier flat-path mean-age-at-first-birth gap was traced to an unweighted steady-state timing diagnostic in `SolveSS_fertility.m`
+  - `SolveSS_fertility.m` now reports the cohort-weighted cross-sectional timing object as the main diagnostic and preserves the old unweighted value separately
+  - the remaining problem is therefore not timing-definition mismatch but stationary ownership geometry
+  - one-at-a-time grid decomposition says the asset grid matters more than the housing grid:
+    - holding `J = 14`, owner share `25-34` ranges from about `0.090` to `0.203`
+    - holding `I = 60`, owner share `25-34` ranges from about `0.112` to `0.164`
+  - the deeper pathology is that young owners are not using starter-home states at all:
+    - the smallest owner cell is unused at ages `25` and `30` in every audited case
+    - age-25 mean owner housing is roughly `14.7-15.0` on a grid with max housing `15`
+    - age-25 mean owner assets are often near the top of the `b` grid as well
+- Next task:
+  - diagnose why the owner problem pushes young households to the upper housing / asset boundary instead of into small owner states
+  - only then return to the outer RE loop
+
+---
+
+### Session: 2026-04-08 (stationary grid audit separates steady-state grid sensitivity from path-stack issues)
+- Added:
+  - `code/run_stationary_grid_audit_fertility_main.m`
+  - `notes/build/structural_stationary_grid_audit.md`
+  - `notes/build/structural_stationary_grid_audit.csv`
+  - `notes/build/structural_stationary_grid_audit_results.mat`
+- Main read:
+  - after the cohort-scaling fix in `code/forward_distribution_path_fertility.m`, the flat-path transition stack matches same-grid stationary ownership shares and average birth rates exactly at `t = 1`, so the remaining issue is not the old vote-to-price loop and not a generic path-solver failure
+  - the strongest problem is already in the stationary structural benchmark:
+    - owner share `25-34` moves non-monotonically across grids:
+      - `I = 20`, `J = 6`: `0.495`
+      - `I = 30`, `J = 8`: `0.089`
+      - `I = 40`, `J = 10`: `0.225`
+      - `I = 50`, `J = 12`: `0.164`
+      - `I = 60`, `J = 14`: `0.164`
+    - mortgaged-owner share under `35` does the same:
+      - `0.424`, `0.002`, `0.138`, `0.077`, `0.077`
+  - fertility timing moments are effectively unchanged across the same ladder:
+    - average birth rate `â‰ˆ 0.450011`
+    - mean age at first birth `â‰ˆ 26.738`
+  - the flat-path stack now keeps total mass at `1.000000`, but a smaller systematic timing gap remains:
+    - mean age at first birth on the flat path is about `26.473`, around `0.266` years below the steady-state diagnostic on every audited grid
+- Next task:
+  - diagnose the remaining first-birth-timing measurement gap
+  - then diagnose which grid features move young ownership and leverage so sharply
+
+---
+
+### Session: 2026-04-08 (structural transition-path Bellman PE stack implemented and smoke-tested)
+- Added code:
+  - `code/solve_household_path_fertility.m`
+  - `code/forward_distribution_path_fertility.m`
+  - `code/summarize_transition_path_fertility.m`
+  - `code/run_transition_path_pe_fertility_main.m`
+  - `code/run_stationary_grid_audit_fertility_main.m`
+- Added outputs:
+  - `notes/build/structural_transition_path_pe_note.md`
+  - `notes/build/structural_transition_path_pe_summary.csv`
+  - `notes/build/structural_transition_path_pe_results.mat`
+  - `notes/build/structural_stationary_grid_audit.md`
+  - `notes/build/structural_stationary_grid_audit.csv`
+  - `notes/build/structural_stationary_grid_audit_results.mat`
+- Verification:
+  - local MATLAB smoke passed via `run_transition_path_pe_fertility_main`
+  - the flat-path case `q = [2.0, 2.0, 2.0, 2.0]` replicates exactly across `t = 1..4`
+  - the flat-path stack keeps all reported moments constant across `t = 1..4`, but total mass is currently normalized at `1.294561`, not `1.000000`
+- Main read:
+  - the backward and forward mechanics are now live for the five-year structural transition-path object
+  - the PE stack does **not** use the old vote-to-price loop; prices are exogenous in this stage
+  - an initial pre-policy / post-policy reporting mismatch was fixed after the first smoke
+  - the flat path now replicates the stationary PE benchmark exactly on the chosen grid
+  - a simple step-up path `q = [2.0, 2.1, 2.1, 2.1]` lowers average births and raises mean age at first birth, which is directionally sensible
+  - the remaining issue is genuine transition behavior plus strong structural grid sensitivity:
+    - on the small PE smoke grid `I = 20`, `J = 6`, the step-up path still drives young ownership down sharply by `t = 3`
+    - the stationary structural solver itself is highly grid-sensitive in young ownership:
+      - `I = 20`, `J = 6`: owner share `25-34 â‰ˆ 0.495`, mortgaged-owner share under `35 â‰ˆ 0.424`
+      - `I = 30`, `J = 8`: owner share `25-34 â‰ˆ 0.089`, mortgaged-owner share under `35 â‰ˆ 0.002`
+      - default benchmark grid: owner share `25-34 â‰ˆ 0.164`, mortgaged-owner share under `35 â‰ˆ 0.077`
+  - so the next task before the outer RE loop is:
+    - diagnose the stationary grid sensitivity and
+    - then diagnose the transition mapping under non-flat prices
+
+---
+
+### Session: 2026-04-08 (RE work consolidated before Bellman transition-path build)
+- Added:
+  - `notes/build/re_work_synthesis.md`
+  - `notes/build/re_model_map.md`
+  - `notes/build/structural_transition_re_build_spec.md`
+- Purpose:
+  - preserve the full RE work sequence before starting the structural Bellman transition-path build
+  - distinguish clearly between:
+    - the annual aggregate-transition RE branch that now exists
+    - the structural Bellman steady-state solver that already exists
+    - the structural transition-path Bellman RE solver that still does not exist
+- Recommended restart order for future sessions:
   - `STATUS.md`
+  - `README.md`
+  - `notes/build/re_work_synthesis.md`
+  - `notes/build/re_model_map.md`
+  - `notes/build/structural_transition_re_build_spec.md`
+  - `notes/build/annual_full_re_ladder.md`
+  - `code/SolveSS_fertility.m`
 
-### Session: 2026-03-09 (exploratory regressions on current processed panel)
-- Added reproducible regression script:
-  - `code/10_exploratory_empirical_regressions.py`
-- Generated exploratory outputs:
-  - `notes/build/exploratory_regression_summary.md`
-  - `notes/build/exploratory_regression_results.csv`
-- Main empirical finding from this pass:
-  - provisional reduced-form sign checks are possible on the historical metro fertility sample
-  - post-treatment coefficient is negative in metro/year FE regressions
-  - rent coefficient is negative on the small overlap sample
-  - event-study bins show non-flat pre-trends
-  - permits coefficient is imprecise
-- Critical data finding:
-  - current `gfr_15_44` observations run from 1940--1995 at metro-year level
-  - current `female_pop_15_44` observations run from 2010--2018 at county-year level
-  - overlap is zero, so the current merged panel cannot serve as the intended modern nativity-adjusted baseline
+---
 
-### Session: 2026-03-09 (empirical refocus toward first-birth timing)
-- Reframed the near-term empirical agenda around first-birth timing rather than overall fertility alone.
-- Updated `notes/05_research_plan.md` to prioritize:
-  - first-birth timing outcomes
-  - reduced-form event studies
-  - IV exploration that instruments housing supply/cost rather than fertility directly
-- Expanded `notes/04_empirical_notes.md` with:
-  - timing-focused outcome definitions
-  - a recommendation to use age-at-first-birth only alongside first-birth shares/rates
-  - an IV menu with reform exposure as the current preferred path
-- Updated `STATUS.md` so canonical next tasks reflect the timing-first empirical design.
+### Session: 2026-04-08 (joint structural fertility plus recursive support-state annual RE)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_structural_support_state.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80_fixed_target_paths.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_support_state_T80_structural_fixed_paths.csv`
+- Object:
+  - recursive support state interpolates deposit help, qualification, and supply restrictiveness
+  - fertility remains structural via the ownership / balance-sheet operator, not a second reduced-form state
+  - support-adjusted stationary price anchor is used to evaluate the structural operator inside the fixed point
+- Main read:
+  - the combined object runs cleanly and is the current richest annual RE bridge
+  - but the recursive support state stays near zero through `t = 20`, only reaches about `0.08` by `t = 40`, and about `0.26` by `t = 80`
+  - so the joint path stays very close to the structural fixed-support benchmark over the main transition window
 
-### Session: 2026-03-09 (status review)
-- Reviewed canonical project context in `STATUS.md`, `README.md`, and `memory.md`.
-- No implementation changes yet in this session.
-- Active priorities remain:
-  - structural-model calibration against empirical fertility-price patterns
-  - nativity API backfill and panel rebuild
-  - eventual port of fertility choice into project-02 household VFI block once upstream `.mat` inputs are available
+---
 
-### Session: 2026-02-25 (global capitalization cleanup applied)
-- Standardized project folders to lowercase naming across this project:
-  - `calibration/`, `code/`, `data/`, `exports/`, `figures/`, `literature/`, `notes/`, `referee/`, `drafts/`, `slides/`
-- Standardized nested exports folder naming:
-  - `exports/david_ai_output_with_zac_and_david/`
+### Session: 2026-04-08 (structural annual RE enriched with micro timing and entry channels)
+- Updated code:
+  - `code/build_annual_full_re_stationary_transition_structural_fertility.py`
+- Main model change:
+  - the structural annual RE operator no longer feeds back only through `avg_birth_rate`
+  - it now also uses first-birth timing moments to rescale `25-34` versus `35-44` purchase transitions
+  - higher implied childlessness also tilts entrant tenure composition away from ownership
+- New structural RE read:
+  - benchmark structural RE still lowers prices relative to the no-structural path by about `0.026` at `t = 20`, `0.113` at `t = 40`, and `0.349` at `t = 80`
+  - by `t = 80`, benchmark young purchase scale is about `0.76`, mid-age purchase scale about `1.15`, and entrant owner scale about `0.82`
+- Outputs refreshed:
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80.*`
+  - `notes/build/annual_full_re_ladder.md`
+- Paper-facing write-up:
+  - `drafts/sections/annual_transition_extension.tex` now describes the structural operator as a richer micro bridge rather than a birth-multiplier-only extension
 
-### Session: 2026-02-25 (clean draft view: lyx/pdf only)
-- Applied global clean-view rule for paper folders:
-  - keep only latest `.lyx` and `.pdf` visible in `drafts/` and `slides/`
-  - move `.tex` exports to archive source paths
-  - move LaTeX build artifacts to archive build paths
-- Fertility paths now:
-  - `drafts/old_drafts/source_tex/fertility_and_housing_supply.tex`
-  - `slides/old_slides/source_tex/fertility_and_housing_supply_slides.tex`
-  - `drafts/old_drafts/build_artifacts/` and `slides/old_slides/build_artifacts/`
-- Global enforcer script used:
-  - `_shared/scripts/hide_tex_and_artifacts.ps1`
+---
 
-### Session: 2026-02-25 (drafts and slides naming standardization)
-- Normalized folder naming to lowercase:
-  - `drafts/`
-  - `slides/`
-- Added canonical latest paper filenames (no version suffix):
-  - `drafts/fertility_and_housing_supply.lyx`
-  - `drafts/fertility_and_housing_supply.tex`
-  - `drafts/fertility_and_housing_supply.pdf`
-- Added canonical latest slide filenames (no version suffix):
-  - `slides/fertility_and_housing_supply_slides.lyx`
-  - `slides/fertility_and_housing_supply_slides.tex`
-  - `slides/fertility_and_housing_supply_slides.pdf`
-- Added explicit version archive folders:
-  - `drafts/old_drafts/`
-  - `slides/old_slides/`
+### Session: 2026-04-08 (annual transition draft reframed around stationary full RE)
+- Updated paper files:
+  - `drafts/sections/annual_transition_extension.tex`
+  - `drafts/fertility_and_housing_supply_annualised.tex`
+- Main drafting change:
+  - the annual section now treats the stationary no-drift endpoint plus the `T = 80` full-RE transition as the live annual closure
+  - the paper-facing RE hierarchy is now:
+    - stationary endpoint + full RE no-drift transition as the core object
+    - exogenous fertility-shock RE as the simple bridge
+    - endogenous-fertility RE as the main beyond-`q` rung
+    - regime-path RE as the anticipated-policy rung
+    - structural-fertility operator RE as an appendix-strength extension rather than the baseline main-text closure
+    - drifting `k = 3/5` RE as robustness and drifting `k = 20 / T = 40` as appendix / feasibility only
+- High-level framing updates:
+  - abstract, roadmap paragraph, and conclusion in `drafts/fertility_and_housing_supply_annualised.tex` now match the new stationary annual RE hierarchy
+- Verification:
+  - rebuilt `drafts/fertility_and_housing_supply_annualised.pdf` with `latexmk`
+  - compile passed
+  - remaining warnings are pre-existing table-width / appendix-cross-reference issues, not new annual-section failures
 
-### Session: 2026-02-25 (paper-transition folder standards)
-- Added paper-phase folder placeholders:
-  - `drafts/README.md`
-  - `calibration/README.md`
-- Added canonical output location guidance:
-  - latest output targets in dedicated folders: `drafts/fertility_and_housing_supply.pdf`, `slides/fertility_and_housing_supply_slides.pdf`
-- Added code folder standards note:
-  - `code/README.md`
-- Updated project `README.md` and `STATUS.md` to align pre-paper notes workflow with paper-phase transition structure.
+---
 
-### Session: 2026-02-25 (notes auto-organization standard applied)
-- Notes were consolidated to no-ranking living files:
-  - `notes/01_project_overview.md`
-  - `notes/03_model_notes.md`
-  - `notes/04_empirical_notes.md`
-  - `notes/02_literature_and_synthesis.md`
-- Archived pre-consolidation standalone notes under:
-  - `_playground/backups/2026-02-25_notes_flattening/03_fertility_and_housing_supply/Notes_old`
-- Notes index regenerated with four canonical files:
-  - `notes/README.md`
-- Cross-file note references updated in project docs.
+### Session: 2026-04-08 (structural-fertility full RE added to stationary annual branch)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_structural_fertility.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80_no_structural_paths.csv`
+- Object:
+  - stationary annual full-RE housing block
+  - annual structural fertility operator loaded from the ownership / balance-sheet screen candidate path
+  - absolute structural price mapped as `a_price_t = q_ss * q_t`
+  - annual demand and entrant cohort mass both scale with the structural birth-rate ratio relative to `q_ss`
+  - the annual Python branch still does not carry explicit parity / children-at-home states
+- Main read:
+  - this is the first annual full-RE transition that uses a structural fertility operator instead of a reduced-form state law
+  - the operator moves prices down materially relative to the no-structural RE path:
+    - benchmark `q` gap vs no-structural RE is about `-0.026` at `t = 20`
+    - about `-0.115` at `t = 40`
+    - about `-0.365` at `t = 80`
+  - the benchmark structural birth multiplier falls gradually along the path:
+    - about `0.971` at `t = 20`
+    - about `0.925` at `t = 40`
+    - about `0.853` at `t = 80`
+  - implied timing shifts move the right way:
+    - benchmark mean age at first birth is about `30.26` at `t = 20`
+    - about `30.59` at `t = 40`
+    - about `31.09` at `t = 80`
+- Interpretation:
+  - this is now structural-fertility-implied RE rather than reduced-form fertility RE
+  - but it is still an operator bridge rather than a literal parity-state recursion inside the Python annual branch
 
-### Session: 2026-02-23 (markdown-first restructure)
-- Updated project governance for markdown-first drafting in notes.
-- Added canonical notes files:
-  - `notes/README.md`
-  - `notes/04_empirical_notes.md`
-  - `notes/02_literature_and_synthesis.md`
-  - `notes/03_model_notes.md`
-- Updated `README.md` and `STATUS.md` to point active work into Markdown notes.
-- Clarified exception: shared Dropbox export workflow in `exports/` should keep PDF deliverables where expected by collaborators.
+---
 
-### Session: 2026-02-23 (single canonical status tracker)
-- Added canonical tracker: `STATUS.md`
-- Set rule that "where are we" and to-do updates should be made in `STATUS.md` first.
+### Session: 2026-04-08 (recursive support-state full RE added to stationary annual branch)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_support_state.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_support_state_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_support_state_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_support_state_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_support_state_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_support_state_T80_fixed_target_paths.csv`
+- Object:
+  - stationary annual full-RE housing block
+  - recursive support state scales deposit help and qualification support between baseline and the target support regime
+  - the same support state also lowers effective local restrictiveness `theta`
+  - fertility remains a reduced-form endogenous state on the demand side
+- Main read:
+  - this is closer to a full recursive policy RE object than the earlier theta-only easing-state run because the forecasted state now changes the household transition object itself
+  - the support state does turn on meaningfully, but only gradually:
+    - in the benchmark case it is about `0.025` at `t = 20`
+    - about `0.199` at `t = 40`
+    - about `0.412` at `t = 80`
+  - the recursive-support path stays materially different from the fixed-support benchmark in the main transition window:
+    - benchmark `q` gap vs fixed-support RE is about `+0.054` at `t = 20`
+    - about `+0.075` at `t = 40`
+    - and only about `-0.018` by `t = 80`
+  - interpretation:
+    - this is probably the closest current object to the user's "full RE" request in the annual branch
+    - but it is still economically distinct from the always-on fixed-support benchmark, so it reads more like a recursive-policy alternative than a replacement for the benchmark object
 
-### Session: 2026-02-19 (model sketch with endogenous fertility)
-- Updated utility-literature note to include partner formation modeling choice and leave-home calibration notes.
-- Recompiled utility note PDF and fertility-extension equations note.
-- New note documented equilibrium fixed-point and convergence issues when generation size is endogenous.
+---
 
-### Session: 2026-02-20 (empirical housing-supply and fertility lit review)
-- Added empirical-first literature review note and populated project-03 literature with verified papers.
-- Archived misdownloaded/non-target PDFs under `literature/old/`.
-- Key takeaway: direct fertility evidence was thinner than supply-to-price evidence.
+### Session: 2026-04-08 (joint fertility plus political recursive block added to stationary full RE)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_joint_states.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80_no_state_paths.csv`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80_fertility_only_paths.csv`
+  - `notes/build/annual_full_re_stationary_transition_joint_states_T80_political_only_paths.csv`
+- Object:
+  - stationary annual full-RE housing block
+  - reduced-form endogenous fertility state on the demand side
+  - reduced-form political-easing state on the supply side
+  - both states are now forecast recursively inside the same solve
+- Main read:
+  - the joint path is still mostly fertility-driven through the main transition window:
+    - benchmark `q` gap vs no-state RE is about `+0.055` at `t = 20`
+    - and is basically identical to the fertility-only path through `t = 20`
+  - but fertility now does pull the political state forward:
+    - benchmark political state is about `0.002` at `t = 20`
+    - about `0.090` at `t = 40`
+    - versus about `0.054` at `t = 40` in the political-only run
+  - by `t = 80`, the joint object sits below fertility-only but above political-only:
+    - benchmark `q` gap vs fertility-only RE is about `-0.083`
+    - benchmark `q` gap vs political-only RE is about `+0.021`
+  - interpretation:
+    - the two-state recursive block now exists and works
+    - but it still looks more like an appendix-strength recursive mechanism object than a new short-window headline result
 
-### Session: 2026-02-20 (model experiment + empirical idea prioritization)
-- Added integrated note covering computational trial, ranked empirical agenda, and expanded designs.
-- Implemented and ran prototype code:
-  - `code/fertility_extension_experiment.py`
-- Generated model experiment outputs in `_playground/backups/2026-02-25_notes_flattening/03_fertility_and_housing_supply/Notes_build/`.
-- Established export sync workflow to shared collaboration folder.
+---
+
+### Session: 2026-04-08 (forecasted political-easing state added to stationary full RE)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_political_state.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_political_state_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_political_state_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_political_state_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_political_state_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_political_state_T80_no_state_paths.csv`
+- Object:
+  - stationary annual full-RE housing block
+  - support regime within each scenario stays fixed
+  - a reduced-form political-easing state is now forecast recursively
+  - that state responds to rising prices and worsening ownership access relative to the observed snapshot
+  - it lowers effective `theta`, so the recursive channel is politics -> permits -> stock -> prices
+- Main read:
+  - this is the first annual full-RE object with a genuinely forecasted supply-side political state rather than an imposed switch path
+  - the recursive political state is late-moving rather than front-loaded:
+    - it is basically zero through `t = 20`
+    - it turns on by `t = 40`
+    - in the benchmark case it reaches about `0.054` at `t = 40` and the cap `0.150` by `t = 80`
+  - the price effect is modest but now visible in the tail:
+    - benchmark `q` gap vs no-political-state full RE is about `-0.001` at `t = 40`
+    - about `-0.071` at `t = 80`
+  - the remaining next step is not another imposed regime experiment
+  - it is to combine the political state with the reduced-form endogenous fertility state inside one recursive annual block
+
+---
+
+### Session: 2026-04-08 (anticipated support-regime path passes inside stationary annual RE)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_regime_path.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80_checkpoints.csv`
+- Object:
+  - baseline support regime for `t < 5`
+  - benchmark support regime for `t >= 5`
+  - agents internalize the full regime path in the RE price solve
+- Main read:
+  - price path is almost identical to the always-benchmark full-RE path
+  - main effect is on ownership composition before the switch arrives:
+    - young mortgaged-owner share is about `0.026` lower at `t = 1`
+    - about `0.038` lower at `t = 5`
+    - gap then closes quickly
+  - interpretation:
+    - the simplest anticipated-regime rung now passes
+    - the next genuine step is a forecasted policy/political state rather than another imposed regime path
+
+---
+
+### Session: 2026-04-08 (reduced-form endogenous fertility added to stationary full RE)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_endogenous_fertility.py`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80_checkpoints.csv`
+- Object:
+  - stationary annual full-RE housing block
+  - fertility is now a reduced-form endogenous state rather than an imposed shock path
+  - fertility responds to prices and ownership access relative to the stationary endpoint
+  - annual demand is multiplied by `1 + fertility_state_t`
+- Law used:
+  - `rho = 0.85`
+  - price coefficient `0.05` on `log(q_ss / q_t)`
+  - young-owner coefficient `0.03`
+  - young-mortgaged-owner coefficient `0.08`
+  - state clipped to `±0.08`
+- Main read:
+  - the endogenous-fertility rung stays tame
+  - prices move visibly above the no-shock full-RE path:
+    - about `+0.009` at `t = 5`
+    - about `+0.053` to `+0.058` at `t = 20`
+  - ownership composition moves only a little:
+    - young mortgaged-owner gaps vs no-shock RE are around `-0.010` to `-0.014` at `t = 20`
+  - next rung should be regime-aware recursive RE, not a direct jump to the full structural fertility block
+
+---
+
+### Session: 2026-04-08 (full RE ladder extended with fertility-demand shock rung)
+- Added:
+  - `code/build_annual_full_re_stationary_transition_fertility_shock.py`
+  - `notes/build/annual_full_re_ladder.md`
+- New outputs:
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80.md`
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80.csv`
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_fixed_points.csv`
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_checkpoints.csv`
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_no_shock_paths.csv`
+- Interpretation:
+  - stationary annual full-RE housing block now admits an exogenous fertility-demand path
+  - this is still RE in prices, not yet endogenous fertility inside the RE loop
+  - future fertility pressure now affects future prices explicitly
+- Main read:
+  - with a temporary `+5%` fertility-demand multiplier at `t = 1` and `rho = 0.90`, prices sit above the no-shock full-RE path by about `+0.021` at `t = 5` and about `+0.028` to `+0.029` at `t = 20`
+  - ownership composition barely moves relative to no-shock full RE
+  - next rung should be a reduced-form endogenous fertility law inside the stationary full-RE block
+
+---
+
+### Session: 2026-04-08 (stationary annual endpoint and full RE annual transition)
+- Added:
+  - `code/build_annual_stationary_equilibrium_permits_starts_stock_calibrated.py`
+  - `code/build_annual_full_re_stationary_transition_calibrated.py`
+- Important fix:
+  - the scripts labelled `calibrated` were previously using class defaults for the construction-flow block
+  - they now load the actual calibrated parameters from the search table:
+    - `start_hazard = 0.65`
+    - `completion_hazard = 0.45`
+    - permit inventory years `= 0.25`
+    - under-construction inventory years `= 0.70`
+- Stationary annual endpoints on the no-drift calibrated block:
+  - baseline:
+    - `q_ss ≈ 1.993`
+    - young mortgaged-owner share `25-34 ≈ 0.224`
+  - benchmark:
+    - `q_ss ≈ 1.974`
+    - young mortgaged-owner share `25-34 ≈ 0.269`
+  - robustness:
+    - `q_ss ≈ 1.961`
+    - young mortgaged-owner share `25-34 ≈ 0.290`
+- Full RE annual transition around that stationary endpoint:
+  - `notes/build/annual_full_re_stationary_transition_calibrated_T80.md`
+  - object:
+    - observed `t = 0` snapshot
+    - no permanent drift
+    - calibrated permits -> starts -> completions -> stock block
+    - full RE price path solved to `T = 80`
+  - early years stay extremely close to the corresponding no-RE no-drift anchor
+  - by `t = 80`, ownership is very close to the stationary endpoint and prices are still converging upward
+
+---
+
+### Session: 2026-04-07 (calibrated construction-flow annual RE hierarchy)
+- Calibrated the annual permits -> starts -> completions -> stock block to Census-style flow targets.
+- Built bounded annual RE on that calibrated block:
+  - `k = 1, 2, 3, 5, 8, 20`
+- Main read:
+  - the earlier annual RE pathology was mostly a thin price-block problem
+  - once the construction-flow block sits between politics and prices, bounded RE is economically tame
+  - longer horizons mostly add a price premium rather than changing ownership composition much
+
+---
+
+## Live annual hierarchy
+
+- Core annual object:
+  - stationary annual endpoint plus full RE no-drift transition
+- Next rung:
+  - exogenous fertility-demand shock inside the stationary full-RE block
+- Older robustness material:
+  - drifting bounded RE at `k = 3/5`
+- Appendix / feasibility only:
+  - drifting `k = 20`
+  - drifting `T = 40`
 
 ## Key files
 
-| Role | Path |
-|---|---|
-| Status tracker | `STATUS.md` |
-| Project overview | `README.md` |
-| Benchmark config | `code/fertility_benchmark_config.m` |
-| Benchmark runner | `code/run_ge_fertility_main.m` |
-| Calibration runner | `code/calibrate_fertility_block_main.m` |
-| Model notes | `notes/03_model_notes.md` |
-| Latest GE benchmark report | `notes/build/fertility_run_ge_report.md` |
-| Latest calibration report | `notes/build/fertility_calibration_report.md` |
-| Upstream source | `../02_nimbyism_and_housing_supply/` |
+- Core stationary RE note:
+  - `notes/build/annual_full_re_stationary_transition_calibrated_T80.md`
+- Fertility-shock rung:
+  - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80.md`
+- Ladder note:
+  - `notes/build/annual_full_re_ladder.md`
+- Annual draft section:
+  - `drafts/sections/annual_transition_extension.tex`
 
+## Next likely move
 
+- Decide whether the recursive support-state object is already enough to stand in for the annual "full RE" narrative or whether the next push should be a richer structural fertility / policy state.
 
+---
 
+### Session: 2026-04-09 (compiled fertility sidecar validation ladder)
+- Continued the separate compiled-sidecar branch under `compiled_sidecar/` without touching the live MATLAB solver.
+- Added portable-toolchain wrappers plus three validation rungs:
+  - aggregate transition truth summary
+  - branch-kernel probe
+  - age-block probe
+- Extended the ladder to a full transition-path probe:
+  - exported full tail/path truth packs from MATLAB
+  - solved the constant tail and backward transition path in compiled C++
+  - matched MATLAB with max value errors around `5e-9`
+  - validated the full backward path on both `smoke` and `medium`
+- Added an input-only export plus timing-only executable for large runs:
+  - `export_transition_input_pack.m`
+  - `run_transition_path_timing.ps1`
+  - `fertility_transition_path_timing.exe`
+- Timing-only compiled references on current hardware/toolchain:
+  - `smoke`: about `1.39s` for `322,560` solved states
+  - `medium`: about `7.67s` for `806,400` solved states
+  - `benchmark`: about `347.77s` for `5,644,800` solved states
+  - benchmark MATLAB input export alone took about `781s`, so future benchmark runs should reuse the exported input pack
+- Refactored the compiled branch math into shared sidecar core files:
+  - `include/fertility_sidecar/branch_kernel.hpp`
+  - `src/branch_kernel.cpp`
+- Refactored the compiled age-block math into shared sidecar core files:
+  - `include/fertility_sidecar/age_block_kernel.hpp`
+  - `src/age_block_kernel.cpp`
+- Current sidecar status:
+  - aggregate summaries match
+  - representative `solve_branch_tp` cases match
+  - representative `solve_age_block_tp` cases match
+  - full `tail_solution` and `path_solution` backward recursions match on `smoke`
+  - full `tail_solution` and `path_solution` backward recursions also match on `medium`
+  - benchmark-scale compiled timing is now measured even without exporting full MATLAB output tensors
+- Natural next compiled target:
+  - decide whether to optimize the current C++ implementation further or move directly to a MEX boundary
+  - if optimizing, profile hottest inner loops and reduce allocation / repeated matrix construction inside age-block solves
 
+---
+
+### Session: 2026-04-10 (compiled fertility OpenMP speed pass)
+- Treated fertility as a speed pass rather than another port, because the compiled transition-path and bounded outer RE layers were already present in `compiled_sidecar/`.
+- Confirmed the same portable LLVM-MinGW toolchain supports OpenMP and enabled it in the sidecar CMake build.
+- Parallelized the hot age-block state solve in `compiled_sidecar/src/age_block_kernel.cpp` across `(home_count, parity, z)` blocks while keeping the backward recursion and branch math unchanged.
+- Revalidated after the speed pass:
+  - `run_age_block_probe.ps1 -Mode smoke` still passes
+  - `run_transition_path_probe.ps1 -Mode medium` still passes
+  - max value differences remain around `5e-9`
+  - policy indices and birth probabilities still match exactly on the probe packs
+- New standalone compiled timing references:
+  - `smoke`: about `0.145s` for `322,560` solved states
+  - `medium`: about `0.697s` for `806,400` solved states
+  - `benchmark`: about `21.17s` for `5,644,800` solved states
+- Relative to the earlier standalone references on this branch, that is about:
+  - `1.39s -> 0.145s` on `smoke`
+  - `7.67s -> 0.697s` on `medium`
+  - `347.77s -> 21.17s` on `benchmark`
+- Also tightened the wrapper workflow:
+  - `run_branch_probe.ps1`
+  - `run_age_block_probe.ps1`
+  - `run_transition_path_probe.ps1`
+  - `run_transition_path_timing.ps1`
+  - `run_transition_re_cli.ps1`
+  now source the portable toolchain themselves, and the probe/timing wrappers now support `-SkipBuild`
+- Practical implication:
+  - the compiled fertility path solver is now cheap enough that further work should focus on outer-RE search design or deeper model questions, not on another language port
+
+---
+
+### Session: 2026-04-13 (proper `T = 11` overnight Bellman RE supervisor is now live)
+- Continued only on the compiled-sidecar Bellman RE horizon ladder in project `03`.
+- The `T = 11` tail-control sequence moved materially:
+  - late-tail packet improved the old `T = 11` frontier from about `0.06503` to about `0.0618274`
+  - narrow suffix ladder improved again to about `0.06173079`
+  - broad suffix ladder found a much better basin at:
+    - best case: `late7_11`
+    - `maxres ~= 0.0400299536`
+- Deep suffix continuation is now live from that `late7_11` seed through:
+  - `code/bellman_re_t11_suffix_ladder_workflow.ps1`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_t11_suffix_ladder_workflow_deep_resume.txt`
+- First deep read:
+  - `late6_11` is slightly worse at about `0.0410654369`
+  - the deeper ladder is still running through the remaining deep cases
+- Workflow plumbing is materially better now:
+  - `code/bellman_re_t11_supervisor_workflow.ps1`
+    - now accepts `BaselineRunDir` and `BaselineLabel`
+    - can chain `narrow -> broad -> deep`
+    - can fall back to a terminal suffix set if deep does not improve
+  - `code/bellman_re_t11_suffix_ladder_workflow.ps1`
+    - heartbeat timing bug fixed by measuring elapsed time from a local case-start timestamp
+    - new `CaseSet` values:
+      - `deep`
+      - `terminal`
+  - new overnight wrapper:
+    - `code/bellman_re_t11_overnight_supervisor_workflow.ps1`
+    - `code/start_bellman_re_t11_overnight_supervisor_workflow.ps1`
+- Proper overnight behavior now:
+  - the overnight wrapper waits for the current deep run to finish
+  - then scans completed `T = 11` run folders, picks the best current frontier automatically, and hands off into the chained supervisor from that seed
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_t11_overnight_supervisor_workflow.txt`
+- Live read:
+  - the Bellman RE horizon ladder is no longer blocked on `T = 11`
+  - the frontier problem is now a disciplined late-tail continuation problem with a real supervisor chain behind it, rather than a one-packet-at-a-time manual workflow
+
+---
+
+### Session: 2026-04-14 (the `T = 11` broad suffix ladder improved materially; deep continuation and overnight handoff are both live)
+- The broad suffix ladder completed cleanly from the improved narrow-seed point:
+  - run:
+    - `notes/build/logs/bellman_re_t11_suffix_ladder_workflow_broad_resume_20260413_195320`
+  - best case:
+    - `late7_11`
+  - best residual:
+    - `maxres ~= 0.0400299536`
+  - key read:
+    - widening the controlled suffix back to period `7` is materially better than the narrower `late9_11` family
+- The deeper suffix ladder is now live from that promoted broad-seed point:
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_t11_suffix_ladder_workflow_deep_resume.txt`
+  - first deep case:
+    - `late6_11`
+    - `maxres ~= 0.0410654369`
+    - slightly worse than the `late7_11` frontier
+  - current live phase when checked:
+    - `late5_11_suffix_anchor`
+- The proper overnight handoff is now live as a parent wrapper:
+  - worker:
+    - `code/bellman_re_t11_overnight_supervisor_workflow.ps1`
+  - launcher:
+    - `code/start_bellman_re_t11_overnight_supervisor_workflow.ps1`
+  - active pointer:
+    - `notes/build/logs/active_bellman_re_t11_overnight_supervisor_workflow.txt`
+  - behavior:
+    - wait for the current deep run to finish
+    - scan completed `T = 11` ladders
+    - pick the best completed frontier automatically
+    - hand off into `code/bellman_re_t11_supervisor_workflow.ps1` from that seed
+- Workflow state:
+  - the Bellman RE push is now set up as a real chained supervisor system for the `T = 11` tail problem rather than a one-packet manual loop
+  - live promoted frontier remains:
+    - `late7_11`
+    - `maxres ~= 0.0400299536`
+
+---
+
+### Session: 2026-04-22 (dormant smoothed political-path trial added to the fertility workflow)
+- User asked whether the smoother political voting-path lesson from project `02` might help project `03`, but explicitly did **not** want any CPU used yet.
+- Built a no-op-by-default smoothing hook into `code/nimby_fertility_transition_bridge.py`:
+  - new parameter:
+    - `theta_path_rho`
+  - default:
+    - `0.0`, so existing behavior is unchanged unless the trial is turned on deliberately
+- Added a dormant bridge-level trial bundle:
+  - builder:
+    - `code/build_nimby_vs_fertility_smoothed_political_path_trial.py`
+  - worker:
+    - `code/annual_smoothed_political_path_trial_workflow.ps1`
+  - launcher:
+    - `code/start_annual_smoothed_political_path_trial_workflow.ps1`
+  - workflow note:
+    - `notes/build/annual_smoothed_political_path_trial_workflow.md`
+- Intended use:
+  - compare the raw bridge `theta_t` path to a smoothed `theta_t` path on the fertility and old-proxy bridge objects
+  - treat this as a diagnostic / bridge trial only
+  - do **not** auto-promote it into the live annual or compiled Bellman RE workflows
+- Important:
+  - this trial was built but **not run**
+  - no local CPU or Hamilton compute was used for it in this session
+
+---
+
+### Session: 2026-04-22 (smoothed political-path trial is now queued on Hamilton at low priority)
+- User then asked to queue the dormant smoothed political-path trial on Hamilton rather than leave it local-only.
+- Added a dedicated Hamilton packet path:
+  - remote runner:
+    - `code/hpc/run_annual_smoothed_political_path_trial.sh`
+  - slurm wrapper:
+    - `code/hpc/annual_smoothed_political_path_trial.slurm`
+  - PTY-backed submitter:
+    - `code/submit_hamilton_annual_smoothed_political_path_trial.ps1`
+  - detached handoff watcher:
+    - `code/hamilton_annual_smoothed_political_path_trial_handoff.ps1`
+    - `code/start_hamilton_annual_smoothed_political_path_trial_handoff.ps1`
+  - workflow note:
+    - `notes/build/annual_smoothed_political_path_trial_hamilton_workflow.md`
+- Submission debugging:
+  - first Hamilton submit failed because the staged `.slurm` / `.sh` files needed line-ending normalization on the remote side before `sbatch`
+  - second submit failed because the slurm wrapper was anchoring off the spool-copy path rather than `SLURM_SUBMIT_DIR`
+  - both issues are now patched
+- Live Hamilton state when last checked:
+  - job id:
+    - `16872174`
+  - state:
+    - `RUNNING`
+  - queue footprint:
+    - low-priority via `sbatch --nice=10000`
+    - `1` CPU
+    - `4G` memory
+    - `2` hour wall time
+  - remote run dir:
+    - `/nobackup/hfnt93/fert_runs/annual_smoothed_political_path_trial_hamilton_20260422_200038`
+  - active handoff pointer:
+    - `notes/build/logs/active_hamilton_annual_smoothed_political_path_trial_handoff.txt`
+- Important:
+  - this trial is still separate from the live annual full-RE branch and the compiled Bellman RE ladder
+  - the computation is on Hamilton, not on local CPU
+  - the job then completed successfully very quickly:
+    - job id:
+      - `16872174`
+    - elapsed:
+      - about `24s`
+    - remote outputs now exist under:
+      - `/nobackup/hfnt93/fert_runs/annual_smoothed_political_path_trial_hamilton_20260422_200038/03_fertility_and_housing_supply/notes/build/`
+  - remote read from the note:
+    - smoothing `theta_t` with `theta_path_rho = 0.65` does reduce `theta` total variation
+    - but it increases price-path variation and creates large gaps versus the raw bridge path
+    - fertility mode:
+      - theta TV `0.6357 -> 0.5016`
+      - price TV `1.0061 -> 1.0437`
+      - max price gap vs raw `0.2229`
+    - old-proxy mode:
+      - theta TV `0.6456 -> 0.5244`
+      - price TV `0.8737 -> 1.2143`
+      - max price gap vs raw `0.4012`
+  - implication:
+    - this does **not** look like an obvious promotion candidate
+    - it is still best treated as a diagnostic bridge experiment rather than a new live fertility workflow
+  - local sync caveat:
+    - the remote run completed cleanly
+    - but the local handoff sync is still pending because the PTY-based file collection is slower / flakier than the tiny Hamilton job itself

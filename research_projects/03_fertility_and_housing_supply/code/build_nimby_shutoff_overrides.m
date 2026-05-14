@@ -1,0 +1,19 @@
+function overrides = build_nimby_shutoff_overrides(base_overrides)
+overrides = base_overrides;
+overrides.C = 1;
+overrides.P = 1;
+overrides.birth_utility = 0;
+overrides.birth_utility_by_parity = 0;
+overrides.child_utility = 0;
+overrides.birth_cost = 0;
+overrides.birth_price_coeff = 0;
+overrides.lambda_crowd = 0;
+overrides.psi_crowd = 0;
+overrides.p_leave = 0;
+overrides.birth_ages = [];
+overrides.birth_age_weights = [];
+overrides.realized_birth_weights = [];
+overrides.first_birth_realized_weights = [];
+overrides.leave_home_age_bins = [];
+overrides.leave_home_bin_probs = [];
+end

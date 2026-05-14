@@ -5,6 +5,7 @@ if ~exist(out_dir, 'dir')
     mkdir(out_dir);
 end
 
+ensure_external_matlab_data_paths();
 source_file = resolve_irf_file(project_root);
 s = load(source_file, ...
     'averageage', 'boom', 'Pstars_smoothed', 'homeownership_25_35_smoothed', ...
@@ -68,17 +69,11 @@ fclose(fid);
 end
 
 function source_file = resolve_irf_file(project_root)
-candidates = { ...
-    fullfile(fileparts(project_root), '02_nimbyism_and_housing_supply', 'code', 'steadystate', 'Mod_IRF', 'irfs_smoothed.mat'), ...
-    fullfile(getenv('USERPROFILE'), 'Dropbox', 'Zac and David', 'Code', 'SteadyState', 'Mod_IRF', 'irfs_smoothed.mat'), ...
-    fullfile('D:\research_data', 'zac_and_david', 'Code', 'SteadyState', 'Mod_IRF', 'irfs_smoothed.mat')};
-
-for i = 1:numel(candidates)
-    if exist(candidates{i}, 'file')
-        source_file = candidates{i};
-        return;
-    end
+repo_candidate = fullfile(fileparts(project_root), '02_nimbyism_and_housing_supply', 'code', 'steadystate', 'Mod_IRF', 'irfs_smoothed.mat');
+if exist(repo_candidate, 'file')
+    source_file = repo_candidate;
+    return;
 end
 
-error('Could not find upstream NIMBY IRF file. Checked known repo and Dropbox paths.');
+source_file = resolve_zac_david_external_path('Code', 'SteadyState', 'Mod_IRF', 'irfs_smoothed.mat');
 end

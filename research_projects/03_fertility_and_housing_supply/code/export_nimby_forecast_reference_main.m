@@ -5,7 +5,8 @@ if ~exist(out_dir, 'dir')
     mkdir(out_dir);
 end
 
-source_file = 'C:/Users/Dave_/Dropbox/Zac and David/Code/SteadyState/Mod_DynamicForecast/loopoutput_forecast.mat';
+ensure_external_matlab_data_paths();
+source_file = resolve_zac_david_external_path('Code', 'SteadyState', 'Mod_DynamicForecast', 'loopoutput_forecast.mat');
 s = load(source_file, 'Price_Trend', 'forecast_lower', 'forecast_median', 'forecast_upper');
 
 years = (2020:2100)';

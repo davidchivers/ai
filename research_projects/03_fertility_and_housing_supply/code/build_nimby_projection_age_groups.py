@@ -5,10 +5,15 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from resolve_zac_david_paths import resolve_zac_david_path
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "notes" / "build"
-SOURCE = Path(r"C:\Users\Dave_\Dropbox\Zac and David\Graphs\Age Share Median Projections.dta")
+
+
+def projection_source() -> Path:
+    return resolve_zac_david_path("Graphs", "Age Share Median Projections.dta")
 
 
 def set_style() -> None:
@@ -28,7 +33,7 @@ def set_style() -> None:
 
 
 def load_projection_table() -> pd.DataFrame:
-    df = pd.read_stata(SOURCE, convert_categoricals=False)
+    df = pd.read_stata(projection_source(), convert_categoricals=False)
     age_cols = [c for c in df.columns if c.startswith("AGE_")]
 
     keep = df[["Year", *age_cols]].copy()
@@ -56,13 +61,14 @@ def load_projection_table() -> pd.DataFrame:
 
 def write_note(df: pd.DataFrame) -> None:
     latest = df.iloc[-1]
+    source = projection_source()
     lines = [
         "# Upstream age-share projection input",
         "",
         "This file localizes the age-share projection object used for the NIMBY paper's future",
         "demographic path into the project-03 build folder.",
         "",
-        f"- Source: `{SOURCE}`",
+        f"- Source: `{source}`",
         f"- Year range: `{int(df['year'].min())}` to `{int(df['year'].max())}`",
         "- Adult age-group shares reported: `18-39`, `40-59`, `60-79`, `80+`",
         "",

@@ -1,0 +1,36 @@
+\begin{table}[H]
+\caption{Annual branch targets: data moments and screening bands}
+\label{tab:annual_targeted_moments}
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.03}
+\begin{tabularx}{0.98\linewidth}{@{}>{\raggedright\arraybackslash}p{1.25cm}>{\raggedright\arraybackslash}p{3.10cm}>{\raggedright\arraybackslash}p{1.80cm}ccc>{\raggedright\arraybackslash}X@{}}
+\toprule
+Block & Moment & Role & Ref. & Lower & Upper & Source / use \\
+\midrule
+fertility & mean\_age\_first\_birth & primary & 27.484 & 25.000 & 31.000 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & share\_first\_birth\_30\_plus & primary & 0.371 & 0.200 & 0.550 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & childless\_share\_at\_50 & primary & 0.165 & 0.100 & 0.350 & US Census target plus childlessness recalibration sweep Scored directly in the annual fertility screens. \\
+fertility & share\_first\_birth\_25\_29 & primary\_timing\_shape & 0.433 & 0.350 & 0.520 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & share\_first\_birth\_30\_34 & primary\_timing\_shape & 0.381 & 0.300 & 0.460 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & share\_first\_birth\_35\_39 & primary\_timing\_shape & 0.153 & 0.100 & 0.220 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & share\_first\_birth\_40\_44\_plus & primary\_timing\_shape & 0.033 & 0.020 & 0.060 & CDC first-birth state-year pull, pooled 2020-2024 Scored directly in the annual fertility screens. \\
+fertility & us\_total\_fertility\_rate & validation & 1.645 & 1.400 & 1.950 & World Bank US TFR, pooled 2020-2023 Annual fertility validation only. \\
+homeownership & owner\_share\_25\_34 & support\_homeownership & 0.407 & 0.280 & 0.540 & US Census ACS 1-year table B25007, pooled 2019 and 2021-2024 Loose annual support target for owner-share shape. \\
+homeownership & owner\_share\_35\_44 & support\_homeownership & 0.605 & 0.480 & 0.720 & US Census ACS 1-year table B25007, pooled 2019 and 2021-2024 Loose annual support target for owner-share shape. \\
+homeownership & owner\_share\_45\_54 & support\_homeownership & 0.696 & 0.580 & 0.800 & US Census ACS 1-year table B25007, pooled 2019 and 2021-2024 Loose annual support target for owner-share shape. \\
+homeownership & owner\_share\_55\_64 & validation\_homeownership & 0.753 & 0.640 & 0.840 & US Census ACS 1-year table B25007, pooled 2019 and 2021-2024 Validation only; not part of the main annual pass rule. \\
+homeownership & owner\_share\_65\_74 & validation\_homeownership & 0.792 & 0.700 & 0.870 & US Census ACS 1-year table B25007, pooled 2019 and 2021-2024 Validation only; not part of the main annual pass rule. \\
+wealth & median\_transaction\_accounts\_to\_income\_under\_35 & support\_liquidity & 0.073 & 0.053 & 0.103 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Young liquid-buffer support target for entrant-type shares. \\
+wealth & median\_transaction\_accounts\_to\_income\_35\_44 & support\_liquidity & 0.070 & 0.049 & 0.100 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Family-years liquid-buffer support target for entrant-type shares. \\
+wealth & median\_net\_worth\_to\_income\_under\_35 & support\_wealth & 0.401 & 0.231 & 0.742 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Young balance-sheet support target; use for shape, not knife-edge levels. \\
+wealth & median\_net\_worth\_to\_income\_35\_44 & support\_wealth & 1.238 & 0.771 & 1.799 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Family-years balance-sheet support target; use for shape, not knife-edge levels. \\
+wealth & median\_net\_worth\_to\_income\_45\_54 & validation\_wealth & 2.204 & 1.509 & 3.088 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Midlife validation target after young-entry fit is fixed. \\
+wealth & median\_net\_worth\_to\_income\_55\_64 & validation\_wealth & 3.631 & 2.620 & 5.099 & Federal Reserve SCF age table, pooled 2016, 2019, 2022 Older-age validation target only; do not force early-life fit through this object. \\
+\bottomrule
+\end{tabularx}
+\begin{minipage}{0.94\textwidth}\vspace{4pt}\scriptsize
+\textit{Notes.} Fertility targets are the primary annual calibration moments. ACS homeownership bins are loose support targets. SCF wealth targets are age-profile support and validation objects intended to discipline entrant balance-sheet heterogeneity rather than literal dollar matching in the normalized model.
+\end{minipage}
+\end{table}

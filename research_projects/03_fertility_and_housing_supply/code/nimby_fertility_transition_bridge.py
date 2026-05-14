@@ -19,6 +19,7 @@ class BridgeParams:
     theta_old: float = 0.90
     theta_young: float = 0.15
     theta_boom_nimby: float = 4.00
+    theta_path_rho: float = 0.0
     nimby_lag: int = 18
     nimby_window: int = 10
     eps0: float = 0.90
@@ -36,6 +37,12 @@ class BridgeParams:
     psi_crowd: float = 0.60
     projection_fertile_mid_weight: float = 0.25
     projection_age_midpoints: tuple[float, ...] = (32.0, 49.5, 69.5, 80.0)
+    f_child_housing_burden_weight: float = 0.0
+    deposit_help_weight: float = 0.0
+    deposit_help_horizon: int = 3
+    deposit_help_logit_scale: float = 0.35
+    deposit_help_burden_relief_scale: float = 0.08
+    deposit_help_age_exposure: tuple[float, ...] = (0.00, 1.00, 0.85, 0.25, 0.05, 0.00, 0.00, 0.00)
 
 
 def default_mass_vector() -> np.ndarray:
@@ -43,26 +50,114 @@ def default_mass_vector() -> np.ndarray:
     return vec / vec.sum()
 
 
+def normalize_mass_vector(vec: np.ndarray) -> np.ndarray:
+    out = np.asarray(vec, dtype=float).reshape(-1)
+    total = float(out.sum())
+    if out.ndim != 1:
+        raise ValueError("Mass vector must be one-dimensional.")
+    if total <= 0.0:
+        raise ValueError("Mass vector must have positive total mass.")
+    return out / total
+
+
 def _clip_exp_arg(value: float) -> float:
     return float(np.clip(value, -20.0, 20.0))
 
 
-def age_homeownership_proxy(params: BridgeParams, age: float, price_gap: float) -> float:
+def _theta_target(
+    params: BridgeParams,
+    young_share: float,
+    old_share: float,
+    nimby_entrants: float = 0.0,
+) -> float:
+    return float(
+        params.theta0
+        + params.theta_old * old_share
+        - params.theta_young * young_share
+        + params.theta_boom_nimby * nimby_entrants
+    )
+
+
+def _theta_from_target(params: BridgeParams, theta_raw: float, prev_theta: float | None = None) -> float:
+    theta_target = float(np.clip(theta_raw, 0.0, 0.95))
+    rho = float(np.clip(params.theta_path_rho, 0.0, 0.999999))
+    if prev_theta is None or rho <= 0.0:
+        return theta_target
+    return float(np.clip(rho * prev_theta + (1.0 - rho) * theta_target, 0.0, 0.95))
+
+
+def _theta_from_shares(
+    params: BridgeParams,
+    young_share: float,
+    old_share: float,
+    nimby_entrants: float = 0.0,
+    prev_theta: float | None = None,
+) -> tuple[float, float]:
+    theta_raw = _theta_target(params, young_share, old_share, nimby_entrants)
+    return theta_raw, _theta_from_target(params, theta_raw, prev_theta=prev_theta)
+
+
+def age_homeownership_proxy(
+    params: BridgeParams,
+    age: float,
+    price_gap: float,
+    logit_shift: float = 0.0,
+) -> float:
     age_grid = np.asarray(params.age_grid, dtype=float)
     if age < age_grid[0] or age > age_grid[-1]:
         return np.nan
     base_level = float(np.interp(age, age_grid, np.asarray(params.homeownership_base, dtype=float)))
     price_beta = float(np.interp(age, age_grid, np.asarray(params.homeownership_price_beta, dtype=float)))
     base_logit = np.log(base_level / (1.0 - base_level))
-    return float(1.0 / (1.0 + np.exp(-(base_logit - price_beta * price_gap))))
+    return float(1.0 / (1.0 + np.exp(-(base_logit - price_beta * price_gap + logit_shift))))
 
 
-def age_housing_burden_proxy(params: BridgeParams, age: float, price_gap: float, n_home: float) -> float:
+def age_housing_burden_proxy(
+    params: BridgeParams,
+    age: float,
+    price_gap: float,
+    n_home: float,
+    relief: float = 0.0,
+) -> float:
     age_grid = np.asarray(params.age_grid, dtype=float)
     if age < age_grid[0] or age > age_grid[-1]:
         return np.nan
     family_exposure = float(np.interp(age, age_grid, np.asarray(params.family_age_exposure, dtype=float)))
-    return float(np.exp(price_gap) * (1.0 + params.lambda_crowd * family_exposure * n_home) ** params.psi_crowd)
+    burden = float(np.exp(price_gap) * (1.0 + params.lambda_crowd * family_exposure * n_home) ** params.psi_crowd)
+    return float(max(1.0e-6, burden * (1.0 - relief)))
+
+
+def _deposit_help_time_scale(params: BridgeParams, t: int) -> float:
+    if params.deposit_help_weight <= 0.0 or params.deposit_help_horizon <= 0:
+        return 0.0
+    if t < 0 or t >= params.deposit_help_horizon:
+        return 0.0
+    return float((params.deposit_help_horizon - t) / params.deposit_help_horizon)
+
+
+def _deposit_help_age_exposure(params: BridgeParams, age: float) -> float:
+    age_grid = np.asarray(params.age_grid, dtype=float)
+    if age < age_grid[0] or age > age_grid[-1]:
+        return 0.0
+    return float(np.interp(age, age_grid, np.asarray(params.deposit_help_age_exposure, dtype=float)))
+
+
+def _deposit_help_logit_shift(params: BridgeParams, t: int, age: float) -> float:
+    return float(
+        params.deposit_help_weight
+        * params.deposit_help_logit_scale
+        * _deposit_help_time_scale(params, t)
+        * _deposit_help_age_exposure(params, age)
+    )
+
+
+def _deposit_help_burden_relief(params: BridgeParams, t: int, age: float) -> float:
+    return float(
+        params.deposit_help_weight
+        * params.deposit_help_burden_relief_scale
+        * _deposit_help_time_scale(params, t)
+        * _deposit_help_age_exposure(params, age)
+    )
 
 
 def _weighted_mean(weights: np.ndarray, values: np.ndarray) -> float:
@@ -93,19 +188,49 @@ def attach_transition_proxies(
     young_proxy = []
     old_proxy = []
     aggregate_proxy = []
+    young_burden = []
+    old_burden = []
+    aggregate_burden = []
 
     for t in range(len(out)):
         age_ownership = np.array(
-            [age_homeownership_proxy(params, float(age_grid[j]), float(price_gap[t])) for j in range(params.J)],
+            [
+                age_homeownership_proxy(
+                    params,
+                    float(age_grid[j]),
+                    float(price_gap[t]),
+                    logit_shift=_deposit_help_logit_shift(params, t, float(age_grid[j])),
+                )
+                for j in range(params.J)
+            ],
+            dtype=float,
+        )
+        age_burden = np.array(
+            [
+                age_housing_burden_proxy(
+                    params,
+                    float(age_grid[j]),
+                    float(price_gap[t]),
+                    float(out["n_home"].iloc[t]),
+                    relief=_deposit_help_burden_relief(params, t, float(age_grid[j])),
+                )
+                for j in range(params.J)
+            ],
             dtype=float,
         )
         young_proxy.append(_weighted_mean(age_shares[t, young_idx], age_ownership[young_idx]))
         old_proxy.append(_weighted_mean(age_shares[t, old_idx], age_ownership[old_idx]))
         aggregate_proxy.append(_weighted_mean(age_shares[t, :], age_ownership))
+        young_burden.append(_weighted_mean(age_shares[t, young_idx], age_burden[young_idx]))
+        old_burden.append(_weighted_mean(age_shares[t, old_idx], age_burden[old_idx]))
+        aggregate_burden.append(_weighted_mean(age_shares[t, :], age_burden))
 
     out["young_homeownership_proxy"] = young_proxy
     out["old_homeownership_proxy"] = old_proxy
     out["aggregate_homeownership_proxy"] = aggregate_proxy
+    out["young_housing_burden_proxy"] = young_burden
+    out["old_housing_burden_proxy"] = old_burden
+    out["aggregate_housing_burden_proxy"] = aggregate_burden
 
     for j, age in enumerate(age_grid):
         out[f"age_share_{int(age)}"] = age_shares[:, j]
@@ -139,12 +264,16 @@ def simulate_baby_boom(
     boom_amp: float = 0.10,
     boom_start: int = 0,
     boom_end: int = 9,
+    initial_mass: np.ndarray | None = None,
 ) -> pd.DataFrame:
     if mode not in {"fertility", "old_proxy"}:
         raise ValueError(f"Unsupported mode: {mode}")
 
     mass = np.zeros((params.T + 1, params.J), dtype=float)
-    mass[0, :] = default_mass_vector()
+    if initial_mass is None:
+        mass[0, :] = default_mass_vector()
+    else:
+        mass[0, :] = normalize_mass_vector(initial_mass)
 
     prices = np.zeros(params.T + 1, dtype=float)
     births = np.zeros(params.T, dtype=float)
@@ -186,13 +315,13 @@ def simulate_baby_boom(
 
         nimby_window = nimby_birth_hist[params.nimby_lag : params.nimby_lag + params.nimby_window]
         nimby_entrants = float(nimby_window.mean())
-        theta_raw = (
-            params.theta0
-            + params.theta_old * old[t]
-            - params.theta_young * young[t]
-            + params.theta_boom_nimby * nimby_entrants
+        _, theta[t] = _theta_from_shares(
+            params,
+            young[t],
+            old[t],
+            nimby_entrants=nimby_entrants,
+            prev_theta=float(theta[t - 1]) if t > 0 else None,
         )
-        theta[t] = float(np.clip(theta_raw, 0.0, 0.95))
 
         demand = params.d0 + params.d_young * young[t]
         if mode == "fertility":
@@ -225,6 +354,187 @@ def simulate_baby_boom(
         }
     )
     return attach_transition_proxies(df, age_shares, params, boom_start=boom_start, boom_end=boom_end)
+
+
+def simulate_constant_price_relaxation(
+    params: BridgeParams,
+    fixed_price: float = 0.0,
+    mode: str = "fertility",
+    initial_mass: np.ndarray | None = None,
+) -> pd.DataFrame:
+    if mode not in {"fertility", "old_proxy"}:
+        raise ValueError(f"Unsupported mode: {mode}")
+
+    mass = np.zeros((params.T + 1, params.J), dtype=float)
+    if initial_mass is None:
+        mass[0, :] = default_mass_vector()
+    else:
+        mass[0, :] = normalize_mass_vector(initial_mass)
+
+    prices = np.full(params.T + 1, float(fixed_price), dtype=float)
+    births = np.zeros(params.T, dtype=float)
+    fertility = np.zeros(params.T, dtype=float)
+    theta = np.zeros(params.T, dtype=float)
+    young = np.zeros(params.T, dtype=float)
+    old = np.zeros(params.T, dtype=float)
+    average_age = np.zeros(params.T, dtype=float)
+    n_home = np.zeros(params.T, dtype=float)
+    age_shares = np.zeros((params.T, params.J), dtype=float)
+    lagged_births = np.zeros(params.leave_home_lag + 1, dtype=float)
+    nimby_birth_hist = np.zeros(params.nimby_lag + params.nimby_window, dtype=float)
+
+    fertile0 = max(float(mass[0, list(params.fertile_idx)].sum()), 1e-9)
+    fixed_births = params.f_level * fertile0
+    surv = np.asarray(params.surv, dtype=float)
+    age_grid = np.asarray(params.age_grid, dtype=float)
+
+    for t in range(params.T):
+        current_mass = mass[t, :]
+        young[t] = float(current_mass[0] + current_mass[1])
+        old[t] = float(current_mass[5] + current_mass[6] + current_mass[7])
+        average_age[t] = float(np.dot(current_mass, age_grid))
+        age_shares[t, :] = current_mass
+
+        fertile_mass = max(float(current_mass[list(params.fertile_idx)].sum()), 1e-9)
+        n_home_proxy = float(lagged_births[:-1].sum())
+        n_home[t] = n_home_proxy
+
+        if mode == "fertility":
+            crowding_term = params.f_child_housing_burden_weight * np.log1p(params.lambda_crowd * n_home_proxy)
+            f_arg = _clip_exp_arg(-params.f_price_semi_elasticity * fixed_price - crowding_term)
+            desired_f = float(np.clip(params.f_level * np.exp(f_arg), 0.05, 0.85))
+            births[t] = desired_f * fertile_mass
+        else:
+            births[t] = fixed_births
+        fertility[t] = births[t] / fertile_mass
+
+        nimby_window = nimby_birth_hist[params.nimby_lag : params.nimby_lag + params.nimby_window]
+        nimby_entrants = float(nimby_window.mean())
+        _, theta[t] = _theta_from_shares(
+            params,
+            young[t],
+            old[t],
+            nimby_entrants=nimby_entrants,
+            prev_theta=float(theta[t - 1]) if t > 0 else None,
+        )
+
+        mass[t + 1, 0] = births[t]
+        for j in range(1, params.J):
+            mass[t + 1, j] = surv[j - 1] * current_mass[j - 1]
+        row_sum = float(mass[t + 1, :].sum())
+        if row_sum > 0.0:
+            mass[t + 1, :] /= row_sum
+
+        lagged_births = np.concatenate(([births[t]], lagged_births[:-1]))
+        nimby_birth_hist = np.concatenate(([births[t]], nimby_birth_hist[:-1]))
+
+    df = pd.DataFrame(
+        {
+            "t": np.arange(params.T, dtype=int),
+            "price": prices[:-1],
+            "births": births,
+            "fertility_rate": fertility,
+            "young_share": young,
+            "old_share": old,
+            "theta": theta,
+            "average_age": average_age,
+            "n_home": n_home,
+        }
+    )
+    return attach_transition_proxies(df, age_shares, params, boom_start=0, boom_end=0)
+
+
+def simulate_exogenous_price_path_relaxation(
+    params: BridgeParams,
+    price_path: np.ndarray,
+    mode: str = "fertility",
+    initial_mass: np.ndarray | None = None,
+) -> pd.DataFrame:
+    if mode not in {"fertility", "old_proxy"}:
+        raise ValueError(f"Unsupported mode: {mode}")
+
+    prices = np.asarray(price_path, dtype=float).reshape(-1)
+    if prices.size == params.T:
+        prices = np.concatenate([prices, [prices[-1]]])
+    if prices.size != params.T + 1:
+        raise ValueError(f"Price path must have length {params.T} or {params.T + 1}.")
+
+    mass = np.zeros((params.T + 1, params.J), dtype=float)
+    if initial_mass is None:
+        mass[0, :] = default_mass_vector()
+    else:
+        mass[0, :] = normalize_mass_vector(initial_mass)
+
+    births = np.zeros(params.T, dtype=float)
+    fertility = np.zeros(params.T, dtype=float)
+    theta = np.zeros(params.T, dtype=float)
+    young = np.zeros(params.T, dtype=float)
+    old = np.zeros(params.T, dtype=float)
+    average_age = np.zeros(params.T, dtype=float)
+    n_home = np.zeros(params.T, dtype=float)
+    age_shares = np.zeros((params.T, params.J), dtype=float)
+    lagged_births = np.zeros(params.leave_home_lag + 1, dtype=float)
+    nimby_birth_hist = np.zeros(params.nimby_lag + params.nimby_window, dtype=float)
+
+    fertile0 = max(float(mass[0, list(params.fertile_idx)].sum()), 1e-9)
+    fixed_births = params.f_level * fertile0
+    surv = np.asarray(params.surv, dtype=float)
+    age_grid = np.asarray(params.age_grid, dtype=float)
+
+    for t in range(params.T):
+        current_mass = mass[t, :]
+        young[t] = float(current_mass[0] + current_mass[1])
+        old[t] = float(current_mass[5] + current_mass[6] + current_mass[7])
+        average_age[t] = float(np.dot(current_mass, age_grid))
+        age_shares[t, :] = current_mass
+
+        fertile_mass = max(float(current_mass[list(params.fertile_idx)].sum()), 1e-9)
+        n_home_proxy = float(lagged_births[:-1].sum())
+        n_home[t] = n_home_proxy
+
+        if mode == "fertility":
+            crowding_term = params.f_child_housing_burden_weight * np.log1p(params.lambda_crowd * n_home_proxy)
+            f_arg = _clip_exp_arg(-params.f_price_semi_elasticity * prices[t] - crowding_term)
+            desired_f = float(np.clip(params.f_level * np.exp(f_arg), 0.05, 0.85))
+            births[t] = desired_f * fertile_mass
+        else:
+            births[t] = fixed_births
+        fertility[t] = births[t] / fertile_mass
+
+        nimby_window = nimby_birth_hist[params.nimby_lag : params.nimby_lag + params.nimby_window]
+        nimby_entrants = float(nimby_window.mean())
+        _, theta[t] = _theta_from_shares(
+            params,
+            young[t],
+            old[t],
+            nimby_entrants=nimby_entrants,
+            prev_theta=float(theta[t - 1]) if t > 0 else None,
+        )
+
+        mass[t + 1, 0] = births[t]
+        for j in range(1, params.J):
+            mass[t + 1, j] = surv[j - 1] * current_mass[j - 1]
+        row_sum = float(mass[t + 1, :].sum())
+        if row_sum > 0.0:
+            mass[t + 1, :] /= row_sum
+
+        lagged_births = np.concatenate(([births[t]], lagged_births[:-1]))
+        nimby_birth_hist = np.concatenate(([births[t]], nimby_birth_hist[:-1]))
+
+    df = pd.DataFrame(
+        {
+            "t": np.arange(params.T, dtype=int),
+            "price": prices[:-1],
+            "births": births,
+            "fertility_rate": fertility,
+            "young_share": young,
+            "old_share": old,
+            "theta": theta,
+            "average_age": average_age,
+            "n_home": n_home,
+        }
+    )
+    return attach_transition_proxies(df, age_shares, params, boom_start=0, boom_end=0)
 
 
 def simulate_persistent_nimby_shock_transition(
@@ -280,13 +590,13 @@ def simulate_persistent_nimby_shock_transition(
         nimby_entrants_base = float(
             nimby_birth_hist_base[base_params.nimby_lag : base_params.nimby_lag + base_params.nimby_window].mean()
         )
-        theta_raw_base = (
-            base_params.theta0
-            + base_params.theta_old * old_base[t]
-            - base_params.theta_young * young_base[t]
-            + base_params.theta_boom_nimby * nimby_entrants_base
+        _, theta_base[t] = _theta_from_shares(
+            base_params,
+            young_base[t],
+            old_base[t],
+            nimby_entrants=nimby_entrants_base,
+            prev_theta=float(theta_base[t - 1]) if t > 0 else None,
         )
-        theta_base[t] = float(np.clip(theta_raw_base, 0.0, 0.95))
         demand_base = (
             base_params.d0
             + base_params.d_young * young_base[t]
@@ -320,13 +630,13 @@ def simulate_persistent_nimby_shock_transition(
         nimby_entrants_shock = float(
             nimby_birth_hist_shock[params_t.nimby_lag : params_t.nimby_lag + params_t.nimby_window].mean()
         )
-        theta_raw_shock = (
-            params_t.theta0
-            + params_t.theta_old * old_shock[t]
-            - params_t.theta_young * young_shock[t]
-            + params_t.theta_boom_nimby * nimby_entrants_shock
+        _, theta_shock[t] = _theta_from_shares(
+            params_t,
+            young_shock[t],
+            old_shock[t],
+            nimby_entrants=nimby_entrants_shock,
+            prev_theta=float(theta_shock[t - 1]) if t > 0 else None,
         )
-        theta_shock[t] = float(np.clip(theta_raw_shock, 0.0, 0.95))
         demand_shock = (
             params_t.d0
             + params_t.d_young * young_shock[t]
@@ -408,9 +718,9 @@ def _projection_excess(
     n_home_proxy: float,
     params: BridgeParams,
     mode: str,
+    prev_theta: float | None = None,
 ) -> tuple[float, float, float, float]:
-    theta_raw = params.theta0 + params.theta_old * old_share - params.theta_young * young_share
-    theta = float(np.clip(theta_raw, 0.0, 0.95))
+    _, theta = _theta_from_shares(params, young_share, old_share, prev_theta=prev_theta)
 
     if mode == "fertility":
         f_arg = _clip_exp_arg(-params.f_price_semi_elasticity * price)
@@ -435,11 +745,16 @@ def _solve_projection_price(
     n_home_proxy: float,
     params: BridgeParams,
     mode: str,
+    prev_theta: float | None = None,
 ) -> tuple[float, float, float, float]:
     lo = -6.0
     hi = 6.0
-    f_lo, _, _, _ = _projection_excess(lo, young_share, old_share, fertile_mass, n_home_proxy, params, mode)
-    f_hi, _, _, _ = _projection_excess(hi, young_share, old_share, fertile_mass, n_home_proxy, params, mode)
+    f_lo, _, _, _ = _projection_excess(
+        lo, young_share, old_share, fertile_mass, n_home_proxy, params, mode, prev_theta=prev_theta
+    )
+    f_hi, _, _, _ = _projection_excess(
+        hi, young_share, old_share, fertile_mass, n_home_proxy, params, mode, prev_theta=prev_theta
+    )
 
     if np.sign(f_lo) == np.sign(f_hi):
         grid = np.linspace(lo, hi, 241)
@@ -449,7 +764,16 @@ def _solve_projection_price(
         best_fert = 0.0
         best_theta = 0.0
         for price in grid:
-            gap, births, fert, theta = _projection_excess(price, young_share, old_share, fertile_mass, n_home_proxy, params, mode)
+            gap, births, fert, theta = _projection_excess(
+                price,
+                young_share,
+                old_share,
+                fertile_mass,
+                n_home_proxy,
+                params,
+                mode,
+                prev_theta=prev_theta,
+            )
             if abs(gap) < best_gap:
                 best_gap = abs(gap)
                 best_price = float(price)
@@ -461,7 +785,7 @@ def _solve_projection_price(
     for _ in range(80):
         mid = 0.5 * (lo + hi)
         f_mid, births_mid, fert_mid, theta_mid = _projection_excess(
-            mid, young_share, old_share, fertile_mass, n_home_proxy, params, mode
+            mid, young_share, old_share, fertile_mass, n_home_proxy, params, mode, prev_theta=prev_theta
         )
         if abs(f_mid) < 1e-10 or (hi - lo) < 1e-8:
             return float(mid), births_mid, fert_mid, theta_mid
@@ -473,7 +797,9 @@ def _solve_projection_price(
             f_hi = f_mid
 
     mid = 0.5 * (lo + hi)
-    _, births_mid, fert_mid, theta_mid = _projection_excess(mid, young_share, old_share, fertile_mass, n_home_proxy, params, mode)
+    _, births_mid, fert_mid, theta_mid = _projection_excess(
+        mid, young_share, old_share, fertile_mass, n_home_proxy, params, mode, prev_theta=prev_theta
+    )
     return float(mid), births_mid, fert_mid, theta_mid
 
 
@@ -520,7 +846,13 @@ def simulate_projection_bridge(
             n_home_proxy = float(lagged_births[:-1].sum())
 
             prices[t], births[t], fertility[t], theta[t] = _solve_projection_price(
-                young_share, old_share, fertile_mass, n_home_proxy, params, mode
+                young_share,
+                old_share,
+                fertile_mass,
+                n_home_proxy,
+                params,
+                mode,
+                prev_theta=float(theta[t - 1]) if t > 0 else None,
             )
 
             price_gap = float(prices[t] - prices[0]) if t > 0 else 0.0
@@ -631,8 +963,12 @@ def simulate_projection_nimby_shock(
                 else:
                     raise ValueError(f"Unsupported projection mode: {mode}")
 
-                theta_raw = params_t.theta0 + params_t.theta_old * old_share - params_t.theta_young * young_share
-                theta[t] = float(np.clip(theta_raw, 0.0, 0.95))
+                _, theta[t] = _theta_from_shares(
+                    params_t,
+                    young_share,
+                    old_share,
+                    prev_theta=float(theta[t - 1]) if t > 0 else None,
+                )
                 supply = params_t.s0 + params_t.eps0 * (1.0 - theta[t]) * np.exp(_clip_exp_arg(-prices[t - 1]))
                 desired_price = prices[t - 1] + params_t.price_gain * (demand - supply)
                 prices[t] = float(np.clip((1.0 - damping) * prices[t - 1] + damping * desired_price, -6.0, 6.0))

@@ -1,6 +1,6 @@
 # 03 model notes
 
-Last updated: 2026-03-20
+Last updated: 2026-03-22
 
 ## Current implemented household benchmark
 
@@ -83,21 +83,43 @@ and debt outputs exactly.
 The active benchmark is centralized in `code/fertility_benchmark_config.m`:
 
 - solver grid: `I = 60`, `J = 14`
-- `birth_utility_by_parity = [0.85, 1.10, 1.20]`
+- `birth_utility_by_parity = [1.05, 1.15, 0.95]`
 - `child_utility = 0.02`
 - `birth_cost = 0.06`
 - `birth_price_coeff = 0.24`
 - `lambda_crowd = 0.18`
+- `birth_age_weights = [0.438, 0.381, 0.152, 0.029]`
+- `first_birth_realized_weights = [1.00, 0.55, 0.22, 0.06]`
 
-Current benchmark readout from `notes/build/fertility_run_ge_report.md`:
+The key March 22 change is that the old equal-weight timing block is gone. The household solver
+now applies age-specific realized-birth shifters to parity-zero births, calibrated to the pooled
+recent U.S. CDC WONDER first-birth distribution for ages `25+`. Later-parity births continue to
+use unit realized weights, so the model fixes the first-birth hazard problem without imposing an
+equally steep age penalty on all higher-parity births.
 
-- the corrected recalibration sweep confirmed that current defaults and candidate `1` are the
-  same benchmark object
-- birth rates fall from `0.655463` at `a_price = 1.5` to `0.197750` at `3.0`
-- completed-fertility shares at age `50` remain
-  `[0.223716, 0.255603, 0.292729, 0.227952]`
-- one vote sign change on the supplied market-clearing grid
-- refined equilibrium price `a_price = 1.751853`
+Current timing readout from `notes/build/fertility_first_birth_timing.md`:
+
+- target first-birth shares at ages `25, 30, 35, 40`: `[0.438, 0.381, 0.152, 0.029]`
+- model shares at benchmark `a_price = 2.00`: `[0.498, 0.312, 0.143, 0.047]`
+- moving from `a_price = 1.50` to `3.00`, mean age at first birth now rises from `27.57` to
+  `30.95`
+- over the same range, the share of first births at age `30+` rises from `0.370` to `0.709`
+- the average first-birth rate falls from `0.233` to `0.134`
+
+The old completed-fertility benchmark note in `notes/build/fertility_run_ge_report.md` is now
+stale on the fertility side because the market-clearing wrapper has not yet been rerun cleanly
+after the timing fix. A refreshed narrow benchmark solve now shows the vote switching sign between
+`a_price = 1.824` and `1.825`, so the political crossing has shifted upward from the old
+equal-weight benchmark and is now best reported as a local bracket rather than as a stale exact
+point from the pre-fix run.
+
+Current benchmark readout from direct solves:
+
+- at benchmark `a_price = 2.00`, age-50 completed-fertility shares are
+  `[0.3728, 0.0937, 0.4123, 0.1212]`
+- the timing-focused calibration improves the first-birth hazard materially relative to the old
+  equal-weight block, but it does not yet jointly recover the old completed-fertility target
+  `[0.165, 0.193, 0.357, 0.285]`
 
 ### Numerical-resolution note
 
@@ -105,6 +127,51 @@ The benchmark was promoted at `I = 60`, `J = 14` because the coarser `I = 50`, `
 created vote wiggles on the market-clearing grid. The finer household grid removes that spurious
 extra sign change for the promoted candidate and is therefore the correct resolution for the
 current corrected-code benchmark.
+
+### Internal note for draft boundary
+
+The live 5-year benchmark read and the annual rebaseline status are important project-state facts,
+but they are not themselves paper text.
+
+- Keep the current branch split documented in internal notes:
+  - corrected 5-year benchmark is the working model object
+  - annual branch is a separate rebaseline / extension track until its corrected screen settles
+- Do not paste solver-fix history, queue / Hamilton status, or branch-management language into the
+  paper draft.
+- If the draft needs a benchmark statement, write it as a clean model comparison only, without the
+  internal debugging or workflow context.
+
+### Annual supply-timing interpretation
+
+The annual construction-flow block is now the project's benchmark interpretation object for supply
+timing. The benchmark is not the short Bellman RE diagnostic itself. It is the annual
+`permits -> starts -> completions -> stock -> prices` block calibrated to construction-flow
+moments.
+
+Current benchmark anchors from the calibrated annual block:
+
+- starts / permits target about `0.932`
+- completions / starts target about `0.895`
+- permit-inventory lag target about `0.50` years
+- benchmark calibrated parameters:
+  - `start_hazard = 0.65`
+  - `completion_hazard = 0.45`
+  - `permit_inventory_years = 0.25`
+  - `uc_inventory_years = 0.70`
+
+The new timing-robustness note is:
+
+- `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+
+That note should guide interpretation:
+
+- `benchmark_timing` is the data-disciplined annual supply-response benchmark.
+- `faster_timing` and `slower_timing` are modest robustness cases around that benchmark, not
+  separately identified political-delay estimates.
+- So the paper-facing language should be:
+  - benchmark timing from data first
+  - then a small faster/slower timing menu as robustness
+  - not a claim that one exact construction delay is point-identified.
 
 ## Legacy aggregate prototype notes
 

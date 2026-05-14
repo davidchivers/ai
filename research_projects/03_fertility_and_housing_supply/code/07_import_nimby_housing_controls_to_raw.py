@@ -13,6 +13,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from resolve_zac_david_paths import resolve_zac_david_path
+
 
 HOUSING_COLS = [
     "fips",
@@ -58,8 +60,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--source-dir",
         type=Path,
-        default=Path(r"C:\Users\Dave_\Dropbox\Zac and David\Data"),
-        help="Directory containing legacy NIMBY data files.",
+        default=None,
+        help="Directory containing legacy NIMBY data files (default: auto-detect D: mirror, then Dropbox).",
     )
     return parser.parse_args()
 
@@ -155,7 +157,7 @@ def write_log(path: Path, housing_rows: int, controls_rows: int, year_min: int, 
 def main() -> None:
     args = parse_args()
     project_root = args.project_root.resolve()
-    source_dir = args.source_dir.resolve()
+    source_dir = args.source_dir.resolve() if args.source_dir else resolve_zac_david_path("Data")
 
     source_file = source_dir / "addedpermits.dta"
     if not source_file.exists():

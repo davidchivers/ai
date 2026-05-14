@@ -2,6 +2,6340 @@
 
 ## Snapshot
 
+- Last updated: 2026-04-17 (recovered the completed `T = 16` deep-tail Bellman RE rung, confirmed the Hamilton SSH failure mode, and patched the horizon watcher transport to use the working PTY-backed command path)
+- Added or changed:
+  - `code/build_annual_full_re_stationary_transition_timing_robustness.py`
+  - `code/bellman_re_horizon_autopilot.ps1`
+  - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+  - `code/bellman_re_horizon_update_reporter.py`
+  - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+  - `compiled_sidecar/src/transition_re_kernel.cpp`
+  - `compiled_sidecar/src/transition_re_cli.cpp`
+  - `compiled_sidecar/build/fertility_transition_re_cli.exe`
+  - `compiled_sidecar/run_transition_re_cli.ps1`
+  - `compiled_sidecar/run_transition_re_staged_grid.ps1`
+  - `code/bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - `code/start_bellman_re_branch_corrector_16_hour_workflow.ps1`
+  - `code/bellman_re_branch_continuity_16_hour_workflow.ps1`
+  - `code/start_bellman_re_branch_continuity_16_hour_workflow.ps1`
+  - `code/bellman_re_12_hour_workflow.ps1`
+  - `code/bellman_re_micro_wall_12_hour_workflow.ps1`
+  - `code/bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+  - `code/bellman_re_nano_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_12_hour_workflow.ps1`
+  - `code/start_bellman_re_micro_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+  - `code/start_bellman_re_nano_wall_12_hour_workflow.ps1`
+  - `code/bellman_re_t13_suffix_probe_workflow.ps1`
+  - `code/start_bellman_re_t13_suffix_probe_workflow.ps1`
+  - `code/hamilton_bellman_re_t13_deep_suffix.sh`
+  - `code/submit_hamilton_bellman_re_t13_deep_suffix.ps1`
+  - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+  - `code/bellman_re_horizon_autopilot.ps1`
+  - `code/start_bellman_re_horizon_autopilot.ps1`
+  - `code/bellman_re_horizon_update_reporter.py`
+  - `code/start_bellman_re_horizon_update_reporter.ps1`
+  - `compiled_sidecar/CMakeLists.txt`
+- New or refreshed outputs:
+  - refreshed `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+  - refreshed `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_cases.csv`
+  - refreshed `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_checkpoints.csv`
+  - new `notes/build/annual_full_re_stationary_transition_timing_robustness_T80_benchmark_recalibration.csv`
+  - new `notes/build/bellman_re_branch_corrector_16_hour_workflow.md`
+  - new `notes/build/bellman_re_branch_continuity_16_hour_workflow.md`
+  - new `notes/build/bellman_re_branch_lookahead_16_hour_workflow.md`
+  - new `notes/build/compiled_sidecar_bellman_re_branch_corrector_16_hour_packet.md`
+  - new `notes/build/compiled_sidecar_bellman_re_horizon_ladder.md`
+  - new `notes/build/bellman_re_plateau_branch_overnight_workflow.md`
+  - new `notes/build/compiled_sidecar_bellman_re_plateau_branch_overnight_packet.md`
+  - new `notes/build/compiled_sidecar_bellman_re_plateau_seed_q34_map.md`
+  - new `notes/build/compiled_sidecar_bellman_re_search_grid_sensitivity.md`
+  - new `notes/build/compiled_sidecar_bellman_re_branch_diagnostics.md`
+  - new `notes/build/compiled_sidecar_bellman_re_basin_hop_probe.md`
+  - new `notes/build/compiled_sidecar_bellman_re_bridge_plateau.md`
+  - new `notes/build/compiled_sidecar_bellman_re_nano_wall_packet.md`
+  - new `notes/build/compiled_sidecar_bellman_re_pico_packet.md`
+  - new `notes/build/compiled_sidecar_bellman_re_plateau_walk.md`
+  - new `notes/build/compiled_sidecar_transition_re_source_recovery.md`
+  - new `notes/build/compiled_sidecar_transition_re_accepted_step.md`
+  - new `notes/build/compiled_sidecar_transition_re_targeted_cleanup.md`
+  - new `notes/build/compiled_sidecar_transition_re_enriched_grid_probe.md`
+  - new `notes/build/compiled_sidecar_bellman_re_t12_suffix_probe.md`
+  - new `notes/build/compiled_sidecar_bellman_re_t13_suffix_probe.md`
+  - new `notes/build/compiled_sidecar_bellman_re_live_progress.md`
+- Verification:
+  - stationary annual timing robustness benchmark is now recalibrated under the stationary benchmark scenario itself:
+    - canonical note:
+      - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+    - source fix:
+      - `code/build_annual_full_re_stationary_transition_timing_robustness.py`
+    - benchmark selection rule:
+      - choose from the epsilon-optimal ridge rather than the raw minimum-loss corner
+      - admissible rows satisfy `loss <= min_loss + 2e-5`
+      - selected row is the admissible point closest to the inherited baseline calibration
+    - current benchmark-specific stationary timing parameters:
+      - `start_hazard = 0.65`
+      - `completion_hazard = 0.40`
+      - `permit_inventory_years = 0.125`
+      - `uc_inventory_years = 0.70`
+    - achieved benchmark-case fit over `t = 1-5` under `benchmark_d00_stock_data`:
+      - starts / permits `~= 0.931`
+      - completions / starts `~= 0.891`
+      - permit inventory years `~= 0.501`
+      - under-construction inventory years `~= 1.336`
+    - implication:
+      - the old timing note mismatch was a scenario inconsistency, not a failed calibration
+      - the stationary benchmark timing object no longer reuses the nonstationary/base calibration unchanged
+      - the completion side is now treated as a weakly identified ridge, not as a uniquely pinned-down technology point
+    - upload state:
+      - local packet prepared in:
+        - `notes/build/logs/annual_timing_robustness_stationary_packet_20260416_121451`
+      - Hamilton upload retries currently hit:
+        - `client_loop: send disconnect: Connection reset`
+      - so remote staging is ready in content terms but not yet complete
+  - corrected staged branch-corrector packet is now complete and promoted:
+    - canonical packet:
+      - `notes/build/compiled_sidecar_bellman_re_branch_corrector_16_hour_packet.md`
+    - corrected hybrid validation:
+      - coarse stage `1`: `maxres ~= 0.0086648244`
+      - branch-corrected enriched stage `2`: `maxres ~= 0.0039036178`
+    - promoted `T = 4` endpoint:
+      - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960963822]`
+    - implication:
+      - the earlier bad validation was a workflow bug, not a solver failure
+      - the live short-horizon baseline is now the corrected staged hybrid path
+  - horizon ladder beyond `T = 4` is now explicit:
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_horizon_ladder.md`
+    - seeded continuation plus earlier backtracking gives:
+      - `T = 6`: `maxres ~= 0.0209305281`
+      - `T = 7`: `maxres ~= 0.0143136216`
+      - `T = 8`: `maxres ~= 0.0127670628`
+      - `T = 9`: coarse `~0.0492666860`, enriched step worse at `~0.0524668215`
+      - `T = 10`: coarse `~0.0659652679`, enriched step improves to `~0.0541249408`
+      - `T = 11`: coarse `~0.0650049923`, enriched step essentially neutral at `~0.0650299536`
+  - implication:
+      - the method now genuinely leaves `T = 4`
+      - the next live problem is keeping the continuation path tight once the horizon reaches the `T = 9-11` region
+  - Hamilton `T = 13` deep suffix ladder is progressing:
+  - `T = 16` deep-tail Bellman RE rung is now fully recovered and synced:
+    - remote dir:
+      - `/nobackup/hfnt93/fert_runs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251`
+    - recovered local sync:
+      - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/summary.txt`
+      - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/status.txt`
+      - `notes/build/logs/bellman_re_t16_suffix_ladder_hamilton_20260416_011251/t16_cases.csv`
+    - best case:
+      - `late2_16`
+    - best residual:
+      - `maxres ~= 0.0961867911`
+    - comparison:
+      - standard-tail best had been `~0.2492322724`
+      - broad-tail best had been `~0.1355985514`
+      - deep-tail improved that further to `~0.0961867911`
+    - implication:
+      - `T = 16` still fails the `0.05` promote threshold
+      - the current tail-mask retry ladder is exhausted at `T = 16`
+      - the next Bellman RE move is solver redesign, not promotion to `T = 17`
+  - Hamilton transport failure mode is now identified:
+    - plain non-interactive `ssh` command mode and `scp` can reset after successful key authentication
+    - PTY-backed `ssh -tt` command execution works reliably
+    - watcher/reporter transport is patched to use PTY-backed command capture and text-file sync
+    - live job:
+      - `16786759`
+    - best completed case so far:
+      - `late4_13`
+      - `maxres ~= 0.0484151282`
+    - latest completed anchor case:
+      - `late5_13_suffix_anchor`
+      - `maxres ~= 0.0628766301`
+    - current live case:
+      - `late4_13_suffix_anchor`
+  - automation / supervision is now split cleanly:
+    - runner:
+      - `code/bellman_re_horizon_autopilot.ps1`
+      - launches the next Hamilton suffix ladder automatically when a rung finishes below the promote threshold
+      - if a rung finishes above the threshold, it now retries the same horizon automatically with a stronger profile instead of stopping immediately
+      - current profile ladder:
+        - `standard_tail`: `6,5,4,3`
+        - `broad_tail`: `7,6,5,4,3,2`
+        - `deep_tail`: `8,7,6,5,4,3,2`
+      - active pointer:
+        - `notes/build/logs/active_bellman_re_horizon_autopilot.txt`
+    - reporter:
+      - `code/bellman_re_horizon_update_reporter.py`
+      - keeps a live progress note updated from the runner pointer plus remote Hamilton status
+      - live note:
+        - `notes/build/compiled_sidecar_bellman_re_live_progress.md`
+      - active pointer:
+        - `notes/build/logs/active_bellman_re_horizon_update_reporter.txt`
+  - `T = 14` broad-tail retry is now fully confirmed and the retry ladder is live again:
+    - completed Hamilton broad-tail run:
+      - job `16798223`
+      - remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260414_174937`
+      - best case:
+        - `late2_14`
+      - best residual:
+        - `maxres ~= 0.0748840550`
+      - implication:
+        - `T = 14` does improve materially beyond the failed standard-tail pass
+        - but it still misses the `0.05` promote threshold, so the correct next move is a same-horizon deeper retry, not `T = 15`
+  - detached workflow reliability is now better:
+    - the prior autopilot died on transient Hamilton SSH resets before it could react to the completed broad-tail result
+    - `code/bellman_re_horizon_autopilot.ps1`, `code/submit_hamilton_bellman_re_suffix_ladder.ps1`, and `code/bellman_re_horizon_update_reporter.py` now retry remote SSH/SCP operations instead of exiting on the first network reset
+    - the autopilot was relaunched from the completed broad-tail rung and immediately did the right thing:
+      - retried `T = 14` under `deep_tail`
+      - new Hamilton job:
+        - `16799314`
+      - new remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_093733`
+  - `T = 14` deep-tail is now complete and identifies the remaining shape of the miss:
+    - completed Hamilton deep-tail run:
+      - job `16799314`
+      - remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_093733`
+      - best case:
+        - `late2_14`
+      - best residual:
+        - `maxres ~= 0.0586992104`
+      - residual geometry at the best case:
+        - dates `4-13` are effectively exact
+        - the remaining miss is concentrated at dates `1-3` plus date `14`
+      - implication:
+        - wider suffix masks alone are exhausted
+        - the next solver move is edge cleanup, not a fourth tail-mask family
+  - edge cleanup is now in source and the Hamilton ladder uses it:
+    - source changes:
+      - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+      - `compiled_sidecar/src/transition_re_kernel.cpp`
+      - `compiled_sidecar/src/transition_re_cli.cpp`
+    - live rule:
+      - an optional final coordinate edge-polish pass now targets the first `3` dates and the last `1` date after the standard ranked coordinate cleanup
+    - Hamilton submitter / autopilot changes:
+      - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+      - `code/bellman_re_horizon_autopilot.ps1`
+      - the automated Hamilton ladder now passes:
+        - `--coordinate-edge-polish`
+        - `--coordinate-edge-head-periods 3`
+        - `--coordinate-edge-tail-periods 1`
+    - live rerun:
+      - Hamilton job:
+        - `16800246`
+      - remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t14_suffix_ladder_hamilton_20260415_134329`
+      - profile:
+        - `standard_tail`
+      - seed:
+        - best completed `T = 14` case `late2_14`
+  - edge cleanup solved the immediate `T = 14` barrier:
+    - completed Hamilton rerun:
+      - job:
+        - `16800246`
+      - best case:
+        - `late3_14`
+      - best residual:
+        - `maxres ~= 0.0079791185`
+      - implication:
+        - the new edge-polish rule is a real solver improvement, not a marginal tie break
+        - `T = 14` is now clearly promotable
+  - `T = 15` also promoted on the first edge-polish-enabled pass:
+    - completed Hamilton rung:
+      - job:
+        - `16803723`
+      - remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t15_suffix_ladder_hamilton_20260415_192438`
+      - best case:
+        - `late3_15`
+      - best residual:
+        - `maxres ~= 0.0184594270`
+      - implication:
+        - the post-`T = 14` continuation remains alive
+        - the next live rung is `T = 16`
+  - autopilot promotion bug is fixed:
+    - failure mode:
+      - `submit_hamilton_bellman_re_suffix_ladder.ps1` could emit an `export_transition_input` line before the submission path
+      - `bellman_re_horizon_autopilot.ps1` then tried to parse that line as a key-value file path and died after a successful promote
+    - fixes:
+      - `code/submit_hamilton_bellman_re_suffix_ladder.ps1`
+        - now suppresses `export_transition_input.ps1` stdout
+      - `code/bellman_re_horizon_autopilot.ps1`
+        - now takes the last non-empty line from the submitter output as the submission-path payload
+  - overnight chain is live now:
+    - restarted autopilot:
+      - `StartingHorizon = 15`
+      - `MaxHorizon = 17`
+    - active `T = 16` Hamilton rung:
+      - job:
+        - `16803844`
+      - remote dir:
+        - `/nobackup/hfnt93/fert_runs/bellman_re_t16_suffix_ladder_hamilton_20260415_211641`
+      - current status:
+        - configure/build complete and the rung has started
+  - live bounded workflow:
+    - worker:
+      - `code/bellman_re_branch_continuity_16_hour_workflow.ps1`
+    - launcher:
+      - `code/start_bellman_re_branch_continuity_16_hour_workflow.ps1`
+    - workflow note:
+      - `notes/build/bellman_re_branch_continuity_16_hour_workflow.md`
+    - run directory:
+      - `notes/build/logs/bellman_re_branch_continuity_16_hour_workflow_20260412_222153`
+    - pointer:
+      - `notes/build/logs/active_bellman_re_branch_continuity_16_hour_workflow.txt`
+    - completed result:
+      - canonical packet:
+        - `notes/build/compiled_sidecar_bellman_re_branch_continuity_16_hour_packet.md`
+      - all stage-`2` continuity variants tied exactly at:
+        - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+        - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+        - `maxres ~= 0.0039778925`
+      - cliff result:
+        - baseline, continuity, and continuity-plus-lookahead also tie in max residual terms
+      - implication:
+        - same-period continuity alone is not enough; the next move has to be a stronger branch corrector rather than another continuity-mask sweep
+  - completed bounded workflow:
+    - worker:
+      - `code/bellman_re_branch_lookahead_16_hour_workflow.ps1`
+    - launcher:
+      - `code/start_bellman_re_branch_lookahead_16_hour_workflow.ps1`
+    - workflow note:
+      - `notes/build/bellman_re_branch_lookahead_16_hour_workflow.md`
+    - canonical packet:
+      - `notes/build/compiled_sidecar_bellman_re_branch_lookahead_16_hour_packet.md`
+    - run directory:
+      - `notes/build/logs/bellman_re_branch_lookahead_16_hour_workflow_20260412_200947`
+    - pointer:
+      - `notes/build/logs/active_bellman_re_branch_lookahead_16_hour_workflow.txt`
+    - packet purpose:
+      - test whether the newly activated live root-selection lookahead can beat the staged enriched wall near `0.0039778925`
+    - stage-2 continuation result:
+      - baseline, lookahead, and masked lookahead variants all tie at:
+        - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+        - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+        - `maxres ~= 0.0039778925`
+    - cliff-map result:
+      - lookahead does change the local period-`3` branch on the bad `q4 = 2.39605-2.39610` seeds:
+        - baseline implied `q3 ~= 2.29375`
+        - lookahead implied `q3 ~= 1.85`
+      - but the dominant period-`1` blow-up remains, so max residual stays the same at `~1.6448489807`
+      - near the milder cliff edge and on the higher post-cliff branch, baseline and lookahead also tie
+    - implication:
+      - simple one-step suffix lookahead is not enough to beat the staged wall
+      - the next solver change needs explicit period-`3` branch continuity or predictor-corrector logic, not just activation of the dormant lookahead flag
+  - automated coordinate cleanup is now the live compiled-sidecar Bellman RE baseline:
+    - canonical note:
+      - `notes/build/compiled_sidecar_transition_re_targeted_cleanup.md`
+    - source change:
+      - `compiled_sidecar/src/transition_re_kernel.cpp`
+    - source-level promoted run on `transition_input_t4_diag`:
+      - `max_iter = 30`
+      - backtracking activates only once `maxres <= 0.05`
+      - full-path accepted-step search remains the baseline
+      - if that fails, the solver retries with a focus mask on the current worst-residual period(s)
+      - final:
+        - `q ~= [1.7219850510, 1.7542903475, 1.8750762607, 2.3959272742]`
+        - `q_implied ~= [1.7334301688, 1.7542903475, 1.8750762607, 2.4046000014]`
+        - residuals `~= [0.0115899927, 0.0000000000, 0.0000000000, 0.0086727271]`
+        - `maxres ~= 0.0115899927`
+        - `stalled = 0`
+    - coordinate late-stage cleanup is now automated from source:
+      - `coordinate_backtracking_*` is now active in `compiled_sidecar/src/transition_re_kernel.cpp`
+      - from the source-level endpoint, it reproduces the successful period-`1` then period-`4` cleanup schedule
+      - from scratch on `transition_input_t4_diag`, the automated solve reaches:
+        - `q ~= [1.7280288619, 1.7542903475, 1.8750762607, 2.3960221075]`
+        - residuals `~= [0.0056660654, 0.0000000000, 0.0000000000, 0.0086648244]`
+        - `maxres ~= 0.0086648244`
+    - implication:
+      - the source-recovered solver now has a clean sub-`1%` bounded Bellman RE path from a single automated schedule
+      - periods `2` and `3` stay exact
+      - the next live issue is no longer the old coarse-grid automation gap
+      - it is how best to package the richer-grid continuation
+  - the promoted richer-grid Bellman RE workflow is now staged coarse-to-enriched continuation:
+    - canonical note:
+      - `notes/build/compiled_sidecar_transition_re_enriched_grid_probe.md`
+    - compiled CLI:
+      - `compiled_sidecar/src/transition_re_cli.cpp`
+      - `compiled_sidecar/build/fertility_transition_re_cli.exe`
+      - staged continuation now supports:
+        - `--stage2-q-search-grid`
+        - `--stage2-max-iter`
+    - main runner:
+      - `compiled_sidecar/run_transition_re_cli.ps1`
+      - optional staged continuation now forwards `-Stage2QSearchGrid` and `-Stage2MaxIter` to the compiled CLI
+    - thin wrapper:
+      - `compiled_sidecar/run_transition_re_staged_grid.ps1`
+    - enriched stage-2 grid:
+      - `1.5, 1.70, 1.72, 1.73, 1.74, 1.75, 1.80, 1.85, 1.90, 2.00, 2.25, 2.35, 2.40, 2.50`
+    - stage 1 coarse solve from scratch:
+      - `q ~= [1.7280288619, 1.7542903475, 1.8750762607, 2.3960221075]`
+      - `maxres ~= 0.0086648244`
+    - stage 2 enriched continuation from that coarse endpoint:
+      - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+      - `q_implied ~= [1.7333333333, 1.7542903475, 1.8750762607, 2.4000000000]`
+      - residuals `~= [0.0033948617, 0.0000000000, 0.0000000000, 0.0039778925]`
+      - `maxres ~= 0.0039778925`
+      - `stalled = 1`
+    - exact local geometry still points to the same floor:
+      - balanced enriched point `q ~= [1.7293554408, 1.7542903475, 1.8750762607, 2.3960221075]`
+      - residuals `~= [0.0039778925, 0.0000000000, 0.0000000000, 0.0039778925]`
+      - `maxres ~= 0.0039778925`
+    - direct enriched-grid solve from scratch is still worse:
+      - `q ~= [1.7442578009, 1.7778789006, 1.7890643862, 2.0047080153]`
+      - residuals `~= [0.0047851659, 0.0036868499, 0.0109356138, -0.0109580153]`
+      - `maxres ~= 0.0109580153`
+    - slightly denser stage-2 local grids do not beat the floor:
+      - finer `q1` grid still ends at `maxres ~= 0.0039778925`
+      - finer `q4` grid can worsen to `~0.0049778925`
+    - direct local branch mapping around the promoted endpoint sharpens the wall:
+      - any upward move in `q4` beyond `2.3960221075` leaves the good branch immediately
+      - `q4 = 2.3961000000` triggers a period-3 jump to about `2.3416666667`
+      - `q4 >= 2.3962000000` triggers a period-2 jump to about `1.8083333333` with `maxres ~= 0.0540429858`
+      - that period-2 cliff is effectively invariant to the local `q1` choice
+      - local `q3` adjustments do not rescue the branch once `q4` moves up
+    - the first nonlocal repaired branch seeds are worse under the live accepted-step schedule:
+      - `q2`-repair seed drifts after `10` iterations to `maxres ~= 0.9603451808`
+      - `q3`-repair seed drifts after `10` iterations to `maxres ~= 0.7377938394`
+    - the basin-hop probe is now extended in source:
+      - explicit `basin_hop_pivot_period`
+      - explicit `basin_hop_partner_period`
+      - short `basin_hop_followup_iters` scoring under the live accepted-step schedule
+    - first targeted period-`4` to period-`2` continuation probes are negative:
+      - tiny upward `q4` plus modest upward `q2` repair gives best raw hop around `maxres ~= 0.0971679858`
+      - the best `2`-iteration follow-up from that seed worsens to `maxres ~= 0.8667098319`
+      - a slightly larger `q4` hop is worse still, with best follow-up `maxres ~= 0.5480208443`
+    - repaired-suffix continuation is also negative on the same wall:
+      - the smallest repaired period-`4` to period-`2` seed bottoms out only at `maxres ~= 0.4417143782`
+      - the corresponding period-`4` to period-`3` repaired suffix is worse at `maxres ~= 0.7421708443`
+      - rerunning from the best repaired seed still lands in a worse basin at `maxres ~= 0.3171606218`
+    - an anchor-centered branch-discovery patch was tested and reverted:
+      - it seeded the coarse period root grid more aggressively around the active selection anchor
+      - the direct enriched endpoint still reproduced `~0.0039778925`
+      - but the full staged frontier degraded badly, with coarse stage around `0.0375` and enriched stage around `0.0309465910`
+      - the compiled-sidecar branch is therefore back on the last clean promoted solver logic
+    - code-level diagnostic:
+      - the mid-loop coordinate backtracking block only runs inside the main backtracking gate
+      - the enriched local improvement at the floor comes from the final exact local polish, not from a standalone zero-damping coordinate step
+    - implication:
+      - the enriched grid now has a promotable bounded Bellman RE continuation path
+      - the compiled CLI and script runner now both internalize that homotopy
+      - the remaining live issue is now a broader nonlocal branch / root continuation beyond the `~0.0039779` stage-2 floor, not more workflow integration, local grid densification, a simple period-`4` bridge family, or anchor-grid seeding
+  - standalone source recovery is now complete:
+    - canonical note:
+      - `notes/build/compiled_sidecar_transition_re_source_recovery.md`
+    - rebuilt:
+      - `compiled_sidecar/src/transition_re_kernel.cpp`
+      - `compiled_sidecar/build/fertility_transition_re_cli.exe`
+    - bounded compiled-sidecar RE checks now run again from source:
+      - smoke pack, `1` outer iteration:
+        - `maxres ~= 1.5000000000`
+      - `t4_diag`, `10` outer iterations:
+        - `maxres ~= 0.1525999053`
+      - `t4_diag`, `20` outer iterations:
+        - `q ~= [1.7184817870, 1.7542903475, 1.8750762607, 2.3947239543]`
+        - `q_implied ~= [1.7375677675, 1.7542903475, 1.8750762607, 2.4018613133]`
+        - `maxres ~= 0.0238574757`
+      - `t4_diag`, `30` outer iterations under the plain map:
+        - `maxres ~= 0.7129682759`
+      - implication:
+        - the restored plain map reaches a good Bellman RE basin by about iteration `20`
+        - but it does not stay there without extra outer-loop control
+  - low-risk control checks on the restored solver are not yet promotable:
+    - previous-implied anchor plus date-4 hysteresis / tie-break:
+      - `maxres ~= 1.7225041854` at `10` iterations
+    - lower uniform damping `0.10`:
+      - `maxres ~= 0.1996711464` at `10` iterations
+    - simple adaptive shrink control:
+      - `maxres ~= 0.5547580348` at `10` iterations
+    - implication:
+      - the next fix should be a narrow accept / keep-best outer control, not another continuity or global damping change
+  - new search-grid sensitivity checks overturn the old `~0.0473622232` plateau as a robust Bellman RE frontier:
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_search_grid_sensitivity.md`
+    - from the same plateau seed
+      - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+    - minimal grid enrichment
+      - `1.5, 1.70, 1.705, 1.75, 2.0, 2.25, 2.5`
+      changes the exact reevaluation to:
+      - `q_implied ~= [1.7050000000, 1.7000000000, 1.6937500000, 2.1335996722]`
+      - `maxres ~= 0.0588485237`
+    - denser enrichment
+      - `1.5, 1.58, 1.62, 1.66, 1.68, 1.69, 1.695, 1.70, 1.705, 1.71, 1.72, 1.74, 2.0, 2.25, 2.5`
+      changes it further to:
+      - `q_implied ~= [1.7050000000, 1.7050000000, 1.7000000000, 2.0763426698]`
+      - `maxres ~= 0.0763426699`
+    - implication:
+      - the old `~0.0473622232` wall is a coarse search-grid artifact, not a stable fixed-point frontier
+  - a bounded 4-iteration standalone continuation under the minimally enriched grid also moves away from the old wall:
+    - final `q ~= [1.7229139343, 1.7430688392, 1.7461552045, 2.1477449526]`
+    - final `q_implied ~= [1.6500000000, 1.6750000000, 1.7050000000, 2.0647294425]`
+    - final `maxres ~= 0.0832235690`
+    - implication:
+      - the current compiled-sidecar baseline needs a source-level search-resolution repair before the Bellman RE frontier can be trusted
+  - source recovery status:
+    - `compiled_sidecar/src/transition_re_kernel.cpp` is rebuilt and live again
+    - the diagnostics above now come from the rebuilt standalone source tree and executable, not from a stale binary only
+  - the corrected bounded overnight plateau-branch workflow completed on `2026-04-12`:
+    - worker:
+      - `code/bellman_re_plateau_branch_overnight_workflow.ps1`
+    - launcher:
+      - `code/start_bellman_re_plateau_branch_overnight_workflow.ps1`
+    - workflow note:
+      - `notes/build/bellman_re_plateau_branch_overnight_workflow.md`
+    - canonical packet:
+      - `notes/build/compiled_sidecar_bellman_re_plateau_branch_overnight_packet.md`
+    - run directory:
+      - `notes/build/logs/bellman_re_plateau_branch_overnight_workflow_20260412_040434`
+    - active pointer now reads:
+      - `phase=success`
+    - bounded run timing:
+      - `2026-04-12 04:04:36` baseline exact recorded at `maxres=0.0473622232`
+      - `2026-04-12 04:05:26` cycle `1` probe finished with `accepted=0` and best trial `0.0579325600`
+      - `2026-04-12 04:06:06` final micro probe also failed and the packet ended successfully
+    - final exact seed remains:
+      - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+      - `q_implied ~= [1.7294173376, 1.7009593299, 1.7052363005, 2.1145140048]`
+      - residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+    - implication:
+      - the improved exact plateau seed sharpened support-period geometry, but it also removed the previously accepted micro-hop route
+      - no project-03 Bellman RE process is running now
+  - a new exact local `q_3/q_4` map around the improved exact plateau seed now rules out the remaining nearby bridge geometry:
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_plateau_seed_q34_map.md`
+    - with `q_1` and `q_2` fixed at the improved exact plateau seed:
+      - changing `q_4` locally while holding `q_3 = 1.7525985237` leaves `maxres` unchanged at `~0.0473622232`
+      - raising `q_3` locally worsens max residual monotonically:
+        - `q_3 = 1.7532235237` gives `~0.0474794107`
+        - `q_3 = 1.7540000000` gives `~0.0476250000`
+        - `q_3 = 1.7550000000` gives `~0.0478125000`
+    - implication:
+      - the current plateau seed is locally best on the checked exact `q_3/q_4` grid
+      - there is no nearby nonlocal exact candidate worth targeting with another micro-hop
+  - the best local basin-hop trial also fails as a temporary-worsening bridge:
+    - starting from:
+      - `q ~= [1.7294173376, 1.7648345599, 1.7532235237, 2.1525681522]`
+      - one-step probe `maxres ~= 0.0579325600`
+    - a bounded `2`-iteration continuation worsens further to:
+      - `maxres ~= 0.0630091346`
+      - final `q ~= [1.7286107923, 1.7636759087, 1.7504613101, 2.1521867318]`
+    - implication:
+      - the sacrificial local bridge hypothesis is false at the improved plateau seed
+      - temporary-worsening accept logic for this same `q_3/q_4` micro-hop should not be promoted
+  - two narrow solver experiments were tested and then reverted:
+    - a post-hop plateau snap inside the basin-hop path
+    - a raw-bridge-versus-support-bridge comparison plus residual-directed sign pruning
+    - neither changed the best local basin-hop result from `~0.0579325600`
+    - the compiled-sidecar branch is therefore back on the last clean baseline solver logic
+  - parallel bounded diagnostics now agree on the local geometry:
+    - an exact nonlocal `q_3/q_4` scan did not beat the current wall `~0.0473622232`
+    - the best nonlocal exact candidate was only a tie at slightly lower `q_4`
+    - lowering `q_3` still triggers the bad lower branch immediately
+    - `q_2` does not move implied `q_3` locally in a useful way
+    - implication:
+      - the wall is a real `q_3/q_4` branch-disappearance cliff, not a remaining tie-break problem
+      - the next live solver move belongs inside the existing basin-hop helper, not in another exact packet
+  - the standalone basin-hop helper now does one cheap post-hop support repair before accept / reject:
+    - code path:
+      - `compiled_sidecar/src/transition_re_kernel.cpp`
+    - change:
+      - each raw basin-hop candidate is now re-evaluated after up to one cheap repair pass on the non-hop periods
+      - hop periods stay fixed during that support cleanup
+    - rationale:
+      - the missing object looked like `q_3/q_4` basin entry plus immediate support-period repair, not another raw local point
+  - bounded local verification of that patch is mixed but useful:
+    - a clean `2`-iteration restart from the wall still returns the same max residual `~0.0473622232`
+    - the restarted path moves to about `q ~= [1.7294173376, 1.7478130756, 1.7525985237, 2.1532712772]`
+    - so the patch is at least stable on restart, but it is not yet a promoted improvement
+    - a longer `4`-iteration verification did not finish within the local interactive timeout and was terminated
+    - implication:
+      - keep the support-repair patch
+      - the next clean test should be a cheaper targeted basin-hop debug or a longer bounded standalone rerun, not another micro / nano / pico packet
+  - direct basin-hop probes now sharpen the next geometry change:
+    - the probe mode in `compiled_sidecar/src/transition_re_cli.cpp` can now evaluate one basin-hop pass directly from the wall
+    - support repair is directionally helpful:
+      - on the same narrow hop pattern, best tried max residual improves from about `0.102796` without repair to about `0.100581` with repair
+    - the important new read is step size, not just repair:
+      - old coarse asymmetric defaults were much too large
+      - smaller asymmetric patterns are materially better
+      - best probed basin-hop pattern so far is:
+        - pivot multiplier `0.25`
+        - partner multiplier `0.0625-0.125`
+        - best tried max residual about `0.057443`
+      - larger patterns are much worse:
+        - `0.5 / 0.125` gives about `0.068150`
+        - `1 / 1` gives about `0.182874`
+    - implication:
+      - the helper should search smaller asymmetric `q_3/q_4` moves by default
+      - but the wall is still not broken because even the best probe remains above `0.047362`
+    - additional micro-hop probes now close off the pure-geometry branch more sharply:
+      - smaller and smaller repaired `q_3/q_4` hops approach the wall from above
+      - best ladder points are about:
+        - `0.0478309`
+        - `0.0475966`
+        - `0.0474794`
+      - none cross below `0.0473622`
+    - implication:
+      - geometry alone is now empirically exhausted
+      - the next solver change should be a bridge-style acceptance rule for near-flat repaired candidates or a different second-stage repair, not another raw-hop grid expansion
+  - the bridge-style branch has now been pushed and reevaluated exactly:
+    - `compiled_sidecar/src/transition_re_kernel.cpp`
+      now:
+      - accepts a near-wall basin-hop bridge candidate when it improves the sensitive partner period and stays inside a small max-residual slack
+      - tries the residual-reducing direction first in `repair_basin_hop_support_periods`
+    - direct micro-hop probe from the wall with:
+      - pivot multiplier `0.015625`
+      - partner multiplier `0.0078125`
+      now accepts:
+      - `q ~= [1.7303548376, 1.7483599506, 1.7532235237, 2.1531540897]`
+      - residuals `~= [-0.0143971774, -0.0465674907, -0.0474794107, -0.0382885224]`
+      - this candidate is still worse on max residual than the wall
+    - the useful result is the improved exact plateau seed it unlocks after bounded continuation and exact reevaluation:
+      - `q ~= [1.7294173376, 1.7475396381, 1.7525985237, 2.1531540897]`
+      - `q_implied ~= [1.7294173376, 1.7011259560, 1.7052363005, 2.1148655673]`
+      - residuals `~= [0.0000000000, -0.0464136821, -0.0473622232, -0.0382885224]`
+      - `maxres ~= 0.0473622232`
+    - implication:
+      - max residual is still unchanged
+      - but the exact Bellman RE seed is now strictly better than the old wall on periods `2` and `4`
+      - future local diagnostics should start from this improved plateau seed, not the older wall
+    - direct micro-hop probe from that improved exact plateau point with the same `0.015625 / 0.0078125` geometry now accepts:
+      - `q ~= [1.7294173376, 1.7475396381, 1.7532235237, 2.1530369022]`
+      - `q_implied ~= [1.7150787540, 1.7011259560, 1.7057441130, 2.1147776767]`
+      - residuals `~= [-0.0143385836, -0.0464136821, -0.0474794107, -0.0382592256]`
+      - `maxres ~= 0.0474794107`
+    - implication:
+      - the micro hop is no longer being rejected on entry once the solver stands on the better support plateau
+      - but it is still not a promoted improvement because the top period-3 residual rises
+    - further bounded continuation plus exact reevaluation now shows a monotone support-plateau walk at the same max residual:
+      - first exact continuation point:
+        - `q ~= [1.7294173376, 1.7474029193, 1.7525985237, 2.1529197147]`
+        - residuals `~= [0.0000000000, -0.0463880474, -0.0473622232, -0.0382299287]`
+      - second exact continuation point:
+        - `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+        - residuals `~= [0.0000000000, -0.0463752300, -0.0473622232, -0.0381713349]`
+    - implication:
+      - the solver is not just finding one better exact seed; it is now walking along a real exact plateau branch
+      - period `1` stays exact, periods `2` and `4` keep improving, and period `3` still pins the wall
+  - one bounded full standalone restart was then run with those narrowed default basin-hop settings:
+    - `max_basin_hop_rounds = 1`
+    - `max_stall_probe_rounds = 1`
+    - it still stalls after `2` iterations at the same wall `~0.0473622232`
+    - implication:
+      - smaller asymmetric geometry is the right local region
+      - but geometry alone is not enough
+      - the next solver change should be acceptance logic or a stronger second-stage repair after the small hop
+  - new branch diagnostics now pin down the current wall more sharply:
+    - all four periods still have two live brackets at the exact `~0.0473622232` wall
+    - a new standalone root-selection lookahead diagnostic compares those brackets using one-step suffix residual geometry
+    - at the exact wall it still chooses the same branches as the old selector
+    - so the live blocker is not a simple bad tie-break among coexisting nearby roots
+  - the period-3 cliff is now explicit:
+    - lowering `q_3` by about `4.88e-06` from the wall changes implied `q_3` from about `1.7052363005` to about `1.6894452307`
+    - the same tiny move also changes implied `q_1` from about `1.7159576602` to about `1.7303548376`
+    - max residual jumps from about `0.0473622232` to about `0.0631484102`
+    - implication:
+      - the upper period-3 branch is disappearing, not merely being mis-selected
+  - local branch-coupling probes now show:
+    - `q_2` does not move implied `q_3` in the local neighborhood of the wall
+    - `q_4` does move implied `q_3`, but only through a costly branch jump
+    - a coarse exact `q_3/q_4` map in the alternate basin did not find anything close to the current wall
+    - implication:
+      - the next solver move should be a controlled nonlocal `q_3/q_4` basin-hop rule or a broader exact branch map, not another plateau-geometry tweak
+  - the standalone solver now has a plateau-aware stall-probe rule:
+    - when stall-probe trials tie on max residual within a tiny tolerance,
+    - the solver can now accept the trial with better secondary residual geometry
+    - the stall probe can now also compare coordinated plateau candidates rather than only one-coordinate moves
+    - code paths:
+      - `compiled_sidecar/include/fertility_sidecar/transition_re_kernel.hpp`
+      - `compiled_sidecar/src/transition_re_kernel.cpp`
+      - `compiled_sidecar/src/transition_re_cli.cpp`
+      - `compiled_sidecar/run_transition_re_cli.ps1`
+  - direct bounded verification from the current wall is now materially better than the old hard stall:
+    - current wall seed:
+      - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+      - `maxres ~= 0.0473622232`
+    - with the stronger plateau rule:
+      - a short bounded continuation no longer stalls and reaches:
+        - `q ~= [1.7298860876, 1.7480865131, 1.7525985237, 2.1532712772]`
+      - exact reevaluation at that point gives:
+        - `q_implied ~= [1.7298860876, 1.7015702919, 1.7052363005, 2.1149534579]`
+        - residuals `~= [0.0000000000, -0.0465162212, -0.0473622232, -0.0383178193]`
+        - `maxres ~= 0.0473622232`
+    - implication:
+      - the old wall was partly an artificial stall condition
+      - but the current plateau walk is still too weak to lower the top period-3 residual
+  - the parameterized pico-wall packet is now complete:
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_pico_packet.md`
+    - run directory:
+      - `notes/build/logs/bellman_re_pico_wall_12_hour_workflow_20260411_093108`
+    - main result:
+      - exact baseline reproduced at `maxres ~= 0.0473622232`
+      - all exact local grids tied at the same max residual
+      - all bounded stall-probe variants also tied at the same max residual
+      - no continuation stage was justified
+    - implication:
+      - the packet ladder is now empirically flat at the current local wall
+      - another cloned micro / nano / pico packet is not the right next move
+  - the true current bounded Bellman RE frontier is slightly better than the saved nano packet note:
+    - best live floor from direct continuation of the non-stalled nano variant is:
+      - `maxres ~= 0.0473622232`
+      - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052363005, 2.1149534579]`
+    - a second direct continuation from that same endpoint reproduces the same `~0.0473622232` floor
+    - implication:
+      - the packet ladder is now moving only at the `1e-7` level
+      - the older `1e-6` packet promotion threshold was too coarse and was discarding real micro improvements
+  - the completed nano-wall packet remains a useful bounded packet, but it is no longer the exact live frontier:
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_nano_wall_packet.md`
+    - packet floor:
+      - `maxres ~= 0.0473622518`
+      - best non-stalled variant:
+        - `nano_p3_r12_step0015625`
+        - `q ~= [1.7303548376, 1.7483599506, 1.7525985237, 2.1532712772]`
+        - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052364245, 2.1149534579]`
+  - two negative follow-ups are now pinned down:
+    - extending the branch tie-break mask from `[0,0,0,1]` to `[0,0,1,1]` does not improve the `~0.0473622232` floor
+    - an internal standalone stall-probe refinement patch in `compiled_sidecar/src/transition_re_kernel.cpp` did not beat the direct continuation floor and was reverted
+  - the latest workflow scripts are now parameterized rather than cloned again:
+    - `code/bellman_re_nano_wall_12_hour_workflow.ps1`
+      - now accepts custom seed path / seed label / note target
+      - now uses `ImprovementTolerance = 1e-8` by default
+      - now prefers non-stalled tied variants when residuals tie
+    - `code/start_bellman_re_nano_wall_12_hour_workflow.ps1`
+      - now forwards those parameters so the same launcher can be reused for the next local wall
+  - the third Bellman RE packet around the improved ultra-micro wall also finished cleanly:
+    - exact local grids around `q ~= [1.730355, 1.748360, 1.752610, 2.153271]` did not beat the ultra-micro wall
+    - the best surviving improvement came from longer stall-probe rounds:
+      - `maxres ~= 0.0473624807`
+      - `q ~= [1.7303548376, 1.7483599506, 1.7525998970, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052374163, 2.1149534579]`
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_ultra_micro_wall_packet.md`
+  - a fourth bounded packet is now live around that nano wall:
+    - scripts:
+      - `code/bellman_re_nano_wall_12_hour_workflow.ps1`
+      - `code/start_bellman_re_nano_wall_12_hour_workflow.ps1`
+    - note:
+      - `notes/build/bellman_re_nano_wall_12_hour_workflow.md`
+    - live pointer:
+      - `notes/build/logs/active_bellman_re_nano_wall_12_hour_workflow.txt`
+    - current run directory:
+      - `notes/build/logs/bellman_re_nano_wall_12_hour_workflow_20260411_075420`
+    - first live read:
+      - exact nano baseline reproduced at `0.0473624807`
+      - `01_nano_exact_line_q3` completed
+      - packet moved into `02_nano_exact_grid_q23`
+  - the second Bellman RE packet around the improved micro-wall also finished cleanly:
+    - exact local grids around `q ~= [1.730355, 1.748360, 1.752688, 2.153271]` did not beat the new micro-wall
+    - a smaller stall-probe step produced another one-step improvement to about `0.0473643117`
+    - that improvement corresponds to:
+      - `q ~= [1.7303548376, 1.7483599506, 1.7526096626, 2.1532712772]`
+      - `q_implied ~= [1.7159576602, 1.7017924599, 1.7052453509, 2.1149534579]`
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_micro_wall_packet.md`
+  - a third bounded packet is now live around that improved ultra-micro wall:
+    - scripts:
+      - `code/bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+      - `code/start_bellman_re_ultra_micro_wall_12_hour_workflow.ps1`
+    - note:
+      - `notes/build/bellman_re_ultra_micro_wall_12_hour_workflow.md`
+    - live pointer:
+      - `notes/build/logs/active_bellman_re_ultra_micro_wall_12_hour_workflow.txt`
+    - current run directory:
+      - `notes/build/logs/bellman_re_ultra_micro_wall_12_hour_workflow_20260411_072824`
+    - first live read:
+      - exact ultra-micro baseline reproduced at `0.0473643117`
+      - `01_ultra_micro_exact_line_q3` completed
+      - packet moved into `02_ultra_micro_exact_grid_q23`
+  - the first Bellman RE 12-hour packet finished cleanly after the workflow-control fix:
+    - exact local grids around the promoted `~0.0474376` wall did not beat the wall
+    - the wall-variant sweep found a narrow one-step improvement to about `0.0473790` when `q_3` falls to about `1.7526878`
+    - that improvement did not survive the staged full-seed rerun as a stable new frontier
+    - canonical note:
+      - `notes/build/compiled_sidecar_bellman_re_12_hour_packet.md`
+  - a second bounded packet is now live around that improved micro-wall:
+    - scripts:
+      - `code/bellman_re_micro_wall_12_hour_workflow.ps1`
+      - `code/start_bellman_re_micro_wall_12_hour_workflow.ps1`
+    - note:
+      - `notes/build/bellman_re_micro_wall_12_hour_workflow.md`
+    - live pointer:
+      - `notes/build/logs/active_bellman_re_micro_wall_12_hour_workflow.txt`
+    - current run directory:
+      - `notes/build/logs/bellman_re_micro_wall_12_hour_workflow_20260411_063009`
+    - first live read:
+      - exact micro-wall baseline reproduced at `0.0473789602`
+      - `01_micro_wall_exact_line_q3` completed
+      - packet moved into `02_micro_wall_exact_grid_q23_fine`
+  - the 12-hour Bellman RE packet no longer dies on the first staged wall variant just because the CLI returns a nonzero stalled exit:
+    - `code/bellman_re_12_hour_workflow.ps1` now accepts any parseable staged CLI output as a valid result
+    - `code/bellman_re_12_hour_workflow.ps1` now supports `-ResumeRunDir`
+    - exact-grid CSVs in an existing run directory are reused rather than recomputed
+    - the resumed live run re-entered `06_variant_baseline_wall_stage1` after skipping the completed exact grids
+  - separate compiled-sidecar speed work also moved materially:
+    - portable OpenMP is now enabled in the standalone sidecar build
+    - benchmark compiled transition-path timing fell from about `347.77s` to about `21.17s`
+    - medium compiled transition-path timing fell from about `7.67s` to about `0.70s`
+    - probe validation still passes at the old `~5e-9` value tolerance
+  - the solver now supports accepted-step backtracking and explicit stall detection:
+    - rejected late-stage steps no longer replay indefinitely
+    - trial solves are now silent, so the saved run reflects the outer object rather than inner trial chatter
+  - saved `40`-iteration backtracking stall-stop pass is now the clean promoted workflow:
+    - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall.md`
+    - settings:
+      - tie-break mask `[0, 0, 0, 1]`
+      - tie-break tolerance `0.030`
+      - accepted-step backtracking with ratio `1.10`, abs tol `0.01`, shrink factor `0.50`
+      - stall-stop after `2` repeated rejected backtracking states
+    - behavior:
+      - best bounded residual reaches about `0.079086` at iteration `23`
+      - the run stops cleanly at iteration `24` on a repeated rejected stall instead of wasting the remaining budget
+      - final implied path is about `[1.701, 1.702, 1.701, 2.076]`
+      - periods `1-4` all still have two sign changes on the final iteration
+  - one extra saved round-depth probe is a negative but useful result:
+    - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_round5.md`
+    - raising `max_backtracking_rounds` from `3` to `5` leaves the path unchanged
+    - the late stall still occurs at the same `~0.079086` basin
+    - rejected-state best trial residual stays about `0.113592`
+  - a new saved coordinate fallback pass improves on that baseline:
+    - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate.md`
+    - settings:
+      - same backtracking-plus-stall baseline
+      - plus coordinate late-stage fallback on the top `2` residual periods once max residual is at most `0.10`
+      - coordinate trial must strictly improve the current max residual
+    - behavior:
+      - the old stall at iteration `23-24` is broken by a period-2-only local step
+      - the bounded sidecar pass keeps improving through iteration `35`
+      - best bounded residual now reaches about `0.074365`
+      - final implied path at the new floor is about `[1.694, 1.703, 1.709, 2.074]`
+  - a new saved date-4 continuity mode improves on that floor again:
+    - `notes/build/structural_transition_re_t4_front_loaded_iter_debug40_sidecar_adaptive_tiebreak_backtrackstall_coordinate_p4continuity.md`
+    - settings:
+      - same coordinate late-stage fallback on the top `2` residual periods
+      - date-4-only coordinate branch continuity guard at tolerance `0.030`
+      - coordinate-only minimum damping path `[0.0375, 0.0200, 0.0250, 0.00125]`
+      - coordinate-only minimum step caps `[0.0300, 0.0175, 0.0200, 0.00375]`
+    - behavior:
+      - reproduces the earlier path through iteration `35`
+      - accepts one extra date-4-only micro-step at iteration `35`
+      - lowers the bounded floor from about `0.074365` to about `0.074179`
+      - then stalls again at iteration `37`
+      - final implied path stays about `[1.694, 1.703, 1.709, 2.074]`
+  - the standalone compiled sidecar now carries the same late-basin control layer:
+    - coordinate backtracking fallback
+    - coordinate-only minimum damping / step caps
+    - date-4 coordinate branch continuity guard
+    - CLI and PowerShell wrapper flags for those controls
+  - bounded standalone validation on `compiled_sidecar/truth/transition_input_t4_diag` now matches the live MATLAB branch:
+    - accepted-step backtracking stall baseline:
+      - `24` iterations
+      - `stalled = 1`
+      - max residual about `0.0790855`
+      - implied path about `[1.701090, 1.702107, 1.701190, 2.076252]`
+    - coordinate fallback continuation:
+      - `35` iterations
+      - max residual about `0.0743651`
+      - active path reaches the old coordinate floor
+    - date-4 continuity continuation:
+      - `37` iterations
+      - `stalled = 1`
+      - max residual about `0.0741792`
+      - implied path about `[1.693909, 1.702730, 1.708928, 2.074179]`
+  - implication:
+    - the current bounded Bellman RE frontier no longer depends on MATLAB orchestration
+    - the standalone C++ outer loop is now the right place to continue the next date-4 local-rule work
+  - a new paired late-basin fallback is now informative and worth keeping:
+    - it updates the top `2` residual periods together once one-period coordinate fallback is exhausted
+    - continuity-masked periods still use the date-4 micro-step guard
+    - non-continuity support periods in the pair are allowed to use their configured damping / cap rather than the shrunken late-basin values
+  - direct standalone pair-fallback validation now beats the old floor:
+    - local floor probe:
+      - accepted pair move from about `[1.729817, 1.770306, 1.747619, 2.148358]` to about `[1.729817, 1.764900, 1.747619, 2.148173]`
+      - re-evaluated max residual falls from about `0.0741792` to about `0.0740865`
+    - full bounded pass from the standard front-loaded seed:
+      - `40` iterations
+      - no stall stop
+      - final path about `[1.729817, 1.759602, 1.747619, 2.147722]`
+      - max residual about `0.0740460`
+    - short continuation from that endpoint:
+      - after `2` more iterations, max residual falls again to about `0.0738609`
+  - a new signed late-stage stall probe now improves on the old `~0.073852` basin:
+    - it activates only after a repeated rejected backtracking state
+    - it probes small signed jumps on the top non-continuity residual periods
+    - it accepts a trial only if the exact current-candidate max residual falls
+  - exact local diagnosis at the old basin now shows a materially better candidate:
+    - from `q ~= [1.729817, 1.759602, 1.747619, 2.147704]`
+    - a small upward `q_2` jump to about `1.762102` lowers the exact max residual to about `0.0655255`
+    - the implied path at that better candidate is about `[1.686727, 1.696576, 1.708928, 2.083084]`
+  - integrated choke-point validation now improves the bounded standalone frontier again:
+    - starting from the old `~0.073852` basin with the new stall probe enabled:
+      - the solver accepts signed period-2 jumps automatically
+      - after `6` iterations it stalls at a better basin:
+        - `q ~= [1.729817, 1.761243, 1.747619, 2.147704]`
+        - `q_implied ~= [1.686727, 1.695932, 1.708928, 2.083084]`
+        - max residual about `0.0653106`
+    - restarting from that improved seed reproduces the same `~0.0653106` basin in `2` iterations
+  - bounded full-seed validation with the new stall probe is not yet promoted:
+    - a `60`-iteration front-loaded standalone batch timed out and was terminated
+    - the clean promoted validation for this new rule is still the choke-point run
+  - staged full-seed validation with the new stall probe is now promoted:
+    - standard front-loaded seed stage 1 (`20` iterations):
+      - reaches `q ~= [1.732535, 1.785369, 1.751140, 2.153655]`
+      - max residual about `0.0816377`
+    - continuation stage 2 (`12` iterations):
+      - reaches `q ~= [1.730355, 1.752784, 1.748000, 2.153271]`
+      - max residual about `0.0557845`
+    - continuation stage 3 (`4` iterations):
+      - reaches `q ~= [1.730355, 1.748360, 1.753000, 2.153271]`
+      - `q_implied ~= [1.715958, 1.701792, 1.705563, 2.114953]`
+      - max residual about `0.0474376`
+    - restart from the stage-3 endpoint reproduces the same `~0.0474376` basin and stalls there in `2` iterations
+    - implication:
+      - the standard front-loaded seed now reaches the improved bounded Bellman RE frontier cleanly under staged standalone budgets
+      - the live bounded local wall is no longer `~0.0653106`; it is now about `~0.0474376`
+  - exact local probes around the new `~0.0474376` wall do not show an easy continuation:
+    - small `q_2` moves alone do not beat the wall
+    - small joint `q_2/q_3` moves also do not beat the wall
+  - implication:
+    - the old `~0.074179` floor was not a true local optimum
+    - the old `~0.073852` stall basin is no longer the live bounded frontier
+    - the current bounded local wall is around `~0.0474376`
+  - direct late-basin probes now sharpen the blocker further:
+    - the missing object at the old basin was a signed period-2 local jump, not another fixed-point descent step
+    - the next numerical question is no longer whether the solver can escape `~0.073852`; it can
+    - the live open question is whether the standard front-loaded seed reaches the new `~0.0653106` basin cleanly within a bounded run budget
+- Main read:
+  - keep:
+    - estimated-root bracket ranking
+    - date-4-only tie-breaks
+    - accepted-step backtracking
+    - stall-stop on repeated rejected backtracking states
+    - coordinate fallback on the top residual periods in the late basin
+    - coordinate-only lower date-4 damping / step floor with a continuity guard
+    - paired late-basin fallback
+    - signed non-continuity stall probe at repeated late-stage stalls
+  - do **not** promote:
+    - rollback-to-best as the main workflow
+    - more generic backtracking rounds by themselves
+  - the Bellman RE map is now best described as:
+    - economically meaningful roots remain available
+    - root selection and late-iteration acceptance are materially better than before
+    - the remaining blocker is now narrower:
+      - one more local rule search beyond the new `[1.730355, 1.748360, 1.753000, 2.153271]` local wall
+      - not revalidating the old workflow from scratch
+    - current saved workflow is bounded, reproducible in both MATLAB and standalone C++, and still not converged
+
+## Next 3 Tasks
+
+1. Keep the automated coordinate-cleanup schedule as the live coarse-grid baseline:
+   - it reaches `maxres ~= 0.0086648244` from scratch on `transition_input_t4_diag`
+   - do not reopen MATLAB or the old packet ladders for this branch.
+2. Keep the staged coarse-to-enriched runner as the live bounded Bellman RE workflow:
+   - `compiled_sidecar/run_transition_re_staged_grid.ps1` now reproduces the promoted enriched endpoint
+     `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+     with `maxres ~= 0.0039778925`
+   - do not replace it with direct enriched-grid solve from scratch yet; that still stalls in the worse basin at `~0.0109580`.
+3. Next solver-side step:
+   - treat the current enriched endpoint as a real local branch wall
+   - stop spending time on local `q1` / `q4` densification, tiny local `q3` adjustments, or simple period-`4` to period-`2` bridge seeds around that point
+   - build the next move as a broader nonlocal branch / root continuation, probably period-`4`-led but with a larger repaired suffix or a different continuation rule, and only promote it if it beats `~0.0039778925` without jumping to the high-price basin.
+
+## Older Tasks
+
+1. Keep the new paired late-basin fallback fixed and continue the next local-rule search in the standalone compiled sidecar; do not reopen MATLAB, global damping, rollback, or seed changes for this bounded branch.
+2. Diagnose why the next date-4 micro-step from `q_4 ≈ 2.14836` jumps immediately to the bad lower branch, using the saved late-iteration vote grid plus one-step probes around that new floor.
+3. Only after that next date-4 local rule is improved, rerun the longer bounded standalone sidecar pass and then decide whether the benchmark-grid RE push can reopen.
+4. Stale duplicate tasks from the prior top-of-file snapshot remain below; ignore them until the next cleanup pass.
+2. Diagnose why the next date-4 micro-step from `q_4 ≈ 2.14836` jumps immediately to the bad lower branch, using the saved late-iteration vote grid plus one-step probes around that new floor.
+3. Only after that next date-4 local rule is improved, rerun the longer bounded sidecar pass and then decide whether the benchmark-grid RE push can reopen.
+
+1. Keep the coordinate-backtracking workflow fixed and test one narrower date-4 local rule near iterations `35-36`; do not reopen global damping or rollback.
+2. Diagnose the date-4 lower-branch jump around `q_4 ≈ 2.149` using the saved late-iteration vote grid and one-step local probes, since that is now the active floor.
+3. Only after the date-4 local rule is improved, rerun a longer bounded sidecar pass and then decide whether the benchmark-grid RE push can reopen.
+
+## Snapshot
+
+- Last updated: 2026-04-09 (adaptive outer-update guard is worth keeping, but root-branch continuity variants made the Bellman map worse)
+- Added or changed:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+- New or refreshed outputs:
+  - new `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive.*`
+  - new `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive_continuity.*`
+  - new `notes/build/structural_transition_re_t4_front_loaded_iter_debug16_sidecar_adaptive_p4_continuity.*`
+- Verification:
+  - the Bellman outer update now supports an adaptive trust-region style guard:
+    - it tightens period-specific damping and step caps only when that period's absolute residual worsens enough relative to the previous outer step
+    - the adaptive `16`-iteration sidecar pass ends with:
+      - last residual about `0.145`
+      - best residual about `0.144`
+      - final active damping path about `[0.112, 0.060, 0.075, 0.013]`
+      - final active step caps about `[0.090, 0.053, 0.060, 0.009]`
+  - that adaptive guard is informative but not a full fix:
+    - it keeps the run in a tighter band than the older uncontrolled oscillation
+    - but it still allows a late date-4 re-expansion before narrowing again
+  - two branch-continuity variants were also tested and both are negative results:
+    - full previous-implied anchoring:
+      - last residual about `0.166`
+      - best residual about `0.166`
+      - periods `2-3` get pulled onto bad low-q branches
+    - date-4-only previous-implied anchoring:
+      - last residual about `0.176`
+      - best residual about `0.176`
+      - the run still drifts onto worse low-q branches and loses the earlier adaptive improvement
+- Main read:
+  - keep the adaptive outer-control layer
+  - do **not** promote the current branch-continuity anchors
+  - the live Bellman RE problem is now even narrower:
+    - not seed choice
+    - not missed brackets
+    - not global continuity anchoring
+    - specifically a date-4 dual-branch / hysteresis problem on top of an otherwise improved adaptive map
+
+## Next 3 Tasks
+
+1. Add a narrower date-4 hysteresis rule that only operates when the same period has multiple live brackets and the previously selected branch is still available.
+2. Rerun the sidecar-backed adaptive `T = 4` debug pass for `12-16` iterations and verify whether the late date-4 jump disappears without dragging periods `2-3` onto low branches.
+3. Keep the benchmark-grid RE push on hold until that narrower branch rule is stable; the current negative continuity variants are diagnostic only.
+
+## Snapshot
+
+- Last updated: 2026-04-09 (tighter date-4 control improves the controlled Bellman map further, but intermittent widening still remains)
+- Added or changed:
+  - `code/run_transition_re_fertility_main.m`
+- New or refreshed outputs:
+  - refreshed `notes/build/structural_transition_re_t4_front_loaded_iter_debug12_sidecar_controlled.*`
+- Verification:
+  - the saved controlled modes now use the tighter late-date settings:
+    - damping path `[0.15, 0.08, 0.10, 0.04]`
+    - step caps `[0.12, 0.07, 0.08, 0.03]`
+  - under that tighter date-4 control, the saved `12`-iteration controlled pass improves relative to the looser control:
+    - residual path is about `0.322 -> 0.291 -> 0.282 -> 0.268 -> 0.255 -> 0.224 -> 0.238 -> 0.258 -> 0.227 -> 0.193 -> 0.162 -> 0.149`
+    - by iteration `12`, the implied path is about `[1.719, 1.723, 1.680, 2.130]`
+    - selected votes stay small in magnitude
+  - one extra direct probe out to `16` iterations is also informative:
+    - residual keeps falling to about `0.098` by iteration `14`
+    - then jumps back to about `0.239` at iteration `15`
+    - then falls again to about `0.116` at iteration `16`
+    - so the controlled map is improved but still not smoothly contractive
+- Main read:
+  - tighter date-4 control helps more than the first controlled pass
+  - but the Bellman map still widens intermittently after long improvement streaks
+  - the live problem is now a narrow one:
+    - keep the controlled update architecture
+    - but add one more layer of stabilization rather than returning to support-object or seed changes
+
+- Last updated: 2026-04-09 (controlled outer updates smooth the Bellman map materially, but `T = 4` still does not converge cleanly)
+- Added or changed:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+- New or refreshed outputs:
+  - new `notes/build/structural_transition_re_t4_front_loaded_iter_debug8_sidecar_controlled.*`
+  - new `notes/build/structural_transition_re_t4_front_loaded_iter_debug12_sidecar_controlled.*`
+- Verification:
+  - the outer Bellman update now supports:
+    - `damping_path`
+    - `max_q_update_step`
+  - the controlled saved passes use:
+    - damping path `[0.15, 0.08, 0.10, 0.08]`
+    - step caps `[0.12, 0.07, 0.08, 0.06]`
+  - on the saved `8`-iteration controlled pass:
+    - the catastrophic period-2 dive to about `1.148` disappears
+    - residual path is about `0.322 -> 0.282 -> 0.295 -> 0.369 -> 0.341 -> 0.300 -> 0.246 -> 0.198`
+    - iteration-8 implied path is about `[1.686, 1.686, 1.721, 2.130]`
+    - selected votes are small: about `[-0.0038, -0.0014, -0.0076, +0.0128]`
+  - on the saved `12`-iteration controlled pass:
+    - residual path falls to about `0.142` by iteration `10`
+    - then widens to about `0.264` at iteration `11`
+    - then narrows again to about `0.149` at iteration `12`
+    - iteration-12 implied path is about `[1.701, 1.724, 1.679, 2.131]`
+    - period `4` remains the main source of renewed widening
+- Main read:
+  - update control helps materially:
+    - it removes the old period-2 crash
+    - and compresses the map into a narrower oscillatory band
+  - but it does **not** yet deliver clean contraction:
+    - the controlled pass still re-expands after improving
+    - especially through the back end of the path
+  - the Bellman RE problem is now sharply diagnosed:
+    - no longer root-search failure
+    - no longer seed choice
+    - now mainly period-specific outer-map control, especially on date `4`
+
+- Last updated: 2026-04-09 (sidecar-backed `T = 4` Bellman RE revalidation now survives three outer steps; benchmark sensitivity case `positive_amortization` completed cleanly)
+- Last updated: 2026-04-09 (low-damping sidecar passes show the seed barely matters; the Bellman map is still oscillatory rather than smoothly convergent)
+- Added or changed:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+  - `code/run_transition_benchmark_validation_packet_fertility_main.m`
+- New or refreshed outputs:
+  - new `notes/build/structural_transition_re_t4_iter_debug3_sidecar_*`
+  - refreshed `notes/build/structural_transition_benchmark_validation.md`
+  - refreshed `notes/build/structural_transition_benchmark_validation_sensitivities.csv`
+- Verification:
+  - `run_transition_re_fertility_main('t4_iter_debug3_sidecar')` now runs cleanly on the compiled sidecar backend with the front-row cache and three bounded outer iterations
+  - the selected-period root is no longer a one-shot interpolation only:
+    - the chosen bracket is now polished internally before the update is taken
+  - on that sidecar-backed three-step pass, the outer residual declines rather than exploding:
+    - iteration `1`: about `0.322`
+    - iteration `2`: about `0.297`
+    - iteration `3`: about `0.238`
+  - by iteration `3`, all four dates still have sign changes and bracket-polished roots:
+    - implied path about `[1.720, 1.697, 1.721, 2.138]`
+    - selected votes about `[+0.049, -0.050, -0.0016, +0.023]`
+  - saved low-damping sidecar passes now exist for both seeds:
+    - `notes/build/structural_transition_re_t4_step_iter_debug5_sidecar_lowdamp.md`
+    - `notes/build/structural_transition_re_t4_front_loaded_iter_debug5_sidecar_lowdamp.md`
+  - those two five-iteration runs behave very similarly:
+    - both spike badly at iteration `3` because period `2` dives to about `1.148`
+    - both then recover
+    - both end around residual `0.18-0.19`
+    - both end near `[1.69, 1.66-1.67, 1.72, 2.14]`
+  - implication:
+    - the front-loaded versus sharp-step **seed** is not the main issue in the outer Bellman map
+    - the instability is in the update rule / fixed-point geometry itself
+  - one extra direct lower-damping probe on the same sidecar-backed object (`damping = 0.15`, `max_iter = 5`, debug only) stays bracketed through all five iterations and ends with:
+    - max residual about `0.184`
+    - final path about `[1.834, 1.785, 1.878, 2.158]`
+    - selected votes about `[-0.012, +0.031, +0.018, +0.062]`
+    - but the middle of that run still jumps sharply, so the map is not yet smoothly contractive
+  - a further direct front-loaded low-damping probe out to `8` iterations does **not** settle cleanly:
+    - residual path about `0.322 -> 0.305 -> 0.818 -> 0.279 -> 0.184 -> 0.189 -> 0.126 -> 0.264`
+    - by iteration `8`, the map widens again and the implied path jumps back toward about `[1.717, 1.779, 1.758, 2.404]`
+    - so "just run more low-damping iterations" is not yet a real convergence strategy
+  - the remaining benchmark sensitivity case now also completes serially:
+    - `positive_amortization = 0.02`
+    - owner share `25-34` at `t = 1` falls to about `0.138`
+    - owner share `25-34` at `t = 3` falls to about `0.001`
+    - but renter-to-owner flip mass at `t = 1` stays at about `0.114`, again concentrated in `z5`
+  - the full owner-carry sensitivity block is therefore now complete:
+    - `higher_transaction_cost`
+    - `higher_owner_spread`
+    - `positive_amortization`
+    - all three materially reduce the ownership surge but do **not** remove the benchmark flip margin itself
+- Main read:
+  - the old diagnosis "iteration 2 loses the early-date roots" is now substantially weakened:
+    - under the patched search and bracket-polish logic, the `T = 4` outer map keeps roots alive through at least three bounded iterations
+  - the live RE issue is narrower now:
+    - the map is still oscillatory / slow rather than converged
+    - but it is no longer failing because the root search simply misses the interior brackets
+  - the direct low-damping comparisons now sharpen the next step:
+    - lower damping helps temporarily
+    - but the map still cycles back out on a longer pass
+    - and changing the seed from sharp step to front-loaded barely changes that
+    - so the next useful work is on update control, not on another support-object rewrite and not on seed choice alone
+  - the benchmark sensitivity gate is also sharper now:
+    - modest owner-carry tweaks shrink the owner-share spike
+    - but the benchmark renter-to-owner flip mass remains stuck at about `0.114` in `z5`
+
+- Last updated: 2026-04-09 (transition vote normalization fixed; second-pass root loss is now traced at least partly to search resolution, not only to economics)
+- Added or changed:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+  - `code/run_transition_benchmark_validation_packet_fertility_main.m`
+- New or refreshed outputs:
+  - refreshed `notes/build/structural_transition_re_diag_*`
+  - refreshed `notes/build/structural_transition_re_t4_diag_*`
+  - new `notes/build/structural_transition_re_t4_iter_*`
+  - refreshed `notes/build/structural_transition_benchmark_validation.md`
+  - refreshed `notes/build/structural_transition_benchmark_validation_paths.csv`
+  - partial `notes/build/structural_transition_benchmark_validation_sensitivities.csv`
+- Verification:
+  - the transition support object had a real normalization bug:
+    - the simulated cross sections were already cohort-weighted
+    - the transition vote aggregator was multiplying by `cohortsize / age_n` a second time
+    - fixing that restores transition vote mass to `1.000` instead of about `0.092`
+  - the transition `dp` comparison now uses a from-`t` onward higher-price path:
+    - this lines up the transition support object with the steady-state permanent price-shock logic much more closely than a one-period-only perturbation
+  - after those two fixes:
+    - `run_transition_re_fertility_main('diag')` now brackets in both dates
+    - `run_transition_re_fertility_main('t4_diag')` now brackets in all four dates on the first outer pass
+  - however the outer map is **not** yet validated beyond the first pass:
+    - `run_transition_re_fertility_main('t4_iter')`
+    - iteration 1 implied `[1.737, 1.766, 1.769, 2.416]`
+    - iteration 2 implied `[1.500, 1.000, 1.500, 2.004]`
+    - on the old search logic this looked like the early-date roots disappeared once the guessed future tail was updated
+  - new period-2 diagnosis now says that was at least partly a search-grid problem:
+    - `notes/build/structural_transition_re_period2_diagnosis.md`
+    - even under the iteration-2 incoming cross section and iteration-2 future tail, period `2` still contains sign changes
+    - the missed positive pocket sits in a narrow interior region around `q = 1.625-1.75`, which the old coarse grid never sampled
+  - the Bellman RE root search has therefore been tightened again:
+    - after boundary expansion, it now fills the interior of the explored interval before falling back to `closest_no_bracket`
+    - full `t4_iter` revalidation under this newer search has **not** finished cleanly yet, so the outer-map fix is promising but not yet verified end to end
+  - `run_transition_re_fertility_main('smoke')` was attempted but timed out after about 30 minutes and was stopped rather than left running
+  - the benchmark smoother-path gate still stands:
+    - all three smoother permanent benchmark paths produce zero renter-to-owner flip mass at `t = 1`
+    - so the sharp `[2.0, 2.1, 2.1, 2.1]` step remains an unsafe Bellman RE benchmark object
+  - the benchmark sensitivity workflow did **not** fail economically at first:
+    - the original run `notes/build/logs/transition_benchmark_validation_20260409_115634/` failed in `04_sensitivity_case1` because the markdown note writer passed a cell into `fprintf`
+    - that writer bug is now patched
+    - the workflow was relaunched from steps `4-7` in:
+      - `notes/build/logs/transition_benchmark_validation_20260409_144809/`
+    - that rerun completed cases `04` and `05` and refreshed the live sensitivity note / csv
+    - case `06` then failed with `exit=-1` during the flat reference solve and an empty stderr log, so the remaining sensitivity block needs a clean serial rerun
+- Main read:
+  - the blocker is no longer "missing early-date roots on the first pass"
+  - the blocker is now narrower:
+    - separate true tail-instability from root-search misspecification
+    - then rerun the multi-iteration Bellman map on a clean serial session
+  - that is a tighter and more useful diagnosis:
+    - first-pass local bracketing is now real
+    - and at least part of the second-pass failure was the search grid skipping a narrow interior bracket
+  - the partial sensitivity read is also sharper:
+    - `higher_transaction_cost` cuts benchmark step-path owner share `25-34` at `t = 1` from about `0.321` to about `0.138`
+    - but the renter-to-owner flip mass stays concentrated in `z5` at about `0.114`
+
+- Last updated: 2026-04-09 (Bellman RE root search and vote weighting tightened; smoother benchmark paths remove the front-loaded flip)
+- Added:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_transition_re_diag_iterations.csv`
+  - `notes/build/structural_transition_re_diag_periods.csv`
+  - `notes/build/structural_transition_re_diag_path_summary.csv`
+  - `notes/build/structural_transition_re_diag_vote_grid.csv`
+  - `notes/build/structural_transition_re_diag.md`
+  - `notes/build/structural_transition_re_diag_results.mat`
+  - `notes/build/structural_transition_re_t4_diag_iterations.csv`
+  - `notes/build/structural_transition_re_t4_diag_periods.csv`
+  - `notes/build/structural_transition_re_t4_diag_path_summary.csv`
+  - `notes/build/structural_transition_re_t4_diag_vote_grid.csv`
+  - `notes/build/structural_transition_re_t4_diag.md`
+  - `notes/build/structural_transition_re_t4_diag_results.mat`
+  - refreshed `notes/build/structural_transition_benchmark_validation_paths.csv`
+  - refreshed `notes/build/structural_transition_benchmark_validation.md`
+- Verification:
+  - the Bellman RE wrapper now runs locally end to end on:
+    - a `T = 2` micro diagnostic
+    - a `T = 4` smoother-seeded one-iteration diagnostic
+  - the transition vote-root search no longer stops at the initial local grid:
+    - it now expands outward until it finds a bracket or hits the configured bounds
+  - the transition vote object now matches the steady-state political weighting much more closely:
+    - it uses the **post-policy** distribution under the base path
+    - and age weights from `env.cohortsize / age_n`
+  - benchmark smoother-path validation has now completed for:
+    - `smooth_front_loaded = [2.0, 2.05, 2.08, 2.10]`
+    - `smooth_even_ramp = [2.0, 2.03, 2.06, 2.10]`
+    - `smooth_back_loaded = [2.0, 2.02, 2.05, 2.10]`
+  - owner-carry sensitivity block is still running in:
+    - `notes/build/logs/transition_benchmark_validation_20260409_115634/`
+    - active phase when last checked:
+      - `04_sensitivity_case1`
+- Main read:
+  - the key benchmark decision is now much sharper:
+    - all three smoother benchmark paths produce **zero** renter-to-owner flip mass at `t = 1`
+    - `smooth_front_loaded` still raises owner share `25-34` to about `0.139` at `t = 1`
+    - `smooth_even_ramp` keeps owner share `25-34` at about `0.077` at `t = 1`
+    - `smooth_back_loaded` also keeps owner share `25-34` at about `0.077` at `t = 1`
+  - implication:
+    - the sharp `[2.0, 2.1, 2.1, 2.1]` step path is **not** a safe Bellman RE benchmark object
+    - the front-loaded flip is a timing-lumpiness feature of the sharp step, not a robust benchmark-grid transition fact
+  - the Bellman RE wrapper itself is now in better shape, but the local diagnostics still say the early-period vote roots are fragile:
+    - `T = 2` diagnostic:
+      - period `2` now brackets and interpolates near `q ≈ 1.953`
+      - period `1` stays slightly negative across the full search window and picks the near-zero boundary point at `q = 1.5`
+    - `T = 4` smoother-seeded diagnostic:
+      - only period `4` brackets cleanly
+      - periods `1-3` remain small-negative and land on closest-no-bracket points
+  - so the live blocker has shifted:
+    - not "Bellman RE code missing"
+    - but "transition political-support roots in the early dates are not yet robust enough for a benchmark-grid fixed point"
+- Last updated: 2026-04-09 (Bellman RE wrapper implemented; partial benchmark validation says the sharp benchmark step path is not yet a safe outer-RE object)
+- Added:
+  - `code/solve_transition_re_fertility.m`
+  - `code/run_transition_re_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_transition_re_diag_iterations.csv`
+  - `notes/build/structural_transition_re_diag_periods.csv`
+  - `notes/build/structural_transition_re_diag_path_summary.csv`
+  - `notes/build/structural_transition_re_diag_vote_grid.csv`
+  - `notes/build/structural_transition_re_diag.md`
+  - `notes/build/structural_transition_re_diag_results.mat`
+  - `notes/build/structural_transition_benchmark_validation_paths.csv`
+  - `notes/build/structural_transition_benchmark_validation.md`
+- Verification:
+  - the first Bellman RE wrapper now exists and runs locally through a cheap diagnostic call:
+    - `run_transition_re_fertility_main('diag')`
+    - configuration:
+      - `T = 2`
+      - `I = 8`
+      - `J = 4`
+      - one outer iteration
+  - that diagnostic completed end to end and wrote the new RE note/csv/mat layer
+  - the benchmark validation packet is still running in the background through:
+    - `code/start_transition_benchmark_validation.ps1`
+    - active run:
+      - `notes/build/logs/transition_benchmark_validation_20260409_115634/`
+    - current phase when last checked:
+      - `03_paths_case5`
+  - the partial path-validation block already completed for:
+    - `smooth_front_loaded`
+    - `smooth_even_ramp`
+- Main read:
+  - the Bellman RE wrapper is now real code rather than only a build spec
+  - but the first local diagnostic says the transition vote-root mapping is **not** yet benchmark-ready:
+    - in the `T = 2` micro pass, the implied path is `[2.25, 1.75]`
+    - both dates hit `closest_no_bracket`
+    - selected transition votes stay negative rather than bracketing zero
+  - the partial benchmark smoother-path gate already changes the interpretation of the transition pathology:
+    - under `smooth_front_loaded = [2.0, 2.05, 2.08, 2.10]`, owner share `25-34` is only about `0.139` at `t = 1`
+    - under `smooth_even_ramp = [2.0, 2.03, 2.06, 2.10]`, owner share `25-34` stays at about `0.077` at `t = 1`
+    - in both completed smoother-path cases, renter-to-owner flip mass at `t = 1` is `0.000`
+  - implication:
+    - do **not** wrap the benchmark RE object around the sharp `[2.0, 2.1, 2.1, 2.1]` step path yet
+    - the live issue is now less "does Bellman RE code exist?" and more "what transition geometry / vote-root mapping is stable enough to solve?"
+- Last updated: 2026-04-09 (transition-policy overnight packet completed; surge is mainly a continuation-value anticipation effect, with benchmark flips confined to the top middle-income state)
+- New outputs:
+  - `notes/build/structural_transition_anticipation_menu_benchmark_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_benchmark_z_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_benchmark.md`
+- Verification:
+  - overnight workflow completed successfully in:
+    - `notes/build/logs/transition_policy_overnight_20260408_223339/`
+  - step timings:
+    - medium anticipation menu finished at `23:13:40`
+    - value-wedge audit finished at `23:31:40`
+    - benchmark anticipation menu finished at `00:55:40`
+- Main read:
+  - the overnight packet materially narrows the interpretation of the transition surge
+  - the value-wedge audit says the surge is **not** coming from better current-period utility at the unchanged `t = 1` price:
+    - for the key `z = 3` state, owner-minus-renter immediate utility stays at about `-0.359` in both flat and step-up cases, while continuation value moves from about `+0.006` to about `+0.839`
+    - for the key `z = 4` state, owner-minus-renter immediate utility stays at about `-0.110`, while continuation value moves from about `-0.262` to about `+0.469`
+  - so the main force is continuation value from carrying owner status into the higher-price future
+  - the anticipation-menu read is also now sharper:
+    - on the medium grid, even a small permanent future increase `2.0 -> 2.05` flips the `z = 3` mass into ownership at `t = 1`
+    - the larger permanent step `2.0 -> 2.1` flips both `z = 3` and `z = 4`
+    - a delayed step shifts the ownership surge to the period just before the higher future price arrives
+    - a transitory step does not generate the same front-loaded owner-entry jump
+  - on the benchmark grid, the extreme medium-grid broad flip is much smaller:
+    - the only renter-to-owner flip at `t = 1` comes from `z = 5`
+    - flip mass is about `0.114`
+    - owner share `25-34` rises from about `0.077` to about `0.321` under the permanent `2.0 -> 2.1` step
+  - implication:
+    - the live mechanism now looks more like a strong anticipation / hedge margin than a generic coding bug
+    - but the medium-grid version is still too knife-edge, so the next task is to decide whether the benchmark-grid behavior is economically acceptable or still reflects excessive five-year lumpiness
+- Last updated: 2026-04-08 (transition-policy overnight packet launched after smoke-validating the live Bellman diagnostics)
+- Added:
+  - `code/run_transition_anticipation_menu_fertility_main.m`
+  - `code/run_transition_value_wedge_audit_fertility_main.m`
+  - `code/transition_policy_overnight_workflow.ps1`
+  - `code/start_transition_policy_overnight.ps1`
+- New outputs:
+  - `notes/build/structural_transition_anticipation_menu_medium_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_medium_z_summary.csv`
+  - `notes/build/structural_transition_anticipation_menu_medium.md`
+  - `notes/build/structural_transition_value_wedge_audit.csv`
+  - `notes/build/structural_transition_value_wedge_audit.md`
+- Verification:
+  - `run_transition_value_wedge_audit_fertility_main.m` now runs locally end to end after:
+    - fixing the unmatched-parenthesis syntax error
+    - passing `solver_results.params` rather than the sparse override struct into the local value-gap decomposition
+  - `run_transition_anticipation_menu_fertility_main('medium')` now runs locally end to end on:
+    - `I = 30`, `J = 14`
+    - cases `flat_2p0`, `step_2p05`, `step_2p10`, `step_2p15`, `delayed_step_2p10`, `transitory_step_2p10`
+  - first overnight launch failed immediately because `C:\Users\Dave_\AppData\Local\Temp` had no free space available to start `matlab.exe`
+  - launcher and worker now redirect `TEMP` and `TMP` to a project-specific folder on `D:`
+  - bounded overnight workflow relaunched through:
+    - `code/start_transition_policy_overnight.ps1`
+    - worker `code/transition_policy_overnight_workflow.ps1`
+  - active overnight run:
+    - `notes/build/logs/transition_policy_overnight_20260408_223339/`
+    - pointer `notes/build/logs/active_transition_policy_overnight.txt`
+    - current phase after relaunch check: `01_anticipation_menu_medium`
+- Main read:
+  - the Bellman transition diagnosis is now packaged into one bounded away-from-keyboard chain:
+    - medium anticipation menu
+    - value-wedge audit
+    - benchmark anticipation menu
+  - this packet is deliberately pre-RE:
+    - it is only meant to identify whether the middle-state ownership surge is driven by continuation value, timing lumpiness, or leverage geometry
+    - it does **not** start the outer RE loop
+    - it does **not** reopen annual Python bridge work
+- Last updated: 2026-04-08 (both solvers now enforce feasibility; remaining PE surge comes from broad middle-state flips, not corner bugs)
+- Added:
+  - `code/run_stationary_owner_policy_audit_fertility_main.m`
+  - `code/run_transition_policy_flip_audit_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_stationary_owner_policy_audit.md`
+  - `notes/build/structural_stationary_owner_policy_audit_summary.csv`
+  - `notes/build/structural_stationary_owner_policy_audit_age25_states.csv`
+  - `notes/build/structural_stationary_owner_policy_audit_results.mat`
+  - `notes/build/structural_transition_path_pe_medium_grid_check.md`
+  - `notes/build/structural_transition_policy_flip_audit.md`
+  - `notes/build/structural_transition_policy_flip_audit_summary.csv`
+  - `notes/build/structural_transition_policy_flip_audit_z_summary.csv`
+  - `notes/build/structural_transition_policy_flip_audit_states.csv`
+- Verification:
+  - `SolveSS_fertility.m` now imposes a hard infeasibility penalty on negative-consumption choices instead of letting them survive through consumption clipping
+  - `solve_household_path_fertility.m` now imposes the same hard infeasibility penalty inside the transition Bellman
+  - the refreshed owner-policy audit ran locally for:
+    - `I = 30`, `J = 14`
+    - `I = 60`, `J = 14`
+  - the PE smoke was rerun through:
+    - `code/run_transition_path_pe_fertility_main.m`
+  - a one-off medium-grid PE check was also run at:
+    - `I = 30`, `J = 14`
+  - `SolveSS_fertility.m` now exposes optional transition objects when `return_transition_objects = true`, including:
+    - pre-policy age densities
+    - post-policy age densities
+    - owner-choice policy indices
+    - birth probabilities
+- Main read:
+  - the duplicated household-feasibility bug is now fixed in both the stationary and transition Bellman solvers
+  - after the hard feasibility change:
+    - benchmark age-25 renter-entry top-h share is `0.000`
+    - benchmark age-25 renter-entry top-b share is `0.000`
+    - benchmark age-25 infeasible-owner share is `0.000`
+    - the same is true at age `30`
+  - the age-25 state map is now sensible:
+    - low-income renter states stay renters
+    - only the high-income states enter ownership
+    - and those owner choices are levered but budget-feasible rather than top-cell corners
+  - however, the PE transition problem is **not** gone:
+    - the refreshed medium-grid step-up path `q = [2.0, 2.1, 2.1, 2.1]` gives owner share `25-34 = 0.929` at `t = 1`
+    - then `0.430` at `t = 2`
+    - then `0.002` at `t = 3-4`
+  - the new transition policy-flip audit shows exactly where that `t = 1` surge comes from:
+    - `0.813` of the age-25 entrant mass flips renter-to-owner between the flat and step-up paths
+    - that flip mass is **not** a tail-state artifact
+    - it is concentrated in the two middle income states:
+      - `z = -0.5625` contributes `0.370`
+      - `z = 0.0625` contributes `0.442`
+  - implication:
+    - do **not** start the outer RE loop yet
+    - the next diagnosis should now move back to the transition path:
+      - inspect why anticipated higher future `q` makes ownership too attractive for a **wide middle entrant region**
+      - identify whether the culprit is the continuation value from owning into the high-price future, the five-year timing lumpiness, or the leverage / bequest geometry
+      - only then return to the outer RE loop
+- Last updated: 2026-04-08 (timing-definition gap fixed; stationary decomposition points to an asset-grid / upper-boundary problem)
+- Added:
+  - `code/run_stationary_grid_decomposition_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_stationary_grid_decomposition.md`
+  - `notes/build/structural_stationary_grid_decomposition.csv`
+  - `notes/build/structural_stationary_grid_decomposition_results.mat`
+- Verification:
+  - the earlier flat-path timing gap was traced to an unweighted steady-state first-birth timing diagnostic in `SolveSS_fertility.m`
+  - `SolveSS_fertility.m` now reports the cohort-weighted cross-sectional timing object as the main diagnostic, while preserving the old unweighted value in separate fields
+  - direct solver check at the benchmark point confirms:
+    - weighted mean age first birth `= 26.472693...`
+    - unweighted mean age first birth `= 26.738329...`
+  - the stationary decomposition passed on two one-at-a-time ladders:
+    - vary `I` holding `J = 14`
+    - vary `J` holding `I = 60`
+- Main read:
+  - the remaining blocker is now clearly the stationary ownership / leverage geometry, not the timing definition
+  - the asset grid matters more than the housing grid:
+    - holding `J = 14`, owner share `25-34` ranges from about `0.090` to `0.203`
+    - holding `I = 60`, owner share `25-34` ranges from about `0.112` to `0.164`
+  - the deeper pathology is not a missing starter-home margin:
+    - the smallest owner cell is unused at ages `25` and `30` in every audited case
+    - young owners are concentrated in very large housing states instead
+    - age-25 mean owner housing is roughly `14.7-15.0` on a grid with max housing `15`
+    - age-25 mean owner assets are often near the top of the `b` grid as well
+  - implication:
+    - do not start the outer RE loop yet
+    - first diagnose why the owner problem is pushing young households to the upper housing / asset boundary instead of into small owner states
+- Last updated: 2026-04-08 (stationary grid audit now separates steady-state grid sensitivity from path-solver issues)
+- Added:
+  - `code/run_stationary_grid_audit_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_stationary_grid_audit.md`
+  - `notes/build/structural_stationary_grid_audit.csv`
+  - `notes/build/structural_stationary_grid_audit_results.mat`
+- Verification:
+  - local MATLAB audit passed across the grid ladder `[(20,6), (30,8), (40,10), (50,12), (60,14)]`
+  - after the cohort-scaling fix in `forward_distribution_path_fertility.m`, the flat-path transition stack matches same-grid stationary ownership shares and average birth rates exactly at `t = 1`
+  - the flat-path stack now keeps total mass at `1.000000`
+- Main read:
+  - the remaining PE issue is still **not** the old vote-to-price loop
+  - the strongest problem is already in the stationary structural benchmark:
+    - steady owner share `25-34` moves non-monotonically across the grid ladder:
+      - `I = 20`, `J = 6`: `0.495`
+      - `I = 30`, `J = 8`: `0.089`
+      - `I = 40`, `J = 10`: `0.225`
+      - `I = 50`, `J = 12`: `0.164`
+      - `I = 60`, `J = 14`: `0.164`
+    - steady mortgaged-owner share under `35` does the same:
+      - `0.424`, `0.002`, `0.138`, `0.077`, `0.077`
+  - fertility timing moments are essentially invariant across the same ladder:
+    - average birth rate stays at about `0.450011`
+    - mean age at first birth now aligns at about `26.473` once the steady-state diagnostic is cohort-weighted
+  - implication:
+    - do not start the outer RE loop yet
+    - first diagnose which grid features move young ownership and leverage so sharply
+- Last updated: 2026-04-08 (structural transition-path Bellman PE stack now runs locally)
+- Added the first end-to-end structural transition-path partial-equilibrium stack:
+  - `code/solve_household_path_fertility.m`
+  - `code/forward_distribution_path_fertility.m`
+  - `code/summarize_transition_path_fertility.m`
+  - `code/run_transition_path_pe_fertility_main.m`
+- New outputs:
+  - `notes/build/structural_transition_path_pe_note.md`
+  - `notes/build/structural_transition_path_pe_summary.csv`
+  - `notes/build/structural_transition_path_pe_results.mat`
+- Verification:
+  - local MATLAB smoke passed through `run_transition_path_pe_fertility_main`
+  - flat path `q = [2.0, 2.0, 2.0, 2.0]` replicates exactly through `t = 4`
+  - after the cohort-scaling fix in `forward_distribution_path_fertility.m`, total simulated mass stays at `1.000000`
+- Main read:
+  - the five-year structural transition-path mechanics are now live in partial equilibrium
+  - this PE stack does **not** use the old vote-to-price loop; prices are exogenous at this stage
+  - an initial pre-policy / post-policy reporting mismatch in the PE summary layer was found and fixed
+  - the flat path now replicates the stationary PE benchmark exactly on the chosen grid
+  - a simple step-up path `q = [2.0, 2.1, 2.1, 2.1]` lowers average births and raises mean age at first birth, so the fertility side moves in the expected direction
+  - on the small PE smoke grid, the same path still drives young ownership down sharply by `t = 3`:
+    - owner share `25-34` falls to about `0.086`
+    - mortgaged-owner share under `35` falls effectively to zero
+  - a deeper diagnosis also shows strong stationary structural grid sensitivity:
+    - `I = 20`, `J = 6`: owner share `25-34 ≈ 0.495`, mortgaged-owner share under `35 ≈ 0.424`
+    - `I = 30`, `J = 8`: owner share `25-34 ≈ 0.089`, mortgaged-owner share under `35 ≈ 0.002`
+    - default benchmark grid: owner share `25-34 ≈ 0.164`, mortgaged-owner share under `35 ≈ 0.077`
+  - implication:
+    - do not start the outer RE loop yet
+    - next task is to diagnose the stationary grid sensitivity first, then the transition-distribution mapping under non-flat prices
+- Last updated: 2026-04-08 (RE work consolidated before Bellman transition-path build)
+- Added two master notes so the RE sequence is preserved in one place before the structural Bellman transition-path build starts:
+  - `notes/build/re_work_synthesis.md`
+  - `notes/build/re_model_map.md`
+- Added the implementation note for the next phase:
+  - `notes/build/structural_transition_re_build_spec.md`
+- Main use:
+  - `re_work_synthesis.md` is the durable chronology of what the RE work tried, what passed, what failed, and what is still missing
+  - `re_model_map.md` is the compact inventory of which RE objects exist in the codebase right now
+  - `structural_transition_re_build_spec.md` fixes the exact MATLAB file split and stage order for the structural Bellman transition-path RE build
+- Last updated: 2026-04-08 (structural-fertility full RE now passes in the stationary annual branch)
+- 2026-04-08 added the first annual full-RE transition that uses the annual structural fertility operator instead of an ad hoc fertility state law:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_structural_fertility.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_structural_fertility_T80_checkpoints.csv`
+  - object:
+    - stationary annual full-RE housing block
+    - annual structural fertility operator loaded from the ownership / balance-sheet screen
+    - structural price mapped as `a_price_t = q_ss * q_t`
+    - annual demand and entrant cohort mass both scale with `avg_birth_rate(a_price_t) / avg_birth_rate(q_ss)`
+    - the annual Python branch still does not carry literal parity or children-at-home states
+  - main read:
+    - the structural operator makes the annual full-RE path materially lower than the no-structural RE benchmark:
+      - benchmark `q` gap vs no-structural RE is about `-0.026` at `t = 20`
+      - about `-0.115` at `t = 40`
+      - and about `-0.365` at `t = 80`
+    - the benchmark structural birth multiplier falls gradually:
+      - about `0.971` at `t = 20`
+      - about `0.925` at `t = 40`
+      - about `0.853` at `t = 80`
+    - implied timing shifts move in the expected direction:
+      - benchmark mean age at first birth is about `30.26` at `t = 20`
+      - about `30.59` at `t = 40`
+      - about `31.09` at `t = 80`
+  - implication:
+    - this is the first annual full-RE transition that is structural-fertility-implied rather than reduced-form
+    - but it is still an operator-implied bridge, not yet a literal household-state parity recursion inside the Python annual branch
+- Last updated: 2026-04-08 (recursive support-state full RE now passes in the stationary annual branch)
+- 2026-04-08 added the closest current object to a fuller recursive policy RE in the annual branch:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_support_state.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_support_state_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_support_state_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_support_state_T80_checkpoints.csv`
+  - object:
+    - stationary annual full-RE housing block
+    - recursive support state scales deposit help and qualification support between baseline and the target support regime
+    - the same support state also lowers effective local restrictiveness `theta`
+    - fertility remains a reduced-form endogenous state on the demand side
+  - main read:
+    - the support state does turn on meaningfully, but only gradually:
+      - in the benchmark case it is about `0.025` at `t = 20`
+      - about `0.199` at `t = 40`
+      - about `0.412` at `t = 80`
+    - the recursive-support path stays materially different from the fixed-support benchmark in the main transition window:
+      - benchmark `q` gap vs fixed-support RE is about `+0.054` at `t = 20`
+      - about `+0.075` at `t = 40`
+      - and only about `-0.018` by `t = 80`
+  - implication:
+    - this is probably the closest current object to the user's "full RE" request in the annual branch
+    - but it still reads more like a recursive-policy alternative than a replacement for the fixed-support benchmark object
+- Last updated: 2026-04-08 (joint fertility plus political recursive block now passes inside the stationary annual RE stack)
+- 2026-04-08 joined the two reduced-form recursive layers inside one stationary annual full-RE solve:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_joint_states.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_joint_states_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_joint_states_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_joint_states_T80_checkpoints.csv`
+  - object:
+    - stationary annual full-RE housing block
+    - reduced-form endogenous fertility state on the demand side
+    - reduced-form political-easing state on the supply side
+    - both states are now forecast recursively inside the same solve
+  - main read:
+    - the joint path is still mostly fertility-driven through the main transition window:
+      - benchmark `q` gap vs no-state RE is about `+0.055` at `t = 20`
+      - and is basically identical to the fertility-only path through `t = 20`
+    - but fertility does pull the political state forward:
+      - benchmark political state is about `0.002` at `t = 20`
+      - about `0.090` at `t = 40`
+      - versus about `0.054` at `t = 40` in the political-only run
+    - by `t = 80`, the joint object sits between the single-state cases:
+      - benchmark `q` gap vs fertility-only RE is about `-0.083`
+      - benchmark `q` gap vs political-only RE is about `+0.021`
+  - implication:
+    - the two-state reduced-form recursive block now exists and works
+    - the next decision is no longer whether to build it
+    - it is whether that block is already enough for the annual paper narrative or whether a richer structural fertility / policy state is worth the extra cost
+- Last updated: 2026-04-08 (forecasted political-easing state now passes inside the stationary annual RE block)
+- 2026-04-08 added the first genuinely forecasted supply-side political state inside the stationary annual RE stack:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_political_state.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_political_state_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_political_state_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_political_state_T80_checkpoints.csv`
+  - object:
+    - stationary annual full-RE housing block
+    - support regime within each scenario stays fixed
+    - a reduced-form political-easing state is forecast recursively
+    - the state responds to rising prices and worsening ownership access relative to the observed `t = 0` snapshot
+    - it lowers effective `theta`, so the recursive channel is politics -> permits -> stock -> prices
+  - main read:
+    - the recursive political state is late-moving rather than front-loaded:
+      - it is basically zero through `t = 20`
+      - by `t = 40` it has turned on:
+        - baseline about `0.079`
+        - benchmark about `0.054`
+        - robustness about `0.042`
+      - by `t = 80` it hits the clipping cap `0.150` in all three cases
+    - the price effect is modest in the main transition window but visible in the tail:
+      - benchmark `q` gap vs no-political-state full RE is about `-0.001` at `t = 40`
+      - about `-0.071` at `t = 80`
+  - implication:
+    - the annual branch now has a genuinely forecasted political / supply state rather than only an imposed support-regime path
+    - the next real step is to combine that political state with the reduced-form endogenous fertility state in one recursive annual block
+- Last updated: 2026-04-08 (explicit anticipated support-regime path now passes inside the stationary annual RE block)
+- 2026-04-08 pushed the annual full-RE ladder one rung further:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_regime_path.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_regime_path_t5_T80_checkpoints.csv`
+  - object:
+    - baseline support regime for `t < 5`
+    - benchmark support regime for `t >= 5`
+    - agents internalize the full regime path when forming the RE price path
+  - main read:
+    - this is the first annual RE object in which policy/support persistence is part of the anticipated path rather than just a fixed scenario label
+    - the price path is almost identical to the always-benchmark full-RE path:
+      - `q` gaps vs always-benchmark RE are basically zero throughout
+    - the main difference is composition before the switch:
+      - young mortgaged-owner share is about `0.026` lower at `t = 1`
+      - about `0.038` lower at `t = 5`
+      - then the gap closes quickly
+    - implication:
+      - the imposed regime-path version is economically tame and now passed
+      - the next genuine rung is no longer “anticipated support path”, but a forecasted policy/political state
+- Last updated: 2026-04-08 (reduced-form endogenous fertility now sits inside the stationary annual full-RE block)
+- 2026-04-08 added the next rung beyond exogenous fertility shocks:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_endogenous_fertility.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_endogenous_fertility_T80_checkpoints.csv`
+  - object:
+    - stationary annual full-RE housing block
+    - fertility is now a reduced-form endogenous state rather than an imposed shock path
+    - fertility responds each year to prices and ownership access relative to the stationary endpoint
+    - annual demand is multiplied by `1 + fertility_state_t`
+  - law of motion used:
+    - persistence `rho = 0.85`
+    - price coefficient `0.05` on `log(q_ss / q_t)`
+    - young-owner coefficient `0.03`
+    - young-mortgaged-owner coefficient `0.08`
+    - state clipped to `±0.08`
+  - main read:
+    - the endogenous-fertility rung stays economically tame
+    - prices move more than in the no-shock full-RE baseline:
+      - `q` gaps vs no-shock full RE are about `+0.009` at `t = 5`
+      - about `+0.053` to `+0.058` at `t = 20`
+    - ownership composition moves only a little:
+      - young mortgaged-owner gaps vs no-shock RE are around `-0.010` to `-0.014` at `t = 20`
+    - implication:
+      - fertility is now part of the annual RE transition in a genuine reduced-form sense
+      - the next rung is no longer “put fertility in”; it is to make policy/support persistence an explicit recursive state
+- Last updated: 2026-04-08 (full RE ladder extended: fertility-demand shock now sits inside the stationary annual RE block)
+- 2026-04-08 added the next rung beyond q-only annual RE:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_fertility_shock.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80.csv`
+    - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_checkpoints.csv`
+    - `notes/build/annual_full_re_stationary_transition_fertility_shock_T80_no_shock_paths.csv`
+    - `notes/build/annual_full_re_ladder.md`
+  - object:
+    - stationary annual full-RE housing block
+    - temporary exogenous fertility-demand multiplier inside the RE demand path
+    - comparison against the corresponding no-shock full-RE path
+  - shock path:
+    - multiplier at `t = 1`: `1.05`
+    - persistence `rho = 0.90`
+    - then geometric decay back to `1.0`
+  - main read:
+    - this is the first annual full-RE object in which future fertility pressure explicitly affects future house prices
+    - prices move visibly:
+      - baseline `q_1 ≈ 1.006`, `q_5 ≈ 1.031`, `q_20 ≈ 1.134`
+      - benchmark `q_1 ≈ 1.006`, `q_5 ≈ 1.031`, `q_20 ≈ 1.129`
+      - robustness `q_1 ≈ 1.006`, `q_5 ≈ 1.031`, `q_20 ≈ 1.126`
+    - relative to the no-shock full-RE path:
+      - `q` gaps are about `+0.021` at `t = 5`
+      - about `+0.028` to `+0.029` at `t = 20`
+    - ownership composition barely moves:
+      - young mortgaged-owner gaps vs no-shock RE are around `-0.005` to `-0.008` in the first `20` years
+    - implication:
+      - fertility can now affect future prices in the annual RE branch without yet making fertility endogenous
+      - the next serious rung is a reduced-form endogenous fertility law inside the same stationary full-RE block
+- Last updated: 2026-04-08 (full RE annual transition now anchored to stationary annual equilibrium)
+- 2026-04-08 built the first **full RE annual transition around the stationary annual equilibrium**:
+  - new code:
+    - `code/build_annual_full_re_stationary_transition_calibrated.py`
+  - new outputs:
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80.md`
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80.csv`
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80_fixed_points.csv`
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80_checkpoints.csv`
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80_stationary_targets.csv`
+    - `notes/build/annual_full_re_stationary_transition_calibrated_T80_anchors.csv`
+  - object:
+    - observed `t = 0` snapshot
+    - no permanent drift
+    - calibrated permits -> starts -> completions -> stock block
+    - full RE price path solved out to `T = 80`
+    - comparison against both the no-RE no-drift anchor and the stationary annual endpoint
+  - main read:
+    - the full-RE no-drift path is extremely close to the corresponding no-RE no-drift transition anchor in the early and middle years
+    - baseline:
+      - `q_1 ≈ 1.001`
+      - `q_5 ≈ 1.010`
+      - `q_10 ≈ 1.032`
+      - `q_20 ≈ 1.105`
+      - `q_80 ≈ 1.764`
+      - stationary endpoint `q_ss ≈ 1.993`
+    - benchmark:
+      - `q_1 ≈ 1.001`
+      - `q_5 ≈ 1.010`
+      - `q_10 ≈ 1.031`
+      - `q_20 ≈ 1.101`
+      - `q_80 ≈ 1.721`
+      - stationary endpoint `q_ss ≈ 1.974`
+    - robustness:
+      - `q_1 ≈ 1.001`
+      - `q_5 ≈ 1.010`
+      - `q_10 ≈ 1.031`
+      - `q_20 ≈ 1.098`
+      - `q_80 ≈ 1.698`
+      - stationary endpoint `q_ss ≈ 1.961`
+    - early-year RE deviations from the no-RE no-drift anchor are basically zero:
+      - `q` gaps are about `0.000` through `t = 20`
+      - young mortgaged-owner gaps vs the no-RE anchor are around `-0.001` to `-0.002`
+    - by `t = 80`, the RE path is very close to the corresponding stationary annual endpoint on the ownership side and still below it on price, which is what you would expect from a transition that is still converging but no longer under-closed
+  - implication:
+    - this is now a defensible **full RE annualised model** in the sense needed for the paper:
+      - there is a stationary annual endpoint
+      - there is a full RE transition around it
+      - the old permanently drifting/capped path is no longer the only closure available
+- Last updated: 2026-04-08 (stationary annual endpoint found on calibrated construction-flow block; calibrated RE scripts corrected)
+- 2026-04-08 added a true no-drift stationary annual-equilibrium branch on the calibrated permits-starts-completions-stock block:
+  - new code:
+    - `code/build_annual_stationary_equilibrium_permits_starts_stock_calibrated.py`
+  - updated code:
+    - `code/build_annual_snapshot_state_transition_permits_starts_stock_calibrated.py`
+      - now exposes `resolve_calibrated_params(...)` so downstream scripts load the actual best-fit construction parameters instead of silently falling back to class defaults
+    - `code/build_annual_k_step_re_permits_starts_stock_calibrated.py`
+    - `code/build_annual_full_path_re_permits_starts_stock_calibrated.py`
+  - new outputs:
+    - `notes/build/annual_stationary_equilibrium_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_stationary_equilibrium_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_stationary_equilibrium_permits_starts_stock_calibrated_checkpoints.csv`
+    - `notes/build/annual_stationary_equilibrium_permits_starts_stock_calibrated_stationary_summary.csv`
+  - corrected construction parameters now actually used by the annual RE scripts:
+    - `start_hazard = 0.65`
+    - `completion_hazard = 0.45`
+    - authorized-not-started inventory `= 0.25` years of permit flow
+    - under-construction inventory `= 0.70` years of permit flow
+  - main read:
+    - once permanent drift is removed, the calibrated annual construction-flow block converges cleanly to a stationary annual endpoint
+    - baseline stationary endpoint:
+      - `q_ss ≈ 1.993`
+      - young mortgaged-owner share `25-34 ≈ 0.224`
+    - benchmark stationary endpoint:
+      - `q_ss ≈ 1.974`
+      - young mortgaged-owner share `25-34 ≈ 0.269`
+    - robustness stationary endpoint:
+      - `q_ss ≈ 1.961`
+      - young mortgaged-owner share `25-34 ≈ 0.290`
+    - the last-20-period max absolute change is below about `4.7e-06` in all three cases, so this is numerically a genuine stationary annual endpoint rather than a drifting pseudo-limit
+  - implication:
+    - the annual full-RE branch no longer needs to lean on a permanently drifting path plus an arbitrary long-run price cap
+    - it can now be reframed as a transition around a stationary annual equilibrium on the calibrated construction-flow block
+- 2026-04-08 moved beyond the active-horizon `k = 20` solve and ran a genuine longer finite-path full-RE solve on the calibrated construction-flow block:
+  - new code:
+    - `code/build_annual_full_path_re_permits_starts_stock_calibrated.py`
+  - new outputs:
+    - `notes/build/annual_full_path_re_permits_starts_stock_calibrated_T40.md`
+    - `notes/build/annual_full_path_re_permits_starts_stock_calibrated_T40.csv`
+    - `notes/build/annual_full_path_re_permits_starts_stock_calibrated_T40_fixed_points.csv`
+    - `notes/build/annual_full_path_re_permits_starts_stock_calibrated_T40_checkpoints.csv`
+  - main read:
+    - the longer full-path solve preserves the same early-year path as the shorter calibrated RE runs:
+      - `q_5 ≈ 1.085`
+      - `q_10 ≈ 1.378`
+      - `q_20 ≈ 3.680`
+    - by `t = 40`, both the full-path RE solve and the calibrated non-RE anchor are at the price cap `q = 5.000`
+    - so this confirms that the early annual RE result is robust to a longer horizon, but it does not produce a new medium-run ownership result
+    - practical implication:
+      - `k = 3` remains the main paper case
+      - `k = 5` remains the aggressive robustness case
+      - `k = 20` and `T = 40` are now appendix / feasibility material only
+- Last updated: 2026-04-07 (12-hour overnight workflow prepared for calibrated annual RE packet)
+- 2026-04-07 added a bounded overnight packet for the live annual full-RE branch:
+  - new workflow note:
+    - `notes/build/annual_full_re_12_hour_workflow.md`
+  - new launcher / runner:
+    - `code/start_annual_full_re_12_hour_workflow.ps1`
+    - `code/annual_full_re_12_hour_workflow.ps1`
+  - new packet builder:
+    - `code/build_annual_permits_starts_stock_re_packet.py`
+  - new packet outputs:
+    - `notes/build/annual_permits_starts_stock_re_packet.md`
+    - `notes/build/annual_permits_starts_stock_re_packet.csv`
+    - `notes/build/annual_permits_starts_stock_re_packet_fixed_points.csv`
+  - packet scope:
+    - rerun the calibrated construction-flow anchor
+    - rerun `k = 3`, `k = 5`, and `k = 20` on the calibrated annual RE block
+    - stop after one consolidated packet note exists
+  - main purpose:
+    - give the annual branch a clean unattended verification packet without reopening the thin price bridge or widening the RE ladder further
+  - packet was then widened into a more substantive overnight handoff:
+    - new figure builder:
+      - `code/plot_annual_permits_starts_stock_re_packet.py`
+    - new figure outputs:
+      - `notes/build/annual_permits_starts_stock_re_packet.png`
+      - `notes/build/annual_permits_starts_stock_re_packet.pdf`
+      - `notes/build/annual_permits_starts_stock_re_packet_figure_note.md`
+    - workflow runner now also:
+      - rebuilds the packet figure layer
+      - recompiles `drafts/fertility_and_housing_supply_annualised.pdf`
+    - practical read:
+      - this is still a bounded packet rather than a true 12-hour compute block
+      - but it is now a meaningful overnight refresh-and-handoff workflow rather than just three light reruns
+- Last updated: 2026-04-07 (finite-path full RE style solve completed on calibrated construction-flow block)
+- 2026-04-07 pushed the calibrated annual RE solve all the way to `k = 20`, which in this setup is the full active annual horizon:
+  - updated code:
+    - `code/build_annual_k_step_re_permits_starts_stock_calibrated.py`
+      - now supports `k = 20`
+  - new outputs:
+    - `notes/build/annual_20_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_20_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_20_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_20_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+  - solved full-horizon path stays finite and smooth:
+    - `q_1 ≈ 1.005`
+    - `q_5 ≈ 1.085`
+    - `q_10 ≈ 1.378`
+    - `q_15 ≈ 2.061`
+    - `q_20 ≈ 3.680`
+  - main read:
+    - full active-horizon RE is technically feasible on the calibrated construction-flow block
+    - but the extra horizon mainly shows up as a larger price premium relative to the calibrated non-RE anchor
+    - ownership-composition gaps remain modest and are essentially zero by `t = 20`
+    - this means deeper RE is no longer blocked by numerical instability; it is mainly a question of whether the larger full-path price premium is economically worth carrying into the paper
+- Last updated: 2026-04-07 (calibrated construction-flow RE extended to k = 5 and k = 8)
+- 2026-04-07 pushed the bounded RE horizon further on the calibrated permits-starts-completions-stock block:
+  - updated code:
+    - `code/build_annual_k_step_re_permits_starts_stock_calibrated.py`
+      - now supports `k = 1, 2, 3, 5, 8`
+  - new outputs:
+    - `notes/build/annual_5_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_5_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_5_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_5_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+    - `notes/build/annual_8_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_8_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_8_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_8_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+  - solved prices remain finite and smooth:
+    - `k = 5`: `q_1 ≈ 1.005`, `q_2 ≈ 1.015`, `q_3 ≈ 1.031`, `q_4 ≈ 1.054`, `q_5 ≈ 1.085`
+    - `k = 8`: same first five terms, then `q_6 ≈ 1.123`, `q_7 ≈ 1.171`, `q_8 ≈ 1.228`
+  - main read:
+    - the calibrated block still does not explode under longer bounded RE horizons
+    - but the extra horizon mainly shows up as a larger positive price premium relative to the calibrated non-RE anchors
+    - ownership-composition effects stay small relative to the calibrated anchors and are close to zero by `t = 20`
+    - practical implication:
+      - `k = 3` is still the clean paper-facing core
+      - `k = 5` is a plausible aggressive robustness case
+      - `k = 8` is technically stable but starts to look more like a horizon-stress test than a natural main specification
+  - workflow note added:
+    - `notes/build/annual_full_re_workflow.md`
+    - this sets the next disciplined move as finite-path full RE with `T = 20` on the calibrated construction-flow block, not infinite-horizon RE
+- Last updated: 2026-04-07 (calibrated permits-starts-stock block passes bounded RE through k = 3)
+- 2026-04-07 reopened bounded RE on the **calibrated** annual construction-flow block:
+  - new code:
+    - `code/build_annual_k_step_re_permits_starts_stock_calibrated.py`
+  - new outputs:
+    - `notes/build/annual_1_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_1_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_1_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_1_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+    - `notes/build/annual_2_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_2_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_2_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_2_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+    - `notes/build/annual_3_step_re_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_3_step_re_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_3_step_re_permits_starts_stock_calibrated_fixed_points.csv`
+    - `notes/build/annual_3_step_re_permits_starts_stock_calibrated_checkpoints.csv`
+    - `notes/build/annual_permits_starts_stock_re_summary.md`
+  - solved prices remain tame:
+    - `k = 1`: `q_1 ≈ 1.005`
+    - `k = 2`: `q_1 ≈ 1.005`, `q_2 ≈ 1.015`
+    - `k = 3`: `q_1 ≈ 1.005`, `q_2 ≈ 1.015`, `q_3 ≈ 1.031`
+  - main read:
+    - the calibrated construction-flow block also passes bounded RE cleanly through `k = 3`
+    - RE mainly adds a small positive price offset relative to the calibrated non-RE anchors
+    - ownership composition changes are tiny relative to the calibrated stock-flow anchors
+    - this is now strong evidence that the earlier annual RE pathology was mostly a thin price-block problem
+- Last updated: 2026-04-07 (permits-starts-stock block calibrated to Census flow targets)
+- 2026-04-07 replaced the earlier stylized permits/backlog middle layer with a more data-facing construction-flow calibration:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_permits_starts_stock_calibrated.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated.md`
+    - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated.csv`
+    - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated_search.csv`
+    - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_permits_starts_stock_calibrated_peaks.csv`
+  - official targets imposed over `t = 1-5`:
+    - starts / permits: `0.932`
+    - completions / starts: `0.895`
+    - permit-to-completion lag anchor: `0.50` years
+  - calibrated construction parameters:
+    - `start_hazard = 0.65`
+    - `completion_hazard = 0.45`
+    - initial authorized-not-started inventory = `0.25` years of permit flow
+    - initial under-construction inventory = `0.70` years of permit flow
+  - achieved fit:
+    - starts / permits: `0.929`
+    - completions / starts: `0.895`
+    - permit-inventory years: `0.500`
+  - main read:
+    - the annual support mechanisms still lift young mortgaged ownership materially on the calibrated construction block
+    - benchmark young mortgage gap vs baseline is about `+0.039` at `t = 5` and `+0.043` at `t = 20`
+    - robustness is about `+0.061` at `t = 5` and `+0.064` at `t = 20`
+    - by `t = 20`, support leaves prices slightly below baseline because it works through a slower permits -> starts -> completions -> stock channel rather than a direct price wedge
+- Last updated: 2026-04-07 (permits-stock RE workflow completed through k = 3)
+- 2026-04-07 carried the upgraded annual RE workflow through the next two bounded steps:
+  - new code:
+    - `code/build_annual_two_step_re_permits_stock.py`
+    - `code/build_annual_three_step_re_permits_stock.py`
+  - new outputs:
+    - `notes/build/annual_two_step_re_permits_stock.md`
+    - `notes/build/annual_two_step_re_permits_stock.csv`
+    - `notes/build/annual_two_step_re_permits_stock_fixed_points.csv`
+    - `notes/build/annual_two_step_re_permits_stock_checkpoints.csv`
+    - `notes/build/annual_three_step_re_permits_stock.md`
+    - `notes/build/annual_three_step_re_permits_stock.csv`
+    - `notes/build/annual_three_step_re_permits_stock_fixed_points.csv`
+    - `notes/build/annual_three_step_re_permits_stock_checkpoints.csv`
+    - `notes/build/annual_permits_stock_re_summary.md`
+  - solved bounded RE prices on the upgraded permits/stock block:
+    - one-step:
+      - `q_1 â‰ˆ 1.005`
+    - two-step:
+      - `q_1 â‰ˆ 1.005`
+      - `q_2 â‰ˆ 1.016`
+    - three-step:
+      - `q_1 â‰ˆ 1.005`
+      - `q_2 â‰ˆ 1.016`
+      - `q_3 â‰ˆ 1.033`
+  - main read:
+    - the upgraded permits/stock block passes the bounded RE workflow cleanly through `k = 3`
+    - all solved near-horizon prices remain well inside the workflow guardrails
+    - the RE paths remain close to the corresponding stock-flow anchors
+    - support still mainly changes ownership composition rather than generating large immediate price jumps
+    - this strongly suggests the earlier annual RE pathology was mostly a thin price-block problem rather than an unavoidable expectations problem
+- Last updated: 2026-04-07 (annualised draft updated for permits-stock RE)
+- 2026-04-07 folded the upgraded annual RE result into the annualised draft:
+  - updated:
+    - `drafts/sections/annual_transition_extension.tex`
+    - `drafts/fertility_and_housing_supply_annualised.tex`
+  - rebuilt:
+    - `drafts/fertility_and_housing_supply_annualised.pdf`
+  - paper-facing read now says explicitly:
+    - the old thin annual bridge made richer expectations economically unstable
+    - once permits, completions, and stock mediate the annual price path, bounded RE stays tame through `k = 3`
+    - the live paper-facing RE region is therefore:
+      - one-step
+      - `k = 2`
+      - `k = 3`
+- Last updated: 2026-04-07 (one-step RE on permits-stock block)
+- 2026-04-07 reopened bounded RE on the upgraded annual permits/stock transition rather than on the old thin bridge:
+  - new code:
+    - `code/build_annual_one_step_re_permits_stock.py`
+  - new outputs:
+    - `notes/build/annual_one_step_re_permits_stock.md`
+    - `notes/build/annual_one_step_re_permits_stock.csv`
+    - `notes/build/annual_one_step_re_permits_stock_fixed_points.csv`
+    - `notes/build/annual_one_step_re_permits_stock_checkpoints.csv`
+  - design:
+    - solve only for next-period price `q_1`
+    - guessed `q_1` affects first-year entry decisions and first-year permit incentives
+    - realized `q_1` is backed out from next year's demand relative to next year's stock
+    - after `t = 1`, the path reverts to the upgraded stock-flow transition law
+  - main read:
+    - the one-step fixed point is very tame on the upgraded block:
+      - all three scenarios solve to essentially the same `q_1`, about `1.005`
+    - so the support regimes now mainly move ownership composition rather than next-year aggregate prices
+    - relative to the corresponding stock-flow anchors, the one-step RE paths are almost unchanged:
+      - price gaps stay around `+0.005` at `t = 1-5`
+      - young mortgage-share gaps relative to the stock anchors are tiny
+    - this is a good sign:
+      - once prices clear against next year's stock rather than a thin reduced-form supply residual, the immediate RE layer no longer produces large or erratic price responses
+    - practical implication:
+      - the upgraded permits/stock block passes the one-step RE test
+      - the next serious RE rung is now explicit `k = 2-3` RE on this upgraded block
+- Last updated: 2026-04-07 (permits-stock RE workflow)
+- 2026-04-07 set the bounded next-step workflow for the upgraded annual RE branch:
+  - new workflow note:
+    - `notes/build/annual_permits_stock_re_workflow.md`
+  - ordered sequence:
+    - freeze one-step RE sanity check on the upgraded block
+    - implement explicit `k = 2` RE on the upgraded block
+    - if that passes, implement explicit `k = 3` RE
+    - compare both to the non-RE stock-flow anchors
+    - write one short summary note
+  - stop rules:
+    - treat any near-horizon solved price below `0.80` or above `1.25` as an economic fail
+    - stop if the early RE window hits numerical caps
+    - stop if the RE layer moves price a lot without changing composition
+    - stop on non-convergence rather than immediately widening bounds
+- Last updated: 2026-04-07 (first permits-stock annual transition block)
+- 2026-04-07 implemented the first direct replacement for the thin annual price bridge:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_permits_stock.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_permits_stock.md`
+    - `notes/build/annual_snapshot_state_transition_permits_stock.csv`
+    - `notes/build/annual_snapshot_state_transition_permits_stock_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_permits_stock_peaks.csv`
+  - design:
+    - politics / age composition -> `theta_t`
+    - `theta_t`, prices, and demand -> permits
+    - permit backlog -> completions
+    - completions -> housing stock
+    - stock relative to demand -> prices
+  - first-pass read:
+    - the support regimes still raise young mortgaged-owner share materially:
+      - benchmark:
+        - `+0.039` at `t = 5`
+        - `+0.043` at `t = 20`
+      - robustness:
+        - `+0.061` at `t = 5`
+        - `+0.064` at `t = 20`
+    - with the stock-flow middle layer in place, support leaves price slightly below baseline by `t = 20`:
+      - benchmark:
+        - `q` gap about `-0.012`
+      - robustness:
+        - `q` gap about `-0.019`
+    - so this first pass does the main thing we wanted:
+      - support now works through lower political tightness and gradually higher stock, not through a direct price wedge
+    - but under a permanent `+5%` annual demand-pressure trend the price path still hits the numerical upper cap later on, so the sensible read window remains `t = 0-20`
+- Last updated: 2026-04-07 (vote-to-supply-to-stock-to-price literature/data note)
+- 2026-04-07 wrote a clean note on whether the annual branch should keep layering RE on top of the current
+  reduced-form price bridge or instead upgrade the price block itself:
+  - new note:
+    - `notes/build/annual_votes_supply_stock_price_note.md`
+  - main read:
+    - the current annual bridge is too compressed:
+      - politics -> `theta`
+      - `theta` -> reduced-form supply
+      - demand minus supply -> price
+    - the literature supports the pieces:
+      - political restrictions on housing supply
+      - homeowner politics affecting approval/permit behavior
+      - housing as a slow-moving durable stock
+    - but there does not appear to be a standard off-the-shelf annual transition model already doing the full
+      chain
+      - `votes -> permits -> completions/stock -> prices`
+      inside the kind of quantitative annual branch we now want
+    - the data-facing recommendation is to rebuild the annual price block around:
+      - permits
+      - completions
+      - housing stock
+      - then prices
+    - so the next serious step is:
+      - improve the vote-to-supply-to-price mapping first
+      - only then reopen richer RE beyond the bounded `k = 2-3` region
+- Last updated: 2026-04-07 (annual PLM RE step)
+- 2026-04-07 implemented the next rung after explicit `k`-step RE: a perceived law of motion for next-period prices,
+  - new code:
+    - `code/build_annual_plm_re_transition.py`
+  - new outputs:
+    - `notes/build/annual_plm_re_transition.md`
+    - `notes/build/annual_plm_re_transition.csv`
+    - `notes/build/annual_plm_re_transition_paths.csv`
+    - `notes/build/annual_re_step_ladder.md`
+  - PLM object:
+    - `log q_(t+1) = a + b * pressure_t + c * log q_t`
+    - coefficients updated until they are consistent with the reduced-form one-step market-clearing map along the annual transition path
+  - cases run:
+    - benchmark at RE weights `0.25` and `0.50`
+    - robustness at RE weights `0.25` and `0.50`
+  - main read:
+    - the coefficient iteration technically converges in all four moderate cases
+    - but the implied forecast law is not economically usable:
+      - forecasted `q` quickly collapses to the lower admissible bound `0.60`
+      - forecast errors remain large
+      - the transition then drifts toward near-corner ownership paths
+    - so the RE ladder now looks like:
+      - one-step RE: pass
+      - explicit `k = 2-3` RE: pass in the moderate region
+      - current PLM RE: technical convergence but economic fail
+    - practical recommendation:
+      - freeze the paper-facing RE extension at explicit bounded `k = 2-3`
+      - do not push the current PLM branch further without adding more structural price-smoothing forces
+- Last updated: 2026-04-07 (annual k-step RE sweep)
+- 2026-04-07 extended the bounded annual RE branch beyond one-step-ahead prices:
+  - new code:
+    - `code/build_annual_k_step_re_transition.py`
+  - new outputs:
+    - `notes/build/annual_k_step_re_transition.md`
+    - `notes/build/annual_k_step_re_transition.csv`
+    - `notes/build/annual_k_step_re_transition_paths.csv`
+    - `notes/build/annual_k_step_re_transition_frontier.csv`
+  - design:
+    - finite-horizon fixed point on the next `k` annual price levels
+    - terminal rule after the RE horizon remains the standing `+5%` drift
+    - horizon sweep:
+      - `k = 1, 2, 3, 5, 8, 12, 20`
+    - RE-weight sweep:
+      - `0.25`
+      - `0.50`
+      - `0.75`
+      - `1.00`
+      - `1.25`
+    - bounded-price box during iteration:
+      - `[0.80, 1.25]`
+  - main read:
+    - the bounded annual RE layer is numerically tame at moderate feedback strength
+    - benchmark support is stable through `k = 20` for RE weights up to `0.75`
+    - robustness support is stable through `k = 20` for RE weights up to `0.50`
+    - the branch starts to `go mental` only when the RE weight is pushed high enough that the solved next-period price falls below the admissible lower bound:
+      - benchmark: first failure at RE weight `1.00`
+      - robustness: first failure at RE weight `0.75`
+    - so the live lesson is:
+      - `k = 2-3` short-horizon RE is very feasible
+      - even `k = 20` stays well behaved in the current reduced-form box at moderate RE weights
+      - the instability margin is feedback strength, not horizon length by itself
+- Last updated: 2026-04-07 (annual k-step RE box sensitivity)
+- 2026-04-07 checked whether the k-step RE failures were real instability or just artifacts of a tight admissible price box:
+  - reruns:
+    - `notes/build/annual_k_step_re_transition_wide_box.md`
+      - box `[0.60, 1.40]`
+    - `notes/build/annual_k_step_re_transition_very_wide_box.md`
+      - box `[0.50, 1.50]`
+  - comparison note:
+    - `notes/build/annual_k_step_re_box_sensitivity.md`
+  - main read:
+    - the earlier failure for the robustness case at RE weight `0.75` was mostly a lower-bound artifact:
+      - it becomes stable through `k = 20` once the lower bound is relaxed from `0.80` to `0.60`
+    - pushing the box much wider changes the classification again:
+      - in `[0.10, 3.00]`, benchmark `1.00`, robustness `1.00`, and robustness `1.25` all converge
+      - but only at extreme one-year price drops:
+        - benchmark `1.00`: `q_1 ≈ 0.193`
+        - robustness `1.00`: `q_1 ≈ 0.185`
+        - robustness `1.25`: `q_1 ≈ 0.107`
+    - benchmark `1.25` still does not converge even in the ultra box, hitting the lower bound around `q_1 ≈ 0.099`
+    - so the practical paper-facing RE region remains:
+      - `k = 2-3`
+      - RE weight about `0.25-0.50`
+      with `0.75` treated only as an aggressive sensitivity case
+      and `1.00+` treated as mathematically interesting but economically unusable
+- Last updated: 2026-04-07 (annual one-step RE pass)
+- 2026-04-07 added the first bounded rational-expectations price layer on the annual transition object:
+  - new code:
+    - `code/build_annual_one_step_re_transition.py`
+  - new outputs:
+    - `notes/build/annual_one_step_re_transition.md`
+    - `notes/build/annual_one_step_re_transition.csv`
+    - `notes/build/annual_one_step_re_transition_fixed_points.csv`
+  - design:
+    - solve only for next-period price `q_1 / q_0`
+    - after `t = 1`, revert to the standing `+5%` drift rule
+    - use a reduced-form housing-pressure index for the one-step fixed point
+  - solved next-period prices:
+    - baseline: `1.050`
+    - benchmark: `1.026`
+    - robustness: `1.009`
+  - main read:
+    - bounded one-step RE is feasible on the annual transition object
+    - in this reduced-form implementation, help-to-buy / family-help support lowers the solved next-period price relative to the pure drift anchor because it eases immediate housing pressure
+    - so one-step RE acts as a partial offset to the support regimes rather than an amplifier
+- Last updated: 2026-04-07 (five-year mirror and RE options memo)
+- 2026-04-07 added two closing notes on top of the annual transition pack:
+  - new code:
+    - `code/build_annual_vs_five_year_transition_mirror.py`
+  - new outputs:
+    - `notes/build/annual_vs_five_year_transition_mirror.md`
+    - `notes/build/annual_vs_five_year_transition_mirror.csv`
+    - `notes/build/annual_vs_five_year_transition_mirror_peaks.csv`
+    - `notes/build/re_house_price_expectations_options.md`
+  - main read from the mirror:
+    - the coarser five-year view gets the direction right
+    - but it compresses the first few annual housing-access years into one block
+    - at central `+5%` drift, annual benchmark young mortgage gain versus drift is already `+0.037` by `t = 2` and `+0.040` by `t = 5`
+    - annual robustness gives `+0.062` by `t = 2` and `+0.063` by `t = 5`
+  - RE memo recommendation:
+    - do not jump straight back into a full infinite-horizon annual price-RE problem
+    - first try bounded RE:
+      - one-step-ahead RE
+      - then `k = 2` or `k = 3` short-horizon RE
+      - only after that a perceived law of motion for prices
+- Last updated: 2026-04-07 (annualised draft and figures)
+- 2026-04-07 turned the annual transition branch into paper-facing draft material:
+  - new code:
+    - `code/plot_annual_transition_calibrated_experiments.py`
+  - new outputs:
+    - `notes/build/annual_transition_benchmark_paths.png`
+    - `notes/build/annual_transition_benchmark_paths.pdf`
+    - `notes/build/annual_transition_benchmark_sensitivity.png`
+    - `notes/build/annual_transition_benchmark_sensitivity.pdf`
+    - `notes/build/annual_transition_benchmark_figures.md`
+  - draft integration:
+    - created `drafts/fertility_and_housing_supply_annualised.tex`
+    - created `drafts/sections/annual_transition_extension.tex`
+    - compiled `drafts/fertility_and_housing_supply_annualised.pdf`
+  - interpretation:
+    - the annual branch is now in paper-facing form as a transition extension to the five-year paper
+    - the live annual story is benchmark vs robustness over the `t = 0-5` crunch window, with `t = 20` as persistence only
+- Last updated: 2026-04-07 (annual calibrated experiment grid)
+- 2026-04-07 added a small `5-year`-style experiment layer on top of the annual transition calibration pack:
+  - new code:
+    - `code/build_annual_transition_calibrated_experiments.py`
+  - new outputs:
+    - `notes/build/annual_transition_calibrated_experiments.md`
+    - `notes/build/annual_transition_calibrated_experiments.csv`
+  - design:
+    - roles:
+      - `baseline`: drift only
+      - `benchmark`: conservative support regime
+      - `robustness`: data-leaning support regime
+    - drift grid:
+      - `+2%`
+      - `+5%`
+      - `+8%`
+    - checkpoints:
+      - `t = 2`
+      - `t = 5`
+      - `t = 20`
+  - main read:
+    - the benchmark and robustness regimes remain active across milder and harsher drift, not just at the `+5%` calibration point
+    - the benchmark row stays moderate:
+      - at `+5%`, young mortgage gap vs baseline is `+0.040` at `t = 5` and `+0.026` at `t = 20`
+    - the robustness row is materially stronger:
+      - at `+5%`, young mortgage gap vs baseline is `+0.063` at `t = 5` and `+0.040` at `t = 20`
+    - the same ordering survives at `+2%` and `+8%`
+  - interpretation:
+    - the annual transition branch now has a bounded experiment layer analogous to the `5-year` counterfactual style
+    - this should replace ad hoc annual mechanism screens as the live annual counterfactual layer
+- Last updated: 2026-04-07 (annual transition calibration targets pack)
+- 2026-04-07 formalized the annual branch as a transition calibration object rather than a steady-state one:
+  - new code:
+    - `code/build_annual_transition_calibration_targets.py`
+  - new outputs:
+    - `notes/build/annual_transition_calibration_targets.md`
+    - `notes/build/annual_transition_calibration_targets.csv`
+    - `drafts/tables/annual_transition_calibration_targets.tex`
+  - calibration structure:
+    - `t = 0` snapshot moments are matched by construction
+    - `t = 1-5` is the main annual calibration window
+    - `t = 20` is a persistence check only
+    - external take-up evidence enters through:
+      - help-to-buy / qualification incidence over the first `5` years
+      - family-help incidence over the first `5` years
+  - frozen cases carried into the pack:
+    - benchmark:
+      - qualification `0.25`
+      - family help `0.15`
+    - robustness:
+      - qualification `0.40`
+      - family help `0.30`
+  - interpretation:
+    - this is now the canonical annual calibration layer
+    - the annual branch should be discussed as a transition calibration object, not as another annual steady-state search
+- Last updated: 2026-04-07 (annual transition calibration freeze)
+- 2026-04-07 froze the annual transition branch into one benchmark case and one robustness case:
+  - new outputs:
+    - `notes/build/annual_transition_calibration_freeze.md`
+    - `notes/build/annual_transition_calibration_freeze.csv`
+  - benchmark case:
+    - qualification weight `0.25`
+    - family-help weight `0.15`
+    - support center `0.18`
+    - support width `0.04`
+    - age-35-44 scale `0.80`
+    - implied incidence over first `5` years:
+      - help-to-buy `0.181`
+      - family help `0.105`
+    - `t = 5`:
+      - young owner `25-34` `0.657`
+      - young mortgaged-owner `25-34` `0.407`
+    - `t = 20`:
+      - young owner `25-34` `0.718`
+      - young mortgaged-owner `25-34` `0.347`
+  - robustness case:
+    - qualification weight `0.40`
+    - family-help weight `0.30`
+    - support center `0.18`
+    - support width `0.04`
+    - age-35-44 scale `0.80`
+    - implied incidence over first `5` years:
+      - help-to-buy `0.294`
+      - family help `0.213`
+    - `t = 5`:
+      - young owner `25-34` `0.684`
+      - young mortgaged-owner `25-34` `0.430`
+    - `t = 20`:
+      - young owner `25-34` `0.740`
+      - young mortgaged-owner `25-34` `0.361`
+  - interpretation:
+    - benchmark is the cleaner annual transition object
+    - robustness is the more data-facing take-up alignment case
+    - the remaining choice is now presentation / write-up, not more annual wedge search
+- Last updated: 2026-04-07 (middle calibration check)
+- 2026-04-07 direct compromise check completed for the annual transition rule:
+  - new output:
+    - `notes/build/annual_snapshot_state_transition_middle_calibration_check.md`
+  - checked row:
+    - qualification weight `0.40`
+    - family-help weight `0.30`
+    - permanent `+5%` drift
+    - targeted standing support
+    - support center `0.18`
+    - support width `0.04`
+    - age-35-44 scale `0.80`
+  - implied take-up:
+    - help-to-buy incidence over first `5` years `0.294`
+    - family-help incidence over first `5` years `0.213`
+  - transition outcomes:
+    - `t = 5`:
+      - young owner `25-34` `0.684`
+      - young mortgaged-owner `25-34` `0.430`
+      - young owner gap vs drift `+0.074`
+      - young mortgage gap vs drift `+0.063`
+    - `t = 20`:
+      - young owner `25-34` `0.740`
+      - young mortgaged-owner `25-34` `0.361`
+      - young owner gap vs drift `+0.060`
+      - young mortgage gap vs drift `+0.040`
+  - interpretation:
+    - this is a plausible compromise if one single calibration is needed
+    - it is closer to the take-up targets than the conservative freeze
+    - but it is still materially more aggressive on ownership than the conservative freeze, so it should be treated as a middle case rather than the neutral benchmark
+- Last updated: 2026-04-07 (annual take-up calibration)
+- 2026-04-07 converted the standing targeted annual transition rule into implied first-time-buyer take-up rates:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_takeup_calibration.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_takeup_calibration.md`
+    - `notes/build/annual_snapshot_state_transition_takeup_calibration.csv`
+  - fixed transition rule:
+    - permanent `+5%` drift
+    - targeted standing support
+    - support center `0.18`
+    - support width `0.04`
+    - age-35-44 scale `0.80`
+  - data-facing targets:
+    - help-to-buy / qualification incidence among first-time buyers: `0.30-0.40`
+    - family-help incidence among first-time buyers: `0.20-0.30`
+  - incidence definition:
+    - support-weighted share of first-time-buyer purchase flow over the first five annual transition periods
+  - best row on the calibration score:
+    - qualification weight `0.45`
+    - family-help weight `0.30`
+    - implied help-to-buy incidence `0.331`
+    - implied family-help incidence `0.214`
+    - avg young mortgaged-owner gain `+0.055`
+    - avg young owner gain `+0.071`
+    - avg 35-44 mortgaged-owner gain `+0.027`
+    - avg 35-44 owner gain `+0.048`
+  - interpretation:
+    - the earlier conservative freeze understates take-up relative to the data-facing incidence ranges
+    - but the weights needed to match those incidence ranges pull the annual transition branch back toward a larger ownership lift
+    - the main remaining choice is therefore substantive rather than technical:
+      - keep the conservative comparison as the cleaner annual transition object
+      - or adopt the data-calibrated take-up row and accept a stronger ownership effect
+- Last updated: 2026-04-07 (conservative annual transition comparison)
+- 2026-04-07 tightened the annual transition comparison by trimming the family-help layer rather than reopening mechanism search:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_conservative_screen.py`
+    - `code/build_annual_snapshot_state_transition_conservative_selected_regimes.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_conservative_screen.md`
+    - `notes/build/annual_snapshot_state_transition_conservative_screen.csv`
+    - `notes/build/annual_snapshot_state_transition_conservative_selected_regimes.md`
+    - `notes/build/annual_snapshot_state_transition_conservative_selected_regimes.csv`
+    - `notes/build/annual_snapshot_state_transition_conservative_selected_regimes_summary.csv`
+  - conservative screen read:
+    - the best-balanced row drops family help entirely and lowers the `35-44` age weight:
+      - family-help weight `0.00`
+      - age-35-44 scale `0.80`
+    - this keeps the help-to-buy channel alive while sharply reducing ownership overshoot
+  - conservative frozen comparison:
+    - threshold center `0.18`
+    - threshold width `0.04`
+    - age-35-44 scale `0.80`
+    - standing qualification weight `0.25`
+    - light family-help weight `0.15` when active
+  - main read:
+    - targeted help-to-buy alone:
+      - peak young mortgage gain vs drift about `+0.032`
+      - peak young owner gain vs drift about `+0.035`
+    - targeted help-to-buy plus light family help:
+      - peak young mortgage gain vs drift about `+0.040`
+      - peak young owner gain vs drift about `+0.046`
+    - at `t = 20`:
+      - help-to-buy alone:
+        - young owner `0.709`
+        - young mortgaged-owner `0.342`
+      - help-to-buy + light family help:
+        - young owner `0.718`
+        - young mortgaged-owner `0.347`
+  - interpretation:
+    - the qualification channel remains the main annual transition mechanism
+    - family help is better treated as a light amplifier than as a large second lever
+    - this conservative freeze is a more credible annual transition comparison than the earlier stronger family-help version
+- Last updated: 2026-04-07 (selected annual transition regimes note)
+- 2026-04-07 converted the calibrated annual transition rule into a fixed three-scenario comparison:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_selected_regimes.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_selected_regimes.md`
+    - `notes/build/annual_snapshot_state_transition_selected_regimes.csv`
+    - `notes/build/annual_snapshot_state_transition_selected_regimes_summary.csv`
+  - frozen calibration:
+    - threshold center `0.18`
+    - threshold width `0.04`
+    - age-35-44 scale `1.20`
+    - standing qualification weight `0.25`
+    - standing family deposit-help weight `0.50` when active
+  - compared scenarios:
+    - `drift_baseline`
+    - `drift_targeted_help_to_buy`
+    - `drift_targeted_help_to_buy_plus_family_help`
+  - main read:
+    - targeted help-to-buy alone:
+      - peak young mortgage gain vs drift about `+0.032`
+      - peak young owner gain vs drift about `+0.035`
+    - targeted help-to-buy plus family help:
+      - peak young mortgage gain vs drift about `+0.056`
+      - peak young owner gain vs drift about `+0.070`
+    - at `t = 20`:
+      - help-to-buy alone:
+        - young owner `0.709`
+        - young mortgaged-owner `0.342`
+      - help-to-buy + family help:
+        - young owner `0.737`
+        - young mortgaged-owner `0.356`
+  - interpretation:
+    - the annual transition branch is now in a stable, interpretable form
+    - help-to-buy does most of the work; family help amplifies it
+    - the remaining substantive question is whether the resulting ownership lift is acceptable for the intended annual use-case
+- Last updated: 2026-04-07 (targeted persistent regime calibration screen)
+- 2026-04-07 narrow calibration screen on the targeted standing help-to-buy regime completed:
+  - new code:
+    - `code/build_annual_snapshot_state_transition_targeted_regime_screen.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_targeted_regime_screen.md`
+    - `notes/build/annual_snapshot_state_transition_targeted_regime_screen.csv`
+  - design:
+    - fixes the mechanism at:
+      - standing qualification
+      - standing deposit help
+      - targeted first-time-buyer support under permanent `+5%` drift
+    - tunes only:
+      - threshold center
+      - threshold width
+      - age-35-44 scale
+    - ranking criterion is mortgage gain per unit of ownership overshoot at `t = 5` and `t = 20`
+  - main read:
+    - the grid is fairly flat near the top; several settings perform similarly
+    - best-balanced row:
+      - threshold center `0.18`
+      - threshold width `0.04`
+      - age-35-44 scale `1.20`
+      - avg young mortgaged-owner gain `+0.046`
+      - avg young owner gain `+0.064`
+      - avg 35-44 mortgaged-owner gain `+0.025`
+      - avg 35-44 owner gain `+0.051`
+    - close alternatives:
+      - center `0.18`, width `0.03`, scale `1.20`
+      - center `0.16`, width `0.04`, scale `1.20`
+  - interpretation:
+    - a looser near-threshold window (`center ~ 0.16-0.18`, `width ~ 0.03-0.04`) performs better than a very tight trigger
+    - higher support on `35-44` tends to help the balance somewhat
+    - but even the best targeted standing rule still raises owner shares materially, so the remaining question is whether that overshoot is acceptable for the annual transition use-case
+- Last updated: 2026-04-07 (targeted persistent snapshot-forward help-to-buy regime)
+- 2026-04-07 targeted standing-regime annual transition test completed:
+  - code update:
+    - `code/build_annual_snapshot_state_transition.py` now supports `targeted_support`
+    - support can now be restricted to near-threshold first-time buyer rows rather than broad age-wide application
+    - added a `targeted_persistent` scenario pack
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_targeted_persistent_help_to_buy.md`
+    - `notes/build/annual_snapshot_state_transition_targeted_persistent_help_to_buy.csv`
+    - `notes/build/annual_snapshot_state_transition_targeted_persistent_help_to_buy_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_targeted_persistent_help_to_buy_peaks.csv`
+  - design:
+    - broad age eligibility was tightened by scaling support with a near-threshold purchase weight
+    - this is a proxy for “young first-time buyers close to qualifying,” not a random share
+  - main read:
+    - targeted persistent deposit help alone:
+      - young mortgaged-owner gain vs baseline about `+0.028` at `t = 5`
+      - still about `+0.016` by `t = 20-79`
+    - targeted persistent qualification alone:
+      - young mortgaged-owner gain vs baseline about `+0.030` at `t = 5`
+      - still about `+0.019` by `t = 20-79`
+    - targeted persistent qualification + deposit help:
+      - young mortgaged-owner gain vs baseline about `+0.054` at `t = 5`
+      - still about `+0.032` by `t = 20-79`
+    - with permanent `+5%` drift:
+      - the combined targeted standing regime still leaves a positive long-run young mortgaged-owner offset around `+0.024` by `t = 20-79`
+  - interpretation:
+    - the broad standing-regime result was not just a temporary-shock artifact
+    - tightening eligibility reduces the ownership overshoot somewhat, but owner shares are still pushed high
+    - the key remaining issue is now calibrating the near-threshold eligibility rule, not whether the mechanism persists
+- Last updated: 2026-04-07 (persistent snapshot-forward help-to-buy regime)
+- 2026-04-07 persistent annual transition regime test completed:
+  - code update:
+    - `code/build_annual_snapshot_state_transition.py` now distinguishes temporary vs standing support regimes via `deposit_help_horizon` and `qualification_horizon`
+    - added a `persistent` scenario pack
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_persistent_help_to_buy.md`
+    - `notes/build/annual_snapshot_state_transition_persistent_help_to_buy.csv`
+    - `notes/build/annual_snapshot_state_transition_persistent_help_to_buy_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_persistent_help_to_buy_peaks.csv`
+  - design:
+    - support now applies every period rather than decaying after `3-5` years
+    - this is the correct interpretation for a standing help-to-buy / qualification regime
+  - main read:
+    - persistent deposit help alone:
+      - young mortgaged-owner gain vs baseline about `+0.035` at `t = 5`
+      - still about `+0.021` by `t = 20-79`
+    - persistent qualification alone:
+      - young mortgaged-owner gain vs baseline about `+0.036` at `t = 5`
+      - still about `+0.024` by `t = 20-79`
+    - persistent qualification + deposit help:
+      - young mortgaged-owner gain vs baseline about `+0.066` at `t = 5`
+      - still about `+0.041` by `t = 20-79`
+    - with permanent `+5%` drift:
+      - the combined standing regime still leaves a positive long-run young mortgaged-owner offset around `+0.033` by `t = 20-79`
+  - interpretation:
+    - the earlier washout result was partly a temporary-shock coding choice
+    - as a standing regime, help-to-buy plus family deposit help does persist
+    - but it also pushes owner shares very high, so the next task is targeting the eligibility rule more tightly rather than treating support as random or universal
+- Last updated: 2026-04-07 (snapshot-forward annual help-to-buy plus family-help combo)
+- 2026-04-07 combined annual transition test completed:
+  - code update:
+    - `code/build_annual_snapshot_state_transition.py` now supports a `hybrid` scenario pack
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_help_to_buy_combo.md`
+    - `notes/build/annual_snapshot_state_transition_help_to_buy_combo.csv`
+    - `notes/build/annual_snapshot_state_transition_help_to_buy_combo_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_help_to_buy_combo_peaks.csv`
+  - design:
+    - combines the broad young-buyer qualification proxy with the deposit-help proxy inside the explicit four-state snapshot-forward annual transition
+    - this should be read as `help-to-buy / qualification + family deposit help`, not as endogenous parental transfers
+  - main read:
+    - without drift:
+      - `qualification_plus_deposit_snapshot_025_050` peaks at `t = 2`
+      - young mortgaged-owner share gain vs baseline about `+0.056`
+      - young owner share gain vs baseline about `+0.060`
+      - still positive at `t = 5` (`+0.025` on young mortgaged owners)
+    - with permanent `+5%` drift:
+      - `qualification_plus_deposit_plus_drift_snapshot_025_050` gives a young mortgaged-owner gain about `+0.047` at `t = 2`
+      - still positive at `t = 5` (`+0.011`)
+      - by `t = 10`, the young mortgaged-owner gap is back below baseline (`-0.012`)
+  - interpretation:
+    - the broad help-to-buy channel plus family deposit help is the strongest short-run annual transition mechanism so far
+    - but it still behaves like a temporary crunch-window buffer rather than a different long-run annual path
+- Last updated: 2026-04-07 (snapshot-forward annual qualification test)
+- 2026-04-07 targeted young-buyer qualification test completed in the snapshot-forward annual transition sandbox:
+  - code update:
+    - `code/build_annual_snapshot_state_transition.py` now supports a `qualification` scenario pack in addition to the original `default` pack
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition_qualification.md`
+    - `notes/build/annual_snapshot_state_transition_qualification.csv`
+    - `notes/build/annual_snapshot_state_transition_qualification_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_qualification_peaks.csv`
+  - design:
+    - qualification affects renters' entry into `owner_with_mortgage`, especially in ages `25-44`
+    - it shifts some potential outright entry into mortgaged entry and pulls some marginal renters into mortgaged ownership
+    - it is transition-only and reduced-form, not a new steady state
+  - main read:
+    - `qualification_snapshot_025`:
+      - peak young mortgage gain vs baseline about `+0.029` at `t = 2`
+      - still about `+0.018` at `t = 5`
+      - basically gone by `t = 10+`
+    - `qualification_plus_drift_snapshot_025`:
+      - positive short-run offset at `t = 1-2`
+      - still slightly positive at `t = 5` (`+0.004`)
+      - negative again by `t = 10`, converging back to the drift path later
+  - interpretation:
+    - this is the first reduced-form annual transition mechanism that directly targets mortgaged ownership rather than generic ownership
+    - it helps more persistently than the pure deposit-help proxy
+    - but it is still a short-run buffer, not a new long-run annual equilibrium
+- Last updated: 2026-04-07 (annual starter-home grid test)
+- 2026-04-07 direct annual lumpiness / starter-home test completed:
+  - solver extension:
+    - `code/SolveSS_fertility.m` now accepts an optional custom `housing_grid` override instead of always forcing a uniform owner grid
+  - new code:
+    - `code/run_fertility_annual_starter_home_grid_test.m`
+  - new outputs:
+    - `notes/build/fertility_annual_starter_home_grid_test.md`
+    - `notes/build/fertility_annual_starter_home_grid_test_candidates.csv`
+    - `notes/build/fertility_annual_starter_home_grid_test_path.csv`
+  - test design:
+    - holds the live annual no-mix baseline fixed
+    - compares:
+      - uniform owner ladder with first owner house `2.143`
+      - starter-home ladder with first owner house `0.50`
+  - main read at `q = 2.00`:
+    - uniform ladder:
+      - owner share `25-34` `0.556`
+      - mortgaged-owner share under `35` `0.181`
+      - vote per mass `0.183`
+      - unique crossing `~1.859`
+    - starter-home ladder:
+      - owner share `25-34` `0.596`
+      - mortgaged-owner share under `35` `0.107`
+      - vote per mass `-0.834`
+      - no crossing on the check grid
+  - interpretation:
+    - housing lumpiness is a real annual mechanism, but not in the hoped-for direction
+    - smaller owner units make ownership easier, but in this setup they also let young households buy with too little mortgage debt
+    - so the remaining annual miss is not simply "houses are too lumpy"; it is still the joint owner-entry / leverage structure
+- Last updated: 2026-04-07 (annual no-crowding falsification test)
+- 2026-04-07 clean annual no-crowding test completed:
+  - new code:
+    - `code/run_fertility_annual_no_crowding_test.m`
+  - new outputs:
+    - `notes/build/fertility_annual_no_crowding_test.md`
+    - `notes/build/fertility_annual_no_crowding_test_candidates.csv`
+    - `notes/build/fertility_annual_no_crowding_test_path.csv`
+  - design:
+    - compares the live recentered annual no-mix baseline against a version with:
+      - `lambda_crowd = 0`
+      - `psi_crowd = 0`
+    - keeps fixed:
+      - child utility
+      - direct price-sensitive birth cost
+      - annual finance block
+  - main read at `q = 2.00`:
+    - baseline:
+      - mean age first birth `30.09`
+      - share first births `30+` `0.521`
+      - childless at `50` `0.233`
+      - mortgaged-owner share under `35` `0.181`
+      - unique crossing `~1.859`
+    - no crowding:
+      - mean age first birth `25.93`
+      - share first births `30+` effectively `0.000`
+      - childless at `50` effectively `0.000`
+      - mortgaged-owner share under `35` still `0.181`
+      - unique crossing still `~1.855`
+  - interpretation:
+    - removing crowding does not repair the annual young-leverage miss
+    - it mainly destroys the fertility timing mechanism
+    - so the annual ownership / leverage gap is not being driven by excessive crowding
+- Last updated: 2026-04-07 (snapshot-forward annual transition sandbox; Hamilton duplicate cancelled)
+- 2026-04-07 moved from the short-run proxy bridge to a first snapshot-forward annual state-transition sandbox:
+  - new code:
+    - `code/build_annual_snapshot_state_transition.py`
+  - new outputs:
+    - `notes/build/annual_snapshot_state_transition.md`
+    - `notes/build/annual_snapshot_state_transition.csv`
+    - `notes/build/annual_snapshot_state_transition_summary.csv`
+    - `notes/build/annual_snapshot_state_transition_peaks.csv`
+  - setup:
+    - starts from the observed `t = 0` four-state age cross section in `notes/build/fertility_annual_transition_path_state_grid_mapping_summary.csv`
+    - explicit annual states:
+      - `renter_no_debt`
+      - `renter_with_debt`
+      - `owner_with_mortgage`
+      - `owner_outright`
+    - age blocks:
+      - `25-34`
+      - `35-44`
+      - `45-54`
+      - `55-64`
+      - `65-80`
+  - scenarios:
+    - `baseline_snapshot`
+    - `deposit_help_snapshot_050`
+    - `drift_snapshot_105`
+    - `deposit_help_plus_drift_snapshot_105`
+  - main read:
+    - explicit mortgage-state persistence does make deposit help last longer than in the older proxy bridge
+    - `deposit_help_snapshot_050`:
+      - peak young mortgage gain vs baseline about `+0.028` at `t = 2`
+      - still about `+0.008` at `t = 5`
+      - by `t = 10`, the gap is slightly negative and by `t = 20+` it is essentially gone
+    - `drift_snapshot_105`:
+      - young mortgage gap vs baseline about `-0.008` at `t = 2`
+      - about `-0.015` at `t = 5`
+      - still about `-0.011` at `t = 20`
+    - `deposit_help_plus_drift_snapshot_105`:
+      - positive short-run offset at `t = 1-2`
+      - by `t = 5`, the mortgage gap is already negative
+      - by `t = 20`, it is effectively back on the drift path
+  - interpretation:
+    - the old proxy bridge was understating persistence somewhat
+    - but even with explicit mortgage-state persistence, deposit help still looks like a temporary annual buffer rather than a new long-run path
+- 2026-04-07 Hamilton duplicate transition follow-up closed:
+  - cancelled remote job:
+    - `16662382`
+  - reason:
+    - the exact local pack had already been run successfully
+    - the Hamilton job never started and was only waiting in queue with `Priority`
+  - implication:
+    - the local transition outputs are now the canonical result for the bounded deposit-help follow-up
+- Last updated: 2026-04-07 (deposit-help transition local full pack; Hamilton still pending)
+- 2026-04-07 local exact follow-up completed while Hamilton job was still queued:
+  - outputs:
+    - `notes/build/annual_transition_deposit_help_scenarios_local_full.md`
+    - `notes/build/annual_transition_deposit_help_scenarios_local_full.csv`
+    - `notes/build/annual_transition_deposit_help_scenarios_local_full_summary.csv`
+    - `notes/build/annual_transition_deposit_help_scenarios_local_full_peaks.csv`
+  - Hamilton status:
+    - job `16662382` still `PENDING`
+    - queue reason: `Priority`
+  - main local read:
+    - `deposit_help_only_025`:
+      - young-owner proxy gain about `+0.019` at `t = 0`
+      - about `+0.012` at `t = 1`
+    - `deposit_help_only_050`:
+      - young-owner proxy gain about `+0.039` at `t = 0`
+      - about `+0.024` at `t = 1`
+    - by `t = 5`, the deposit-help effect is essentially gone in both fixed-price and drift scenarios
+    - under `+5%` drift:
+      - deposit help improves the immediate young-owner gap at `t = 1`
+      - but the worst young-owner gap later is still about `-0.0063`, very close to drift-only `-0.0066`
+  - interpretation:
+    - the exact local follow-up confirms the earlier smoke result
+    - deposit help looks like a short-run transition offset, not a different long-run path
+    - the Hamilton packet is now mainly a remote duplicate / archival run, not a source of new qualitative information
+- Last updated: 2026-04-06 (deposit-help transition workflow executed)
+- 2026-04-06 bounded transition follow-through:
+  - completed:
+    - `notes/build/annual_transition_mechanism_comparison_note.md`
+    - `notes/build/annual_transition_deposit_help_scenarios.md`
+    - `notes/build/annual_transition_deposit_help_scenarios.csv`
+    - `notes/build/annual_transition_deposit_help_scenarios_summary.csv`
+    - `notes/build/annual_transition_deposit_help_scenarios_peaks.csv`
+    - `notes/build/annual_transition_deposit_help_hamilton_workflow.md`
+  - bridge extension:
+    - `code/nimby_fertility_transition_bridge.py` now supports a reduced-form short-run deposit-help proxy:
+      - `deposit_help_weight`
+      - `deposit_help_horizon`
+      - young-age exposure profile
+    - interpretation:
+      - this is a temporary owner-entry support proxy concentrated in the first `0-2` periods
+      - it is not a structural parental-transfer model
+  - scenario-builder extension:
+    - `code/build_annual_transition_mechanism_scenarios.py` now accepts:
+      - `--pack default|hamilton|deposit_help_smoke|deposit_help_hamilton`
+    - and records `deposit_help_weight` in the scenario outputs
+  - local smoke read:
+    - `deposit_help_only` raises the young-owner proxy immediately:
+      - `t = 0`: about `+0.039`
+      - `t = 1`: about `+0.024`
+    - but the effect washes out by about `t = 5`
+    - under drift, deposit help offsets the housing crunch in the first `1-2` periods, but does not create a different long-run path
+  - bounded Hamilton follow-up now staged:
+    - local bundle root:
+      - `_playground/backups/2026-04-06/03_fertility_and_housing_supply_hpc/annual_transition_mechanism_bundle_20260406_210348`
+    - remote bundle root:
+      - `/nobackup/hfnt93/fert_runs/annual_transition_mechanism_bundle_20260406_210348`
+    - live job:
+      - `16662382`
+      - launch state: `PENDING`
+    - submit command:
+      - `sbatch --nice=10000 --export=ALL,PACK=deposit_help_hamilton,OUTPUT_STEM=annual_transition_deposit_help_scenarios_hamilton code/hpc/annual_transition_mechanism_scenarios.slurm`
+    - active handoff pointer:
+      - `notes/build/logs/active_hamilton_annual_transition_mechanism_handoff.txt`
+- Last updated: 2026-04-06 (12-hour annual transition workflow)
+- 2026-04-06 bounded away-workflow note added:
+  - `notes/build/annual_transition_12_hour_workflow.md`
+  - main intent:
+    - stop widening steady-state annual wedges
+    - use the completed Hamilton transition mechanism packet as the starting point
+    - test whether `deposit help + drift` looks more plausible as a short-run transition object than as a long-run steady state
+- Last updated: 2026-04-06 (Hamilton annual transition mechanism packet queued)
+- 2026-04-06 Hamilton annual transition mechanism packet:
+  - added:
+    - `code/hpc/run_annual_transition_mechanism_scenarios.sh`
+    - `code/hpc/annual_transition_mechanism_scenarios.slurm`
+    - `code/hpc/prepare_annual_transition_mechanism_bundle.ps1`
+    - `code/hamilton_annual_transition_mechanism_handoff.ps1`
+    - `code/start_hamilton_annual_transition_mechanism_handoff.ps1`
+    - `notes/build/annual_transition_mechanism_scenarios_hamilton_workflow.md`
+  - builder extension:
+    - `code/build_annual_transition_mechanism_scenarios.py` now accepts:
+      - `--pack default|hamilton`
+      - `--output-stem ...`
+    - the new `hamilton` pack widens the bounded transition comparison to:
+      - `baseline_template`
+      - `drift_only_103`
+      - `drift_only_105`
+      - `drift_only_110`
+      - `child_housing_utility_050`
+      - `child_housing_utility_100`
+      - `child_housing_utility_050_plus_drift_105`
+      - `child_housing_utility_100_plus_drift_105`
+      - `child_housing_utility_100_plus_drift_110`
+  - local staging:
+    - bundle root:
+      - `_playground/backups/2026-04-06/03_fertility_and_housing_supply_hpc/annual_transition_mechanism_bundle_20260406_195713`
+    - remote bundle root:
+      - `/nobackup/hfnt93/fert_runs/annual_transition_mechanism_bundle_20260406_195713`
+  - live Hamilton submit:
+    - active job: `16661467`
+    - queue state at launch check: `PENDING`
+    - submit command:
+      - `sbatch --nice=10000 --export=ALL,PACK=hamilton,OUTPUT_STEM=annual_transition_mechanism_scenarios_hamilton code/hpc/annual_transition_mechanism_scenarios.slurm`
+    - expected outputs:
+      - `notes/build/annual_transition_mechanism_scenarios_hamilton.md`
+      - `notes/build/annual_transition_mechanism_scenarios_hamilton.csv`
+      - `notes/build/annual_transition_mechanism_scenarios_hamilton_summary.csv`
+      - `notes/build/annual_transition_mechanism_scenarios_hamilton_peaks.csv`
+    - active local handoff pointer:
+      - `notes/build/logs/active_hamilton_annual_transition_mechanism_handoff.txt`
+  - implementation note:
+    - two early submits (`16661464`, `16661466`) failed immediately because the SLURM wrapper pointed at the runner incorrectly
+    - the final live wrapper now resolves the runner through `SLURM_SUBMIT_DIR`, not the spooled script path
+- Last updated: 2026-04-06 (annual transition mechanism scenarios)
+- 2026-04-06 bounded transition scenario packet:
+  - added:
+    - `code/build_annual_transition_mechanism_scenarios.py`
+  - bridge extension:
+    - `code/nimby_fertility_transition_bridge.py` now supports:
+      - `f_child_housing_burden_weight`
+    - interpretation:
+      - this is a reduced-form proxy for putting child-housing stress more directly into fertility decisions during transition
+      - it is not a literal translation of the MATLAB utility function
+    - the bridge also now writes:
+      - `young_housing_burden_proxy`
+      - `old_housing_burden_proxy`
+      - `aggregate_housing_burden_proxy`
+  - refreshed outputs:
+    - `notes/build/annual_transition_mechanism_scenarios.md`
+    - `notes/build/annual_transition_mechanism_scenarios.csv`
+    - `notes/build/annual_transition_mechanism_scenarios_summary.csv`
+    - `notes/build/annual_transition_mechanism_scenarios_peaks.csv`
+  - scenarios:
+    - `baseline_template`
+    - `drift_only`
+    - `child_housing_utility_proxy`
+    - `child_housing_utility_plus_drift`
+  - setup:
+    - all scenarios start from the same annual `t = 0` cross section
+    - the drift path is a permanent `+5%` price path from `t = 1`
+  - main read:
+    - the transition crunch is early rather than late
+    - `drift_only`:
+      - worst young-owner gap vs baseline at `t = 2`: about `-0.0066`
+      - peak young-housing-burden gap at `t = 1`: about `+0.051`
+      - worst births gap at `t = 6`: about `-0.0011`
+    - `child_housing_utility_proxy`:
+      - worst births gap at `t = 6`: about `-0.0049`
+      - almost no young-owner effect
+    - `child_housing_utility_plus_drift`:
+      - worst births gap at `t = 6`: about `-0.0059`
+      - worst young-owner gap at `t = 2`: about `-0.0066`
+      - peak young-housing-burden gap at `t = 1`: about `+0.051`
+  - interpretation:
+    - the userâ€™s transition intuition looks right
+    - in this reduced-form bridge, price drift mainly bites immediately through housing burden / young ownership
+    - the child-housing utility proxy mainly shows up through births a few periods later
+    - the combined branch strengthens the short-run squeeze, especially in roughly the first `1-6` periods
+    - this is a useful diagnostic packet even though it is not yet a full transition-equilibrium solver
+- Last updated: 2026-04-06 (deposit-gift plus drift smoke run)
+- 2026-04-06 annual deposit-gift plus drift screen:
+  - added:
+    - `code/run_fertility_annual_deposit_gift_drift_screen.m`
+  - refreshed outputs:
+    - `notes/build/fertility_annual_deposit_gift_drift_screen.md`
+    - `notes/build/fertility_annual_deposit_gift_drift_screen_candidates.csv`
+  - design:
+    - combines:
+      - data-based first-home deposit help
+      - bounded anticipated price drift
+    - gift-share grid:
+      - `0.20`
+      - `0.33`
+    - gift grid:
+      - `0.75`
+      - `1.00`
+    - drift-weight grid:
+      - `0.30`
+      - `0.50`
+    - future-price-factor grid:
+      - `1.03`
+      - `1.05`
+    - age cap fixed at `44`
+  - main read:
+    - best smoke row is:
+      - `gift share 0.33 | gift 1.00 | drift 0.50 x 1.05 | age max 44`
+      - mean age first birth `30.08`
+      - share first births age `30+` `0.520`
+      - childless at `50` `0.235`
+      - owner share `25-34` `0.638`
+      - owner share `35-44` `0.738`
+      - mortgaged-owner share under `35` `0.234`
+      - vote per mass at `q = 2.00` `0.037`
+      - unique crossing about `3.122`
+    - comparison with separate branches:
+      - baseline no gift / no drift:
+        - mortgaged-owner share under `35` `0.118`
+        - vote per mass at `q = 2.00` `-0.423`
+      - deposit-gift-share alone:
+        - mortgaged-owner share under `35` about `0.176`
+      - marginal-buyer gift rule alone:
+        - mortgaged-owner share under `35` about `0.172`
+      - combined branch:
+        - mortgaged-owner share under `35` `0.234`
+        - vote flips positive at the eval price
+  - interpretation:
+    - deposit help and upward expectations reinforce each other in exactly the direction the user suspected
+    - this is the strongest reduced-form annual branch so far on the political side
+    - but it still overshoots ownership and still falls short of the young mortgaged-owner target about `0.306`
+    - so the combined branch is useful as a transition-path launch point, not yet as a clean steady-state fix
+- Last updated: 2026-04-06 (marginal deposit-gift-share smoke run)
+- 2026-04-06 annual marginal deposit-gift-share screen:
+  - added:
+    - `code/run_fertility_annual_marginal_deposit_gift_share_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m` now supports:
+      - `owner_entry_deposit_only_if_marginal`
+    - when this flag is active, the deposit gift only applies if a gifted renter would rent without the gift but buy with it
+  - refreshed outputs:
+    - `notes/build/fertility_annual_marginal_deposit_gift_share_screen.md`
+    - `notes/build/fertility_annual_marginal_deposit_gift_share_screen_candidates.csv`
+  - design:
+    - kept data-based gift incidence:
+      - `0.20`
+      - `0.25`
+      - `0.33`
+    - gift sizes:
+      - `0.50`
+      - `0.75`
+      - `1.00`
+    - age cap fixed at `44`
+    - no broad wealth shift
+    - no crude low-cash asset window
+    - gift only fires for gifted households when it actually tips them onto the ownership ladder
+  - main read:
+    - best smoke row is:
+      - `gift share 0.33 | gift 1.00 | marginal only | age max 44`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.541`
+      - owner share `35-44` `0.633`
+      - mortgaged-owner share under `35` `0.172`
+      - unique crossing about `1.686`
+    - baseline no-gift row remains:
+      - owner share `25-34` `0.496`
+      - mortgaged-owner share under `35` `0.118`
+      - unique crossing about `1.700`
+    - so the marginal-buyer rule moves the young leverage margin by:
+      - `0.118 -> 0.172`
+    - comparison:
+      - this is much better than the crude low-cash targeting rule, which only got to about `0.140`
+      - but it still does not beat the simpler untargeted data-based gift-share run, which reached about `0.176`
+  - interpretation:
+    - the userâ€™s â€œparents help children get onto the housing ladderâ€ idea is directionally right
+    - a marginal-buyer targeting rule is more coherent than a generic asset-window rule
+    - but in the current reduced-form setup it is still not enough to close the young leverage gap on its own
+- Last updated: 2026-04-06 (targeted deposit-gift-share smoke run)
+- 2026-04-06 annual targeted deposit-gift-share screen:
+  - added:
+    - `code/run_fertility_annual_targeted_deposit_gift_share_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m` now lets the owner-entry deposit gift apply only inside an asset window:
+      - `owner_entry_deposit_b_min`
+      - `owner_entry_deposit_b_max`
+    - this was used to target the gift to low-cash renter households near the ownership margin
+  - refreshed outputs:
+    - `notes/build/fertility_annual_targeted_deposit_gift_share_screen.md`
+    - `notes/build/fertility_annual_targeted_deposit_gift_share_screen_candidates.csv`
+  - design:
+    - kept the data-based gift-incidence idea
+    - but only allowed the gift for renter households with liquid assets inside:
+      - `[-2.0, 2.0]`
+      - `[-6.0, 2.0]`
+    - gift-share grid:
+      - `0.20`
+      - `0.25`
+      - `0.33`
+    - gift grid:
+      - `0.75`
+      - `1.00`
+    - age cap fixed at `44`
+  - main read:
+    - best smoke row is:
+      - `gift share 0.33 | gift 1.00 | b in [-2.0, 2.0] | age max 44`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.523`
+      - owner share `35-44` `0.615`
+      - mortgaged-owner share under `35` `0.140`
+      - unique crossing about `1.671`
+    - baseline no-gift row remains:
+      - owner share `25-34` `0.496`
+      - mortgaged-owner share under `35` `0.118`
+      - unique crossing about `1.700`
+    - so the targeted version only moves the young leverage margin by:
+      - `0.118 -> 0.140`
+    - this is weaker than the untargeted data-based gift-share screen, which reached about `0.176`
+    - widening the asset window from `[-2.0, 2.0]` to `[-6.0, 2.0]` made essentially no difference in this smoke box
+  - interpretation:
+    - the issue is not just that the data-based gift share was untargeted across the whole population
+    - this simple low-cash targeting rule still does not recover enough young mortgaged owners
+    - so the missing selection in the real world is likely more specific than â€œlow cash at purchaseâ€ alone
+- Last updated: 2026-04-06 (data-based deposit-gift-share smoke run)
+- 2026-04-06 annual deposit-gift-share screen:
+  - added:
+    - `code/run_fertility_annual_deposit_gift_share_screen.m`
+  - refreshed outputs:
+    - `notes/build/fertility_annual_deposit_gift_share_screen.md`
+    - `notes/build/fertility_annual_deposit_gift_share_screen_candidates.csv`
+  - design:
+    - kept the deposit-only owner-entry gift
+    - but only a subset of households receives it
+    - share grid centered on a data-motivated range:
+      - `0.20`
+      - `0.25`
+      - `0.33`
+    - gift grid:
+      - `0.50`
+      - `0.75`
+      - `1.00`
+    - age cap fixed at `44` in smoke mode
+  - main read:
+    - best smoke row is:
+      - `gift share 0.33 | gift 1.00 | age max 44`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.514`
+      - owner share `35-44` `0.615`
+      - mortgaged-owner share under `35` `0.176`
+      - unique crossing about `1.685`
+    - baseline no-gift row remains:
+      - owner share `25-34` `0.496`
+      - mortgaged-owner share under `35` `0.118`
+      - unique crossing about `1.700`
+    - realistic take-up therefore helps, but only modestly:
+      - `0.118 -> 0.176`
+      - still well below the target about `0.306`
+  - interpretation:
+    - the universal gift confirm worked because it effectively gave help to everyone
+    - once the gift is restricted to a realistic share of households, the leverage gain is much smaller
+    - so the realistic deposit-help channel is directionally right, but not large enough by itself in current form
+- Last updated: 2026-04-06 (deposit-only owner-entry gift confirm run)
+- 2026-04-06 annual deposit-gift confirm:
+  - refreshed outputs:
+    - `notes/build/fertility_annual_deposit_gift_screen.md`
+    - `notes/build/fertility_annual_deposit_gift_screen_candidates.csv`
+  - confirm grid:
+    - baseline:
+      - `deposit gift 0.00 | baseline`
+    - active gift range:
+      - `0.50`
+      - `0.75`
+      - `1.00`
+      - `1.25`
+      - `1.50`
+    - age caps:
+      - `39`
+      - `44`
+  - main read:
+    - the best confirm row is now:
+      - `deposit gift 0.50 | age max 44`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.680`
+      - owner share `35-44` `0.717`
+      - mortgaged-owner share under `35` `0.332`
+      - unique crossing about `1.550`
+    - the baseline no-gift confirm row is:
+      - owner share `25-34` `0.607`
+      - mortgaged-owner share under `35` `0.166`
+      - unique crossing about `1.529`
+    - moderate deposit help therefore closes the young leverage gap:
+      - target about `0.306`
+      - best confirm row about `0.332`
+    - but it also overshoots ownership:
+      - owner share `25-34` rises to `0.680`
+      - owner share `35-44` rises to `0.717`
+      - so the mechanism looks alive, but too broad in current form
+    - larger gifts `>= 0.75` generally lose the unique crossing or push ownership/leverage too far
+  - interpretation:
+    - deposit-specific parental help is now the strongest annual mechanism we have found
+    - the remaining problem is no longer “does deposit help matter?”
+    - it is “how do we target that help so it raises young mortgaged ownership without broadly over-subsidizing entry?”
+- Last updated: 2026-04-06 (deposit-only owner-entry gift smoke run)
+- 2026-04-06 annual deposit-gift test:
+  - added:
+    - `code/run_fertility_annual_deposit_gift_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m` now supports:
+      - `owner_entry_deposit_gift`
+      - `owner_entry_deposit_age_max`
+    - this gift only applies when a renter switches into ownership
+    - it does not change the generic entrant asset distribution
+  - refreshed outputs:
+    - `notes/build/fertility_annual_deposit_gift_screen.md`
+    - `notes/build/fertility_annual_deposit_gift_screen_candidates.csv`
+  - smoke grid:
+    - owner-entry deposit gift:
+      - `0.00`
+      - `0.50`
+      - `1.00`
+      - `2.00`
+      - `4.00`
+    - deposit age max:
+      - `34`
+      - `39`
+      - `44`
+  - main read:
+    - this is the first parental-wealth-style branch that moves the annual young-leverage margin a lot
+    - baseline no-gift row remains:
+      - under-35 mortgaged-owner share `0.118`
+      - unique crossing about `1.700`
+    - the strongest meaningful smoke row is:
+      - `deposit gift 1.00 | age max 44`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.550`
+      - mortgaged-owner share under `35` `0.294`
+      - unique crossing about `1.674`
+    - a very large gift overshoots:
+      - `deposit gift 4.00 | age max 44`
+      - mortgaged-owner share under `35` `0.477`
+      - no unique crossing
+  - interpretation:
+    - the earlier parental-transfer branch was too generic; this narrower deposit object is economically alive
+    - deposit-specific parental help looks much more plausible as the missing annual mechanism than generic wealth boosts or looser borrowing alone
+- Last updated: 2026-04-06 (relaxed borrowing smoke run)
+- 2026-04-06 annual relaxed borrowing test:
+  - added:
+    - `code/run_fertility_annual_relaxed_borrowing_screen.m`
+  - refreshed outputs:
+    - `notes/build/fertility_annual_relaxed_borrowing_screen.md`
+    - `notes/build/fertility_annual_relaxed_borrowing_screen_candidates.csv`
+  - setup:
+    - kept the current annual no-mix working point fixed
+    - varied only:
+      - `owner_mortgage_CC`
+      - `owner_entry_payment_to_income_cap`
+    - kept:
+      - entry mortgage floor `0.35`
+      - owner mortgage spread at the current annual anchor
+      - amortization `0.02`
+  - realism note:
+    - the current benchmark is already in the realistic low-down-payment range:
+      - around `0.965-0.97` LTV
+    - values above `0.97` in this test are stress tests rather than preferred benchmark objects
+  - main read:
+    - the best smoke row is the loosest stress test:
+      - `owner mCC 1.000 | PTI 0.500`
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.508`
+      - mortgaged-owner share under `35` `0.124`
+      - unique crossing about `1.707`
+    - the current realistic baseline region remains close to:
+      - `owner mCC 0.970 | PTI 0.400`
+      - mortgaged-owner share under `35` `0.118`
+    - so even very loose borrowing only raises the young leveraged-owner share by about:
+      - `0.118 -> 0.124`
+  - interpretation:
+    - relaxing the borrowing constraint further is not the main missing mechanism
+    - the current annual branch is already close to the realistic low-down-payment / flexible-underwriting region
+    - pushing far beyond that buys almost nothing on the young leverage target
+- Last updated: 2026-04-06 (reduced-form dual-income qualification smoke run)
+- 2026-04-06 annual dual-income qualification test:
+  - added:
+    - `code/run_fertility_annual_dual_income_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m` now supports:
+      - `owner_entry_income_multiplier`
+      - `owner_entry_income_multiplier_after_birth`
+    - these only affect the owner-entry PTI underwriting check
+    - they do not change the household budget or the underlying exogenous income process
+  - refreshed outputs:
+    - `notes/build/fertility_annual_dual_income_screen.md`
+    - `notes/build/fertility_annual_dual_income_screen_candidates.csv`
+  - smoke grid:
+    - pre-birth qualifying-income multiplier:
+      - `1.00`
+      - `1.25`
+      - `1.50`
+      - `1.75`
+    - after-birth qualifying-income multiplier:
+      - `1.00`
+      - `1.10`
+      - `1.20`
+      - `1.30`
+    - restriction:
+      - after-birth multiplier could not exceed the pre-birth multiplier
+  - main read:
+    - the baseline no-multiplier row remains close to the current annual diagnosis:
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - mortgaged-owner share under `35` `0.118` on the coarse smoke grid
+      - unique crossing about `1.700`
+    - dual-income qualification does help on the young-leverage margin, but only modestly:
+      - the strongest smoke rows raise mortgaged-owner share under `35` to about `0.131`
+      - that is still well below the target around `0.306`
+    - the top overall smoke row is:
+      - `pre-birth PTI income x1.25 | after-birth x1.20`
+      - mean age first birth `30.17`
+      - share first births age `30+` `0.535`
+      - childless at `50` `0.239`
+      - owner share `25-34` `0.510`
+      - mortgaged-owner share under `35` `0.120`
+      - unique crossing about `1.706`
+  - interpretation:
+    - the user’s dual-income concern is economically relevant
+    - a reduced-form underwriting multiplier moves the model in the right direction
+    - but dual-income qualification alone does not come close to closing the annual young-leverage gap
+- Last updated: 2026-04-06 (annual diagnosis note written)
+- 2026-04-06 annual diagnosis note:
+  - added:
+    - `notes/build/annual_diagnosis_note.md`
+  - summary:
+    - the annual branch has produced a coherent working point, but not a better benchmark than the `5-year` model
+    - the main unresolved miss is still under-35 mortgaged-owner share:
+      - target about `0.306`
+      - best meaningful annual steady-state point about `0.181`
+    - minimal mortgage-state rules did not fix that miss
+    - the corrected Hamilton broad annual rebaseline did not fix that miss
+    - the transition-path `t = 0` cross section washes out quickly in both the constant-price and bounded exogenous price-shock bridge runs
+  - interpretation:
+    - the annual branch is now best read as a diagnostic contrast
+    - it says the `5-year` model likely compresses away some early-family housing-access and leverage dynamics
+- Last updated: 2026-04-06 (bounded annual price-shock transition run completed)
+- 2026-04-06 bounded annual price-shock transition:
+  - added:
+    - `code/build_annual_transition_path_price_shock.py`
+    - `code/annual_transition_price_shock_overnight_workflow.ps1`
+    - `code/start_annual_transition_price_shock_overnight.ps1`
+    - `notes/build/annual_transition_price_shock_overnight_workflow.md`
+  - bridge extension:
+    - `code/nimby_fertility_transition_bridge.py` now supports `simulate_exogenous_price_path_relaxation(...)`
+  - refreshed outputs:
+    - `notes/build/annual_transition_path_price_shock.md`
+    - `notes/build/annual_transition_path_price_shock.csv`
+    - `notes/build/annual_transition_path_price_shock_summary.csv`
+    - `notes/build/annual_transition_path_price_shock_initial_mass.csv`
+  - overnight packet:
+    - run directory:
+      - `notes/build/logs/annual_transition_price_shock_overnight_20260406_073255`
+    - status:
+      - `SUCCESS`
+  - price path:
+    - `t = 0` at baseline price
+    - permanent `+15%` price level shock from `t = 1` onward
+    - voting kept out of the loop; this is an exogenous price-path transition only
+  - main read:
+    - initial age-share L1 gap between default and template: `0.466`
+    - age-share L1 gap after `20` periods under the price shock: `0.023`
+    - age-share L1 gap after `40` periods: effectively `0`
+    - compared with the fixed-price run, the gap is almost unchanged:
+      - `0.023` versus `0.022` at `t = 20`
+      - effectively `0` in both runs by `t = 40`
+  - interpretation:
+    - the annual `t = 0` cross section still looks like a short-run transition object
+    - even under a permanent exogenous price increase, it does not generate a materially different long-run path in this reduced-form bridge
+- Last updated: 2026-04-06 (constant-price transition relaxation built and overnight packet run)
+- 2026-04-06 first live annual transition experiment:
+  - added:
+    - `code/build_annual_transition_path_constant_price_relaxation.py`
+    - `code/annual_transition_relaxation_overnight_workflow.ps1`
+    - `code/start_annual_transition_relaxation_overnight.ps1`
+    - `notes/build/annual_transition_relaxation_overnight_workflow.md`
+  - refreshed outputs:
+    - `notes/build/annual_transition_path_constant_price_relaxation.md`
+    - `notes/build/annual_transition_path_constant_price_relaxation.csv`
+    - `notes/build/annual_transition_path_constant_price_relaxation_summary.csv`
+    - `notes/build/annual_transition_path_constant_price_relaxation_initial_mass.csv`
+  - overnight packet:
+    - run directory:
+      - `notes/build/logs/annual_transition_relaxation_overnight_20260406_063702`
+    - status:
+      - `SUCCESS`
+    - selected step run:
+      - step 4 only (`build_annual_transition_path_constant_price_relaxation.py`)
+      - steps 1-3 were skipped because the transition prep / bucket / state-grid files were already current
+  - main read:
+    - initial age-share L1 gap between default bridge mass and the annual `t = 0` template: `0.466`
+    - age-share L1 gap after `20` periods at fixed price: `0.022`
+    - age-share L1 gap after `40` periods: effectively `0`
+    - average-age gap at `t = 0`: `0.81` years
+    - average-age gap at `t = 20`: `-0.21` years
+  - interpretation:
+    - under a constant-price path, the explicit annual `t = 0` cross section mostly washes out by about `20` periods
+    - so the new transition object looks like a short-run transition effect, not a new long-run steady-state replacement
+- Last updated: 2026-04-06 (annual branch comparison pack written; Hamilton annual rebaseline synced)
+- 2026-04-06 annual branch comparison pack:
+  - added:
+    - `notes/build/annual_branch_comparison_note.md`
+    - `notes/build/annual_branch_comparison_table.csv`
+  - consolidated objects:
+    - recentered no-mix annual baseline
+    - owner-mortgage-state confirm
+    - transition-path `t = 0` bucket/state-grid template
+    - synced Hamilton annual broad rebaseline outputs
+  - current comparison read:
+    - best meaningful solved annual point is still the recentered no-mix baseline:
+      - mean age first birth `30.09`
+      - share first births age `30+` `0.521`
+      - childless at `50` `0.233`
+      - owner share `25-34` `0.556`
+      - mortgaged-owner share under `35` `0.181`
+      - unique crossing `~1.859`
+    - owner-mortgage-state confirm still does not beat that baseline on the young-leverage level target
+    - transition-path branch is now the clean next branch because it has an explicit `t = 0` age cross section
+  - Hamilton annual rebaseline sync:
+    - job `16633573` is no longer running
+    - final state: `TIMEOUT`
+    - elapsed: `2-00:00:04`
+    - synced outputs:
+      - `notes/build/fertility_annual_rebaseline_handoff.md`
+      - `notes/build/fertility_annual_broad_calibration_screen.md`
+      - `notes/build/fertility_annual_broad_calibration_screen_candidates.csv`
+      - `notes/build/fertility_annual_broad_calibration_screen_candidate_paths.csv`
+      - `notes/build/fertility_annual_broad_calibration_screen_target_ranges.csv`
+    - partial annual broad-screen read:
+      - candidates screened: `104`
+      - inside all primary bands: `0`
+      - inside all primary bands and passing sign checks: `0`
+      - best partial row still has no crossing and childless share at `50` around `0.002`
+- Last updated: 2026-04-06 (transition-path overnight workflow completed)
+- 2026-04-06 transition-path overnight workflow completed:
+  - run directory:
+    - `notes/build/logs/annual_transition_path_overnight_20260405_211238`
+  - completion:
+    - step 1 `run_fertility_annual_transition_path_prep` done at `2026-04-05 21:13:38`
+    - step 2 `run_fertility_annual_transition_path_bucket_mapping` done at `2026-04-05 21:14:38`
+    - step 3 `run_fertility_annual_transition_path_state_grid_mapping` done at `2026-04-05 21:15:38`
+    - workflow status: `SUCCESS`
+  - refreshed outputs:
+    - `notes/build/fertility_annual_transition_path_prep.md`
+    - `notes/build/fertility_annual_transition_path_targets.csv`
+    - `notes/build/fertility_annual_transition_path_bucket_mapping.md`
+    - `notes/build/fertility_annual_transition_path_bucket_mapping.csv`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.md`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.csv`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping_summary.csv`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.mat`
+  - interpretation:
+    - the transition-path branch now has a complete local prep -> bucket-mapping -> state-grid template chain
+    - the next transition-path step is no longer setup; it is deciding how to use this `t = 0` template in a live transition experiment
+- Last updated: 2026-04-05 (transition-path overnight workflow set up)
+- 2026-04-05 transition-path overnight workflow:
+  - added:
+    - `code/run_fertility_annual_transition_path_state_grid_mapping.m`
+    - `code/annual_transition_path_overnight_workflow.ps1`
+    - `code/start_annual_transition_path_overnight.ps1`
+    - `notes/build/annual_transition_path_overnight_workflow.md`
+  - verified outputs:
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.md`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.csv`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping_summary.csv`
+    - `notes/build/fertility_annual_transition_path_state_grid_mapping.mat`
+  - Phase 2 state-grid mapping now exists:
+    - uses `I = 24`, `J = 8`, `K = 6`, ages `25-80`
+    - places the time-zero bucket shares on the `(b, housing, z, age)` grid as a reduced-form template
+    - carries the `55-64` bucket pattern forward to `65-80` by explicit rule
+  - overnight packet scope:
+    - step 1: `run_fertility_annual_transition_path_prep`
+    - step 2: `run_fertility_annual_transition_path_bucket_mapping`
+    - step 3: `run_fertility_annual_transition_path_state_grid_mapping`
+    - no steady-state finance, entrant-mixture, or mortgage-state reruns inside this workflow
+- Last updated: 2026-04-05 (owner-mortgage-state confirm completed)
+- 2026-04-05 owner-mortgage-state confirm completed:
+  - run:
+    - `run_fertility_annual_owner_mortgage_state_screen('confirm')`
+  - completion:
+    - background run finished successfully at `2026-04-05 20:17 BST`
+    - run directory:
+      - `notes/build/logs/annual_owner_mortgage_state_confirm_20260405_190924`
+    - refreshed outputs:
+      - `notes/build/fertility_annual_owner_mortgage_state_screen.md`
+      - `notes/build/fertility_annual_owner_mortgage_state_screen_candidates.csv`
+  - final read:
+    - candidates screened: `19`
+    - primary fertility passes: `0`
+    - homeownership passes: `0`
+    - wealth passes: `0`
+    - unique crossings: `1`
+  - key result:
+    - the best row is still the no-rule baseline:
+      - owner share `25-34` about `0.607`
+      - mortgaged-owner share under `35` about `0.166`
+      - mortgage share among young owners about `0.273`
+      - vote per mass at `q = 2.00` about `0.570`
+      - unique crossing about `1.529`
+    - the softer age-29 mortgage-state rows do shift composition:
+      - owner share `25-34` falls to about `0.242`
+      - mortgaged-owner share under `35` falls only slightly to about `0.146`
+      - mortgage share among young owners rises to about `0.605`
+    - but they still do not improve the main leverage target:
+      - the level target is mortgaged-owner share under `35`, not just mortgage share among owners
+      - they also lose the unique crossing
+  - conclusion:
+    - the minimal mortgage-state rule does not beat the recentered annual no-mix baseline
+    - it changes the composition of young owners, but by shrinking young ownership too much rather than by raising young leveraged ownership enough
+- Last updated: 2026-04-05 (transition-path Phase 1 mapping written; mortgage-state confirm launched)
+- 2026-04-05 transition-path Phase 1 mapping:
+  - ran:
+    - `run_fertility_annual_transition_path_bucket_mapping`
+  - refreshed outputs:
+    - `notes/build/fertility_annual_transition_path_bucket_mapping.md`
+    - `notes/build/fertility_annual_transition_path_bucket_mapping.csv`
+  - mapping rule:
+    - owner with mortgage = mortgaged-owner share target
+    - owner outright = owner share target minus mortgaged-owner share target
+    - renter with debt = debt-holder share target minus mortgaged-owner share target
+    - renter without debt = residual mass
+  - time-zero bucket mapping now on disk:
+    - `25-34`:
+      - owner with mortgage `0.306`
+      - owner outright `0.102`
+      - renter with debt `0.513`
+      - renter without debt `0.079`
+    - `35-44`:
+      - owner with mortgage `0.523`
+      - owner outright `0.082`
+      - renter with debt `0.347`
+      - renter without debt `0.048`
+    - `45-54` and `55-64`:
+      - no separate debt-holder target is available, so renter-with-debt is currently set to zero by explicit inference rule
+  - interpretation:
+    - the transition-path branch now has an actual time-zero cross-sectional target table rather than only a prep note
+- 2026-04-05 owner-mortgage-state confirm launched:
+  - ran:
+    - `run_fertility_annual_owner_mortgage_state_screen('confirm')`
+  - launch:
+    - started in the background at `2026-04-05 19:09 BST`
+    - run directory:
+      - `notes/build/logs/annual_owner_mortgage_state_confirm_20260405_190924`
+    - active pointer:
+      - `notes/build/logs/active_annual_owner_mortgage_state_confirm.txt`
+    - latest pointer:
+      - `notes/build/logs/latest_annual_owner_mortgage_state_confirm.txt`
+  - branch state before confirm:
+    - the recentered smoke run is now aligned with the current annual no-mix baseline
+    - but the simple mortgage-state rule still looked too blunt:
+      - raw smoke winner had owner share `25-34` about `0.255`
+      - mortgaged-owner share under `35` about `0.105`
+      - unique crossing about `1.674`
+    - the no-rule smoke baseline stayed cleaner:
+      - owner share `25-34` about `0.496`
+      - mortgaged-owner share under `35` about `0.118`
+      - unique crossing about `1.738`
+- Last updated: 2026-04-05 (dual annual next branches scaffolded)
+- 2026-04-05 dual annual next-branch scaffold:
+  - completed both follow-on branch setups:
+    - steady-state mortgage-state branch
+    - transition-path age-cross-section branch
+  - updated:
+    - `code/run_fertility_annual_owner_mortgage_state_screen.m`
+  - added:
+    - `code/fertility_annual_transition_path_branch_spec.m`
+    - `code/run_fertility_annual_transition_path_prep.m`
+    - `notes/build/fertility_annual_transition_path_prep.md`
+    - `notes/build/fertility_annual_transition_path_targets.csv`
+  - steady-state mortgage-state recenter:
+    - the mortgage-state screen now uses the current confirm-era annual anchor instead of the older `1.50 / 0.40 / 0.30` working point
+    - finance anchor now matches the live no-mix annual baseline:
+      - owner mortgage `CC = 0.97`
+      - entry mortgage floor `0.35`
+      - entry PTI cap `0.40`
+      - amortization `0.02`
+    - the mortgage-state rule was softened:
+      - minimum mortgage share grid now starts at `0.05`
+      - age cutoff grid now focuses on `29`, `34`, and `39`
+  - mortgage-state smoke result:
+    - reran:
+      - `run_fertility_annual_owner_mortgage_state_screen('smoke')`
+    - the raw smoke-score winner is:
+      - min mortgage share `0.20`
+      - age max `29`
+    - but it is not a better annual benchmark point:
+      - owner share `25-34` falls to about `0.255`
+      - mortgaged-owner share under `35` is only about `0.105`
+      - vote per mass at `q = 2.00` is about `-0.383`
+      - unique crossing is about `1.674`
+    - the smoke no-rule baseline remains cleaner:
+      - owner share `25-34` about `0.496`
+      - mortgaged-owner share under `35` about `0.118`
+      - unique crossing about `1.738`
+    - interpretation:
+      - a stronger mortgage-state rule is now a live branch, but by itself it still looks too blunt to close the leverage gap
+  - transition-path prep result:
+    - wrote the concrete branch scaffold from the live no-mix baseline
+    - the prep note now records the intended time-zero age blocks:
+      - `25-34`
+      - `35-44`
+      - `45-54`
+      - `55-64`
+    - and the time-zero state buckets:
+      - renter without debt
+      - renter with debt
+      - owner with mortgage
+      - owner outright
+    - the prep target table makes the no-mix gap explicit:
+      - debt-holder share under `35`: baseline about `0.181` vs target about `0.819`
+      - mortgaged-owner share under `35`: baseline about `0.181` vs target about `0.306`
+- 2026-04-05 structural owner-finance confirm completed:
+  - run:
+    - `run_fertility_annual_ownership_balance_sheet_screen('confirm')`
+  - completion:
+    - background run finished successfully at `2026-04-05 16:31 BST`
+    - run directory:
+      - `notes/build/logs/annual_ownership_balance_sheet_confirm_20260405_110748`
+    - refreshed outputs:
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen.md`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_candidates.csv`
+  - final read:
+    - candidates screened: `7`
+    - primary fertility passes: `0`
+    - homeownership support passes: `1`
+    - wealth support passes: `0`
+    - unique crossings on the check grid: `1`
+    - joint fertility + homeownership + wealth + unique-crossing passes: `0`
+  - key result:
+    - the recentered no-mix baseline remains the best meaningful annual working point:
+      - mean age first birth about `30.09`
+      - share first births age `30+` about `0.521`
+      - childless share at `50` about `0.233`
+      - owner share `25-34` about `0.556`
+      - mortgaged-owner share under `35` about `0.181`
+      - unique crossing about `1.859`
+    - one three-type mixture becomes rank `1` on the raw screen score because it improves owner-share support bins:
+      - owner share `25-34` about `0.433`
+      - owner share `35-44` about `0.568`
+    - but it is not a better economic row for the annual question:
+      - mortgaged-owner share under `35` falls to about `0.098`
+      - vote path has `3` sign changes rather than a unique crossing
+  - conclusion:
+    - the structural mixtures tried here do not close the young-leverage gap
+    - none beats the recentered no-mix baseline on the combination that matters:
+      - young mortgaged ownership
+      - stable crossing
+      - fertility anchor preservation
+    - the leverage target remains open:
+      - baseline mortgaged-owner share under `35` about `0.181`
+      - target about `0.306`
+- 2026-04-05 structural owner-finance recenter:
+  - updated:
+    - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+    - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+  - recenter:
+    - the structural annual branch is now centered on the current confirm-era fertility/finance region rather than the older usable-anchor settings that were reproducing the bad `33.4 / 0.985 / 0.663` fertility read
+    - fixed fertility anchor now uses:
+      - `extra_front_loaded`
+      - `phi0 = 1.48`
+      - `child utility = 0.025`
+      - `birth cost = 0.045`
+      - `kappa = 0.16`
+      - `lambda = 0.10`
+    - fixed finance anchor now uses the finance-confirm frontier center:
+      - owner mortgage `CC = 0.97`
+      - entry mortgage floor `0.35`
+      - entry PTI cap `0.40`
+      - amortization `0.02`
+    - entrant-type grids were also shifted away from large wealth gifts and toward deposit-style help:
+      - smaller helped transfer boosts
+      - lower helped initial asset points
+      - mortgage-floor / PTI grids centered on the finance-confirm frontier
+  - reason:
+    - the old structural spec was no longer testing the live annual question
+    - it was centered on an older annual anchor that no longer matched the current confirm-era results
+- 2026-04-05 structural owner-finance confirm:
+  - run:
+    - `run_fertility_annual_ownership_balance_sheet_screen('confirm')`
+  - status:
+    - first foreground launch timed out at the terminal after about `90` minutes and then stopped before finishing
+    - relaunched in the background at `2026-04-05 11:07 BST` with its own logging wrapper:
+      - `code/start_annual_ownership_balance_sheet_confirm.ps1`
+      - `code/annual_ownership_balance_sheet_confirm_workflow.ps1`
+    - active pointer:
+      - `notes/build/logs/active_annual_ownership_balance_sheet_confirm.txt`
+    - latest pointer:
+      - `notes/build/logs/latest_annual_ownership_balance_sheet_confirm.txt`
+    - current checkpoint file write is from `08:40 BST` from the earlier partial run
+  - current checkpoint:
+    - candidates screened so far: `2`
+    - current best row is the new no-mix baseline itself:
+      - mean age first birth about `30.09`
+      - share first births age `30+` about `0.521`
+      - childless share at `50` about `0.233`
+      - owner share `25-34` about `0.556`
+      - debt-holder share under `35` about `0.181`
+      - mortgaged-owner share under `35` about `0.181`
+      - vote per mass at `q = 2.00` about `0.183`
+      - unique crossing about `1.859`
+    - first constrained/helped mixture row so far:
+      - lowers owner share `25-34` to about `0.234`
+      - lowers mortgaged-owner share under `35` to about `0.152`
+      - drives vote at `q = 2.00` to about `-0.752`
+      - loses the unique crossing
+  - partial interpretation:
+    - recentering the structural branch already improved the baseline markedly relative to the old structural smoke
+    - leverage under `35` rises from the old structural baseline `0.092` to about `0.181`
+    - but that is still well below the target `0.306`
+    - and the first active mixture tried so far overshoots by crushing young ownership and making vote too negative
+- Last updated: 2026-04-05 (finance frontier inspected; re-anchor note inconsistency fixed)
+- 2026-04-05 finance-confirm inspection:
+  - direct read of the top finance-confirm rows shows a tight local frontier:
+    - best-score rows cluster at:
+      - entry LTV floor `0.35-0.40`
+      - PTI cap `0.40`
+      - amortization `0.02`
+    - owner mortgage `CC` matters weakly in that region:
+      - `0.97` and `0.99` often produce the same frontier rows
+      - `0.96` wins the top score once, but does not change the broad picture
+  - the best unique-crossing leverage rows now reach only about:
+    - mortgaged-owner share under `35` `0.166`
+  - target remains about:
+    - mortgaged-owner share under `35` `0.306`
+  - interpretation:
+    - the local finance-only box has a visible frontier, but it is still far from closing the annual leverage gap
+    - another narrow finance micro screen is unlikely to change the qualitative read
+- 2026-04-05 note-writer consistency fix:
+  - updated:
+    - `code/run_fertility_annual_joint_reanchor_screen.m`
+    - `code/run_fertility_annual_finance_micro_screen.m`
+    - `code/run_fertility_annual_soft_owner_entry_menu_screen.m`
+  - fix:
+    - the summary writers no longer print a numeric crossing price unconditionally in the best-candidate block
+    - if the crossing is not unique, the note now reports:
+      - `none (not unique; first interpolated zero ~...)`
+  - immediate note patch:
+    - corrected `notes/build/fertility_annual_joint_reanchor_screen.md` so it matches the confirm screener without waiting for a long rerun
+- 2026-04-05 annual branch decision:
+  - recommendation:
+    - do not open another narrow local finance-only box
+    - the next annual branch should be structural
+  - reason:
+    - finance-only confirm preserves a crossing but caps young mortgaged ownership far below target
+    - re-opening fertility on the confirm grid then makes the crossing unstable
+    - together, those two results imply the remaining miss is not a small-parameter issue
+- Last updated: 2026-04-04 (parallel confirm lanes completed / partially completed)
+- 2026-04-04 annual finance confirm:
+  - run:
+    - `run_fertility_annual_finance_micro_screen('confirm')`
+  - status:
+    - completed successfully at `2026-04-04 14:12 BST`
+    - screened all `108` candidates on the `I = 20`, `J = 6` grid
+  - best candidate:
+    - `mCC 0.96 | entryLTV 0.35 | PTI 0.40 | amort 0.02`
+  - read:
+    - unique crossing survives in the finance-only confirm run
+    - refined crossing price about `1.528`
+    - owner share `25-34` about `0.576`
+    - owner share `35-44` about `0.623`
+    - debt-holder share under `35` about `0.160`
+    - mortgaged-owner share under `35` about `0.160`
+    - vote per mass at `q = 2.00` about `0.517`
+    - target mortgaged-owner share under `35` remains about `0.306`
+  - interpretation:
+    - the confirm grid improved the young leverage margin slightly relative to the earlier smoke runs
+    - but it still only reaches about half of the target young mortgaged-owner share
+    - so the leverage gap remains material even in the best finance-only confirm candidate
+- 2026-04-04 annual joint re-anchor confirm:
+  - run:
+    - `run_fertility_annual_joint_reanchor_screen('confirm')`
+  - status:
+    - completed successfully at `2026-04-04 11:12 BST`
+    - screened all `55` candidates on the `I = 20`, `J = 6` grid
+  - best candidate:
+    - `extra_front_loaded | phi0 1.48 | child 0.025 | cost 0.045 | kappa 0.16 | lambda 0.10`
+  - read:
+    - screener records `0` unique crossings on the confirm grid
+    - best candidate delivers:
+      - mean age first birth about `30.09`
+      - share first births age `30+` about `0.521`
+      - childless share at `50` about `0.233`
+      - owner share `25-34` about `0.591`
+      - debt-holder share under `35` about `0.145`
+      - mortgaged-owner share under `35` about `0.145`
+      - vote per mass at `q = 2.00` about `0.552`
+    - the note still prints a refined crossing number for the top row, but the confirm screener flags no unique crossings overall; so the robust read is that the smoke crossing did not survive the confirm re-anchor pass
+  - interpretation:
+    - reopening fertility on the finer grid weakens the earlier smoke result materially
+    - the annual crossing looks unstable once the fertility block is allowed to move
+- Last updated: 2026-04-04 (annual confirm workflow split into two parallel lanes)
+- 2026-04-04 parallel annual confirm launch:
+  - reason:
+    - the single overnight three-step confirm chain timed out at step 1
+    - finance confirm alone exceeded the old `5` hour cap
+  - code changes:
+    - updated:
+      - `code/annual_owner_finance_overnight_workflow.ps1`
+    - added:
+      - `code/start_annual_owner_finance_parallel_overnight.ps1`
+  - new parallel lane design:
+    - finance lane:
+      - step `1` only
+      - run label `annual_finance_confirm`
+      - timeout `9` hours
+    - joint re-anchor lane:
+      - step `2` only
+      - run label `annual_joint_reanchor_confirm`
+      - timeout `7` hours
+    - soft owner-entry confirm is intentionally excluded from the parallel launcher for now because the smoke evidence says it is low-return relative to runtime
+  - pointers:
+    - top-level parallel pointer:
+      - `notes/build/logs/active_annual_owner_finance_parallel.txt`
+    - finance lane:
+      - `notes/build/logs/active_annual_finance_confirm.txt`
+      - `notes/build/logs/latest_annual_finance_confirm.txt`
+    - joint re-anchor lane:
+      - `notes/build/logs/active_annual_joint_reanchor_confirm.txt`
+      - `notes/build/logs/latest_annual_joint_reanchor_confirm.txt`
+- Last updated: 2026-04-03 (annual owner-finance overnight workflow added; soft owner-entry menu smoke logged)
+- 2026-04-03 annual soft owner-entry menu smoke:
+  - purpose:
+    - keep the current best annual working point fixed
+    - test whether a small mortgage-heavier entry menu can raise young mortgaged ownership without collapsing ownership overall
+  - code changes:
+    - added:
+      - `code/run_fertility_annual_soft_owner_entry_menu_screen.m`
+  - fixed working point:
+    - fertility:
+      - `very_front_loaded`
+      - `phi0 = 1.50`
+      - `child utility = 0.025`
+      - `birth cost = 0.045`
+      - `kappa = 0.16`
+      - `lambda = 0.10`
+    - finance:
+      - owner mortgage `CC = 0.97`
+      - entry mortgage floor `0.40`
+      - entry PTI cap `0.30`
+      - amortization `0.02`
+  - smoke grid:
+    - heavy-entry type share:
+      - `0.10`, `0.20`
+    - heavy-entry LTV:
+      - `0.50`, `0.70`
+    - heavy-entry PTI:
+      - `0.35`, `0.40`
+    - heavy owner mortgage `CC`:
+      - `0.97`
+  - rerun:
+    - `run_fertility_annual_soft_owner_entry_menu_screen('smoke')`
+  - read:
+    - screened `9` candidates
+    - every candidate kept a unique crossing
+    - none improved on the baseline in any meaningful way
+    - baseline with no soft menu remained best:
+      - owner share `25-34` about `0.531`
+      - mortgaged-owner share under `35` about `0.113`
+      - mortgage share among young owners about `0.212`
+      - unique crossing about `1.697`
+    - the heavier-entry menu variants moved the model only trivially:
+      - best variant raised mortgaged-owner share under `35` only from about `0.113` to about `0.116`
+      - fertility moments and crossing were almost unchanged across the whole smoke grid
+  - interpretation:
+    - a small soft owner-entry menu is too weak to fix the annual leverage miss
+    - the current no-menu annual working point still dominates this reduced-form branch
+- 2026-04-03 annual owner-finance overnight workflow:
+  - purpose:
+    - create one bounded unattended local confirm chain for the annual owner-finance branch
+    - keep the overnight run inside the current annual finance/fertility/menu branch rather than opening new redesigns
+  - added:
+    - `code/start_annual_owner_finance_overnight.ps1`
+    - `code/annual_owner_finance_overnight_workflow.ps1`
+    - `notes/build/annual_owner_finance_overnight_workflow.md`
+  - workflow steps:
+    - `run_fertility_annual_finance_micro_screen('confirm')`
+    - `run_fertility_annual_joint_reanchor_screen('confirm')`
+    - `run_fertility_annual_soft_owner_entry_menu_screen('confirm')`
+  - pointers:
+    - active run:
+      - `notes/build/logs/active_annual_owner_finance_overnight.txt`
+    - latest run:
+      - `notes/build/logs/latest_annual_owner_finance_overnight.txt`
+- Last updated: 2026-04-03 (minimal young owner mortgage-state rule tried)
+- 2026-04-03 annual owner-mortgage-state screen:
+  - purpose:
+    - try the smallest more-explicit distinction between `owner with mortgage` and `owner outright`
+    - keep the current best annual working point fixed
+    - impose a new young-owner rule:
+      - below a chosen age, any owner position must carry at least some mortgage share
+  - code changes:
+    - updated:
+      - `code/SolveSS_fertility.m`
+    - added:
+      - `code/run_fertility_annual_owner_mortgage_state_screen.m`
+    - new solver margin:
+      - `owner_min_mortgage_share`
+      - `owner_min_mortgage_age_max`
+  - fixed working point:
+    - fertility:
+      - `very_front_loaded`
+      - `phi0 = 1.50`
+      - `child utility = 0.025`
+      - `birth cost = 0.045`
+      - `kappa = 0.16`
+      - `lambda = 0.10`
+    - finance:
+      - owner mortgage `CC = 0.97`
+      - entry mortgage floor `0.40`
+      - entry PTI cap `0.30`
+      - amortization `0.02`
+  - smoke grid:
+    - minimum young-owner mortgage share:
+      - `0.10`, `0.20`, `0.30`, `0.40`, `0.50`
+    - age max:
+      - `34`, `39`, `44`
+  - rerun:
+    - `run_fertility_annual_owner_mortgage_state_screen('smoke')`
+  - read:
+    - the baseline with no new young-owner mortgage-state rule remains the best row
+    - baseline remains:
+      - owner share `25-34` about `0.531`
+      - mortgaged-owner share under `35` about `0.113`
+      - mortgage share among young owners about `0.212`
+      - unique crossing about `1.697`
+    - once the new rule is turned on, the model does mechanically create `mortgaged owner` rather than `outright owner`
+      - among the remaining young owners, mortgage share jumps to `1.000`
+    - but it does so by crushing young ownership:
+      - owner share `25-34` falls to about `0.073-0.078` for age max `34`
+      - and to about `0.053` for age max `39-44`
+    - so the overall mortgaged-owner share under `35` falls rather than rises:
+      - from baseline `0.113`
+      - down to about `0.073` or `0.053`
+    - the crossing survives, but vote becomes more negative and the model moves farther from the ACS ownership targets
+  - interpretation:
+    - a crude young-owner mortgage-state rule is too blunt in the current model
+    - it separates mortgaged owners from outright owners, but only by pushing too many young households back into renting
+    - so the remaining annual leverage gap is not fixed by a simple "young owners must stay mortgaged" rule
+    - a workable next extension would need an owner-entry / mortgage menu that raises mortgaged ownership without collapsing ownership itself
+- Last updated: 2026-04-03 (joint annual re-anchor tried on top of frozen finance block)
+- 2026-04-03 annual joint re-anchor screen:
+  - purpose:
+    - freeze the better local finance block from the annual finance micro screen
+    - reopen the fertility anchor on top of it to see whether the annual branch can recover a reasonable fertility fit without losing the cleaner crossing
+  - code changes:
+    - added:
+      - `code/run_fertility_annual_joint_reanchor_screen.m`
+    - fixed finance block:
+      - owner mortgage `CC = 0.97`
+      - entry mortgage floor `0.40`
+      - entry payment-to-income cap `0.30`
+      - amortization `0.02`
+    - smoke fertility box:
+      - timing profiles:
+        - `max_front_loaded`
+        - `very_front_loaded`
+      - `phi0` grid:
+        - `1.20`, `1.30`, `1.40`, `1.50`
+      - policy bundles:
+        - anchor
+        - mild pronatal
+        - lower deterrence
+  - rerun:
+    - `run_fertility_annual_joint_reanchor_screen('smoke')`
+  - read:
+    - no row passes the full annual fertility-plus-shape screen, but the smoke box gets much closer than the frozen-finance anchor itself
+    - best row is:
+      - `very_front_loaded | phi0 1.50 | child 0.025 | cost 0.045 | kappa 0.16 | lambda 0.10`
+    - that row delivers:
+      - mean age at first birth about `30.10`
+      - share first births at age `30+` about `0.526`
+      - childless share at `50` about `0.205`
+      - owner share `25-34` about `0.531`
+      - debt-holder share under `35` about `0.113`
+      - mortgaged-owner share under `35` about `0.113`
+      - vote per mass at `q = 2.00` about `-0.396`
+      - unique crossing about `1.697`
+    - so the headline fertility moments can be brought back into a broadly reasonable region while preserving the cleaner crossing
+    - but the SCF leverage miss remains large:
+      - target mortgaged-owner share under `35` is about `0.306`
+      - best joint re-anchor row is still only about `0.113`
+    - and the stricter annual fertility scorer still records no full pass because the rough timing-shape subtargets are not yet all inside band
+  - interpretation:
+    - on this local smoke box, the finance block and the fertility block are much more decoupled than earlier screens suggested
+    - once finance is fixed, fertility parameters move fertility moments a lot, but they barely move:
+      - the crossing price
+      - the young leverage objects
+      - the owner-share profile
+    - this means the remaining annual problem is not "recover the crossing while fixing fertility"
+    - it is:
+      - keep the finance block that gives the crossing
+      - then decide whether to accept the leverage miss as the active balance-sheet gap or reopen the owner-finance block again on a larger structural margin
+- Last updated: 2026-04-03 (narrow annual finance micro screen tried)
+- 2026-04-03 annual finance-only micro screen:
+  - purpose:
+    - hold the annual fertility anchor fixed and vary only the owner-finance block around the current no-mix PTI baseline
+    - test whether a narrow local screen on mortgage terms can raise young leverage without losing the cleaner unique crossing
+  - code changes:
+    - added:
+      - `code/run_fertility_annual_finance_micro_screen.m`
+    - finance grid in `smoke` mode:
+      - owner mortgage `CC`: `0.97`, `0.99`
+      - entry mortgage floor: `0.40`, `0.50`
+      - entry payment-to-income cap: `0.30`, `0.35`, `0.40`
+      - amortization: `0.02`, `0.03`
+  - rerun:
+    - `run_fertility_annual_finance_micro_screen('smoke')`
+  - read:
+    - the best row is:
+      - `mCC 0.97 | entryLTV 0.40 | PTI 0.30 | amort 0.02`
+    - that row keeps a unique crossing:
+      - crossing about `1.698`
+      - vote per mass at `q = 2.00` about `-0.396`
+    - it also lifts the young leverage moments modestly relative to the current no-mix PTI baseline:
+      - debt-holder share under `35` rises from about `0.092` to about `0.113`
+      - mortgaged-owner share under `35` rises from about `0.092` to about `0.113`
+    - but it still remains far below the SCF support target for mortgaged owners under `35` of about `0.306`
+    - and the larger issue is unchanged:
+      - mean age at first birth about `33.44`
+      - share first births at age `30+` about `0.985`
+      - childless share at `50` about `0.663`
+      - so the finance-only local screen preserves the crossing but does not rescue the fertility block
+    - owner mortgage `CC = 0.97` versus `0.99` is locally inactive on this smoke grid:
+      - the paired rows are numerically identical in the current local box
+  - interpretation:
+    - narrow owner-finance tuning can improve the political object and young leverage a bit
+    - but the annual branch is not a simple local mortgage-parameter problem
+    - owner-finance tweaks alone are not enough to reconcile the annual crossing with the annual fertility targets
+- Last updated: 2026-04-03 (owner-entry payment-to-income cap tried in the annual branch)
+- 2026-04-03 annual payment-to-income-cap trial:
+  - purpose:
+    - move beyond leverage-floor rules and test a more realistic underwriting margin
+    - require young buyer mortgage payments to stay below a type-specific share of income
+  - code changes:
+    - updated:
+      - `code/SolveSS_fertility.m`
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - new reduced-form margin:
+      - `owner_entry_payment_to_income_cap`
+      - `owner_entry_payment_to_income_age_max`
+    - current annual settings:
+      - no-mix baseline:
+        - entry mortgage floor `0.50`
+        - payment-to-income cap `0.35`
+      - mixed candidate:
+        - constrained entry mortgage floor `0.50`
+        - helped entry mortgage floor `0.00`
+        - constrained PTI cap `0.30`
+        - helped PTI cap `0.45`
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this is the first annual smoke trial that produces a unique crossing on the check grid
+    - best row is the no-mix baseline:
+      - owner share `25-34` about `0.538`
+      - owner share `35-44` about `0.580`
+      - debt-holder share under `35` about `0.092`
+      - mortgaged-owner share under `35` about `0.092`
+      - vote per mass at `q = 2.00` about `-0.386`
+      - unique crossing around `q = 1.66`
+    - so the PTI rule improves the political object and keeps the owner-share block in range
+    - but it still leaves young leverage far below the SCF support bands
+    - the mixed constrained/helped PTI candidate still performs badly on ownership and still has no crossing
+  - interpretation:
+    - underwriting / affordability is a real missing margin in the annual branch
+    - among all the recent annual mortgage-side repairs, the simple PTI cap is the first one to deliver a clean unique crossing on the smoke grid
+    - but the remaining miss is still balance-sheet composition:
+      - the model can now produce a crossing more cleanly than it can produce enough young mortgage debt
+- Last updated: 2026-04-03 (type-specific buyer entry menu tried in the annual branch)
+- 2026-04-03 annual mixed buyer-entry-menu trial:
+  - purpose:
+    - test the softer financing-menu idea directly
+    - allow some young buyer types to enter with mortgage-heavy purchases while others can enter with more equity
+    - avoid forcing all young buyers into the same entry leverage rule
+  - code changes:
+    - updated:
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - new annual menu interpretation:
+      - no-mix baseline keeps common entry mortgage floor `0.50`
+      - mixed candidate now uses:
+        - constrained entry mortgage floor `0.75`
+        - helped entry mortgage floor `0.00`
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - the mixed buyer-entry menu does not beat the softer no-mix baseline
+    - no-mix baseline remains the best row:
+      - owner share `25-34` about `0.514`
+      - owner share `35-44` about `0.529`
+      - debt-holder share under `35` about `0.139`
+      - mortgaged-owner share under `35` about `0.139`
+      - vote per mass at `q = 2.00` about `-0.342`
+      - still no clean unique crossing
+    - the mixed candidate improves slightly relative to the fully hard common rule, but still performs badly:
+      - owner share `25-34` only about `0.019`
+      - owner share `35-44` only about `0.027`
+      - no crossing on the check grid
+  - interpretation:
+    - allowing different buyer-entry leverage modes across types is directionally sensible
+    - but with the current type screen, that financing menu still does not recover a good annual candidate
+    - the best annual read remains the softer no-mix entry-mortgage baseline, not the mixed type menu
+- Last updated: 2026-04-03 (softer young entry mortgage floor tried in the annual branch)
+- 2026-04-03 annual softer entry-mortgage-floor trial:
+  - purpose:
+    - test whether the hard `75%` entry-LTV floor was simply too blunt
+    - keep the same mortgage-entry logic, but soften it to an entry mortgage floor of `0.50`
+  - code changes:
+    - updated:
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+    - current anchor:
+      - entry mortgage floor lowered from `0.75` to `0.50`
+      - applies through age `44`
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this is better than the hard `0.75` version
+    - no-mix baseline now:
+      - passes the homeownership support block
+      - owner share `25-34` about `0.514`
+      - owner share `35-44` about `0.529`
+      - debt-holder share under `35` about `0.139`
+      - mortgaged-owner share under `35` about `0.139`
+      - vote per mass at `q = 2.00` about `-0.342`
+      - comes close to zero on the wider grid, with minimum gap about `0.058`
+    - but leverage is still well below the SCF support bands:
+      - debt-holder share under `35` target roughly `[0.708, 0.947]`
+      - mortgaged-owner share under `35` target roughly `[0.255, 0.364]`
+    - the constrained/helped mixed candidate still performs badly on ownership and still has no crossing
+  - interpretation:
+    - the softer joint wealth-plus-mortgage rule is directionally better than the hard one
+    - it is the first version that gets the no-mix baseline into the ACS owner-share support block while also creating some young mortgage debt
+    - but it still does not create enough young leverage to match the SCF moments, and the vote path still is not cleanly unique
+    - the next useful margin, if we keep going, is probably a softer financing menu rather than a single common entry-LTV floor
+- Last updated: 2026-04-03 (young owner-entry mortgage floor tried in the annual branch)
+- 2026-04-03 annual entry-mortgage-floor trial:
+  - purpose:
+    - test the user's "wealth plus mortgage debt" idea directly
+    - force young first-time buyers to enter ownership with a mortgage rather than near-full equity
+  - code changes:
+    - updated:
+      - `code/SolveSS_fertility.m`
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - new reduced-form margin:
+      - `owner_entry_mortgage_floor`
+      - `owner_entry_mortgage_age_max`
+    - current anchor:
+      - entry mortgage floor `0.75`
+      - applies through age `44`
+    - interpretation:
+      - if a young renter buys, they must finance at least `75%` of the house with mortgage debt
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this moves the model in the intended direction for the no-mix baseline:
+      - owner share `25-34` falls to about `0.707`
+      - debt-holder share under `35` rises to about `0.142`
+      - mortgaged-owner share under `35` rises to about `0.142`
+      - vote per mass at `q = 2.00` is about `-0.372`
+    - so the model does respond to forcing young buyers into leveraged ownership
+    - but the leverage response is still too small relative to SCF:
+      - target debt-holder share under `35` is roughly `0.71-0.95`
+      - target mortgaged-owner share under `35` is roughly `0.25-0.36`
+    - the mixed constrained/helped candidate becomes much worse on ownership:
+      - owner share `25-34` collapses to about `0.009`
+      - owner share `35-44` collapses to about `0.006`
+      - no crossing appears
+  - interpretation:
+    - the joint wealth-plus-mortgage idea is directionally right
+    - but a hard entry-LTV floor by itself is too blunt:
+      - it improves the plain baseline somewhat
+      - it interacts badly with the constrained/helped entry screen
+    - the next useful annual repair is likely a softer owner-finance margin, not a harder one:
+      - for example a lower entry-LTV floor, a payment-to-income rule, or a mortgage-at-entry option without forcing all buyers into the same leverage band
+- Last updated: 2026-04-03 (minimal owner-mortgage block tried in the annual branch)
+- 2026-04-03 annual minimal mortgage-block trial:
+  - purpose:
+    - move beyond generic wealth and entry wedges without building a full mortgage market
+    - let owner debt behave differently from generic debt through:
+      - owner-specific mortgage borrowing capacity
+      - a lower owner-debt spread
+      - simple amortization
+  - code changes:
+    - solver:
+      - `code/SolveSS_fertility.m`
+      - owner debt now uses:
+        - `owner_mortgage_CC`
+        - `owner_mortgage_spread`
+        - `owner_mortgage_amortization`
+      - owner choices now face a mortgage borrowing cap rather than the generic debt cap
+      - current owner debt can carry a lower spread than renter debt
+      - continuing owners with debt now face a simple amortization rule
+    - annual branch wiring:
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+      - current anchor uses:
+        - owner mortgage `CC = 0.97`
+        - owner mortgage spread about `0.0016`
+        - amortization `0.03`
+      - the existing constrained/helped `CC` grids are now interpreted as owner-mortgage borrowing-cap choices
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - the mortgage block changes the annual branch materially, but still does not generate enough young leverage
+    - no-mix baseline:
+      - vote per mass at `q = 2.00` falls to about `-0.365`
+      - but still shows almost no young mortgaged owners:
+        - debt-holder share under `35` about `0.000`
+        - mortgaged-owner share under `35` about `0.000`
+      - and its vote path is irregular, with `2` sign changes on the check grid
+    - constrained/helped mortgage candidate:
+      - owner share `25-34` improves sharply to about `0.358`
+      - owner share `35-44` improves to about `0.470`
+      - vote per mass at `q = 2.00` improves to about `-0.109`
+      - max vote on the crossing grid is about `-0.040`, so it is close to zero but still never crosses
+      - leverage remains far too low:
+        - debt-holder share under `35` about `0.019`
+        - mortgaged-owner share under `35` about `0.019`
+  - interpretation:
+    - this is the first annual repair that clearly moves the political object and the owner-share bins in the right direction at the same time
+    - but even the minimal mortgage block still does not create enough young mortgaged owners relative to the SCF targets
+    - the next annual question is no longer "do mortgages matter at all?"
+    - it is:
+      - what extra owner-finance margin is still missing beyond lower mortgage spread, higher owner LTV, and simple amortization?
+- Last updated: 2026-04-03 (simple owner-entry / down-payment gate tried in the annual branch)
+- 2026-04-03 annual owner-entry-gate trial:
+  - purpose:
+    - test a simpler first-stage entry barrier than full family transfers or bequests
+    - let young renters face a type-specific minimum liquid-asset floor before they can switch into owner housing
+  - code changes:
+    - updated:
+      - `code/SolveSS_fertility.m`
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - new reduced-form margin:
+      - `owner_entry_b_floor`
+      - `owner_entry_age_max`
+    - current smoke candidate:
+      - constrained type uses owner-entry floor `2.0`
+      - helped type uses owner-entry floor `0.0`
+      - gate applies through age `44`
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this simple owner-entry gate does move behavior, but not on the missing margin we care about
+    - the mixed candidate shifts a lot on fertility and ownership:
+      - mean age at first birth falls to about `26.95`
+      - share of first births at `30+` falls to about `0.213`
+      - childless share at `50` falls to about `0.299`
+      - owner share `25-34` falls to about `0.543`
+      - vote per mass at `q = 2.00` falls to about `0.298`
+    - but the leverage moments remain far too low:
+      - debt-holder share under `35` only about `0.031`
+      - mortgaged-owner share under `35` only about `0.031`
+    - there is still no crossing on the check grid
+  - interpretation:
+    - a simple deposit-style owner-entry gate is realistic enough as a first-stage proxy, but it is not enough by itself
+    - the annual branch still needs a richer way to generate young leverage and mortgaged ownership
+- Last updated: 2026-04-03 (simple mortgage-access margin tried in the annual branch)
+- 2026-04-03 annual reduced-form mortgage-access trial:
+  - purpose:
+    - test the simplest first-stage version of "bank of mum and dad" without modeling parents:
+      - let persistent types differ in effective mortgage access through type-specific `CC`
+  - code changes:
+    - added benchmark `CC = 0.9` explicitly to:
+      - `code/fertility_benchmark_config.m`
+    - updated:
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - current smoke candidate now lets the constrained type use `CC = 0.85` and the helped type use `CC = 0.98`
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this simple mortgage-access margin does not materially move the young debt / leveraged-owner moments on the current smoke grid
+    - baseline remains:
+      - debt-holder share under `35` about `0.051`
+      - mortgaged-owner share under `35` about `0.051`
+    - the first constrained/helped mix still gives:
+      - debt-holder share under `35` about `0.033`
+      - mortgaged-owner share under `35` about `0.033`
+      - vote per mass at `q = 2.00` about `0.298`
+    - so the help-to-buy proxy still has no crossing and still does not bring young leverage close to the SCF bands
+  - interpretation:
+    - a simple type-specific `CC` tweak is not enough by itself
+    - the annual branch likely needs a richer owner-entry / mortgage margin than just a looser LTV cap
+- Last updated: 2026-04-03 (annual wealth layer switched from raw ratios to SCF balance-sheet share moments)
+- 2026-04-03 annual SCF share-moment trial:
+  - purpose:
+    - replace the broken raw wealth-to-income mapping with SCF share moments the normalized model can speak to directly
+    - keep the persistent entry-distribution branch but score it on debt-holder and mortgaged-owner shares by age
+  - code changes:
+    - updated:
+      - `code/annual_wealth_target_ranges.m`
+      - `code/score_annual_wealth_support_targets.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+    - new SCF share targets now used:
+      - debt-holder share under `35`
+      - debt-holder share `35-44`
+      - mortgaged-owner share under `35`
+      - mortgaged-owner share `35-44`
+      - mortgaged-owner share `45-54` and `55-64` as validation
+  - rerun:
+    - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - current read:
+    - the new share targets are much more informative than the raw ratio layer
+    - both smoke candidates still fail fertility, wealth, and crossing jointly
+    - but the interpretation is now cleaner:
+      - the annual branch is far too low-debt and too low-leverage in the young and family years
+    - baseline at `a_price = 2.00`:
+      - debt-holder share under `35` about `0.051` versus SCF band `[0.708, 0.947]`
+      - mortgaged-owner share under `35` about `0.051` versus SCF band `[0.255, 0.364]`
+      - debt-holder share `35-44` about `0.117` versus SCF band `[0.776, 0.961]`
+    - first constrained/helped mix:
+      - vote per mass at `q = 2.00` falls to about `0.298`
+      - owner share `25-34` falls to about `0.544`
+      - debt-holder share under `35` falls further to about `0.033`
+      - still no crossing
+  - interpretation:
+    - the previous raw-ratio wealth layer was mostly a scale problem
+    - the share-moment version shows the deeper annual issue more clearly:
+      - young households in the model borrow far too little
+      - leveraged ownership is far too rare in the model relative to SCF
+    - the next useful annual repair should focus on generating more realistic young leverage / mortgage exposure, not on another generic wealth proxy
+- Last updated: 2026-04-03 (persistent entry-wealth distributions tried in the annual branch)
+- 2026-04-03 annual persistent entry-distribution trial:
+  - purpose:
+    - move from a one-off helped-entry gift to persistent type-specific entry asset distributions
+    - test the user idea that steady-state wealth heterogeneity should come from the entrant distribution and then evolve endogenously
+  - code changes:
+    - solver:
+      - `code/SolveSS_fertility.m`
+      - new support for `initial_b_points` and `initial_b_shares`
+      - entry mass is now linearly interpolated onto the `b` grid rather than pinned to one grid point
+    - annual branch spec:
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - added baseline / constrained / helped entry-asset profile templates
+    - annual screen:
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+      - the branch now uses type-specific entry asset distributions instead of the old parental-transfer split
+  - trial run:
+    - reran:
+      - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+  - read:
+    - this version does not solve the annual wealth problem
+    - on the current smoke grid it actually makes the model-side wealth ratios even larger under the current SCF mapping
+    - baseline at `a_price = 2.00` now gives:
+      - transaction-accounts / income under `35` about `16.10`
+      - net worth / income under `35` about `40.24`
+    - the first constrained/helped mix improves some non-wealth margins:
+      - owner share `25-34` falls to about `0.544`
+      - vote per mass at `q = 2.00` falls to about `0.298`
+    - but it still has no crossing and still misses the wealth targets by a very wide margin
+  - interpretation:
+    - the persistent entry-distribution idea is conceptually the right steady-state move
+    - but under the current annual normalization and coarse smoke grid, the SCF wealth-to-income mapping is still not behaving as a usable calibration object
+    - the next issue to resolve is now the model-to-data wealth mapping / scaling, not just the entrant heterogeneity logic
+- Last updated: 2026-04-03 (annual ownership / balance-sheet screen now scores SCF age-wealth targets)
+- 2026-04-03 annual wealth-layer integration trial:
+  - purpose:
+    - add the new age-based wealth source as an actual annual screening block rather than a note-only calibration idea
+    - test whether the existing entrant-mixture branch moves the annual model toward the young-household SCF profile
+  - code changes:
+    - added:
+      - `code/annual_wealth_target_ranges.m`
+      - `code/score_annual_wealth_support_targets.m`
+    - updated:
+      - `code/fertility_benchmark_annual_config.m`
+      - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+      - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+  - current mapping used:
+    - SCF transaction-account target proxied with median non-negative financial assets relative to median income
+    - SCF net-worth target proxied with median `(b + q*a)` relative to median income
+  - smoke rerun:
+    - command:
+      - `run_fertility_annual_ownership_balance_sheet_screen('smoke')`
+    - outputs refreshed:
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen.md`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_candidates.csv`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_wealth_targets.csv`
+  - smoke read:
+    - the new wealth layer runs cleanly end to end
+    - but both smoke candidates fail the SCF support bands by a very wide margin
+    - at `a_price = 2.00`, the no-mix baseline gives:
+      - transaction-accounts / income under `35` about `1.46` versus SCF band `[0.053, 0.103]`
+      - net worth / income under `35` about `4.39` versus SCF band `[0.231, 0.742]`
+      - net worth / income `35-44` about `7.25` versus SCF band `[0.771, 1.799]`
+    - the first constrained/helped mix improves vote and owner-share levels:
+      - vote per mass at `q = 2.00` moves from about `+0.593` to about `-0.016`
+      - owner share `25-34` moves from about `0.521` to about `0.270`
+    - but it still fails wealth support badly and still does not produce a unique crossing
+  - interpretation:
+    - once age-wealth targets are imposed, the annual issue is not only politics
+    - the current annual branch is still far too wealthy relative to income in the young and family years under this mapping
+    - so the next annual repair step should focus on the balance-sheet scaling / entrant asset distribution directly, not just on vote-side wedges
+- Last updated: 2026-04-03 (annual target/calibration tables now consolidated, including SCF wealth-age support targets)
+- 2026-04-03 annual target/calibration table consolidation:
+  - purpose:
+    - put the live annual branch targets and calibration objects into one paper-style table pack, matching the necessity-project format more closely
+    - add a data-backed wealth target layer for the entrant heterogeneity branch rather than leaving wealth shares as an ad hoc chat-only idea
+  - new code:
+    - `code/build_scf_wealth_age_target_review.py`
+    - `code/write_annual_calibration_tables_main.m`
+  - new build outputs:
+    - `notes/build/scf_wealth_age_target_review.md`
+    - `notes/build/scf_wealth_age_target_review.csv`
+    - `notes/build/scf_wealth_age_target_recent_pool.csv`
+    - `notes/build/annual_calibration_tables.md`
+    - `notes/build/annual_calibration_targets_table.csv`
+    - `notes/build/annual_calibration_parameters_table.csv`
+  - new paper-style table fragments:
+    - `drafts/tables/annual_targeted_moments.tex`
+    - `drafts/tables/annual_calibration_implementation.tex`
+  - current target layout:
+    - fertility block:
+      - primary annual timing and stock moments
+    - homeownership block:
+      - ACS owner-share support / validation bins by age
+    - wealth block:
+      - SCF transaction-account-to-income and net-worth-to-income ratios by age
+  - interpretation lock:
+    - young wealth / liquidity targets are support objects for entrant-type heterogeneity
+    - older wealth targets are validation objects
+    - the annual branch should not be forced through aggregate top wealth-share targets at this stage
+- Last updated: 2026-04-03 (live annual broad screen still running; `86 / 145` candidates screened and still no viable annual benchmark)
+- 2026-04-03 live annual rebaseline check:
+  - direct Hamilton poll at `2026-04-03 06:18:01 +01:00`:
+    - job `16633573` state: `RUNNING`
+    - elapsed: `1-15:18:53`
+    - node: `cn117`
+  - live remote annual broad-screen note timestamp:
+    - `2026-04-03 06:06:54 +01:00`
+  - current live read from the remote note:
+    - candidates screened so far: `86`
+    - total candidates in the `fast` grid: `145`
+    - candidates inside all primary bands: `0`
+    - candidates inside all primary bands and passing sign checks: `0`
+    - current best candidate:
+      - `phi0 2.60 | child 0.00 | cost 0.00 | kappa 0.03 | lambda 0.04`
+      - mean age first birth about `29.78`
+      - share first births age `30+` about `0.543`
+      - childless share at `50` about `0.002`
+      - vote at `a_price = 2.00` about `-0.7455`
+      - still no crossing on the checked annual grid
+  - interpretation:
+    - the corrected annual rebaseline is making real progress through the grid
+    - but the live annual branch is still failing on the same core margin:
+      - near-zero childlessness
+      - no stable market-clearing crossing
+- Last updated: 2026-04-02 (ownership / balance-sheet runner created and smoke-tested)
+- 2026-04-02 annual ownership / balance-sheet runner:
+  - new runner:
+    - `code/run_fertility_annual_ownership_balance_sheet_screen.m`
+  - branch spec it uses:
+    - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+  - workflow note:
+    - `notes/build/fertility_annual_ownership_balance_sheet_workflow.md`
+  - local smoke status:
+    - the new runner now completes in `smoke` mode and writes:
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen.md`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_candidates.csv`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_candidate_paths.csv`
+      - `notes/build/fertility_annual_ownership_balance_sheet_screen_crossing_paths.csv`
+  - smoke read:
+    - this is a plumbing check, not yet an economic result
+    - on the coarse `I = 12`, `J = 4` smoke grid, the fixed anchor does not reproduce the saved usable-annual fertility moments closely enough to treat the smoke levels as benchmark evidence
+    - but the structural mixture branch does materially move owner-share support objects and the vote object on the same coarse grid
+    - specifically, the first constrained/helped mix moves eval vote-per-mass from about `+0.593` to about `-0.016` and lowers owner-share support bins materially, but still produces multiple sign changes rather than a stable unique crossing
+  - implication:
+    - the new branch is now executable
+    - the next branch read should come from a medium-grid `confirm` pass once the corrected annual rerun decision is settled, not from the coarse smoke levels alone
+- Last updated: 2026-04-02 (annual structural repair workflow now fixed as an ownership / balance-sheet branch)
+- 2026-04-02 annual repair workflow lock-in:
+  - purpose:
+    - stop the annual branch from drifting into more one-parameter rescue screens
+    - fix the next reopen path in a reusable code-side branch spec and a workflow note
+  - new files:
+    - `code/fertility_annual_ownership_balance_sheet_branch_spec.m`
+    - `notes/build/fertility_annual_ownership_balance_sheet_workflow.md`
+  - locked branch read:
+    - the annual bottleneck is now `stable unique crossing`, not fertility timing alone
+    - the next live annual reopen should be entrant ownership / balance-sheet heterogeneity around the usable annual fertility anchor
+    - this is explicitly a minimal structural extension, not yet a full savings-state or transition-path solver rewrite
+  - practical rule:
+    - do not reopen pure `d_a_price`, rent-wedge, family-space, or other one-parameter rescue screens unless the corrected annual rerun overturns the current read
+- Last updated: 2026-04-02 (annual 5-year-review proxy micro test does not rescue the annual vote object)
+- 2026-04-02 annual political-timing comparability micro test:
+  - motivation:
+    - user concern was that the annual branch is not directly comparable to the `5-year` benchmark if the political block is also annualized
+  - exact proxy tried locally:
+    - keep annual household choices and annual ages
+    - keep annualized `beta`, `ra`, `rspread`, and `rent_markup`
+    - but hold the `5-year` vote shock and `5-year` housing adjustment cost fixed:
+      - `d_a_price = 1.01`
+      - `ka = 0.06`
+    - this is only a proxy for slower political review, not a full election-cycle state model
+  - supporting existing local notes:
+    - `notes/build/nimby_local_periodization_report.md`
+    - `notes/build/nimby_local_age_block_periodization.md`
+    - those earlier NIMBY-only comparisons already showed that holding the `5-year` vote shock did not restore an interior annual crossing
+  - new fertility-side micro test:
+    - candidate tested:
+      - current least-bad partial annual candidate from the running broad screen:
+        - `phi0 1.40 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.04`
+      - local diagnostic grid:
+        - `I = 20`, `J = 6`
+        - prices checked locally under the proxy:
+          - `q = 1.50`
+          - `q = 2.00`
+    - comparison against the same candidate under the fully annualized political block:
+      - from the remote annual broad-screen note:
+        - at `q = 1.50`, vote per mass about `-0.5127`
+        - at `q = 2.00`, vote per mass about `-0.7455`
+      - under the local `5-year` review proxy:
+        - at `q = 1.50`, vote per mass about `-0.5907`
+        - at `q = 2.00`, vote per mass about `-0.7949`
+    - fertility moments under the proxy were essentially unchanged at those points:
+      - mean age first birth stayed about `28.6`
+      - share first births age `30+` stayed about `0.36`
+      - childless share at `50` stayed about `0.002`
+  - interpretation:
+    - the quick comparable-timing proxy does not make the annual politics problem go away
+    - if anything, it makes the current least-bad annual candidate slightly more anti-high-price
+    - so the annual failure is not just an artefact of annualizing the political shock; the deeper annual calibration problem remains
+- Last updated: 2026-04-02 (live annual rebaseline check: job still running; partial remote screen is not yet viable)
+- 2026-04-02 annual rebaseline live check:
+  - direct Hamilton poll at `2026-04-02 11:04:06 +01:00`:
+    - job `16633573` state: `RUNNING`
+    - elapsed: `20:03:51`
+    - walltime limit: `48:00:00`
+    - node: `cn117`
+  - detached local monitor file is stale relative to the live poll:
+    - last local recorded poll in the handoff log:
+      - `2026-04-02 09:41:16 POLL job=16633573 state=RUNNING exit=0:0 elapsed=18:42:01 node=cn117`
+  - remote partial outputs do now exist on Hamilton:
+    - `notes/build/fertility_annual_broad_calibration_screen.md`
+    - `notes/build/fertility_annual_broad_calibration_screen_candidates.csv`
+    - `notes/build/fertility_annual_broad_calibration_screen_candidate_paths.csv`
+  - remote file timestamp check:
+    - latest partial annual note / CSV write seen at `2026-04-02 10:41:37`
+  - current partial screen read from the remote note:
+    - candidates screened so far: `45`
+    - total candidates in the `fast` grid: `145`
+    - candidates inside all primary bands: `0`
+    - candidates inside all primary bands and passing sign checks: `0`
+    - best current candidate still has:
+      - no market crossing on the annual check grid
+      - childless share at `50` around `0.002`
+      - vote at `a_price = 2.00` around `-0.7455`
+  - interpretation:
+    - the annual rebaseline is alive and writing outputs, but the partial screen is still economically wrong for the paper
+    - there is not yet a usable annual benchmark to reopen drafting with
+  - runtime risk:
+    - inference from the current pace:
+      - `45 / 145` candidates after about `20` elapsed hours suggests the full fast screen may not finish within the current `48` hour walltime unless later candidates are materially cheaper
+- Last updated: 2026-04-02 (paper draft synced to the live corrected 5-year benchmark objects)
+- 2026-04-02 manuscript sync to live benchmark:
+  - patched the actual paper-facing draft files:
+    - `drafts/sections/quantitative_results.tex`
+    - `drafts/fertility_and_housing_supply.tex`
+  - synchronized the paper to the live corrected `5-year` benchmark objects:
+    - benchmark crossing moved from the stale `1.824` draft layer to `1.750394`
+    - appendix benchmark table now reports:
+      - upstream NIMBY crossing `2.326287`
+      - fertility crossing `1.750394`
+      - normalized vote-per-mass as the preferred political-support object
+      - fertility benchmark mass `1.000000`
+  - updated the main quantitative section:
+    - equilibrium-comparison table now uses the current fertility-model evaluations at the fertility crossing and the NIMBY crossing price
+    - voter-comparison table now uses vote per unit mass and no longer claims the coarse common grid is monotone around the fertility crossing
+  - updated the appendix:
+    - switched the benchmark figure include from the stale March object to `notes/build/fertility_vs_nimby_benchmark_panels.png`
+    - refreshed the wide-range timing table and the sensitivity-table benchmark anchor row
+  - compile check:
+    - `latexmk -pdf fertility_and_housing_supply.tex` succeeded
+    - the PDF now builds with the refreshed benchmark material
+    - remaining LaTeX warnings are broader manuscript cross-reference chatter rather than a failure of the benchmark sync
+- Last updated: 2026-04-02 (vote-per-mass adopted as the preferred political-support convention)
+- 2026-04-02 reporting convention decision:
+  - preferred object:
+    - treat `vote_per_mass` as the primary political-support object in both annual and `5-year` benchmark notes
+  - retention rule:
+    - keep raw `totalvote` in tables and CSVs only for continuity with project 02 and for auditability
+  - practical implication on the current benchmark grids:
+    - this convention change does not move the reported crossing prices
+    - reason: stationary mass is constant within each model on the current grids
+      - upstream NIMBY mass: `6.387684`
+      - fertility benchmark mass: `1.000000`
+  - documentation updated:
+    - `notes/build/fertility_vs_nimby_benchmark_report.md`
+    - `notes/build/fertility_five_year_live_benchmark_note.md`
+- Last updated: 2026-04-02 (corrected 5-year first-birth timing stack refreshed)
+- 2026-04-02 corrected 5-year timing refresh:
+  - reran the direct timing note on the live corrected benchmark path:
+    - `code/write_fertility_first_birth_timing_main.m`
+  - reran the model-versus-data timing comparison after the refreshed timing summary landed:
+    - `code/build_first_birth_timing_model_data_comparison.py`
+  - refreshed outputs:
+    - `notes/build/fertility_first_birth_timing.md`
+    - `notes/build/fertility_first_birth_timing_summary.csv`
+    - `notes/build/fertility_first_birth_timing_profiles.csv`
+    - `notes/build/first_birth_timing_model_data_comparison.md`
+    - `notes/build/first_birth_timing_model_data_comparison_summary.csv`
+  - current read:
+    - the corrected 5-year benchmark still implies a strong timing response to higher house prices
+    - the timing-comparison note is now aligned with the corrected 5-year benchmark objects rather than the older March timing summary
+  - scope guardrail:
+    - this refresh updates the exact 5-year steady-state timing layer
+    - it does not by itself invalidate the separate Python transition / projection bridge pack, which is still a distinct approximation layer rather than the MATLAB household DP benchmark
+- Last updated: 2026-04-01 (annual solver transition orientation fixed; old annual branch conclusions are stale)
+- 2026-04-01 annual transition-matrix fix and rerun:
+  - solver fix:
+    - `code/SolveSS_fertility.m`
+    - removed the incorrect transpose at:
+      - initial stationary distribution construction
+      - backward expected-value transition use
+      - forward density propagation
+  - direct diagnostic after the fix:
+    - annual smoke eval at `a_price = 2.00` now has exact mass conservation across ages rather than late-life mass inflation
+    - smoke eval vote moved from the previously checked `-1.96` range down to about `-0.642`
+    - full annual benchmark eval vote at `a_price = 2.00` is still negative, about `-0.899`
+  - refreshed annual smoke report:
+    - `notes/build/fertility_run_ge_annual_report.md`
+    - `notes/build/fertility_price_sweep_annual.csv`
+    - `notes/build/fertility_market_clearing_grid_annual.csv`
+    - `notes/build/fertility_local_benchmark_search_annual.csv`
+  - corrected annual smoke read:
+    - no sign change on the smoke common or local market grids
+    - mass error is now numerical zero, around `1e-15`
+    - but the annual fertility benchmark itself is no longer near the previously reported usable region
+    - at the corrected annual eval point:
+      - mean age first birth is about `40.58`
+      - share first births age `30+` is essentially `1.000`
+      - average birth rate is about `0.0089`
+  - interpretation:
+    - the old annual mechanism-search outputs were contaminated by the transition-orientation bug and should now be treated as stale
+    - the key update is not "the annual benchmark now clears markets"
+    - it is "the annual benchmark still does not clear, and the corrected fertility moments are much worse than previously thought"
+  - Hamilton action:
+    - cancelled stale anticipated-drift confirmation job `16633522`
+    - reason: it had been submitted before the transition-orientation fix, so its results would have been based on the stale annual solver
+    - staged corrected rebaseline bundle:
+      - `C:\Users\Dave_\AI\_playground\backups\2026-04-01\03_fertility_and_housing_supply_hpc\annual_nimby_bundle_20260401_083158.zip`
+    - remote rebaseline bundle root:
+      - `~/codex_runs/fertility_rebaseline_20260401_083158/annual_nimby_bundle_20260401_083158`
+    - submitted corrected broad annual recalibration job:
+      - `16633573`
+    - queue state at submit check:
+      - `PENDING` on partition `shared`
+    - submit command:
+      - `sbatch --nice=10000 --export=ALL,MODE=fast fertility_annual_broad_calibration_screen.slurm`
+    - detached local monitor launched:
+      - `code/hamilton_annual_fertility_rebaseline_handoff.ps1`
+      - `code/start_hamilton_annual_fertility_rebaseline_handoff.ps1`
+    - active pointer files:
+      - `notes/build/logs/active_hamilton_annual_fertility_rebaseline_handoff.txt`
+      - `notes/build/logs/latest_hamilton_annual_fertility_rebaseline_handoff.txt`
+    - monitor follow-up:
+      - the first detached handoff launch failed immediately because Markdown backticks inside a double-quoted PowerShell array caused a parser error in `code/hamilton_annual_fertility_rebaseline_handoff.ps1`
+      - patched that report-writing block and relaunched the detached handoff successfully
+      - current local handoff run dir:
+        - `notes/build/logs/hamilton_annual_fertility_rebaseline_handoff_20260401_113958`
+      - latest poll:
+        - job `16633573` still `PENDING` with reason `Priority`
+  - meanwhile:
+    - launched the detached corrected 5-year benchmark refresh:
+      - `code/refresh_corrected_benchmark_outputs_overnight.ps1`
+      - `code/start_refresh_corrected_benchmark_outputs_overnight.ps1`
+    - active pointer files:
+      - `notes/build/logs/active_overnight_benchmark_refresh.txt`
+      - `notes/build/logs/latest_overnight_benchmark_refresh.txt`
+    - current local refresh run dir:
+      - `notes/build/logs/overnight_benchmark_refresh_20260401_113700`
+    - refresh result:
+      - the corrected 5-year benchmark refresh completed successfully
+      - the live refreshed outputs are:
+        - `notes/build/fertility_run_ge_report.md`
+        - `notes/build/fertility_vs_nimby_benchmark_report.md`
+        - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
+        - `notes/build/fertility_vs_nimby_benchmark_panels.png`
+        - `notes/build/fertility_vs_nimby_benchmark_panels.pdf`
+        - `notes/build/fertility_five_year_live_benchmark_note.md`
+        - `notes/build/fertility_five_year_live_benchmark_note.pdf`
+      - current read:
+        - the corrected 5-year branch still has a usable local market-clearing region
+        - the operative 5-year benchmark bracket remains `1.750` to `1.800`
+        - refined local equilibrium price remains about `1.750394`
+        - this is now the live benchmark object while the annual branch waits on a separate rebaseline
+    - live annual wait state:
+      - detached handoff status file continues to advance
+      - latest local poll recorded:
+        - `2026-04-02 09:41:16 POLL job=16633573 state=RUNNING exit=0:0 elapsed=18:42:01 node=cn117`
+      - current read:
+        - the corrected annual rebaseline is still running on `cn117`
+        - no synced corrected annual recalibration outputs are back yet
+- Last updated: 2026-04-01 (Hamilton RE-style drift confirmation queued for the annual fertility branch)
+- 2026-04-01 anticipated-price-drift Hamilton setup:
+  - new HPC runner files:
+    - `code/hpc/run_fertility_annual_anticipated_price_drift_screen.sh`
+    - `code/hpc/fertility_annual_anticipated_price_drift_screen.slurm`
+  - new workflow note:
+    - `notes/build/fertility_annual_re_price_drift_workflow.md`
+  - bundle-prep update:
+    - `code/hpc/prepare_annual_nimby_bundle.ps1` now includes the anticipated-drift outputs, the ACS homeownership support comparison, and the new workflow note
+  - Hamilton submission:
+    - bundled from:
+      - `C:\Users\Dave_\AI\_playground\backups\2026-04-01\03_fertility_and_housing_supply_hpc\annual_nimby_bundle_20260401_072654.zip`
+    - remote bundle root:
+      - `~/codex_runs/fertility_re_20260401_072654/annual_nimby_bundle_20260401_072654`
+    - submitted job:
+      - `16633522`
+    - queue state at submit check:
+      - `PENDING` on partition `shared`
+    - submit command:
+      - `sbatch --nice=10000 --export=ALL,MODE=confirm fertility_annual_anticipated_price_drift_screen.slurm`
+  - interpretation guardrail:
+    - this run is a cleaner higher-grid confirmation of the existing bounded RE-style price-drift wedge
+    - it is not yet a full transition-path rational-expectations solve with endogenous future price and fertility paths
+- Last updated: 2026-04-01 (ACS homeownership age bins added as a loose support target and plotted against the smooth annual model profile)
+- 2026-04-01 ACS homeownership support-target review:
+  - new data / target helpers:
+    - `code/build_acs_homeownership_age_target_review.py`
+    - `code/annual_homeownership_target_ranges.m`
+    - `code/score_annual_homeownership_support_targets.m`
+  - new comparison builders:
+    - `code/write_annual_homeownership_model_data_comparison_main.m`
+    - `code/build_annual_homeownership_model_data_comparison.py`
+  - new outputs:
+    - `notes/build/acs_homeownership_age_target_review.md`
+    - `notes/build/acs_homeownership_age_target_review.csv`
+    - `notes/build/acs_homeownership_age_target_recent_pool.csv`
+    - `notes/build/annual_homeownership_model_data_comparison.md`
+    - `notes/build/annual_homeownership_model_data_comparison.png`
+    - `notes/build/annual_homeownership_model_data_comparison.pdf`
+  - target design:
+    - source is U.S. Census ACS 1-year table `B25007` (`Tenure by Age of Householder`), pooled over `2019` and `2021-2024`
+    - this is a loose support layer, not an anchor target, because it is age of householder rather than female age
+    - scored support bins: `25-34`, `35-44`, `45-54`
+    - validation-only bins: `55-64`, `65-74`
+  - current read from the aligned smoke-grid comparison at `a_price = 2.00`:
+    - pooled ACS references:
+      - `25-34`: `0.407`
+      - `35-44`: `0.605`
+      - `45-54`: `0.696`
+    - annual anchor binned to the same ACS groups:
+      - `25-34`: `0.628`
+      - `35-44`: `0.539`
+      - `45-54`: `0.336`
+    - best anticipated-drift candidate (`drift weight 0.50 | future price factor 1.05`):
+      - `25-34`: `0.638`
+      - `35-44`: `0.605`
+      - `45-54`: `0.485`
+    - interpretation:
+      - the new data comparison weakens the old “too few young buyers everywhere” story
+      - the annual profile looks too high at `25-34`, roughly on target by `35-44` under the drift branch, and still too low by `45-54`
+      - because the data are coarse bins over a smooth lifecycle profile, this should be treated as shape discipline rather than a knife-edge rejection rule
+- Last updated: 2026-03-31 (anticipated future house-price drift is the first new annual branch to move vote materially, but it still does not clear the market)
+- 2026-03-31 anticipated-price-drift smoke follow-up:
+  - new prototype workflow:
+    - `code/run_fertility_annual_anticipated_price_drift_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m`
+    - added:
+      - `anticipated_price_drift_weight`
+    - implementation detail:
+      - actual household choices can now place weight on the existing higher-price continuation values already in the solver
+      - this is a bounded RE-style smoke, not a full transition-path equilibrium
+  - local smoke outputs:
+    - `notes/build/fertility_annual_anticipated_price_drift_screen.md`
+    - `notes/build/fertility_annual_anticipated_price_drift_screen_candidates.csv`
+    - `notes/build/fertility_annual_anticipated_price_drift_screen_candidate_paths.csv`
+    - `notes/build/fertility_annual_anticipated_price_drift_screen_crossing_paths.csv`
+  - main smoke read:
+    - this is the first new annual branch that materially improves the vote object without leaving the primary fertility bands
+    - best smoke row:
+      - `drift weight 0.50 | future price factor 1.050`
+      - eval objects at `a_price = 2.00`:
+        - mean age first birth `30.90`
+        - share first births age `30+` `0.475`
+        - childless share at `50` `0.115`
+        - eval vote `-88.09`
+      - best wider-grid vote on the smoke grid is also `-88.09`
+    - important interpretation:
+      - the branch is economically alive, unlike the parental-transfer and housing-floor screens
+      - but even this much stronger movement still does not generate a crossing
+  - medium-grid spot check:
+    - best smoke row rerun on `I = 20`, `J = 8` at a reduced price set
+    - vote remains clearly negative:
+      - `a_price = 1.75`: `-112.98`
+      - `2.00`: `-112.59`
+      - `2.25`: `-115.32`
+      - `3.50`: `-154.18`
+      - `5.00`: `-154.56`
+    - eval timing remains in-band at `a_price = 2.00`, but the branch still does not come close to true market clearing
+  - conclusion:
+    - anticipated future house-price drift is a live annual mechanism
+    - but this bounded RE-style wedge is not enough by itself to rescue the benchmark
+    - if this idea is pushed further, the next step should be a cleaner higher-grid confirmation and then either a transition-path branch or a combination with a real ownership/balance-sheet mechanism
+- 2026-03-31 parental-transfer smoke follow-up:
+  - new prototype workflow:
+    - `code/run_fertility_annual_parental_transfer_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m`
+    - added:
+      - `parental_transfer_share`
+      - `parental_transfer_b_boost`
+    - implementation detail:
+      - a subset of new entrants can now start with an early-life asset boost, intended to proxy for down-payment help or family balance-sheet transfers
+  - local smoke outputs:
+    - `notes/build/fertility_annual_parental_transfer_screen.md`
+    - `notes/build/fertility_annual_parental_transfer_screen_candidates.csv`
+    - `notes/build/fertility_annual_parental_transfer_screen_candidate_paths.csv`
+    - `notes/build/fertility_annual_parental_transfer_screen_crossing_paths.csv`
+  - main read:
+    - this branch is basically inactive in the current annual region
+    - even the largest smoke row:
+      - `transfer share 0.30 | parental asset boost 10.00`
+      - leaves eval moments unchanged to displayed precision
+      - and leaves wider-grid max vote at about `-267.947`
+  - conclusion:
+    - this simple entrant-asset parental-transfer proxy is not a usable annual rescue mechanism in current form
+- 2026-03-31 birth-housing-discrete smoke follow-up:
+  - new prototype workflow:
+    - `code/run_fertility_annual_birth_housing_discrete_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m`
+    - added:
+      - `family_space_fixed_penalty`
+    - implementation detail:
+      - if children are present and chosen housing services stay below the child-dependent floor, the household now takes a fixed utility hit
+      - this sharpens the smooth services-floor idea into a discrete upgrade-pressure proxy
+  - local smoke outputs:
+    - `notes/build/fertility_annual_birth_housing_discrete_screen.md`
+    - `notes/build/fertility_annual_birth_housing_discrete_screen_candidates.csv`
+    - `notes/build/fertility_annual_birth_housing_discrete_screen_candidate_paths.csv`
+    - `notes/build/fertility_annual_birth_housing_discrete_screen_crossing_paths.csv`
+  - main read:
+    - unlike the smooth linear floor, this sharper branch is not completely inactive
+    - all `10` smoke candidates still remain inside the primary fertility bands
+    - none produces a unique crossing
+    - best smoke row:
+      - `family space floor 3.00 | fixed mismatch penalty 0.60`
+      - eval objects at `a_price = 2.00`:
+        - mean age first birth `30.96`
+        - share first births age `30+` `0.483`
+        - childless share at `50` `0.122`
+        - eval vote `-319.443`
+      - best wider-grid vote is still only `-267.788` at `a_price = 5.00`
+  - conclusion:
+    - a sharper birth-triggered upgrade-pressure proxy does move the annual row a little
+    - but the magnitude is far too small to solve the crossing problem
+    - if this mechanism family is reopened, it should be as a tenure-linked family-space rule or a balance-sheet / downpayment block, not another housing-floor variant
+- 2026-03-31 birth-housing-mismatch smoke follow-up:
+  - new prototype workflow:
+    - `code/run_fertility_annual_birth_housing_mismatch_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m`
+    - added:
+      - `family_space_floor`
+      - `family_space_penalty`
+    - implementation detail:
+      - if children are present, chosen housing services below a child-dependent floor now reduce continuation utility
+      - the penalty applies in the current-child branch and on the birth branch itself, so it is a post-birth housing-choice margin rather than a direct scalar birth tax
+  - local smoke outputs:
+    - `notes/build/fertility_annual_birth_housing_mismatch_screen.md`
+    - `notes/build/fertility_annual_birth_housing_mismatch_screen_candidates.csv`
+    - `notes/build/fertility_annual_birth_housing_mismatch_screen_candidate_paths.csv`
+    - `notes/build/fertility_annual_birth_housing_mismatch_screen_crossing_paths.csv`
+  - main read:
+    - this linear housing-services mismatch branch is basically dormant in the current annual region
+    - all `10` smoke candidates stay inside the primary fertility bands
+    - none produces a unique crossing
+    - the baseline row and the low-floor rows are numerically identical at the evaluation price
+    - even the strongest smoke row:
+      - `family space floor 1.50 | mismatch penalty 0.40`
+      - only moves the eval objects to about:
+        - mean age first birth `30.71`
+        - share first births age `30+` `0.445`
+        - childless share at `50` `0.101`
+        - eval vote `-321.104`
+      - and the best wider-grid vote remains about `-267.952` at `a_price = 5.00`
+  - conclusion:
+    - this smooth linear mismatch penalty is not enough to rescue the annual benchmark
+    - the practical read is that the penalty is not binding strongly enough on chosen housing bundles in the current annual region
+    - if a birth-triggered housing reallocation branch is reopened, it should be a sharper discrete adjustment or a tenure-linked family-space mechanism, not another gentle linear services floor
+- 2026-03-31 family-rent-wedge smoke follow-up:
+  - new prototype workflow:
+    - `code/run_fertility_annual_family_rent_wedge_screen.m`
+  - solver extension:
+    - `code/SolveSS_fertility.m`
+    - added `theta_r_child_penalty` so renting can become less effective as children are present,
+      including on the birth branch
+  - local smoke outputs:
+    - `notes/build/fertility_annual_family_rent_wedge_screen.md`
+    - `notes/build/fertility_annual_family_rent_wedge_screen_candidates.csv`
+    - `notes/build/fertility_annual_family_rent_wedge_screen_candidate_paths.csv`
+    - `notes/build/fertility_annual_family_rent_wedge_screen_crossing_paths.csv`
+  - main read:
+    - the simple child-dependent renter penalty is not the missing annual mechanism in current form
+    - best smoke survivor is still just the known lower-`theta_r` scalar row with no child penalty:
+      - `theta_r 0.70 | child rent penalty 0.00 | housingmax 15.00`
+      - eval moments at `a_price = 2.00`:
+        - mean age first birth `30.704`
+        - share first births age `30+` `0.444`
+        - childless share at `50` `0.101`
+      - eval vote improves from about `-321.1` to about `-228.6`
+      - but wider-grid vote remains negative throughout
+    - turning on the child-rent penalty itself does not rescue the annual branch:
+      - `0.10-0.20` penalties only lift eval vote slightly further, to about `-223.8` to `-224.5`
+      - but they destroy the fertility fit:
+        - mean age first birth moves to about `33.9-34.6`
+        - share first births age `30+` moves to about `0.764-0.798`
+        - childless share at `50` explodes to about `0.81-0.91`
+  - conclusion:
+    - the simple family-renter wedge is a clean negative in current linear form
+    - the annual problem still looks like missing ownership / balance-sheet structure rather than a
+      missing child-state scalar penalty inside the current renter block
+- 2026-03-31 older-tail political-shape follow-up:
+  - updated workflow:
+    - `code/run_fertility_annual_political_shape_screen.m`
+    - theory note:
+      - `notes/build/fertility_annual_political_shape_theory_note.md`
+  - main read:
+    - the only live age-selective shape family is an older-tail flattening of the annual cohort profile
+    - best local smooth near-miss:
+      - `older-tail bridge shape | theta_r 0.40 | housingmax 15.25`
+      - `I = 16`, `J = 10`
+      - eval moments at `a_price = 2.00`:
+        - mean age first birth `28.788`
+        - share first births age `30+` `0.213`
+        - childless share at `50` `0.110`
+      - wider-grid vote path:
+        - stays negative throughout
+        - comes closest at `a_price = 5.00` with vote `-0.029`
+    - heavier older-tail interpolants (`bridge-plus`, `bridge-plus2`) do not improve on the plain bridge row
+    - finer owner-grid confirmation:
+      - same bridge row on `I = 16`, `J = 12`
+      - still no crossing
+      - max wider-grid vote `-0.377` at `a_price = 10.00`
+    - direct `d_a_price` probe around that confirmed bridge row:
+      - tested `1.001992`, `1.004`, `1.007`, `1.010`
+      - fertility moments unchanged
+      - wider-grid max vote remains negative, roughly `-0.365` to `-0.383`
+    - direct discount-block probe around that same bridge row:
+      - lower `beta` lifts max wider-grid vote only to about `-0.223`
+      - but collapses the fertility fit:
+        - share first births age `30+` falls to about `0.127`
+        - childless share at `50` falls to about `0.052`
+  - conclusion:
+    - the older-tail cohort-shape block is now a clean negative for stable annual benchmark search
+    - the direct vote-shock micro around the best smooth bridge row is also a clean negative
+    - the direct discount-block micro is not viable either, because it helps vote only by
+      destroying the fertility fit
+- 2026-03-31 annual target-policy update:
+  - the pooled `25+` first-birth timing shape is now treated as part of the primary annual timing target
+  - childlessness at `50` remains the separate stock-fertility target
+  - updated:
+    - `code/fertility_annual_target_ranges.m`
+    - `code/score_annual_fertility_targets.m`
+    - main annual screens now score the grouped timing-shape bins as part of `primary_score`
+  - practical implication:
+    - mean age first birth plus share `30+` is no longer enough for an annual candidate to count as usable
+    - future annual screening should be judged mainly on the full grouped first-birth distribution, with mean age and share `30+` as lighter summary checks
+    - the rough-shape rule now asks mainly for:
+      - enough mass after age `35`
+      - not too much excess concentration in `25-29` relative to `30-34`
+    - under this rough-shape rule:
+      - the old annual row
+        `max_front_loaded | phi0 1.120 | child 0.020 | cost 0.050 | kappa 0.16 | lambda 0.10`
+        passes the primary timing target again
+      - the political-shape row
+        `older-tail smooth shape | theta_r 0.40 | housingmax 15.0`
+        still fails it
+  - tighter shape-band follow-up:
+    - grouped timing-shape bands were narrowed to:
+      - `25-29`: `0.35-0.52`
+      - `30-34`: `0.30-0.46`
+      - `35-39`: `0.10-0.22`
+      - `40-44+`: `0.02-0.06`
+    - under those tighter bands, the old annual row
+      `max_front_loaded | phi0 1.120 | child 0.020 | cost 0.050 | kappa 0.16 | lambda 0.10`
+      no longer passes the primary timing target
+- 2026-03-31 latent low-entry-type smoke follow-up:
+  - new workflow scaffold:
+    - `code/run_fertility_annual_latent_entry_type_smoke.m`
+  - execution read:
+    - the broader scripted runner timed out before writing decision-quality outputs
+    - the decision therefore comes from a reduced local smoke around the usable annual row
+  - reduced local smoke read at `a_price = 2.00`:
+    - baseline row:
+      - mean age first birth `30.704`
+      - share first births age `30+` `0.444`
+      - childless share at `50` `0.101`
+      - vote `-304.083`
+    - representative low-entry-type rows:
+      - `10%` low-entry mass with low parity-0 utility shifts timing slightly earlier
+      - but lowers childlessness to about `0.091-0.097`
+      - and leaves vote essentially unchanged near `-304.09`
+  - conclusion:
+    - this simple low-entry-type margin is not worth pushing further in current form
+    - it moves first-birth timing slightly in the right direction, but moves childlessness in the wrong direction
+    - if this idea is reopened later, it should be as a true never-parent / infertility-type margin rather than another low-`phi0` subgroup screen
+- 2026-03-31 deeper political/access redesign follow-up:
+  - new workflow:
+    - `code/run_fertility_annual_political_redesign_screen.m`
+    - local outputs:
+      - `notes/build/fertility_annual_political_redesign_screen.md`
+      - `notes/build/fertility_annual_political_redesign_screen_candidates.csv`
+      - `notes/build/fertility_annual_political_redesign_screen_candidate_paths.csv`
+      - `notes/build/fertility_annual_political_redesign_screen_crossing_paths.csv`
+  - workflow logic:
+    - freeze the fertility block near the usable annual row
+    - search only the deeper ridge built around:
+      - partial uniform cohort blends
+      - lower `theta_r`
+      - the safer `extra_front_loaded` anchor
+      - a tight owner-grid neighborhood
+  - main local read:
+    - the new ridge is much better than the earlier owner-side micro box
+    - low-resolution smoke (`I = 12`, `J = 6`) reaches near-zero vote and even apparent unique
+      crossings
+    - best smoke row:
+      - `extra_front_loaded phi0 1.120 | alpha 0.75 | theta_r 0.35 | housingmax 15`
+      - eval moments at `a_price = 2.00`:
+        - mean age first birth `28.769`
+        - share first births age `30+` `0.212`
+        - childless share at `50` `0.110`
+      - smoke crossing read:
+        - unique crossing flagged
+        - refined price about `4.319`
+  - higher-resolution confirmation read:
+    - the apparent smoke benchmark does not survive on the finer owner grid
+    - at `I = 16`, `J = 10`, the `alpha 0.75 | theta_r 0.35 | housingmax 15` row has
+      sign pattern:
+      - `a_price = 2.0`: negative
+      - `3.0`: positive
+      - `4.0`: negative
+      - `5.0+`: positive
+      - result:
+        - `3` sign changes, not unique
+    - the smoother nearby row
+      `alpha 0.75 | theta_r 0.45 | housingmax 15/15.5`
+      stays negative throughout the wider high-price grid
+    - the midpoint row
+      `alpha 0.75 | theta_r 0.40 | housingmax 15`
+      gets one local crossing near `5.0` but turns negative again by `8.0`
+    - increasing the owner grid to `J = 12` removes that midpoint crossing altogether
+  - conclusion:
+    - this cohort-blend / low-`theta_r` ridge is economically promising but numerically fragile
+    - low-`J` unique crossings are not stable benchmark evidence
+    - there is still no promoted annual benchmark
+- 2026-03-31 crossing-recovery micro follow-up:
+  - new workflow:
+    - `code/run_fertility_annual_crossing_recovery_micro_screen.m`
+    - `code/hpc/run_fertility_annual_crossing_recovery_micro_screen.sh`
+    - `code/hpc/fertility_annual_crossing_recovery_micro_screen.slurm`
+    - theory note:
+      - `notes/build/fertility_annual_crossing_recovery_micro_theory_note.md`
+  - local smoke goal:
+    - freeze the usable fertility-fit row
+    - vary only:
+      - `housingmax`
+      - `theta_r`
+      - `ka`
+      - `rent_markup`
+  - checkpointed smoke read:
+    - the partial note is:
+      - `notes/build/fertility_annual_crossing_recovery_micro_screen.md`
+    - all checkpointed rows keep the fertility moments inside the primary annual bands
+    - no checkpointed row restores a unique crossing
+    - best checkpointed row:
+      - `housingmax 15 | theta_r mid | ka annualized | rent mid`
+      - eval vote at `a_price = 2.00`: `-312.457`
+      - best vote on the wider crossing grid: `-142.799` at `a_price = 5.00`
+  - direct completion of the missing `housingmax = 15` rows:
+    - `mid theta_r | hold_5y ka | rent mid`
+      - eval vote `-355.239`
+      - best crossing-grid vote `-204.114`
+    - `benchmark theta_r | annualized ka | rent mid`
+      - eval vote `-331.560`
+      - best crossing-grid vote `-182.100`
+    - `benchmark theta_r | hold_5y ka | rent mid`
+      - eval vote `-355.499`
+      - best crossing-grid vote `-244.169`
+  - conclusion:
+    - small owner-side annual tweaks do move vote
+    - but they do not come close to recovering a crossing
+    - Hamilton follow-up was therefore not warranted
+  - workflow fix:
+    - reordered the new crossing-recovery runner so checkpointed local runs hit the plausible
+      `housingmax = 15` rows first
+- 2026-03-30 direct confirmation update:
+  - target candidate:
+    - `max_front_loaded | phi0 1.120 | child 0.020 | cost 0.050 | kappa 0.16 | lambda 0.10`
+  - confirmation setup:
+    - solver grid: `I = 32`, `J = 10`
+    - market grid: `1.50, 1.75, 2.00, 2.25, 2.50, 2.75, 3.00, 3.25, 3.50`
+    - extra probes: `4.00`, `5.00`
+  - fertility-side confirmation:
+    - `a_price = 2.00` still lands inside all primary annual bands:
+      - mean age first birth `30.70`
+      - share first births age `30+` `0.444`
+      - childless share at `50` `0.1007`
+    - directional signs still hold on the confirmation path:
+      - higher prices delay births
+      - higher prices raise the `30+` share
+      - higher prices lower fertility
+  - market-clearing confirmation:
+    - vote remains negative at every checked price from `1.50` through `5.00`
+    - sign-change count on the wider annual market grid: `0`
+    - conclusion:
+      - this row is a usable annual fertility-fit candidate
+      - it is not yet a promoted annual benchmark because the crossing problem remains
+  - calibration-skill implication:
+    - the discovery problem is no longer the active blocker
+    - the active blocker is recovering a crossing in the now-usable fertility region
+- 2026-03-30 post-bridge micro smoke:
+  - calibration-skill logic:
+    - the bridge box `16627167` was treated as `survivor-near-usable`, not as a dead end
+    - the next continuation was a true micro box, not another broad upload
+    - the local result now contains the first `usable` annual candidate, so the auto-continue
+      exploratory loop should stop here and switch to inspection / confirmation
+  - new micro workflow:
+    - added:
+      - `code/run_fertility_annual_timing_stock_micro_screen.m`
+      - `code/hpc/run_fertility_annual_timing_stock_micro_screen.sh`
+      - `code/hpc/fertility_annual_timing_stock_micro_screen.slurm`
+      - `notes/build/fertility_annual_timing_stock_micro_theory_note.md`
+  - local smoke execution:
+    - first smoke pass was too broad and timed out before reaching the new profiles
+    - the smoke order was then rewritten to prioritize the most plausible pass region:
+      - `max_front_loaded`
+      - `extra_front_loaded`
+      - `very_front_loaded`
+      - `phi0 = 1.12, 1.125, 1.15`
+    - the rerun still timed out before finishing the full smoke list, but it reached the relevant
+      frontier quickly enough to identify a usable local candidate
+  - local smoke outputs:
+    - `notes/build/fertility_annual_timing_stock_micro_screen.md`
+    - `notes/build/fertility_annual_timing_stock_micro_screen_candidates.csv`
+    - `notes/build/fertility_annual_timing_stock_micro_screen_candidate_paths.csv`
+  - local usable candidate:
+    - `max_front_loaded | phi0 1.120 | child 0.020 | cost 0.050 | kappa 0.16 | lambda 0.10`
+    - smoke-grid path:
+      - `a_price = 1.75`: mean age `29.96`, share `30+` `0.322`
+      - `a_price = 2.00`: mean age `30.70`, share `30+` `0.444`, childless share at `50`
+        `0.1007`
+      - `a_price = 2.25`: mean age `31.33`, share `30+` `0.539`
+    - screen status:
+      - `primary_pass = 1`
+      - `sign_pass = 1`
+      - coarse crossing check on `[1.50, 2.00, 2.50]`: still none
+      - score `0.2500`
+  - important interpretation:
+    - the usable region came from one more step of front-loading, not from stronger
+      price/crowding deterrence
+    - `extra_front_loaded | phi0 1.125 | ...` is the near-miss on the other side:
+      - childlessness safely in band
+      - share `30+` in band
+      - mean age only just above the ceiling
+    - so the active frontier is now extremely tight around:
+      - `max_front_loaded`
+      - `extra_front_loaded`
+      - `phi0` between roughly `1.12` and `1.125`
+- 2026-03-30 bridge follow-up completed on Hamilton:
+  - calibration-skill logic:
+    - the completed timing-stock batch `16624677` was treated as a `survivor`
+    - the next upload was not another broad rerun; it was a narrower bridge box with an explicit
+      theory note:
+      - `notes/build/fertility_annual_timing_stock_bridge_theory_note.md`
+  - mechanical/reporting fix:
+    - patched `code/run_fertility_annual_timing_stock_screen.m` so the report now sorts by
+      `score` before `support_pass`
+    - markdown candidate labels now escape pipe characters, so the report table is readable
+  - new bridge workflow:
+    - added:
+      - `code/run_fertility_annual_timing_stock_bridge_screen.m`
+      - `code/hpc/run_fertility_annual_timing_stock_bridge_screen.sh`
+      - `code/hpc/fertility_annual_timing_stock_bridge_screen.slurm`
+    - local bridge smoke outputs:
+      - `notes/build/fertility_annual_timing_stock_bridge_screen.md`
+      - `notes/build/fertility_annual_timing_stock_bridge_screen_candidates.csv`
+      - `notes/build/fertility_annual_timing_stock_bridge_screen_candidate_paths.csv`
+    - local bridge smoke read:
+      - `20` candidates screened
+      - `0` candidates inside all primary bands
+      - best smoke candidate:
+        - `pivot_front_loaded | phi0 1.25 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+        - mean age first birth `31.20`
+        - share first births age `30+` `0.551`
+        - childless share at `50` `0.053`
+      - important diagnosis:
+        - extra front-loading does shift timing earlier at a given `phi0`
+        - the mild `bridge_deterrence` bundle is dominated in smoke
+        - the useful `fast` box is now the low-deterrence frontier only:
+          - `pivot_front_loaded`
+          - `ultra_front_loaded`
+          - `very_front_loaded`
+          - `phi0 = 1.05, 1.10, 1.15, 1.20, 1.25`
+  - Hamilton action:
+    - built and uploaded bundle:
+      - `_playground/backups/2026-03-30/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260330_110847`
+      - zip uploaded to:
+        `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260330_110847.zip`
+    - bridge follow-up result:
+      - job `16627167`
+      - name `ann_fert_bridge`
+      - final state: `COMPLETED`
+      - exit code: `0:0`
+      - elapsed: `07:40:39`
+      - node: `cn003`
+      - submit mode: `fast`
+      - submit rule preserved: `--nice=10000`
+  - synced outputs:
+    - `notes/build/fertility_annual_timing_stock_bridge_screen.md`
+    - `notes/build/fertility_annual_timing_stock_bridge_screen_candidates.csv`
+    - `notes/build/fertility_annual_timing_stock_bridge_screen_candidate_paths.csv`
+    - synced log dir:
+      - `notes/build/logs/fertility_annual_timing_stock_bridge_screen_hpc_20260330_111025`
+  - final bridge read:
+    - `19` candidates screened
+    - candidates inside all primary bands: `0`
+    - candidates inside the childlessness band: `7`
+    - best overall row:
+      - `very_front_loaded | phi0 1.15 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+      - score `0.2990`
+      - mean age first birth `31.01`
+      - share first births age `30+` `0.503`
+      - childless share at `50` `0.0883`
+      - `primary_pass = 0`
+      - `sign_pass = 1`
+    - best childlessness-in-band row:
+      - `very_front_loaded | phi0 1.10 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+      - score `0.4780`
+      - mean age first birth `31.64`
+      - share first births age `30+` `0.592`
+      - childless share at `50` `0.1394`
+      - `primary_pass = 0`
+      - `sign_pass = 1`
+  - calibration-skill verdict:
+    - still `survivor`, but now very near `usable`
+    - the remaining miss is concentrated:
+      - the best overall row is only slightly above the mean-age upper band and slightly below the
+        childlessness lower band
+      - the share-30+ object is already inside the wide annual band
+- Last updated: 2026-03-30 (timing-plus-stock fast screen completed on Hamilton)
+- 2026-03-30 completed timing-plus-stock fast screen:
+  - Hamilton result:
+    - job `16624677`
+    - name `ann_fert_timing_stock`
+    - final state: `COMPLETED`
+    - exit code: `0:0`
+    - elapsed: `10:26:57`
+    - node: `cn043`
+  - synced outputs:
+    - `notes/build/fertility_annual_timing_stock_screen.md`
+    - `notes/build/fertility_annual_timing_stock_screen_candidates.csv`
+    - `notes/build/fertility_annual_timing_stock_screen_candidate_paths.csv`
+    - synced log dir:
+      - `notes/build/logs/fertility_annual_timing_stock_screen_hpc_20260329_205716`
+  - screened candidates:
+    - `28`
+    - candidates inside all primary bands: `0`
+    - candidates inside the childlessness band: `3`
+    - sign-check passes: `28`
+  - best scored candidate from the CSV:
+    - `front_loaded_timing | phi0 1.45 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+    - score `0.5550`
+    - mean age first birth `30.67`
+    - share first births age `30+` `0.485`
+    - childless share at `50` `0.0239`
+    - `primary_pass = 0`
+  - best childlessness-in-band candidate:
+    - `front_loaded_timing | phi0 1.05 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+    - score `1.2585`
+    - mean age first birth `33.26`
+    - share first births age `30+` `0.766`
+    - childless share at `50` `0.1967`
+  - calibration-skill verdict:
+    - `survivor`, not `usable`
+    - read:
+      - the timing-plus-stock box made the key tradeoff visible
+      - earlier timing is now reachable, but only with childlessness far too low
+      - bringing childlessness into band still pushes timing far too late
+  - note:
+    - the markdown report ordering still prints the old `early_timing` row first, but the CSV
+      score minimum is the `front_loaded_timing | phi0 1.45 | ...` row above; use the CSV as the
+      authoritative ranking until the report writer is patched
+- Last updated: 2026-03-29 (timing-plus-stock survivor refinement requeued on Hamilton)
+- 2026-03-29 timing-plus-stock survivor refinement:
+  - calibration workflow:
+    - explicitly used the shared repo-level calibration skill:
+      - `_shared/skills/calibration-skill-SKILL.md`
+    - classified the broad annual fertility box as a `survivor`, not `usable`
+    - wrote theory checkpoint:
+      - `notes/build/fertility_annual_timing_stock_theory_note.md`
+  - cancelled broad Hamilton run:
+    - job `16620737`
+    - name `ann_fert_cal`
+    - final state: `CANCELLED`
+    - elapsed at cancellation: `1-10:44:44`
+    - progress at cancellation: `70 / 145` candidates
+    - best broad-box survivor:
+      - `phi0 1.40 | child 0.02 | cost 0.05 | kappa 0.08 | lambda 0.04`
+      - mean age first birth `32.12`
+      - share first births age `30+` `0.817`
+      - childless share at `50` `0.0037`
+    - read:
+      - the broad box is economically informative but not close enough to justify more time in the
+        same parameter region
+  - new targeted annual workflow:
+    - added:
+      - `code/run_fertility_annual_timing_stock_screen.m`
+      - `code/hpc/run_fertility_annual_timing_stock_screen.sh`
+      - `code/hpc/fertility_annual_timing_stock_screen.slurm`
+    - local smoke outputs:
+      - `notes/build/fertility_annual_timing_stock_screen.md`
+      - `notes/build/fertility_annual_timing_stock_screen_candidates.csv`
+      - `notes/build/fertility_annual_timing_stock_screen_candidate_paths.csv`
+      - `notes/build/fertility_annual_timing_stock_screen_target_ranges.csv`
+    - smoke read:
+      - `16` smoke candidates screened
+      - `0` candidates inside all primary bands
+      - best smoke candidate:
+        - `front_loaded_timing | phi0 1.45 | child 0.02 | cost 0.05 | kappa 0.16 | lambda 0.10`
+        - mean age first birth `30.67`
+        - share first births age `30+` `0.485`
+        - childless share at `50` `0.0239`
+      - interpretation:
+        - timing can now be pulled into the broad annual bands
+        - stock fertility / childlessness is still too low
+        - this is a materially better survivor region than the cancelled broad box
+  - Hamilton action:
+    - built and uploaded bundle:
+      - `_playground/backups/2026-03-29/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260329_205101`
+      - zip uploaded to:
+        `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260329_205101.zip`
+    - first submit:
+      - job `16624676`
+      - failed immediately with exit `1:0`
+      - cause:
+        - the new SLURM wrapper omitted the standard `module purge` / `module load matlab` block,
+          so `matlab` was not on `PATH`
+    - repaired resubmit:
+      - job `16624677`
+      - name `ann_fert_timing_stock`
+      - current live state after wrapper repair: `RUNNING`
+      - node at latest check: `cn043`
+      - submit mode: `fast`
+      - submit rule preserved: `--nice=10000`
+      - live queue context:
+        - active Necessity array `16624203_*` is still active on `shared`
+- Last updated: 2026-03-29 (repo-level shared-skill lookup rule corrected)
+- 2026-03-29 shared calibration-skill lookup correction:
+  - the shared repo-level calibration workflow lives in:
+    - `_shared/skills/calibration-skill-SKILL.md`
+  - working rule:
+    - when the user asks whether a named skill or agent exists or should be used, check the
+      repo-level shared folders first:
+      - `_shared/skills/`
+      - `_shared/agents/`
+    - do not answer from installed system skills alone
+  - practical lookup order:
+    - repo-level shared skills / agents first
+    - installed system skills second
+    - only then say the resource is unavailable
+- Last updated: 2026-03-28 (local timing-shifter micro screen isolated the key annual margin)
+- 2026-03-28 local timing-shifter micro screen:
+  - added diagnostic:
+    - `code/run_fertility_annual_timing_shifter_micro_screen.m`
+  - built outputs:
+    - `notes/build/fertility_annual_timing_shifter_micro_screen.md`
+    - `notes/build/fertility_annual_timing_shifter_micro_screen_candidates.csv`
+    - `notes/build/fertility_annual_timing_shifter_micro_screen_paths.csv`
+  - objective:
+    - hold the low-cost annual candidate fixed and vary only the first-birth timing-shifter layer
+      (`first_birth_realized_weights` and coarse age-weight profile)
+  - main read:
+    - timing shifters move the annual fit a lot; the annual delay is not just a generic
+      `phi0` / `kappa` / `lambda` problem
+    - current best local timing-profile candidate is:
+      `best broad + mid realized 0.45/0.15/0.04`
+    - that candidate gets much closer on timing:
+      - mean age first birth `30.53`
+      - share first births at age `30+` `0.510`
+    - but it still badly misses the stock target:
+      - childless share at `50` only `0.008`
+  - interpretation:
+    - the timing layer can almost fix the annual timing objects on its own
+    - the remaining problem is the stock fertility / childlessness margin
+    - so the next annual calibration branch should include timing-profile variation explicitly,
+      not only `phi0`, `birth_price_coeff`, and `lambda_crowd`
+- Last updated: 2026-03-28 (annual fertility-first calibration workflow queued on Hamilton)
+- 2026-03-28 annual fertility-first broad-band calibration launch:
+  - added workflow:
+    - `code/run_fertility_annual_broad_calibration_screen.m`
+  - added Hamilton runner:
+    - `code/hpc/run_fertility_annual_broad_calibration_screen.sh`
+    - `code/hpc/fertility_annual_broad_calibration_screen.slurm`
+  - local smoke pass:
+    - output note: `notes/build/fertility_annual_broad_calibration_screen.md`
+    - output table: `notes/build/fertility_annual_broad_calibration_screen_candidates.csv`
+    - main read:
+      - `5` smoke candidates screened
+      - `0` candidates inside all primary bands
+      - best smoke candidate:
+        `phi0 2.60 | child 0.00 | cost 0.00 | kappa 0.04 | lambda 0.08`
+      - best smoke candidate still misses badly:
+        - mean age first birth `32.28`
+        - share first births `30+` `0.817`
+        - childless share at `50` `0.005`
+      - interpretation:
+        - wide-band scoring works
+        - the annual model is still too delayed even under loose bands
+        - the next live screen should be fertility-first, not the stale owner-grid NIMBY bridge
+  - Hamilton action:
+    - cancelled stale annual owner-grid job `16602541`
+    - built bundle:
+      - `_playground/backups/2026-03-28/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260328_062054`
+    - first submit:
+      - job `16620619`
+      - failed immediately with exit `127:0`
+      - cause: the first SLURM wrapper resolved the run script from the spooled job path rather than `SLURM_SUBMIT_DIR`
+    - repaired resubmit:
+      - job `16620659`
+      - also failed immediately with the same path-resolution problem
+    - robust live submit:
+      - first wrapped job `16620735` reached the run script but failed because the staged `notes/`
+        tree was not writable on Hamilton
+      - repaired live job `16620737`
+      - name `ann_fert_cal`
+      - current live state after permission repair: `RUNNING`
+      - submit method:
+        direct `sbatch --wrap=...` around `run_fertility_annual_broad_calibration_screen.sh`
+    - priority rule preserved:
+      - Necessity remains ahead in the queue
+- Last updated: 2026-03-28 (away handoff collected Hamilton 5-year benchmark refresh)
+- 2026-03-28 away handoff on Hamilton job `16613667`:
+  - state: `FAILED`
+  - exit code: `1:0`
+  - elapsed: `00:00:31`
+  - node: `cn056`
+  - synced outputs:
+    - `notes/build/fertility_run_ge_report.md`
+    - `notes/build/fertility_reproduction_check.csv`
+    - `notes/build/fertility_price_sweep.csv`
+    - `notes/build/fertility_market_clearing_grid.csv`
+    - `notes/build/fertility_local_benchmark_search.csv`
+    - `notes/build/fertility_vs_nimby_benchmark_report.md`
+    - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+    - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+    - `notes/build/fertility_benchmark_refresh_handoff.md`
+  - remote run dir: `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260327_142434/annual_nimby_bundle_20260327_142434/03_fertility_and_housing_supply/notes/build/logs/fertility_benchmark_refresh_hpc_20260328_055036`
+  - blocker:
+    - the benchmark refresh did not finish cleanly, so the handoff packet stopped after syncing the available logs and outputs
+- Last updated: 2026-03-28 (annual fertility targets widened into screening bands)
+- 2026-03-28 annual fertility target-band reset:
+  - added code target layer:
+    - `code/fertility_annual_target_ranges.m`
+    - now exposed through `code/fertility_benchmark_annual_config.m` as `cfg.target_ranges`
+  - added builder:
+    - `code/build_annual_fertility_target_ranges.py`
+  - built outputs:
+    - `notes/build/annual_fertility_target_ranges.md`
+    - `notes/build/annual_fertility_target_ranges.csv`
+  - main read:
+    - annual fertility targets should be used as broad screening bands, not point targets
+    - the right standard is an economic-model fit, not a simulation-style exact match
+    - preferred screening bands are now:
+      - mean age at first birth: `25.0-31.0`
+      - share first births at age `30+`: `0.20-0.55`
+      - childless share at age `50`: `0.10-0.35`
+      - U.S. TFR: `1.40-1.95` as validation only
+    - grouped first-birth age shares remain loose support targets
+    - comparative-static signs still matter: higher prices should delay first births and lower fertility
+    - even under these wide bands, the current annual prototype at `a_price = 2.00`
+      remains clearly too delayed (`mean age 36.07`, `share 30+ 0.938`)
+- Last updated: 2026-03-28 (direct CDC state-year pull reviewed annual timing targets)
+- 2026-03-28 CDC annual timing target review:
+  - pulled fresh direct CDC WONDER first-birth state-year extract for `2007-2024` via:
+    - `code/12_pull_cdc_wonder_first_births.py`
+    - output: `data/raw/cdc_wonder_first_births_state_year_export.csv`
+  - imported clean state-year panel via:
+    - `code/11_import_cdc_wonder_first_births.py`
+    - output: `data/raw/cdc_fertility_state_year.csv`
+  - built review outputs via:
+    - `code/build_cdc_first_birth_timing_target_review.py`
+    - note: `notes/build/cdc_first_birth_timing_target_review.md`
+    - figure: `notes/build/cdc_first_birth_timing_target_review.png`
+  - main read:
+    - direct state-year pull is extremely close to the existing county-aggregated path
+    - national mean age at first birth rises from `25.147` in `2007` to `27.685` in `2024`
+    - national share of first births at age `30+` rises from `0.236` to `0.384`
+    - pooled `2020-2024` direct CDC age-25+ timing shares are `[0.433, 0.380, 0.153, 0.033]`
+    - those are already close to the current code target `[0.438, 0.381, 0.152, 0.029]`
+  - recommendation:
+    - promote direct annual timing levels to the main annual fertility targets:
+      - mean age at first birth: pooled `2020-2024` mean `27.484`
+      - share first births at age `30+`: pooled `2020-2024` mean `0.372`
+    - keep the pooled age-25+ timing-shape target as a medium-weight support target, not a knife-edge requirement
+    - keep age-50 parity / childlessness separate as the stock target
+    - do not use the old 5-year NIMBY vote/debt bridge objects as fertility targets
+- Last updated: 2026-03-27 (benchmark refresh repaired and requeued again)
+- 2026-03-27 benchmark-refresh repair:
+  - latest blocker diagnosis:
+    - upstream `SolveSS_function` in the benchmark-refresh path needed the small upstream
+      `TransitionMatrix.mat`
+  - fix:
+    - patched `code/hpc/prepare_annual_nimby_bundle.ps1` so future bundles carry upstream
+      `TransitionMatrix.mat` alongside `nl_zbl.mat`
+    - updated `code/hpc/README.md`
+    - staged `TransitionMatrix.mat` directly into the current Hamilton bundle
+  - live replacement benchmark-refresh job:
+    - `16613667`
+    - name `fert_bench`
+    - current live state at resubmit check: `PENDING (Priority)`
+  - active local monitor pointer:
+    - `notes/build/logs/active_hamilton_fertility_benchmark_handoff.txt`
+- Last updated: 2026-03-27 (live Hamilton read: owner-grid progressing; benchmark refresh blocked on upstream TransitionMatrix)
+- 2026-03-27 live Hamilton read:
+  - owner-grid search:
+    - job `16602541`
+    - name `ann_owner_grid`
+    - current live state: `RUNNING`
+    - elapsed at this check: `00:45:08`
+    - node: `cn014`
+    - current checkpointed progress:
+      - `3` scored candidates out of the full `54`-candidate screen
+      - current provisional leader:
+        `housingmax 10 + zero annual ka + low theta_r + annualized rent markup`
+      - current provisional eval vote-per-mass: about `-0.910563`
+  - benchmark refresh:
+    - replacement job `16608946`
+    - final state: `FAILED`
+    - exit code: `1:0`
+    - elapsed: `00:00:19`
+    - node: `cn045`
+    - latest failure cause from the remote run log:
+      - upstream `SolveSS_function` could not load `TransitionMatrix`
+      - this is a benchmark-refresh staging / runtime-path blocker, not a new annual-model result
+  - active local monitor pointers:
+    - `notes/build/logs/active_hamilton_owner_grid_handoff.txt`
+    - `notes/build/logs/active_hamilton_fertility_benchmark_handoff.txt`
+- Last updated: 2026-03-27 (away handoff collected Hamilton 5-year benchmark refresh)
+- 2026-03-27 away handoff on Hamilton job `16608946`:
+  - state: `FAILED`
+  - exit code: `1:0`
+  - elapsed: `00:00:19`
+  - node: `cn045`
+  - synced outputs:
+    - `notes/build/fertility_run_ge_report.md`
+    - `notes/build/fertility_reproduction_check.csv`
+    - `notes/build/fertility_price_sweep.csv`
+    - `notes/build/fertility_market_clearing_grid.csv`
+    - `notes/build/fertility_local_benchmark_search.csv`
+    - `notes/build/fertility_vs_nimby_benchmark_report.md`
+    - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+    - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+    - `notes/build/fertility_benchmark_refresh_handoff.md`
+  - remote run dir: `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260327_142434/annual_nimby_bundle_20260327_142434/03_fertility_and_housing_supply/notes/build/logs/fertility_benchmark_refresh_hpc_20260327_161037`
+  - blocker:
+    - the benchmark refresh did not finish cleanly, so the handoff packet stopped after syncing the available logs and outputs
+- Last updated: 2026-03-27 (detached Hamilton monitors launched; benchmark refresh resubmitted)
+- 2026-03-27 detached Hamilton monitor pass:
+  - new local monitor files:
+    - `code/hamilton_owner_grid_handoff.ps1`
+    - `code/start_hamilton_owner_grid_handoff.ps1`
+    - `code/complete_owner_grid_handoff.py`
+    - `code/hamilton_fertility_benchmark_handoff.ps1`
+    - `code/start_hamilton_fertility_benchmark_handoff.ps1`
+    - `code/complete_fertility_benchmark_handoff.py`
+  - active local pointers:
+    - `notes/build/logs/active_hamilton_owner_grid_handoff.txt`
+    - `notes/build/logs/active_hamilton_fertility_benchmark_handoff.txt`
+  - current live Hamilton state:
+    - owner-grid search:
+      - job `16602541`
+      - name `ann_owner_grid`
+      - state at monitor launch check: `RUNNING`
+      - node at monitor launch check: `cn014`
+    - benchmark refresh:
+      - first job `16604880` failed immediately on `cn016`
+      - failure cause: staged `notes/` tree was not writable on Hamilton
+      - second job `16608839` also failed immediately on `cn045`
+      - second failure cause: the sibling bundled `02_nimbyism_and_housing_supply` tree was not
+        traversable, so MATLAB could not see `ensure_external_matlab_data_paths`
+      - staged whole-bundle permissions were then repaired with `chmod -R u+rwX`
+      - replacement job `16608946`
+      - name `fert_bench`
+      - state at recheck: `PENDING (Priority)`
+  - working rule:
+    - stop after one clean milestone per job
+    - collect outputs and write handoff notes
+    - do not auto-launch another annual branch from these monitors
+- Last updated: 2026-03-27 (long 5-year benchmark refresh queued on Hamilton)
+- 2026-03-27 long 5-year benchmark refresh handoff:
+  - new HPC files:
+    - `code/hpc/run_fertility_benchmark_refresh.sh`
+    - `code/hpc/fertility_benchmark_refresh.slurm`
+  - docs refresh:
+    - `code/hpc/README.md`
+  - purpose:
+    - rebuild the long public 5-year benchmark layer on the fixed shutoff path:
+      - `notes/build/fertility_run_ge_report.md`
+      - `notes/build/fertility_vs_nimby_benchmark_report.md`
+      - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+      - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+    - then try the benchmark figure / PDF refresh when the staged cluster environment has Python
+      and `pandoc`
+  - local bundle:
+    - `_playground/backups/2026-03-27/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260327_142434`
+  - remote staged root:
+    - `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260327_142434/annual_nimby_bundle_20260327_142434`
+  - upload note:
+    - Hamilton `unzip` again warned about Windows path separators
+    - the staged benchmark runner passed a remote `bash -n` syntax check before submit
+  - live benchmark-refresh job:
+    - `16604880`
+    - partition `shared`
+    - name `fert_bench`
+    - live state at submission check: `PENDING (Priority)`
+    - submitted with `--nice=10000`
+  - relation to the active annual search:
+    - this is a documentation / benchmark-refresh compute task, not a second annual search branch
+    - the owner-grid compromise search remains the separate live job `16602541`
+- Last updated: 2026-03-27 (solver issues fixed; annual owner-grid job rebuilt and resubmitted on Hamilton)
+- 2026-03-27 solver / annual-comparison correctness pass:
+  - fixed solver / benchmark files:
+    - `code/SolveSS_fertility.m`
+    - `code/run_ge_fertility_main.m`
+    - `code/write_fertility_vs_nimby_benchmark_main.m`
+    - `code/fertility_benchmark_annual_config.m`
+    - `code/compare_nimby_annual_vs_five_year_main.m`
+    - `code/run_ge_fertility_annual_main.m`
+  - new regression check:
+    - `code/run_fertility_solver_integrity_checks.m`
+    - output:
+      - `notes/build/fertility_solver_integrity_checks.md`
+  - main correctness fixes:
+    - the upstream shutoff shortcut now only triggers in the true nested reproduction case and
+      writes internally consistent grid / mass diagnostics rather than placeholder objects
+    - the 5-year reproduction checks now build the shutoff case through
+      `build_nimby_shutoff_overrides(...)` instead of loose ad hoc overrides
+    - the annual benchmark / comparison layer now annualizes the financial block on the same
+      convention as the active annual workflows and treats vote / debt per mass as the primary
+      annual-versus-5-year comparison object
+  - local verification:
+    - `run_fertility_solver_integrity_checks` completed successfully
+    - `compare_nimby_annual_vs_five_year_main('smoke')` completed successfully
+    - `run_ge_fertility_annual_main('smoke')` completed successfully
+    - current integrity-check read:
+      - reproduction vote gap: `0`
+      - reproduction debt gap: `0`
+      - reproduction `dens4` dimensions now line up with reported grid lengths
+      - annualized `rbPos`: `0.005929269390`
+      - annualized `rent_markup`: `0.003968378704`
+      - annualized `ka`: `0.012298824316`
+    - current annual comparison smoke read:
+      - annual eval vote-per-mass at price `2.00`: about `-0.981057`
+      - 5-year eval vote-per-mass at price `2.00`: about `0.649295`
+      - no annual sign change on the submitted grid
+  - Hamilton refresh:
+    - cancelled stale pending owner-grid job:
+      - `16598767`
+    - rebuilt local bundle:
+      - `_playground/backups/2026-03-27/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260327_130131`
+    - remote staged root:
+      - `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260327_130131/annual_nimby_bundle_20260327_130131`
+    - live replacement fertility job:
+      - `16602541`
+      - partition `shared`
+      - name `ann_owner_grid`
+      - live state at recheck: `PENDING (Priority)`
+      - submitted with `--nice=10000`
+  - important remaining note:
+    - the annual smoke / integrity layer is refreshed on the fixed code path
+    - the long 5-year public benchmark markdown / pdf layer is not yet rebuilt end to end on that
+      fixed path
+    - a direct one-hour rerun of `write_fertility_vs_nimby_benchmark_main` was stopped cleanly
+      after timeout, and the published benchmark-file timestamps did not change
+- Last updated: 2026-03-27 (owner-grid compromise workflow smoke-tested and submitted on Hamilton)
+- 2026-03-27 owner-grid compromise branch:
+  - new workflow:
+    - `code/run_nimby_annual_owner_grid_compromise_screen.m`
+  - new HPC files:
+    - `code/hpc/run_annual_nimby_owner_grid_compromise_screen.sh`
+    - `code/hpc/annual_nimby_owner_grid_compromise_screen.slurm`
+  - bundle prep/docs refresh:
+    - `code/hpc/prepare_annual_nimby_bundle.ps1`
+    - `code/hpc/README.md`
+    - the bundle manifest and note-pattern copy list now include
+      `nimby_annual_owner_grid_compromise_screen*`
+  - design lock:
+    - keep fixed:
+      - uniform cohorts
+      - benchmark `CC`
+    - reopen:
+      - `housingmax`
+      - `ka`
+      - `theta_r`
+      - `rent_markup`
+  - local verification:
+    - `run_nimby_annual_owner_grid_compromise_screen('smoke')` completed successfully
+    - local smoke outputs:
+      - `notes/build/nimby_annual_owner_grid_compromise_screen.md`
+      - `notes/build/nimby_annual_owner_grid_compromise_screen_candidates.csv`
+      - `notes/build/nimby_annual_owner_grid_compromise_screen_candidate_paths.csv`
+      - `notes/build/nimby_annual_owner_grid_compromise_screen_candidate_blocks.csv`
+      - `notes/build/nimby_annual_owner_grid_compromise_screen_target_blocks.csv`
+    - smoke-test read:
+      - best smoke candidate:
+        `housingmax 15 + hold 5y ka + benchmark theta_r + mid rent markup`
+      - eval vote-per-mass at price `2.00`: about `-0.826974`
+      - eval debt-per-mass at price `2.00`: about `13.624442`
+      - smoke pattern is the expected one:
+        higher `housingmax` softens the vote failure relative to `10` / `12`,
+        but the smoke grid still has no crossing
+      - smoke role:
+        verification plus direction check only
+        not the full-resolution decision object
+  - live Hamilton state:
+    - active Necessity workload remains the hard-priority cluster job:
+      - array `16598732_*`
+      - partition `shared`
+      - state at submit check: `RUNNING`
+    - current shared-capacity read at submit time:
+      - `57` mixed nodes with about `2626` idle CPUs across those mixed nodes
+    - local bundle:
+      - `_playground/backups/2026-03-27/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260327_054118`
+    - remote staged root:
+      - `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260327_054118/annual_nimby_bundle_20260327_054118`
+    - upload note:
+      - Hamilton `unzip` again warned about Windows path separators
+      - the archive extracted under a nested bundle root as expected
+      - staged permissions were repaired with `chmod -R u+rwX` before submit
+    - live fertility job:
+      - `16598767`
+      - partition `shared`
+      - name `ann_owner_grid`
+      - current state at submission check: `PENDING (Priority)`
+      - submitted with `--nice=10000` so it stays behind the active Necessity array
+- Last updated: 2026-03-27 (away handoff collected Hamilton broad-screen result)
+- 2026-03-27 away handoff on Hamilton job `16597058`:
+  - state: `COMPLETED`
+  - exit code: `0:0`
+  - elapsed: `12:23:55`
+  - node: `cn034`
+  - synced outputs:
+    - `notes/build/nimby_annual_low_entry_broad_screen.md`
+    - `notes/build/nimby_annual_low_entry_broad_screen_candidates.csv`
+    - `notes/build/nimby_annual_low_entry_broad_screen_candidate_paths.csv`
+    - `notes/build/nimby_annual_low_entry_broad_screen_candidate_blocks.csv`
+    - `notes/build/nimby_annual_low_entry_broad_screen_target_blocks.csv`
+    - `notes/build/nimby_annual_low_entry_broad_screen_handoff.md`
+  - remote run dir: `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260326_143640/03_fertility_and_housing_supply/notes/build/logs/annual_nimby_low_entry_broad_screen_hpc_20260326_144204`
+  - main read:
+    - scored candidates collected: `54`
+    - best candidate: `uniform cohorts + hold 5y ka + low theta_r + annualized rent markup`
+    - eval vote-per-mass: `-0.941763`
+    - eval debt-per-mass: `13.539829`
+    - no unique crossing in the scored candidate set
+  - stopping rule hit:
+    - collected and summarized one clean broad-screen milestone
+    - did not auto-launch a second annual design branch while the user was away
+- Last updated: 2026-03-26 (12-hour away handoff monitor launched for broad-screen collection)
+- 2026-03-26 away handoff monitor launch:
+  - new handoff scripts:
+    - `code/hamilton_low_entry_broad_handoff.ps1`
+    - `code/start_hamilton_low_entry_broad_handoff.ps1`
+    - `code/complete_low_entry_broad_handoff.py`
+  - monitor scope:
+    - stay inside project 03 only
+    - watch Hamilton job `16597058` for up to `12` hours
+    - when the job finishes, sync `nimby_annual_low_entry_broad_screen*` back into local
+      `notes/build/`
+    - write `notes/build/nimby_annual_low_entry_broad_screen_handoff.md`
+    - update `STATUS.md` and `memory.md`
+    - stop rather than auto-launching a second annual design branch
+  - active local handoff pointer:
+    - `notes/build/logs/active_hamilton_low_entry_broad_handoff.txt`
+  - active local handoff run directory:
+    - `notes/build/logs/hamilton_low_entry_broad_handoff_20260326_201733`
+  - first heartbeat:
+    - job `16597058`
+    - state `RUNNING`
+    - elapsed `05:35:31`
+    - node `cn034`
+- Last updated: 2026-03-26 (broader low-entry annual screen uploaded and submitted on Hamilton)
+- 2026-03-26 broader low-entry annual screen launch:
+  - new workflow:
+    - `code/run_nimby_annual_low_entry_broad_screen.m`
+  - new HPC files:
+    - `code/hpc/run_annual_nimby_low_entry_broad_screen.sh`
+    - `code/hpc/annual_nimby_low_entry_broad_screen.slurm`
+  - bundle prep refresh:
+    - `code/hpc/prepare_annual_nimby_bundle.ps1`
+    - `code/hpc/README.md`
+    - the bundle manifest and note-pattern copy list now include
+      `nimby_annual_low_entry_broad_screen*`
+  - local verification:
+    - `run_nimby_annual_low_entry_broad_screen('smoke')` completed successfully
+    - local smoke outputs:
+      - `notes/build/nimby_annual_low_entry_broad_screen.md`
+      - `notes/build/nimby_annual_low_entry_broad_screen_candidates.csv`
+      - `notes/build/nimby_annual_low_entry_broad_screen_candidate_paths.csv`
+      - `notes/build/nimby_annual_low_entry_broad_screen_candidate_blocks.csv`
+      - `notes/build/nimby_annual_low_entry_broad_screen_target_blocks.csv`
+    - smoke-test role:
+      - end-to-end verification only
+      - not the full-resolution read for project decisions
+  - live Hamilton state:
+    - active Necessity submission remains the hard-priority cluster workload:
+      - array `16596970_*`
+      - partition `shared`
+    - current shared-capacity read at submit time:
+      - `65` mixed nodes with about `4003` idle CPUs across those mixed nodes
+    - local bundle:
+      - `_playground/backups/2026-03-26/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260326_143640`
+    - remote bundle root:
+      - `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260326_143640`
+    - upload note:
+      - Hamilton `unzip` warned about Windows path separators, but the bundle extracted correctly
+      - staged permissions were repaired with `chmod -R u+rwX` before submit
+    - live fertility job:
+      - `16597058`
+      - partition `shared`
+      - name `ann_low_entry_broad`
+      - current state at submission check: `PENDING (Priority)`
+      - submitted with `--nice=10000` so it stays behind the active Necessity array
+- Last updated: 2026-03-26 (Hamilton live check; low-entry follow-up completed and collected)
+- 2026-03-26 live Hamilton read and result collection:
+  - access:
+    - `ssh hamilton8` succeeded via `login1.ham8.dur.ac.uk`
+    - `sacct -j 16596632` shows the low-entry vote-side follow-up completed successfully:
+      - job `16596632`
+      - name `ann_vote_follow`
+      - partition `shared`
+      - state `COMPLETED`
+      - exit code `0:0`
+      - elapsed `01:44:42`
+      - node `cn060`
+    - `squeue -u hfnt93` now shows only the Necessity array job `16596530_26`, so the fertility
+      follow-up is no longer queued or running
+  - collected outputs:
+    - synced from
+      `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260326_101943/03_fertility_and_housing_supply/notes/build/`
+      into local `notes/build/`
+    - refreshed local files:
+      - `notes/build/nimby_annual_low_entry_vote_followup.md`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidates.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidate_paths.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidate_blocks.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_target_blocks.csv`
+  - main read from the completed full-resolution screen:
+    - best candidate: `low theta_r + annualized rent markup`
+    - eval vote-per-mass at price `2.00`: about `-0.941763`
+    - 5-year target eval vote-per-mass at price `2.00`: about `-0.013101`
+    - no candidate crosses on the workflow grid
+    - implication:
+      - the low-entry owner-grid improvement plus the `theta_r` / `rent_markup` re-screen does
+        not repair the annual steady-state mismatch
+      - the next annual cluster screen needs to open margins beyond this vote-side / renter-side
+        pair
+  - live capacity snapshot from `sinfo`:
+    - `shared`, `multi`, and `long` each currently show `66` mixed nodes with about `3262` idle
+      CPUs across those mixed nodes
+    - `test` has `1` idle node (`128` idle CPUs)
+    - `bigmem` has `204` idle CPUs on mixed nodes
+- Last updated: 2026-03-26 (low-entry vote-side follow-up submitted on Hamilton)
+- 2026-03-26 targeted full-resolution low-entry follow-up prepared and submitted on Hamilton:
+  - new workflow:
+    - `code/run_nimby_annual_low_entry_vote_followup.m`
+  - new HPC files:
+    - `code/hpc/run_annual_nimby_low_entry_vote_followup.sh`
+    - `code/hpc/annual_nimby_low_entry_vote_followup.slurm`
+  - HPC helper fixes:
+    - `code/hpc/annual_nimby_workflow.slurm`
+    - `code/hpc/annual_nimby_low_entry_vote_followup.slurm`
+    - both SLURM wrappers now use `SLURM_SUBMIT_DIR` rather than `BASH_SOURCE[0]` alone, so they
+      resolve the staged script directory correctly on Hamilton
+  - bundle refresh:
+    - `code/hpc/prepare_annual_nimby_bundle.ps1`
+    - `code/hpc/README.md`
+    - the bundle now carries `nimby_annual_access_followup*` plus
+      `nimby_annual_low_entry_vote_followup*` outputs
+  - local verification:
+    - `run_nimby_annual_low_entry_vote_followup('fast')` completed successfully
+    - new smoke-test outputs:
+      - `notes/build/nimby_annual_low_entry_vote_followup.md`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidates.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidate_paths.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_candidate_blocks.csv`
+      - `notes/build/nimby_annual_low_entry_vote_followup_target_blocks.csv`
+    - fast smoke-test read:
+      - fixes uniform cohorts, hold-5y `ka`, benchmark `CC`, and low-entry owner grid
+        `housingmax = 10`
+      - screens only `theta_r` and `rent_markup`
+      - the best fast candidate is `mid theta_r + mid rent markup`
+      - but the vote problem is still severe:
+        - eval vote-per-mass about `-0.961` versus fast 5-year target about `+0.008`
+        - no candidate crosses on the workflow grid
+  - Hamilton submission state:
+    - local bundle:
+      - `_playground/backups/2026-03-26/03_fertility_and_housing_supply_hpc/annual_nimby_bundle_20260326_101943`
+    - remote bundle root:
+      - `/nobackup/hfnt93/fert_runs/annual_nimby_bundle_20260326_101943`
+    - setup fixes needed on Hamilton:
+      - the first submit (`16596630`) failed because the old SLURM wrapper resolved the helper
+        script relative to Slurm spool space rather than the submit directory
+      - the second submit (`16596631`) failed because the extracted Windows archive left the
+        staged `notes/` tree without write permission for the job
+      - after repairing the staged permissions and bypassing the stale wrapper, the replacement job
+        started successfully
+    - live job:
+      - `16596632`
+      - partition `shared`
+      - name `ann_vote_follow`
+      - current state at submission check: `RUNNING`
+      - node at submission check: `cn060`
+    - scheduler intent:
+      - submitted with `--nice=10000` so the fertility job yields queue priority to the active
+        Necessity `p08` array
+- Last updated: 2026-03-26 (annual access follow-up fast screen run)
+- 2026-03-26 targeted early-life access follow-up added and run:
+  - new workflow:
+    - `code/run_nimby_annual_access_followup.m`
+  - new outputs:
+    - `notes/build/nimby_annual_access_followup.md`
+    - `notes/build/nimby_annual_access_followup_candidates.csv`
+    - `notes/build/nimby_annual_access_followup_candidate_paths.csv`
+    - `notes/build/nimby_annual_access_followup_candidate_blocks.csv`
+    - `notes/build/nimby_annual_access_followup_target_blocks.csv`
+  - design:
+    - fixes the current best annual housing-access baseline on the vote side:
+      `uniform cohorts + hold 5y ka + mid theta_r + hold 5y rent markup`
+    - screens only direct early-life access margins:
+      - borrowing constraint `CC`
+      - annual owner-house entry grid via `housingmax`
+    - fast mode intentionally uses `I = 20`, `J = 10` so the owner-grid margin is not hidden by
+      the older very coarse `J = 6` fast screen
+  - main read from the fast screen:
+    - `CC` is currently a low-leverage knob; moving from `0.90` to `1.00` changes results only
+      modestly and does not restore a crossing
+    - shrinking the annual owner grid from `housingmax = 15` to `10` improves early-life
+      liquid-asset fit materially relative to the benchmark owner grid
+    - but that access-side improvement does **not** repair the annual vote failure:
+      the best fast candidate still has eval vote-per-mass about `-0.895` against the fast 5-year
+      target about `+0.008`, and it still has no crossing on the workflow grid
+    - interpretation:
+      - the annual problem is not mainly the credit-limit `CC`
+      - lowering the entry-house size helps the balance-sheet side more than the political-support
+        side
+      - the next useful annual screen should keep the low-entry owner grid in play, but combine it
+        with the remaining vote-side / renter-side margins rather than spending more time on `CC`
+- Last updated: 2026-03-26 (annual NIMBY full-screen rerun checkpointed halfway)
+- 2026-03-26 live read on the step-4-only annual NIMBY rerun:
+  - run folder: `notes/build/logs/annual_nimby_away_20260326_013658`
+  - active pointer: `notes/build/logs/active_annual_nimby_away.txt`
+  - latest heartbeat at `2026-03-26 07:37` still shows `04_housing_access_full state=Running`
+  - the step-4 stdout log was still advancing at `2026-03-26 07:40`
+  - the new checkpointed full-screen outputs are now live:
+    - `notes/build/nimby_annual_housing_access_screen.md`
+    - `notes/build/nimby_annual_housing_access_screen_candidates.csv`
+  - current checkpoint coverage:
+    - `27` completed annual candidates out of the `54`-candidate full screen
+  - current partial ranking read:
+    - the best checkpointed candidate is
+      `uniform cohorts + hold 5y ka + mid theta_r + hold 5y rent markup`
+    - its current eval vote-per-mass is about `-0.7340` versus the local 5-year target
+      `-0.0131`
+    - the annual model still has no crossing in the checkpointed ranking
+    - the early-life vote gap remains large, but the checkpointed best candidate is materially less
+      extreme than the older fast-screen read
+- Last updated: 2026-03-26 (annual NIMBY wrapper fixed and step-4 rerun launched)
+- 2026-03-26 annual NIMBY away-workflow repair pass:
+  - fixed wrapper script:
+    - `code/annual_nimby_away_workflow.ps1`
+  - fixed launcher:
+    - `code/start_annual_nimby_away_workflow.ps1`
+  - resilience upgrade in the long MATLAB screen:
+    - `code/run_nimby_annual_housing_access_screen.m`
+    - the screen now checkpoints partial candidate outputs to
+      `notes/build/nimby_annual_housing_access_screen*.{csv,md}` after each completed candidate
+  - failure diagnosis from the overnight stop:
+    - the previous run did not fail because MATLAB crashed
+    - `04_housing_access_full` hit the wrapper timeout after 10 hours, and the timeout branch then
+      called unsupported PowerShell job flags (`-Force` on `Stop-Job` / `Remove-Job`)
+  - wrapper fix:
+    - removed the unsupported job flags
+    - added step selection (`StartAtStep`, `EndAtStep`) so the away runner can restart a single
+      step without rerunning the whole chain
+    - raised the step-4 timeout budget to `18` hours by default
+  - verification:
+    - a step-2-only wrapper run completed successfully in
+      `notes/build/logs/annual_nimby_away_20260326_013538`
+  - live rerun:
+    - a new step-4-only away run started in
+      `notes/build/logs/annual_nimby_away_20260326_013658`
+    - active pointer: `notes/build/logs/active_annual_nimby_away.txt`
+    - latest status at `2026-03-26 01:43`:
+      - selected steps are `4-4`
+      - `04_housing_access_full` is running
+      - the step-4 stdout log is still advancing
+      - no new checkpointed report has landed yet, which is consistent with the first full
+        candidate still being in progress rather than a fresh blocker
+- Last updated: 2026-03-26 (annual NIMBY away workflow overnight stop)
+- 2026-03-26 overnight read on the annual NIMBY steady-state workflow:
+  - active pointer now reports `phase=error` in `notes/build/logs/active_annual_nimby_away.txt`
+  - run folder remains `notes/build/logs/annual_nimby_away_20260325_122208`
+  - completed steps:
+    - `01_stage2_full`
+    - `02_age_block_benchmark`
+    - `03_housing_access_fast`
+  - `04_housing_access_full` ran through the evening, with the last running heartbeat at
+    `2026-03-26 00:17`
+  - the wrapper then stopped at `2026-03-26 00:32` with:
+    - `A parameter cannot be found that matches parameter name 'Force'.`
+  - no refreshed full-screen output landed under `notes/build/`; the latest
+    `nimby_annual_housing_access_screen.*` files are still the fast-run outputs from
+    `2026-03-25 14:31`
+  - interpretation:
+    - this is currently an orchestration / wrapper failure, not a new solved annual NIMBY result
+    - the existing HPC handoff scripts should allow a clean resume from step
+      `run_nimby_annual_housing_access_screen('full')` rather than rerunning steps `1-3`
+- Last updated: 2026-03-25 (HPC prep for annual NIMBY workflow)
+- 2026-03-25 cluster handoff prep added for the active annual NIMBY steady-state work:
+  - new files under `code/hpc/`:
+    - `code/hpc/prepare_annual_nimby_bundle.ps1`
+    - `code/hpc/run_annual_nimby_workflow.sh`
+    - `code/hpc/annual_nimby_workflow.slurm`
+    - `code/hpc/README.md`
+  - bundle design:
+    - preserves sibling `02_nimbyism_and_housing_supply/` and
+      `03_fertility_and_housing_supply/` layout so existing MATLAB relative paths continue to
+      resolve on Linux/HPC
+    - stages the prebuilt annual and 5-year transition matrices, so the cluster does not need to
+      rebuild them before running the annual NIMBY workflow
+    - bundles `nl_zbl.mat` when found locally, so transition-matrix rebuilds are also available if
+      needed
+  - cluster runner design:
+    - Linux batch runner supports `START_AT_STEP` / `END_AT_STEP`
+    - this allows a direct resume of the current heavy step
+      `run_nimby_annual_housing_access_screen('full')`
+      rather than rerunning the whole chain if the local machine has already finished steps `1-3`
+  - default staging root:
+    - `_playground/backups/2026-03-25/03_fertility_and_housing_supply_hpc/`
+- Last updated: 2026-03-25 (annual housing-access screen + away workflow launched)
+- 2026-03-25 annual NIMBY housing-access workflow added:
+  - new screen:
+    - `code/run_nimby_annual_housing_access_screen.m`
+  - new away-runner scripts:
+    - `code/annual_nimby_away_workflow.ps1`
+    - `code/start_annual_nimby_away_workflow.ps1`
+  - new fast-screen outputs:
+    - `notes/build/nimby_annual_housing_access_screen.md`
+    - `notes/build/nimby_annual_housing_access_screen_candidates.csv`
+    - `notes/build/nimby_annual_housing_access_screen_candidate_paths.csv`
+    - `notes/build/nimby_annual_housing_access_screen_candidate_blocks.csv`
+  - fast housing-access screen read:
+    - the best fast candidate family still uses `uniform` annual cohorts
+    - the top-ranked fast candidate is `uniform cohorts + hold 5y ka + low theta_r + annualized rent markup`
+    - but even that candidate still has no crossing and still leaves the early-life vote blocks
+      strongly negative relative to the 5-year target
+  - away workflow:
+    - active pointer: `notes/build/logs/active_annual_nimby_away.txt`
+    - latest run pointer: `notes/build/logs/latest_annual_nimby_away.txt`
+    - current run folder: `notes/build/logs/annual_nimby_away_20260325_122208`
+    - live status check at `2026-03-25 18:42`:
+      - the away workflow has already completed steps `01_stage2_full`,
+        `02_age_block_benchmark`, and `03_housing_access_fast`
+      - the live step is still `04_housing_access_full`
+      - the latest heartbeat in `status.txt` is `2026-03-25 18:32` with `state=Running`
+      - no blocker has been logged yet
+    - live steps are now:
+      1. full stage-2 annual screen
+      2. benchmark age-block comparison
+      3. fast housing-access screen
+      4. full housing-access screen
+  - scope lock:
+    - the away workflow is annual NIMBY only
+    - it does not touch annual fertility
+    - it does not touch RE / transition work
+- Last updated: 2026-03-25 (annual NIMBY stage-2 screen + age-block diagnostic)
+- 2026-03-25 annual NIMBY workflow extended:
+  - new workflow files:
+    - `code/run_nimby_annual_recalibration_stage2.m`
+    - `code/compare_nimby_local_age_block_periodization_main.m`
+  - new generated outputs:
+    - `notes/build/nimby_annual_recalibration_stage2.md`
+    - `notes/build/nimby_annual_recalibration_stage2_candidates.csv`
+    - `notes/build/nimby_annual_recalibration_stage2_candidate_paths.csv`
+    - `notes/build/nimby_local_age_block_periodization.md`
+    - `notes/build/nimby_local_age_block_periodization.csv`
+    - `notes/build/nimby_local_age_block_periodization_summary.csv`
+  - stage-2 recalibration read:
+    - the best fast stage-2 annual candidate is `uniform cohorts + benchmark annual bounds + annualized 5y discount block`
+    - that improves the eval-price annual vote-per-mass from about `-0.9723` to about `-0.8725`
+    - but it still does **not** produce a crossing on the stage-2 grid and is still far from the
+      local 5-year target vote-per-mass of about `-0.0163`
+  - age-block diagnostic read at benchmark `a_price = 2.00`:
+    - the annual mismatch is not just an aggregation artifact from having more age bins
+    - after collapsing the annual benchmark into 5-year age blocks, annual vote-per-mass is still
+      about `-1.0` for ages `25-54`, whereas the local 5-year benchmark is positive over those
+      same blocks
+    - the annual benchmark also shows much lower owner shares in those early-life blocks
+      (for example, about `0.670` vs `0.848` at ages `25-29`, and about `0.144` vs `0.603` at
+      ages `50-54`)
+  - interpretation lock:
+    - the annual failure is now localized to early-life housing-access / voting mechanics rather
+      than generic annualization of rates alone
+    - the next annual workflow should target those early-life blocks directly before adding
+      fertility back in
+- Last updated: 2026-03-25 (annual solver scaffold + NIMBY periodization comparisons)
+- 2026-03-25 annual solver scaffold and NIMBY periodization comparisons added:
+  - solver patch: `code/SolveSS_fertility.m`
+    - now accepts explicit transition-matrix files
+    - now supports arbitrary `dage` and custom cohort weights
+    - annual shutoff cases no longer route through the old 5-year reproduction shortcut
+  - new builders:
+    - `code/build_transition_matrix_periodized.m`
+    - `code/build_transition_matrix_annual.m`
+  - new annual-track files:
+    - `code/fertility_benchmark_annual_config.m`
+    - `code/run_ge_fertility_annual_main.m`
+    - `code/build_nimby_shutoff_overrides.m`
+    - `code/compare_nimby_annual_vs_five_year_main.m`
+    - `code/compare_nimby_local_periodization_main.m`
+  - generated annual-track outputs:
+    - `notes/build/TransitionMatrix_annual.mat`
+    - `notes/build/TransitionMatrix_5y_25_80.mat`
+    - `notes/build/fertility_run_ge_annual_report.md`
+    - `notes/build/nimby_annual_vs_five_year_report.md`
+    - `notes/build/nimby_local_periodization_report.md`
+  - main read from the local apples-to-apples NIMBY comparison:
+    - local 5-year and local annual shutoff cases were both solved through the same project-03
+      shutoff solver on ages `25-80`, with transition matrices rebuilt from the same annual income
+      source
+    - after basic annualization of `beta`, `rbPos`, `ra`, `rspread`, and `rent_markup`, the annual
+      case is still materially more anti-price than the 5-year case
+    - at `a_price = 2.00`, local 5-year vote-per-mass is about `-0.0131`, while local annual
+      vote-per-mass is about `-0.9480`
+    - the local 5-year shutoff case has a smoke-grid crossing near `2.4048`, while the local
+      annual shutoff case has no crossing on the smoke grid `1.5, 2.0, 2.5`
+  - interpretation lock:
+    - annualization is not a cosmetic code port
+    - the annual NIMBY steady state needs a real recalibration before annual fertility or any
+      annual RE / transition work should be attempted
+- Last updated: 2026-03-25 (referee-sweep workflow patched and relaunched)
+- 2026-03-25 referee-sweep away workflow patched and relaunched:
+  - updated runner: `code/referee_revision_away_workflow.ps1`
+  - fix 1: newly launched MATLAB phases are now supervised by wrapper-process PID rather than
+    inferred only from process-marker lookup
+  - fix 2: stale-output recovery now applies to fresh launches as well as adopted runs
+  - current live run folder: `notes/build/logs/referee_revision_away_20260325_025840`
+  - current active pointer: `notes/build/logs/active_referee_revision_away.txt`
+  The 2026-03-24 away run did not complete because launched childlessness sweeps exited without
+  refreshing outputs under the old supervision path. The March 25 relaunch now keeps a live wrapper
+  process around the MATLAB batch, and `01_childlessness_full` is actively writing a fresh stdout
+  log from the full `run_childlessness_recalibration` sweep.
+- Last updated: 2026-03-24 (referee-sweep away workflow launched)
+- 2026-03-24 referee-sweep away workflow launched:
+  - new runner: `code/referee_revision_away_workflow.ps1`
+  - new launcher: `code/start_referee_revision_away_workflow.ps1`
+  - result applier: `code/apply_referee_revision_results.py`
+  - active-run pointer: `notes/build/logs/active_referee_revision_away.txt`
+  - latest-run pointer: `notes/build/logs/latest_referee_revision_away.txt`
+  This is the new bounded unattended path for the referee-sweep packet inside project 03 only.
+  The workflow adopts the currently running full `run_childlessness_recalibration` job if present,
+  then runs full `run_sensitivity_table`, applies the validated Appendix C / calibration-discussion
+  updates to the draft, compiles the paper, and syncs `STATUS.md` plus `memory.md`. If the chain is
+  blocked, the run directory under `notes/build/logs/` is the canonical place to read the blocker.
+- Last updated: 2026-03-23 (benchmark-report PDF fixed)
+- 2026-03-23 final benchmark-report PDF build fixed:
+  - updated generator: `code/write_fertility_vs_nimby_benchmark_main.m`
+  - rebuilt report files:
+    - `notes/build/fertility_vs_nimby_benchmark_report.md`
+    - `notes/build/fertility_vs_nimby_benchmark_report.pdf`
+  The overnight refresh had already updated the markdown/csv layer; the remaining failure was just
+  the final Pandoc PDF step. The cause was that the generated markdown used figure blocks that did
+  not compile cleanly under the current local Pandoc/LaTeX toolchain. The report generator now
+  emits markdown image syntax that compiles correctly, so the benchmark comparison PDF is current
+  again.
+- Last updated: 2026-03-23 (overnight benchmark refresh completed except PDF rebuild)
+- 2026-03-22/23 overnight benchmark-refresh run completed through the benchmark markdown/csv layer:
+  - run folder: `notes/build/logs/overnight_benchmark_refresh_20260322_205138`
+  - `run_ge_fertility_main` completed at `2026-03-22 21:59:35`
+  - `write_fertility_vs_nimby_benchmark_main` completed at `2026-03-22 23:34:45`
+  - panel figure rebuild completed at `2026-03-22 23:34:48`
+  - final `pandoc` PDF step failed at `2026-03-22 23:34:54`
+  The important machine-written benchmark files are now refreshed and current:
+  - `notes/build/fertility_run_ge_report.md`
+  - `notes/build/fertility_local_benchmark_search.csv`
+  - `notes/build/fertility_vs_nimby_benchmark_summary.csv`
+  - `notes/build/fertility_vs_nimby_common_price_grid.csv`
+  - `notes/build/fertility_vs_nimby_benchmark_report.md`
+  - `notes/build/fertility_vs_nimby_benchmark_panels.{png,pdf}`
+  The updated benchmark now reports the local fertility crossing correctly:
+  - local bracket: `1.824` (`+0.054832`) to `1.825` (`-0.084125`)
+  - local refined price: `1.824416`
+  The benchmark-comparison markdown and PDF are now both current.
+- Last updated: 2026-03-22 (overnight benchmark-refresh workflow launched)
+- 2026-03-22 overnight benchmark-refresh workflow added and started:
+  - new runner: `code/refresh_corrected_benchmark_outputs_overnight.ps1`
+  - new launcher: `code/start_refresh_corrected_benchmark_outputs_overnight.ps1`
+  - active-run pointer: `notes/build/logs/active_overnight_benchmark_refresh.txt`
+  - latest-run pointer: `notes/build/logs/latest_overnight_benchmark_refresh.txt`
+  This is the new unattended local path for the benchmark refresh. It separates the run into
+  logged steps (`run_ge_fertility_main`, `write_fertility_vs_nimby_benchmark_main`, plotting, and
+  optional PDF compilation) and writes each overnight run to its own timestamped folder under
+  `notes/build/logs/`. The purpose is to replace the old monolithic terminal wrapper, which kept
+  timing out after the first-birth timing fix. The active overnight run started on
+  `2026-03-22 20:51:38`; results should be read from the latest-run pointer rather than inferred
+  from terminal timeouts.
+- Last updated: 2026-03-22 (first-birth hazard fix calibrated to U.S. first-birth data)
+- 2026-03-22 first-birth hazard fix completed in the household solver:
+  - updated `code/SolveSS_fertility.m`
+  - updated `code/fertility_benchmark_config.m`
+  - updated `code/write_fertility_first_birth_timing_main.m`
+  - rebuilt `notes/build/fertility_first_birth_timing_summary.csv`
+  - rebuilt `notes/build/fertility_first_birth_timing_profiles.csv`
+  - rebuilt `notes/build/fertility_first_birth_timing.md`
+  The old equal-weight birth timing block is gone. The solver now applies age-specific
+  realized-birth shifters to parity-zero births, calibrated to the pooled recent U.S. CDC WONDER
+  first-birth distribution for ages `25+`. The benchmark target is `[0.438, 0.381, 0.152, 0.029]`
+  at ages `25, 30, 35, 40`; the current model delivers `[0.498, 0.312, 0.143, 0.047]` at
+  benchmark `a_price = 2.00`. Across the benchmark price grid, mean age at first birth now rises
+  from about `27.57` to about `30.95`, the `30+` first-birth share rises from about `0.370` to
+  about `0.709`, and the average first-birth rate falls from about `0.233` to about `0.134`.
+  This timing fix improves the first-birth hazard materially. A refreshed narrow benchmark search
+  now pins the fertility vote crossing to a local bracket between `1.824` and `1.825`, so the old
+  pre-fix exact crossing should no longer be treated as current.
+- Last updated: 2026-03-21 (England poshness-control pass run)
+- 2026-03-21 England baseline-controls and controlled-regressions pass completed:
+  - `code/build_england_greenbelt_baseline_controls.py`
+  - `data/processed/england_greenbelt_baseline_controls_v1.csv`
+  - `notes/build/england_greenbelt_baseline_controls_v1.md`
+  - `code/build_england_greenbelt_controlled_regressions.py`
+  - `notes/build/england_greenbelt_controlled_regressions.md`
+  - `notes/build/england_greenbelt_controlled_regressions.csv`
+  - `notes/build/england_greenbelt_controlled_regression_samples.csv`
+  This pass built real baseline `poshness` controls from the 2011 Census plus an official
+  LAD24-to-region lookup, then reran the England design as `greenbelt_share_pre x post2019` with
+  local-authority fixed effects, region-year fixed effects, and baseline affluent-place controls
+  interacted with post. The main result is that the raw England greenbelt timing gradient does not
+  survive this stricter design. In the fully controlled specification, a one-standard-deviation
+  increase in greenbelt exposure implies only about `0.0010` on `share_births_30_plus`
+  (`p = 0.394`), about `0.0156` years on mean age of mother (`p = 0.288`), and about `0.0050`
+  on TFR (`p = 0.294`). The local-price validation is still positive but only marginal
+  (`0.0047` log points, `p = 0.093`). So the earlier raw England timing gradient now looks
+  largely cross-sectional and consistent with affluent-place / regional composition rather than a
+  clean post-2019 greenbelt exposure effect.
+- Last updated: 2026-03-21 (England greenbelt regressions run)
+- 2026-03-21 England greenbelt regressions completed:
+  - `code/build_england_greenbelt_regressions.py`
+  - `notes/build/england_greenbelt_regressions.md`
+  - `notes/build/england_greenbelt_regressions.csv`
+  - `notes/build/england_greenbelt_regression_samples.csv`
+  The first England regression pack now exists as a reproducible output rather than ad hoc checks.
+  The main result is that the England panel behaves more like a timing/composition result than a
+  clean quantity result. In the year-fixed-effects cross-section, a one-standard-deviation increase
+  in greenbelt share raises `share_births_30_plus` by about `0.016` (`p = 0.003`) and lowers
+  `ASFR under 20` while raising `ASFR 30-34` and `ASFR 35-39`. But the local-price validation is
+  still weak (`p = 0.535`), and the cross-sectional total-fertility sign goes the wrong way:
+  greenbelt exposure is associated with *higher* TFR in this first pass. By contrast, local house
+  prices line up cleanly with the model's direction: higher prices are associated with later births
+  and lower fertility. The within-authority greenbelt design is currently uninformative because
+  greenbelt exposure barely moves over time.
+- Last updated: 2026-03-21 (England greenbelt local-authority panel built)
+- 2026-03-21 England greenbelt panel v1 completed:
+  - `code/build_england_greenbelt_planning_panel.py`
+  - `data/raw/england/greenbelt_statistics_2024_25.ods`
+  - `data/raw/england/nomis_birth_rates_local_authority.csv`
+  - `data/raw/england/nomis_births_by_age_local_authority.csv`
+  - `data/raw/england/uk_hpi_average_prices.csv`
+  - `data/raw/england/uk_hpi_indices.csv`
+  - `data/raw/england/england_greenbelt_panel_metadata.json`
+  - `data/processed/england_greenbelt_fertility_panel_v1.csv`
+  - `notes/build/england_greenbelt_fertility_panel_v1.md`
+  - `notes/build/england_greenbelt_fertility_panel_v1_summary.csv`
+  The first England local-authority planning panel now exists as a real merged file rather than a
+  design note. It combines current-code greenbelt history from the official live tables, NOMIS
+  local-authority birth rates and age-of-mother counts, and annualized UK HPI local-authority
+  prices. The merged file has `3811` rows over `313` authorities from `2013-2024`; the complete
+  sample with births, prices, and greenbelt runs `2014-2024` with `3206` rows across `293`
+  authorities. In the first descriptive pass, the timing margin points in the expected direction:
+  higher greenbelt exposure is associated with a higher `share_births_30_plus` (`p = 0.001`),
+  while the local-price validation is positive but still imprecise (`p = 0.474`). The main
+  current data gap is now much narrower than the first pass suggested. After aggregating
+  multi-belt authority rows and backfilling current-code histories from same-name legacy codes
+  plus explicit predecessor sums for the new unitaries, the remaining overlap-year gap is down
+  to `187` rows across `17` authorities. Those remaining cases are old district codes in the
+  NOMIS fertility pull that do not have matching current-code UK HPI counterparts, so the next
+  harmonization choice is on the fertility side rather than the greenbelt side.
+- Last updated: 2026-03-21 (international shock regressions run; England greenbelt/planning workflow added)
+- 2026-03-21 international timing shock regressions completed:
+  - `code/build_international_timing_shock_regressions.py`
+  - `notes/build/international_timing_shock_regressions.md`
+  - `notes/build/international_timing_shock_regressions.csv`
+  - `notes/build/international_timing_shock_regression_samples.csv`
+  The first cross-country pass is now estimated rather than just planned. The cleanest result is
+  not short-run house-price growth but the OECD house-price level: in the country-year panel, a
+  one-standard-deviation increase in the OECD house-price index is associated with about `0.032`
+  years later mean age at first birth (`p = 0.038`) and about `0.021` lower total fertility rate
+  (`p = 0.006`). By contrast, pure house-price-growth specifications are weak and unstable across
+  OECD and BIS measures, and the standalone interest-rate block is mixed rather than robust.
+- 2026-03-21 England greenbelt/planning workflow note added:
+  - `notes/build/uk_greenbelt_planning_shock_workflow.md`
+  The project now has an explicit England-specific causal workflow that is closer to the model's
+  primitive than the international reduced-form panel. The note records the official source path
+  for annual greenbelt stock and boundary data, NPPF timing, local-authority birth outcomes, and
+  local-authority housing outcomes, and it ranks the preferred design as pre-period greenbelt
+  exposure interacted with common planning-regime timing.
+- Last updated: 2026-03-21 (manuscript reframed around fertility results; international OECD/BIS shock layer added)
+- 2026-03-21 manuscript framing pass completed:
+  - updated `drafts/fertility_and_housing_supply.tex`
+  - updated `drafts/fertility_and_housing_supply.pdf`
+  The main draft no longer reads like a NIMBY comparison pack. The main text now leads with the
+  paper's own fertility results: delayed first births in the steady state, persistent housing
+  scarcity in the long run, and the modest empirical timing / historical validation bridge. The
+  exact NIMBY nesting result, temporary baby-boom comparison, and bounded robustness material have
+  been moved into appendices so they validate the framework rather than define the headline.
+- 2026-03-21 international OECD/BIS shock layer added:
+  - `code/pull_international_timing_shocks.py`
+  - `data/raw/international/oecd_house_prices_annual.csv`
+  - `data/raw/international/oecd_interest_rates_annual.csv`
+  - `data/raw/international/bis_house_prices_annualized.csv`
+  - `data/raw/international/international_timing_shocks_metadata.json`
+  - `data/processed/international_first_birth_timing_shocks_v1.csv`
+  - `notes/build/international_timing_shocks_v1.md`
+  This is the first international shock layer for the Eurostat timing panel. It adds official OECD
+  annual house-price growth and index series, official OECD annual short- and long-rate series, and
+  annualized BIS quarterly nominal and real house-price growth. The merged panel covers `49`
+  Eurostat countries overall and has at least one shock series for `35` countries.
+- Last updated: 2026-03-21 (Eurostat international timing panel scaffold added)
+- 2026-03-21 Eurostat international timing scaffold added:
+  - `code/pull_eurostat_first_birth_timing.py`
+  - `data/raw/international/README.md`
+  - `data/raw/international/eurostat_demo_find_long.csv`
+  - `data/raw/international/eurostat_demo_find_metadata.json`
+  - `data/processed/international_first_birth_timing_eu.csv`
+  - `notes/build/international_first_birth_timing_eurostat.md`
+  - `notes/build/international_timing_shock_menu.md`
+  This creates the first clean public international timing panel for the project from the official
+  Eurostat `demo_find` API. The current panel covers `49` countries over `1960-2024` and includes
+  `mean_age_first_birth`, `pct_first_order_live_births`, `mean_age_childbirth`, and
+  `total_fertility_rate`. It is enough to begin international timing validation, but not enough to
+  construct age-bin first-birth shares such as `30+`; that next layer will require HFD or another
+  order-specific source.
+- Last updated: 2026-03-21 (first-birth timing object added to household benchmark)
+- 2026-03-21 first-birth timing object added:
+  - `code/write_fertility_first_birth_timing_main.m`
+  - `code/plot_fertility_first_birth_timing.py`
+  - `notes/build/fertility_first_birth_timing_summary.csv`
+  - `notes/build/fertility_first_birth_timing_profiles.csv`
+  - `notes/build/fertility_first_birth_timing.md`
+  - `notes/build/nimby_vs_fertility_first_birth_timing.png`
+  - `notes/build/nimby_vs_fertility_first_birth_timing.pdf`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  - updated `drafts/fertility_and_housing_supply.pdf`
+  The corrected household benchmark now exports a direct first-birth timing object rather than
+  only total fertility and completed fertility. This note was later refreshed on `2026-03-22`
+  after the parity-zero timing fix: moving from `a_price = 1.50` to `3.00`, mean age at first
+  birth now rises from about `27.57` to about `30.95`, the share of first births at age `30+`
+  rises from about `0.370` to about `0.709`, and the average first-birth rate falls from about
+  `0.233` to about `0.134`. The benchmark now explicitly records the CDC target shares at ages
+  `25, 30, 35, 40` and the corresponding model shares at `a_price = 2.00`.
+- 2026-03-21 first-birth timing model-to-data bridge added:
+  - `code/build_first_birth_timing_model_data_comparison.py`
+  - `notes/build/first_birth_timing_model_data_comparison.md`
+  - `notes/build/first_birth_timing_model_data_comparison_summary.csv`
+  - `notes/build/first_birth_timing_model_data_comparison_series.csv`
+  - `notes/build/first_birth_timing_model_data_comparison.png`
+  - `notes/build/first_birth_timing_model_data_comparison.pdf`
+  The direct model-to-data bridge now uses the state-year CDC WONDER first-birth panel already in
+  project 03 and compares it to the new model timing objects. Because the model uses steady-state
+  house prices while the data use a state-year rent index, the comparison is done with
+  state-and-year-adjusted housing-cost ranks rather than level matching. The result is a
+  directional match, not a tight fit: the data and the model both move toward older first births,
+  higher `30+` first-birth shares, and lower first-birth rates as housing costs rise, but the
+  empirical gradients are much smaller and remain imprecise in the current sample.
+- Last updated: 2026-03-21 (baby-boom mechanism decomposition added)
+- 2026-03-21 baby-boom mechanism decomposition added:
+  - `code/build_nimby_vs_fertility_baby_boom_mechanisms.py`
+  - `notes/build/nimby_vs_fertility_baby_boom_mechanisms.md`
+  - `notes/build/nimby_vs_fertility_baby_boom_mechanism_summary.csv`
+  - `notes/build/nimby_vs_fertility_baby_boom_channel_variants.csv`
+  - `notes/build/nimby_vs_fertility_age_support_proxy.csv`
+  - `notes/build/nimby_vs_fertility_baby_boom_mechanism.png`
+  - `notes/build/nimby_vs_fertility_baby_boom_channels.png`
+  - `notes/build/nimby_vs_fertility_age_support_proxy.png`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  The baby-boom section now does more than compare price paths. It explicitly decomposes the
+  mechanism into the common boom shock, children at home, house-price amplification, and the later
+  fertility correction. The new shutoff comparison shows that crowding is the main extra
+  house-price channel: removing crowding lowers the post-window price response from about `0.051`
+  to about `0.045`, much closer to the NIMBY proxy's `0.031`. By contrast, shutting off
+  price-sensitive births leaves a large price response but removes the later fertility correction.
+  A new age-support proxy figure also makes the lifecycle mechanism visible: at age `35` and
+  `t = 20`, support for higher house prices is about `0.004` in the NIMBY proxy, about `-0.019`
+  with crowding shut off, and about `-0.307` in the full fertility model.
+- Last updated: 2026-03-20 (calibrated persistent NIMBY supply-margin comparison added)
+- 2026-03-20 calibrated persistent NIMBY comparison added:
+  - `code/build_nimby_shock_calibrated_supply_margins.py`
+  - `notes/build/nimby_shock_calibrated_supply_margins.md`
+  - `notes/build/nimby_shock_calibrated_supply_margins.png`
+  - `notes/build/nimby_shock_calibrated_supply_margins.pdf`
+  - `notes/build/nimby_shock_calibrated_supply_margins_summary.csv`
+  - `notes/build/nimby_shock_calibrated_supply_margins_transition.csv`
+  - `notes/build/nimby_shock_calibrated_supply_margins_projection.csv`
+  - `notes/build/nimby_shock_calibrated_supply_margins_projection_summary.csv`
+  - `notes/build/nimby_shock_calibrated_supply_margins_historical.csv`
+  - updated `notes/build/nimby_vs_fertility_model_comparison.pdf`
+  - updated `drafts/fertility_and_housing_supply.pdf`
+  The long-run section is now calibrated to a common housing target rather than a free `theta0`
+  dial. Three different supply-tightening shocks are chosen to raise the 40-period house-price
+  index by 15 percent, matching the order of magnitude of the NIMBY paper's headline house-price
+  effect. The fertility result survives across all three supply margins. But the historical
+  comparison now also makes the limit of the mechanism explicit: the calibrated shocks improve fit
+  to the 1956--1995 aggregate fertility decline only modestly, closing about 5.4 percent of the
+  baseline-to-data end-gap and improving RMSE by about 3.4 to 4.0 percent.
 - Last updated: 2026-03-20 (persistent NIMBY-shock scenario grid and calibration sensitivity added)
 - 2026-03-20 persistent NIMBY-shock scenario grid added:
   - `code/build_nimby_shock_scenarios.py`
@@ -141,8 +6475,8 @@
 - 2026-03-19 benchmark confirmation:
   - candidate `1` and current defaults are the same object
   - benchmark remains `I = 60`, `J = 14`
-  - unique market crossing remains at approximately `a_price = 1.751853`
-  - age-50 completed fertility remains `[0.2237, 0.2556, 0.2927, 0.2280]`
+  - pre-fix unique market crossing was approximately `a_price = 1.751853`
+  - pre-fix age-50 completed fertility was `[0.2237, 0.2556, 0.2927, 0.2280]`
 - 2026-03-19 comparison-layer refresh prepared:
   - `code/write_fertility_vs_nimby_benchmark_main.m` now reports both raw `totalvote`
     and normalized `vote_per_mass`, plus stationary mass
@@ -214,13 +6548,19 @@
 - 2026-03-02 drafting update: `drafts/fertility_and_housing_supply.lyx` was rebuilt from latest NIMBY v13 structure, trimmed to model-only sections on request, and updated with blue-highlighted project-03 differences plus simulation evidence.
 - 2026-03-02 coding clarification: current MATLAB prototype includes reduced-form fertility response, lagged-boom political term, and children-at-home demand proxy; full crowding utility is written in the paper but not yet solved as the structural household DP block in code.
 - Overall state: the household model block is benchmarked, the corrected calibration sweep has
-  confirmed the active benchmark, the refreshed NIMBY-versus-fertility comparison bundle is in
-  place, and the model-comparison note now contains the exact steady-state comparison, a direct
-  baby-boom transition comparison, tenure-access and cohort-access proxy panels, and a historical
-  fertility-validation section, a bounded robustness section, and a future demographic-projection
-  bridge. The main remaining model-side gap is no longer the comparison pack itself but the
-  absence of savings/net-worth objects and the lack of the full project-02 forecast solver on the
-  fertility side.
+  confirmed the active benchmark, and the model-comparison note now contains the exact steady-state
+  comparison, an explicit first-birth timing object, a direct baby-boom transition comparison, an
+  explicit baby-boom mechanism decomposition, tenure-access and cohort-access proxy panels, a
+  historical fertility-validation section, a bounded robustness section, and a calibrated long-run
+  supply-tightening section built around a common 15 percent house-price target across three
+  supply margins. The first-birth timing comparison to state-year data is now in place and points
+  in the right direction, but it is still too weak to count as a full quantitative validation. An
+  international timing scaffold now also exists through Eurostat, so the empirical next step is no
+  longer blocked on data discovery. The main remaining gap is whether those timing moments can be
+  sharpened enough, either in richer international data or in the current U.S. panel, to support a
+  stronger calibration or reduced-form validation. The other large missing block remains
+  savings/net-worth objects and the lack of the full project-02 forecast solver on the fertility
+  side.
 - 2026-02-25 organization update: added standardized `drafts/` and `slides/` latest-file naming with explicit `old_drafts/` and `old_slides/` archive folders.
 - 2026-02-25 capitalization cleanup: folder names standardized to lowercase across the project tree.
 - Canonical tracker: this file is the single source of truth for status and next actions.
@@ -407,8 +6747,22 @@
 
 ## In Progress
 
-- Deciding whether the current supply-tightening counterfactual is sufficient for the long-run
-  section or whether it should be extended into a richer housing-regime comparison.
+- Deciding which mechanism-level block to reopen next if a stable annual benchmark is still
+  required:
+  - a new annual discount / balance-sheet block
+  - a different political block beyond `theta_r`, cohort shapes, and direct `d_a_price`
+  - or a benchmark-policy decision that the annual branch has no stable equilibrium benchmark
+- Deciding whether to collapse the remaining `17` old district fertility codes into current-unitary
+  geographies before treating the England panel as the main causal empirical block.
+- Deciding whether to collapse the remaining `17` old district codes in the NOMIS fertility pull
+  into their current-unitary counterparts, or to proceed first with England regressions on the
+  current `2014-2024` complete sample and treat that collapse as the next robustness layer.
+- Deciding whether to stop at the current international housing-level result or extend the
+  cross-country panel with HFD order-specific timing objects before drawing stronger empirical
+  conclusions.
+- Deciding whether the state-year first-birth timing bridge is strong enough for the main draft or
+  whether it should remain in the paper as a modest supporting section only.
+- Deciding how much of the appendix baby-boom material should survive the next prose-tightening pass.
 - Deciding whether the current bridge objects are sufficient for the first full draft or whether
   a true savings / balance-sheet block is needed before circulating the paper more widely.
 - Keeping the empirical geography mismatch in view, but not treating it as the active task while
@@ -416,12 +6770,260 @@
 
 ## Next 3 Tasks
 
-1. Decide which persistent NIMBY shift should be the paper's benchmark long-run counterfactual: `theta0 + 0.03`, `+0.05`, or a low/medium/high regime table.
-2. Tighten `drafts/fertility_and_housing_supply.tex` so the new persistent-NIMBY-shock section reads cleanly and the old aging-only framing is fully gone.
-3. Decide whether to build a true savings / balance-sheet block for exact net-worth and tenure comparisons or to keep the current access-proxy comparison as the dynamic object for this paper.
+Updated `2026-04-13` after the first branch-corrector packet completed and the staged validation leak was fixed:
+
+1. Let the corrected branch-corrector rerun finish on the intended hybrid workflow:
+   - baseline coarse stage `1`
+   - aggressive continuity / lookahead / corrector only in enriched stage `2`
+2. If the corrected rerun reproduces `maxres ~= 0.0039036` from the default seed, promote that hybrid as the live compiled Bellman RE baseline and fold it into the staged runner / CLI path.
+3. If it still fails even with the stage split fixed, stop blaming the workflow and move the next solver change earlier in the path:
+   - a repaired-prefix or stage-`1` branch corrector
+   - not another stage-`2` selector tweak
+
+Updated `2026-04-13` after the seeded horizon ladder reached `T = 11`:
+
+1. Treat the corrected staged hybrid as the live `T = 4` baseline and the seeded continuation rule as the live scale-up method:
+   - shorter-horizon endpoint as the seed for the next horizon
+   - earlier backtracking activated from the start of the longer-horizon controlled solve
+2. Focus the next solver work on the first widening region, not on re-solving the early rungs:
+   - `T = 9-11`
+   - where max residual widens back to roughly `0.05-0.07`
+3. Decide whether the next improvement pass should be:
+   - a better longer-horizon stage-`2` cleanup,
+   - or a Hamilton packet to map the seeded ladder more broadly once the local rule is fixed
+
+Updated `2026-04-12` after the branch-lookahead 16-hour packet completed:
+
+1. Keep the staged enriched frontier as the live compiled baseline:
+   - `q ~= [1.7299384716, 1.7542903475, 1.8750762607, 2.3960221075]`
+   - `maxres ~= 0.0039778925`
+2. Do not spend more time on plain one-step lookahead as a standalone fix:
+   - it changes local period-`3` branch identity on the cliff seeds
+   - but it does not improve the staged frontier and does not rescue the cliff in max-residual terms
+3. Make the next solver change branch-aware at period `3` itself:
+   - explicit branch-continuity / predictor-corrector selection
+   - and only after that rerun the staged enriched continuation pack
+
+Updated `2026-04-12` after the repaired-suffix bridge failure and reverted anchor-centered discovery patch:
+
+1. Keep the staged enriched frontier as the live baseline:
+   - `maxres ~= 0.0039778925`
+   - do not reopen direct enriched from-scratch solves as the main workflow
+2. Stop spending time on the already-rejected bridge families:
+   - simple period-`4` to period-`2` hops are negative
+   - repaired-suffix period-`4` to period-`2` and period-`4` to period-`3` variants are also negative
+   - anchor-centered coarse-grid seeding degraded the staged frontier and was reverted
+3. Make the next solver change genuinely different:
+   - target a broader nonlocal branch / root continuation rule, probably period-`3`-focused
+   - verify it against the staged `~0.0039779` baseline before promoting anything else
+
+Updated `2026-04-12` after the corrected overnight plateau-branch workflow completed:
+
+1. Stop cloning overnight packets from the current exact plateau seed:
+   - the first micro-hop probe from
+     `q ~= [1.7294173376, 1.7473345599, 1.7525985237, 2.1526853397]`
+     is no longer accepted
+   - so repeated packet cycling will terminate immediately unless the solver rule changes
+2. Reopen the standalone solver itself, not MATLAB and not workflow scripting:
+   - target the period-`3` branch directly from the improved exact plateau seed
+   - either change the micro-hop geometry around `q_3/q_4` for this seed or add a different local bridge / repair step after the hop
+3. After exactly one new solver-side change, rerun a bounded standalone Bellman RE pass:
+   - start from the improved exact plateau seed
+   - verify whether any accepted path can beat `maxres ~= 0.0473622232`
+   - only then decide whether another unattended workflow is justified
+
+Updated `2026-04-12` after the local exact `q_3/q_4` map and failed sacrificial bridge continuation:
+
+1. Stop spending time on the current local `q_3/q_4` micro-hop family:
+   - the improved exact plateau seed is locally best on the checked exact grid
+   - the best local basin-hop trial also worsens further under a short continuation
+2. Reopen the period-`3` root itself rather than another local path update:
+   - the next useful work is a broader branch map or a different period-`3` selection / continuation rule
+   - not another micro-hop, plateau snap, or temporary-worsening accept from this seed
+3. Keep the compiled-sidecar solver on the last clean baseline while designing that next move:
+   - the recent post-hop plateau-snap and raw-bridge experiments were reverted
+   - no project-03 Bellman RE process is running now
+
+Updated `2026-04-09` after the tighter date-4 controlled passes:
+
+1. Keep the controlled-update architecture and add one more stabilization layer:
+   - the next natural candidate is either even tighter late-date control or a state-dependent relaxation step when residuals widen again
+2. Rerun the front-loaded sidecar pass with that extra stabilization for:
+   - `12-16` debug iterations
+   and check whether the current intermittent widening after long improvement streaks disappears
+3. Keep the economics and numerics separate:
+   - numerically, the controlled map is now much better than the raw low-damping map
+   - economically, smoother exogenous benchmark paths still remove the `t = 1` flip
+   - so benchmark-path choice is still not a substitute for outer-map stabilization
+
+Updated `2026-04-09` after the controlled sidecar update passes:
+
+1. Tighten late-date outer-map control rather than the whole path uniformly:
+   - period `4` is still the main source of renewed widening
+   - so the next test should be a stricter date-4 damping / step cap
+2. Rerun the controlled sidecar pass after that late-date tweak:
+   - `T = 4`
+   - front-loaded seed
+   - `8-12` debug iterations
+   and check whether the current `0.14-0.20` residual band turns into a genuinely shrinking sequence
+3. Keep the economic benchmark-path decision separate from the numerical update problem:
+   - numerically, the seed barely matters once updates are controlled
+   - economically, smoother exogenous benchmark paths still remove the `t = 1` flip
+   - so the sharp-step versus smoother benchmark choice is still a model-choice question, not a stabilization trick
+
+Updated `2026-04-09` after the sidecar-backed three-step Bellman RE recheck and the completed benchmark sensitivity block:
+
+1. Change the outer update rule before spending more time on longer raw iterations:
+   - test stronger damping control or period-specific damping
+   - especially on periods `2-4`, where the map keeps overshooting
+2. Only after that update-rule change, rerun the sidecar-backed bounded pass:
+   - `T = 4`
+   - debug mode
+   - at least `5-8` iterations
+   to see whether the map becomes genuinely contractive rather than temporarily improving
+3. Treat the benchmark-path question separately from the seed question:
+   - the sharp-step versus front-loaded **seed** barely changes the Bellman map
+   - but the exogenous benchmark-path validation still says smoother permanent paths kill the `t = 1` flip
+   - so the benchmark object decision should now be an economic choice, not a numerical seeding fix
+
+Updated `2026-04-09` after the overnight transition-policy Bellman packet completed:
+
+1. Decide whether the benchmark-grid anticipation result is economically acceptable as a genuine hedge / continuation-value margin, or whether it is still too sharp to trust without changing the transition setup.
+2. If it still looks too sharp, test the cleanest structural softeners before any RE wrapper:
+   - finer timing around the price step
+   - alternative transition-path granularity
+   - or modest changes to the owner carry / leverage geometry
+3. If the benchmark-grid behavior looks acceptable, move to the first outer RE wrapper around the Bellman transition path rather than reopening the annual bridge.
+
+Updated `2026-04-09` after adding the first Bellman RE wrapper and partial benchmark validation:
+
+1. Finish the remaining benchmark validation packet:
+   - `smooth_back_loaded`
+   - owner-carry sensitivity cases
+   Then decide whether a smoother benchmark transition path is the right pre-RE object.
+2. Tighten the transition vote-root mapping in `code/solve_transition_re_fertility.m` before any benchmark-grid RE run:
+   - avoid boundary-hitting `closest_no_bracket` updates
+   - use a better local price search / bracketing rule around each date's vote schedule
+3. After that vote-root fix, rerun Bellman RE on:
+   - `T = 4`
+   - medium or benchmark grid
+   Only then decide whether the structural Bellman RE wrapper is ready for a longer local pass or Hamilton.
+
+Updated `2026-04-09` after tightening the transition vote-root mapping and completing the smoother-path block:
+
+1. Finish the owner-carry sensitivity block in the benchmark validation packet, then decide whether any small geometry tweak materially restores a robust early-date root.
+2. Rework the early-date transition political-support root itself before any benchmark-grid fixed point:
+   - inspect why periods `1-3` remain slightly negative even on smoother seeded paths
+   - check whether the remaining issue is the date-`t` vote object, the transition timing convention, or the search bounds
+3. Only after that, attempt the next Bellman RE rung:
+   - `T = 4`
+   - medium or benchmark grid
+   - more than one outer iteration
+
+Updated `2026-04-08` after launching the transition-policy overnight Bellman packet:
+
+1. Read the overnight outputs in:
+   - `notes/build/structural_transition_anticipation_menu_medium.md`
+   - `notes/build/structural_transition_value_wedge_audit.md`
+   - `notes/build/structural_transition_anticipation_menu_benchmark.md`
+2. Decide whether the broad middle-state renter-to-owner flip is mainly coming from:
+   - continuation value from carrying ownership into higher future `q`
+   - five-year timing lumpiness
+   - or leverage / bequest geometry
+3. Only after that diagnosis, decide the next structural step before any outer RE loop:
+   - adjust the household geometry
+   - refine the timing / transition setup
+   - or proceed to a first RE wrapper if the surge looks economically coherent rather than pathological
+
+Updated `2026-04-08` after adding the joint structural-fertility plus recursive support-state
+annual RE object:
+
+1. Decide whether the joint structural-support object is informative enough to feature as the
+   final appendix-strength “richest annual RE bridge,” given that support stays near zero
+   through `t = 20` and only turns on meaningfully late in the transition.
+2. If one more meaningful annual RE extension is still wanted, move to the real structural
+   step:
+   - explicit parity and children-at-home states inside the Python annual transition law
+3. Clean the annual RE hierarchy notes so they clearly separate:
+   - structural fixed-support RE
+   - recursive support-state RE
+   - and the new joint structural-support RE
+
+Updated `2026-04-08` after enriching the structural-fertility annual RE object with timing and
+entrant-composition channels:
+
+1. Decide whether the enriched structural-fertility object is now the right appendix-strength
+   “more micro” benchmark, or whether it should be joined with the recursive support-state
+   block in one combined annual RE experiment.
+2. If one more annual RE extension is needed before stopping, choose between:
+   - porting explicit parity / children-at-home states into the Python annual branch
+   - or building a joint structural-fertility-plus-support-state fixed point
+3. Propagate the stronger structural-fertility description into any appendix or notes that
+   still describe the operator as a birth-multiplier-only bridge.
+
+Updated `2026-04-08` after integrating the stationary annual full-RE hierarchy into
+`drafts/sections/annual_transition_extension.tex`:
+
+1. Propagate the new annual RE hierarchy into any appendix notes or draft passages that still
+   present drifting `k = 3/5/20` RE as the live annual closure.
+2. Decide whether the structural-fertility operator or the recursive support-state object is
+   the main appendix-strength recursive extension to feature alongside the fixed-regime
+   benchmark.
+3. If a deeper annual RE extension is still needed, choose between:
+   - porting explicit parity / children-at-home states into the Python annual branch
+   - or replacing the fixed-regime benchmark with a cleaner forecasted policy/support state in
+     the paper-facing hierarchy
+
+1. Integrate the stationary full-RE annual transition into `drafts/sections/annual_transition_extension.tex`, making the stationary annual endpoint plus `T = 80` full-RE transition the live annual closure.
+2. Decide the paper-facing hierarchy inside the annual RE subsection:
+   - stationary endpoint + full RE no-drift transition as the core object
+   - endogenous-fertility full RE as the main “beyond q-only” rung
+   - anticipated regime-path RE as the next rung already passed
+   - exogenous fertility-shock full RE as the simpler bridge object
+   - `k = 3/5` drifting bounded RE as robustness on the older pressure experiment
+   - `k = 20/T = 40` drifting solves as appendix only
+3. Prototype a genuinely forecasted political/policy state inside the stationary annual RE block, rather than another imposed path.
 
 ## Blockers
 
+- The corrected annual rebaseline is no longer running, but it ended in `TIMEOUT`, so the synced
+  broad-screen outputs are partial evidence rather than a finished annual benchmark object.
+- Because the transition-orientation bug was fixed on `2026-04-01`, the pre-fix annual
+  mechanism-search screens listed below should now be treated as historical context rather than as
+  live evidence for the next branch choice.
+- If the corrected rerun still fails, the next blocker is structural rather than parametric:
+  either accept that the annual branch has no stable benchmark in current form, or reopen it with a
+  genuine ownership / balance-sheet / transition-path extension instead of more small scalar screens.
+- The new deeper political-redesign ridge gets much closer to zero than the earlier owner-side
+  micro box, but the promising low-resolution unique crossings are not stable. On the finer owner
+  grids, the candidate paths either:
+  - stay negative throughout
+  - or develop multiple sign changes
+  So the annual blocker is now `stable unique crossing`, not `find a near-zero row`.
+- The newer older-tail cohort-shape follow-up is also now pinned down. Its best smooth near-miss,
+  `older-tail bridge shape | theta_r 0.40 | housingmax 15.25`, gets as close as `-0.029` on the
+  `J = 10` local grid but falls back to max wider-grid vote `-0.377` on `J = 12`, so it does not
+  contain a stable annual benchmark either.
+- The simple child-dependent renter-penalty prototype is also now pinned down. In the new annual
+  family-rent-wedge screen, the best non-baseline rows only move eval vote from about `-321.1`
+  to about `-223.8/-224.5`, while pushing mean age first birth to about `33.9-34.6` and childless
+  share at `50` to about `0.81-0.91`, so this branch is not a usable rescue mechanism either.
+- A direct `d_a_price` probe around that confirmed bridge row is also dead. Moving `d_a_price`
+  from the annualized benchmark up through `1.010` leaves the wider-grid maximum still negative,
+  roughly `-0.365` to `-0.383`.
+- A direct discount-block probe around that same bridge row is also dead as a rescue mechanism.
+  Lower `beta` lifts vote somewhat, but it drives share first births age `30+` down to about
+  `0.127` and childless share at `50` down to about `0.052`, so it does not preserve the annual
+  fertility fit.
+- The simple latent low-entry-type smoke is not a useful annual rescue margin in its current form.
+  It nudges timing slightly earlier, but lowers childlessness rather than raising it and leaves vote
+  essentially unchanged.
+- The new local owner-side crossing-recovery screen shows that small changes in `housingmax`,
+  `theta_r`, `ka`, and `rent_markup` do lift vote, but not nearly enough to recover a sign change.
+  The best local row still has vote `-142.799` even at `a_price = 5.0`.
+- The useful annual fertility frontier is now well identified, so the remaining uncertainty is no
+  longer “which fertility row?” but “what benchmark policy to apply when the best fertility row
+  still does not clear the market.”
 - Upstream project-02 transition files needed for the baby-boom comparison live in Dropbox rather
   than this repo copy, so the transition section is reproducible locally but not yet repo-self-contained.
 - Direct fertility-specific causal evidence remains thinner than broader housing-supply evidence.
@@ -431,6 +7033,10 @@
 - The legacy permits series has much thinner overlap than rents in the temporary state-year bridge.
 - The equilibrium-clean benchmark fits completed fertility less tightly than the stronger
   demographic-fit candidate, so benchmark choice is still a model-side presentation decision.
+- After the March 22 first-birth timing fix, the old monolithic benchmark wrapper is still too
+  slow for interactive use; the new overnight workflow solves that operational problem, but the
+  benchmark still needs a final presentation decision on whether the timing-focused fit is the
+  paper benchmark.
 - The current project-03 transition prototype now emits directly comparable homeownership-access
   proxies, but it still does not emit net-worth or future-forecast objects, so a full
   figure-by-figure replication of the NIMBY transition and projection sections remains blocked on
@@ -459,8 +7065,14 @@
 - Benchmark runner: `code/run_ge_fertility_main.m`
 - Calibration runner: `code/calibrate_fertility_block_main.m`
 - Benchmark refresh runner: `code/refresh_corrected_benchmark_outputs.ps1`
+- Micro continuation runner: `code/run_fertility_annual_timing_stock_micro_screen.m`
+- Political redesign runner: `code/run_fertility_annual_political_redesign_screen.m`
+- Political shape runner: `code/run_fertility_annual_political_shape_screen.m`
 - Latest GE benchmark report: `notes/build/fertility_run_ge_report.md`
 - Latest calibration report: `notes/build/fertility_calibration_report.md`
+- Micro continuation note: `notes/build/fertility_annual_timing_stock_micro_screen.md`
+- Political redesign note: `notes/build/fertility_annual_political_redesign_screen.md`
+- Political shape theory note: `notes/build/fertility_annual_political_shape_theory_note.md`
 - Canonical latest paper/slide folders: `drafts/` and `slides/`
 - Shared structure standard: `_shared/standards/paper_project_structure_standard.md`
 - Shared code/calibration standard: `_shared/standards/code_calibration_standard.md`
@@ -469,6 +7081,190 @@
 
 - When asked "where are we?" or to update the to-do list, update this file first.
 - Do not remove PDF files from the shared Dropbox export pipeline under `exports/` when those files are required for collaboration deliverables.
+
+Updated `2026-04-13` after wiring the proper `T = 11` overnight Bellman RE supervisor:
+
+1. Let the current deep suffix ladder finish:
+   - active pointer:
+     - `notes/build/logs/active_bellman_re_t11_suffix_ladder_workflow_deep_resume.txt`
+   - first deep result already says `late6_11` is slightly worse than the new broad frontier, so the remaining deep cases determine whether the best `T = 11` basin stays at `late7_11` or shifts again.
+2. Let the overnight wrapper take over automatically once the deep run ends:
+   - wrapper:
+     - `code/bellman_re_t11_overnight_supervisor_workflow.ps1`
+   - launcher:
+     - `code/start_bellman_re_t11_overnight_supervisor_workflow.ps1`
+   - active pointer:
+     - `notes/build/logs/active_bellman_re_t11_overnight_supervisor_workflow.txt`
+   - behavior:
+     - waits for the live deep run
+     - selects the best completed `T = 11` frontier automatically
+     - hands off into `code/bellman_re_t11_supervisor_workflow.ps1` from that seed
+3. Treat the live promoted `T = 11` frontier as:
+   - broad suffix best case:
+     - `late7_11`
+   - `maxres ~= 0.0400299536`
+   - implication:
+     - the live Bellman RE problem is now a late-tail continuation problem with a working supervisor chain, not a `T = 4` debug problem and not a manual one-packet workflow anymore.
+
+Updated `2026-04-14` after the overnight `T = 11` check:
+
+1. The promoted `T = 11` frontier is still:
+   - best case:
+     - `late7_11`
+   - best completed residual:
+     - `maxres ~= 0.0400299536`
+   - run:
+     - `notes/build/logs/bellman_re_t11_suffix_ladder_workflow_broad_resume_20260413_195320`
+2. The deep continuation is live and should be allowed to finish:
+   - active pointer:
+     - `notes/build/logs/active_bellman_re_t11_suffix_ladder_workflow_deep_resume.txt`
+   - first deep read:
+     - `late6_11` is slightly worse at `maxres ~= 0.0410654369`
+   - implication:
+     - the deeper suffix family is not yet a promoted improvement, but it is still testing whether the live `late7_11` frontier can be beaten deeper in the tail
+3. The proper overnight handoff is also live:
+   - wrapper:
+     - `code/bellman_re_t11_overnight_supervisor_workflow.ps1`
+   - launcher:
+     - `code/start_bellman_re_t11_overnight_supervisor_workflow.ps1`
+   - active pointer:
+     - `notes/build/logs/active_bellman_re_t11_overnight_supervisor_workflow.txt`
+   - behavior:
+   - wait for the current deep run
+   - then pick the best completed `T = 11` frontier automatically
+   - then relaunch the chained supervisor from that seed
+
+Updated `2026-04-14` after promoting `T = 12` and launching the Hamilton `T = 13` deep suffix ladder:
+
+1. The late-tail continuation ladder has moved further:
+   - promoted `T = 11` deep best case:
+     - `late5_11`
+     - `maxres ~= 0.0299503221`
+   - promoted `T = 12` best case:
+     - `late6_12`
+     - `maxres ~= 0.0193857649`
+     - note:
+       - `notes/build/compiled_sidecar_bellman_re_t12_suffix_probe.md`
+2. The first `T = 13` local suffix probe is informative but not yet good enough:
+   - best local case:
+     - `late6_13`
+   - `maxres ~= 0.0628766301`
+   - implication:
+     - the `T = 12 -> T = 13` jump needs a deeper tail search, not just the minimal suffix masks
+   - note:
+     - `notes/build/compiled_sidecar_bellman_re_t13_suffix_probe.md`
+3. The deeper `T = 13` suffix ladder is now running on Hamilton:
+   - launcher:
+     - `code/submit_hamilton_bellman_re_t13_deep_suffix.ps1`
+   - remote script:
+     - `code/hamilton_bellman_re_t13_deep_suffix.sh`
+   - detached handoff watcher:
+     - `code/hamilton_bellman_re_t13_deep_suffix_handoff.ps1`
+     - `code/start_hamilton_bellman_re_t13_deep_suffix_handoff.ps1`
+     - active pointer:
+       - `notes/build/logs/active_hamilton_bellman_re_t13_deep_suffix_handoff.txt`
+   - active pointer:
+     - `notes/build/logs/active_bellman_re_t13_deep_suffix_hamilton.txt`
+   - current remote run:
+     - `/nobackup/hfnt93/fert_runs/bellman_re_t13_deep_suffix_hamilton_20260414_085458`
+   - current Slurm job:
+     - `16786759`
+   - current phase when last checked:
+     - `START late6_13`
+
+Updated `2026-04-14` after building the annual timing benchmark-plus-robustness RE note:
+
+1. The fertility project now has an explicit interpretation rule for supply timing:
+   - benchmark object:
+     - the annual calibrated `permits -> starts -> completions -> stock -> prices` block
+   - benchmark timing anchors:
+     - starts / permits about `0.932`
+     - completions / starts about `0.895`
+     - permit-inventory lag about `0.50` years
+   - benchmark calibrated parameters:
+     - `start_hazard = 0.65`
+     - `completion_hazard = 0.45`
+     - `permit_inventory_years = 0.25`
+     - `uc_inventory_years = 0.70`
+2. New annual timing robustness note:
+   - `notes/build/annual_full_re_stationary_transition_timing_robustness_T80.md`
+   - script:
+     - `code/build_annual_full_re_stationary_transition_timing_robustness.py`
+   - design:
+     - `benchmark_timing`
+     - `faster_timing` = about `20%` shorter duration
+     - `slower_timing` = about `20%` longer duration
+3. Main read from that note:
+   - the benchmark timing should be the paper's main annual interpretation object
+   - faster/slower timing should be reported as robustness around that benchmark
+   - not as separately identified political-delay estimates
+
+Updated `2026-04-22` after adding a dormant smoothed political-path trial to the fertility workflow:
+
+1. Built a no-op-by-default smoothing hook in the bridge layer:
+   - file:
+     - `code/nimby_fertility_transition_bridge.py`
+   - new parameter:
+     - `theta_path_rho`
+   - default:
+     - `0.0`
+   - implication:
+     - existing live bridge outputs stay unchanged until the trial is turned on deliberately
+2. Added a dedicated dormant trial builder and workflow:
+   - builder:
+     - `code/build_nimby_vs_fertility_smoothed_political_path_trial.py`
+   - worker:
+     - `code/annual_smoothed_political_path_trial_workflow.ps1`
+   - launcher:
+     - `code/start_annual_smoothed_political_path_trial_workflow.ps1`
+   - workflow note:
+     - `notes/build/annual_smoothed_political_path_trial_workflow.md`
+3. Scope lock for this new rung:
+   - it is a bridge-level diagnostic inspired by the smoother political-path lesson from project `02`
+   - it is not yet promoted into the annual full-RE branch
+   - it is not part of the compiled Bellman RE ladder
+   - it was built in this session but **not run**
+
+Updated `2026-04-22` after queuing the smoothed political-path trial on Hamilton:
+
+1. The dormant bridge trial now has a dedicated Hamilton packet path:
+   - remote runner:
+     - `code/hpc/run_annual_smoothed_political_path_trial.sh`
+   - slurm wrapper:
+     - `code/hpc/annual_smoothed_political_path_trial.slurm`
+   - PTY-backed submitter:
+     - `code/submit_hamilton_annual_smoothed_political_path_trial.ps1`
+   - detached handoff watcher:
+     - `code/hamilton_annual_smoothed_political_path_trial_handoff.ps1`
+     - `code/start_hamilton_annual_smoothed_political_path_trial_handoff.ps1`
+   - workflow note:
+     - `notes/build/annual_smoothed_political_path_trial_hamilton_workflow.md`
+2. Submission fixes were needed before the trial would run cleanly:
+   - first failed submit:
+     - staged shell/slurm files needed remote line-ending normalization before `sbatch`
+   - second failed submit:
+     - the slurm wrapper needed `SLURM_SUBMIT_DIR` instead of the spool-copy path
+   - both fixes are now in the live packet path
+3. Current live Hamilton state:
+   - job id:
+     - `16872174`
+   - final state:
+     - `COMPLETED`
+   - elapsed:
+     - about `00:00:24`
+   - remote run dir:
+     - `/nobackup/hfnt93/fert_runs/annual_smoothed_political_path_trial_hamilton_20260422_200038`
+   - active watcher pointer:
+     - `notes/build/logs/active_hamilton_annual_smoothed_political_path_trial_handoff.txt`
+   - queue policy:
+     - low-priority `sbatch --nice=10000`
+     - `1` CPU
+     - `4G` memory
+     - `2` hour wall time
+   - remote read:
+     - smoothing `theta_t` at `theta_path_rho = 0.65` lowers bridge-level `theta` roughness
+     - but raises price-path variation and creates large deviations from the raw bridge path
+     - so this trial is informative, but it is not yet a promoted replacement for the current annual political-state branch
 
 
 

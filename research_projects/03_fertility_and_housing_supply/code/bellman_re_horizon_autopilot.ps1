@@ -255,6 +255,26 @@ function Get-AttemptProfiles {
             CoordinateEdgeTailPeriods = 1
             MaxIter = 6
             WallTime = "12:00:00"
+        },
+        [pscustomobject]@{
+            Name = "edge_plus"
+            CaseStarts = "8,7,6,5,4,3,2,1"
+            IncludeSuffixAnchor = $true
+            CoordinateEdgePolish = $true
+            CoordinateEdgeHeadPeriods = 4
+            CoordinateEdgeTailPeriods = 2
+            MaxIter = 7
+            WallTime = "14:00:00"
+        },
+        [pscustomobject]@{
+            Name = "tail_polish"
+            CaseStarts = "10,9,8,7,6,5,4,3,2,1"
+            IncludeSuffixAnchor = $true
+            CoordinateEdgePolish = $true
+            CoordinateEdgeHeadPeriods = 1
+            CoordinateEdgeTailPeriods = 6
+            MaxIter = 8
+            WallTime = "16:00:00"
         }
     )
 }
@@ -396,7 +416,15 @@ while ((Get-Date) -lt $deadline) {
         $nextSeed = Build-NextSeed -QPath $best.q_path
         $nextProfile = $profiles[0]
         Write-Status "PROMOTE horizon=$horizon -> next_horizon=$nextHorizon best_case=$($best.case_label) maxres=$bestMaxRes next_profile=$($nextProfile.Name)"
-        $submissionMap = Submit-HorizonRun -TargetHorizon $nextHorizon -InitialQPath $nextSeed -Profile $nextProfile
+        try {
+            $submissionMap = Submit-HorizonRun -TargetHorizon $nextHorizon -InitialQPath $nextSeed -Profile $nextProfile
+        } catch {
+            $submitError = ($_.Exception.Message -replace '\s+', ' ').Trim()
+            Write-Status "SUBMIT_WAIT horizon=$nextHorizon profile=$($nextProfile.Name) reason=$submitError"
+            Write-PointerState -LifecycleState "RUNNING" -CurrentHorizon $horizon -CurrentJobId $jobId -CurrentRemoteRunDir $remoteRunDir -CurrentProfileName $profileName -CurrentAttemptIndex $attemptIndex -LastEvent "SUBMIT_WAIT" -BestCase $best.case_label -BestMaxRes $best.max_abs_residual
+            Start-Sleep -Seconds ($PollMinutes * 60)
+            continue
+        }
         $jobId = $submissionMap["job_id"]
         $remoteRunDir = $submissionMap["remote_run_dir"]
         $horizon = $nextHorizon
@@ -411,7 +439,15 @@ while ((Get-Date) -lt $deadline) {
         $retryProfile = $profiles[$attemptIndex + 1]
         $retrySeed = ($best.q_path -replace '\s+', ',').Trim(',')
         Write-Status "RETRY horizon=$horizon best_case=$($best.case_label) maxres=$bestMaxRes next_profile=$($retryProfile.Name)"
-        $submissionMap = Submit-HorizonRun -TargetHorizon $horizon -InitialQPath $retrySeed -Profile $retryProfile
+        try {
+            $submissionMap = Submit-HorizonRun -TargetHorizon $horizon -InitialQPath $retrySeed -Profile $retryProfile
+        } catch {
+            $submitError = ($_.Exception.Message -replace '\s+', ' ').Trim()
+            Write-Status "SUBMIT_WAIT horizon=$horizon profile=$($retryProfile.Name) reason=$submitError"
+            Write-PointerState -LifecycleState "RUNNING" -CurrentHorizon $horizon -CurrentJobId $jobId -CurrentRemoteRunDir $remoteRunDir -CurrentProfileName $profileName -CurrentAttemptIndex $attemptIndex -LastEvent "SUBMIT_WAIT" -BestCase $best.case_label -BestMaxRes $best.max_abs_residual
+            Start-Sleep -Seconds ($PollMinutes * 60)
+            continue
+        }
         $jobId = $submissionMap["job_id"]
         $remoteRunDir = $submissionMap["remote_run_dir"]
         $profileName = $submissionMap["profile_name"]

@@ -236,10 +236,108 @@ def plot_benchmark_figure() -> None:
     plt.close(fig)
 
 
+def plot_first_birth_timing_figure() -> None:
+    common = pd.read_csv(BUILD / "fertility_vs_nimby_common_price_grid.csv")
+    profiles = pd.read_csv(BUILD / "fertility_first_birth_timing_profiles.csv")
+    summary = pd.read_csv(BUILD / "fertility_vs_nimby_benchmark_summary.csv")
+
+    fert = summary.loc[summary["model"] == "fertility"].iloc[0]
+    benchmark_price = float(fert["refined_price"])
+
+    fig, axes = plt.subplots(2, 2, figsize=(11, 8.8), constrained_layout=True)
+    palette = ["#275d8c", "#3c7d3c", "#b48a00", "#b24c2a"]
+    selected_prices = sorted(profiles["a_price"].unique())
+
+    ax = axes[0, 0]
+    for color, price in zip(palette, selected_prices):
+        subset = profiles.loc[np.isclose(profiles["a_price"], price)].copy()
+        subset = subset[np.isfinite(subset["first_birth_hazard"])]
+        ax.plot(
+            subset["age"],
+            subset["first_birth_hazard"],
+            color=color,
+            lw=2.2,
+            marker="o",
+            label=f"House price {price:.2f}",
+        )
+    ax.set_title("A. Age-specific first-birth hazard")
+    ax.set_xlabel("Age")
+    ax.set_ylabel("Birth hazard among childless households")
+    ax.legend(frameon=False, loc="best")
+
+    ax = axes[0, 1]
+    ax.plot(
+        common["a_price"],
+        common["fertility_mean_age_first_birth"],
+        color="#b24c2a",
+        lw=2.4,
+        marker="o",
+        label="Mean age",
+    )
+    ax.plot(
+        common["a_price"],
+        common["fertility_median_age_first_birth"],
+        color="#275d8c",
+        lw=2.0,
+        marker="s",
+        ls="--",
+        label="Median age",
+    )
+    ax.axvline(benchmark_price, color="#666666", lw=1.0, ls=":")
+    ax.set_title("B. Age at first birth rises with house prices")
+    ax.set_xlabel("House price")
+    ax.set_ylabel("Age")
+    ax.legend(frameon=False, loc="best")
+
+    ax = axes[1, 0]
+    ax.plot(
+        common["a_price"],
+        common["fertility_share_first_birth_30_plus"],
+        color="#3c7d3c",
+        lw=2.4,
+        marker="o",
+    )
+    ax.axvline(benchmark_price, color="#666666", lw=1.0, ls=":")
+    ax.set_title("C. Older first births become more common")
+    ax.set_xlabel("House price")
+    ax.set_ylabel("Share of first births at age 30+")
+    ax.set_ylim(0, 1)
+
+    ax = axes[1, 1]
+    ax.plot(
+        common["a_price"],
+        common["fertility_first_birth_rate"],
+        color="#b24c2a",
+        lw=2.4,
+        marker="o",
+        label="First-birth rate",
+    )
+    ax.plot(
+        common["a_price"],
+        common["fertility_birth_rate"],
+        color="#275d8c",
+        lw=2.0,
+        marker="s",
+        ls="--",
+        label="All-birth rate",
+    )
+    ax.axvline(benchmark_price, color="#666666", lw=1.0, ls=":")
+    ax.set_title("D. Delay comes with fewer first births")
+    ax.set_xlabel("House price")
+    ax.set_ylabel("Rate")
+    ax.legend(frameon=False, loc="best")
+
+    fig.suptitle("First-birth timing in the fertility benchmark", fontsize=14, fontweight="bold")
+    fig.savefig(BUILD / "nimby_vs_fertility_first_birth_timing.png", dpi=220, bbox_inches="tight")
+    fig.savefig(BUILD / "nimby_vs_fertility_first_birth_timing.pdf", bbox_inches="tight")
+    plt.close(fig)
+
+
 def main() -> None:
     set_style()
     plot_household_support_figure()
     plot_benchmark_figure()
+    plot_first_birth_timing_figure()
 
 
 if __name__ == "__main__":

@@ -28,6 +28,10 @@ If a file is missing, the build still runs and logs the gap in:
 - Import path:
   - `code/11_import_cdc_wonder_first_births.py`
   - output: `data/raw/cdc_fertility_county_year.csv`
+- There is now also a direct state-year CDC timing extract for target review / graphing:
+  - raw export: `data/raw/cdc_wonder_first_births_state_year_export.csv`
+  - imported panel: `data/raw/cdc_fertility_state_year.csv`
+  - review note: `notes/build/cdc_first_birth_timing_target_review.md`
 - The old NIMBY metro-level fertility proxy remains superseded for the main empirical path.
 - `housing_county_year.csv` and `controls_county_year.csv` are now populated from legacy NIMBY
   `addedpermits.dta` via:
@@ -65,6 +69,12 @@ Preferred workflow:
 2. This writes `data/raw/cdc_wonder_first_births_export.csv`
 3. Run `code/11_import_cdc_wonder_first_births.py`
 4. This writes `data/raw/cdc_fertility_county_year.csv`
+
+Optional direct state-year workflow:
+
+1. Run `code/12_pull_cdc_wonder_first_births.py --geography state_year`
+2. This writes `data/raw/cdc_wonder_first_births_state_year_export.csv`
+3. Run `code/11_import_cdc_wonder_first_births.py --output-path data/raw/cdc_fertility_state_year.csv`
 
 Fallback workflow:
 

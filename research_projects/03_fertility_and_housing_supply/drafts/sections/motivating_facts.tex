@@ -1,0 +1,113 @@
+\section{Motivating Facts}\label{sec:motivating_facts}
+
+Housing costs have risen sharply across advanced economies over the past
+three decades.  At the same time, fertility has fallen below replacement in
+nearly all of them, and the age at which women have their first child has
+climbed steadily.  This section documents three stylized facts that motivate
+the mechanism studied in the paper.
+
+%% ──────────────────────────────────────────────────────────────────────────
+\subsection*{Fact 1: Real house prices have risen substantially, but
+heterogeneously}
+
+Figure~\ref{fig:motivating_prices} plots real house price indices for
+eight major economies, each re-indexed to 2005\,=\,100.  Several patterns
+stand out.  First, the anglophone economies---the United States, the United
+Kingdom, Canada, and Australia---all experienced sustained real price
+appreciation, with Canada's index nearly tripling by the early 2020s.
+Second, trajectories varied widely.  Japan's real house prices remained
+essentially flat over this period, reflecting the long aftermath of its
+1990s asset-price collapse.  Germany saw little real growth until
+approximately 2010, after which prices rose rapidly before correcting in
+2022--2023.  Sweden more than doubled in real terms.  Third, despite this
+heterogeneity the overall direction is common: in seven of the eight
+countries shown, real house prices in the 2020s are materially above their
+mid-2000s level.
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{motivating_house_prices.pdf}
+  \caption{Real house price indices for eight major economies, indexed so
+           that 2005\,=\,100.  Sources: OECD Analytical House Price
+           Indicators; FRED (Case-Shiller for US; BIS residential
+           property prices for Japan, Canada, Australia).}
+  \label{fig:motivating_prices}
+\end{figure}
+
+%% ──────────────────────────────────────────────────────────────────────────
+\subsection*{Fact 2: Fertility has fallen below replacement everywhere}
+
+Figure~\ref{fig:motivating_fertility} shows total fertility rates (TFR) for
+the same eight countries from 1960 onward.  The dashed line marks the
+conventional replacement level of 2.1 children per woman.  By the 2020s
+every country in the sample is below replacement.  Japan (TFR $\approx$
+1.20) and Canada ($\approx$ 1.26) are among the lowest.  The United States,
+long an outlier among rich countries for its relatively high fertility, has
+fallen to roughly 1.6.  Even countries that maintained near-replacement
+fertility into the 2000s---such as France, Australia, and Sweden---have
+declined noticeably in the past decade.
+
+The timing of the decline differs across countries.  Japan and Germany fell
+below replacement in the 1970s; the anglophone countries and France held
+near 2.0 until the late 2000s before declining.  But the direction is
+universal.  This common trend motivates a search for explanations that
+operate across institutional settings.  Housing costs, present in every
+country to varying degrees, are a natural candidate.
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=0.92\textwidth]{motivating_fertility_rates.pdf}
+  \caption{Total fertility rates for eight major economies, 1960--2024.
+           The dashed line marks the conventional replacement level of 2.1.
+           Sources: World Bank; Eurostat.}
+  \label{fig:motivating_fertility}
+\end{figure}
+
+%% ──────────────────────────────────────────────────────────────────────────
+\subsection*{Fact 3: Countries with faster house price growth delayed first
+births more}
+
+Figure~\ref{fig:motivating_scatter} links the preceding two facts.  For
+each of the 27 European countries with at least five years of joint data on
+house prices and the mean age at first birth, we compute the cumulative real
+house price growth and the total change in the mean age at first birth over
+the country's observation window.  The scatter reveals a positive
+association ($r = 0.50$): countries in which real house prices rose most
+also experienced the largest increases in the age at which women had their
+first child.  Estonia, Lithuania, and Croatia---all with cumulative real
+price growth exceeding 150\%---saw first-birth ages rise by more than 3.5
+years.  At the other extreme, Italy and the United Kingdom, with slower or
+more moderate price growth, recorded smaller shifts.
+
+This cross-country association is, of course, only a correlation.  It could
+be driven by income growth, urbanisation, educational expansion, or other
+omitted variables correlated with both housing costs and fertility timing.
+We do not interpret it as causal.  Instead, we view it as a motivating
+pattern that a well-specified model should be able to rationalise.  The
+structural model in Section~\ref{sec:model} provides the link: when housing
+is scarce and expensive, young adults delay purchasing a home, which in turn
+delays---and in some cases discourages---the transition to parenthood.
+
+\begin{figure}[tp]
+  \centering
+  \includegraphics[width=0.78\textwidth]{motivating_scatter_prices_timing.pdf}
+  \caption{Cumulative real house price growth (\%) vs.\ change in mean age
+           at first birth (years) across 27 European countries.  Turkey is
+           excluded because its cumulative house-price growth exceeds 500\%,
+           roughly four times the next-highest country; including Turkey
+           raises $r$ to 0.54.  Each point is one country; both variables
+           are computed from the first to the last year in which house prices
+           and first-birth age are jointly observed.  The dashed line is a
+           linear OLS fit; $r$ is the Pearson correlation.
+           Sources: OECD, Eurostat.}
+  \label{fig:motivating_scatter}
+\end{figure}
+
+%% ──────────────────────────────────────────────────────────────────────────
+
+These three facts---rising real house prices, falling fertility below
+replacement, and a positive cross-country association between housing cost
+growth and delayed first births---motivate a model in which housing scarcity
+operates as a binding constraint on family formation.  The next section
+places these patterns in the related literature, and Section~\ref{sec:model}
+then develops the model.
