@@ -4,6 +4,36 @@ Most recent session first.
 
 ---
 
+### Session: 2026-05-14 (external-arrival robustness gate and workflow decision)
+- Locked the recovered external-arrival workflow into a clean `research_ideas/metal` worktree on
+  `D:` and committed the recovery scripts and documentation without staging raw or processed data.
+- Added `code/86_audit_external_arrival_robustness.py`.
+  - Writes leave-country-out, leave-genre-out, geography-clean, concentration, and top-event audit
+    outputs under `data/processed/scene_networks/`.
+  - Keeps those outputs on the D-backed processed-data junction.
+- Robustness read:
+  - full strict matched stack: `184` events, post `t=+1` to `t=+3` = `0.130`
+  - weakest leave-country-out post read: omit `Mexico`, post = `0.118`
+  - weakest leave-genre-out post read: omit `black_metal`, post = `0.088`
+  - geography-clean plus `5+` controls: `98` events, post = `0.120`
+- Manual audit read:
+  - the top positive and negative events are not mostly fake geography, but several top rows have
+    high pre-period paths, event-year jumps, sparse controls, or region-like treated/control
+    labels.
+  - examples of flagged geography issues include `North Carolina, United States`,
+    `Helsinki/Espoo, Finland`, `Vastra Gotaland, Sweden`, and controls such as `N/A`,
+    `Black Forest`, `Indiana`, `Ohio`, and `Scotland`.
+- Added `notes/34_external_arrival_robustness_verdict.md`.
+- Practical implication:
+  - the arrival branch passes the first robustness gate and remains the best causal follow-on.
+  - it is a sidecar, not a main-paper result.
+  - the next arrival step is to rerun concentration and top-event checks inside the clean
+    `98`-event stack.
+  - in parallel, the main draft should be polished toward a field-journal target instead of being
+    reopened around the sidecar.
+
+---
+
 ### Session: 2026-05-13 (member dump restored and external-arrival final audit rerun)
 - Found the two missing delivered archives in local downloads/Outlook attachment cache:
   - `band_members_20260325.zip`

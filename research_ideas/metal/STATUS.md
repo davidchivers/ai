@@ -2,7 +2,7 @@
 
 ## Snapshot
 
-- Last updated: 2026-05-13 (D-drive data restored and external-arrival final audit rerun)
+- Last updated: 2026-05-14 (external-arrival robustness gate and sidecar verdict)
 - Current phase: the main paper is `scene -> genre emergence`. The headline result is now limited
   to local spawning flow, target-genre active bands, and target-genre multi-band musicians.
   Broker or connector language is background only. The live draft now also frames the preferred
@@ -252,8 +252,15 @@
   `t-1` as the baseline. In the strict matched stack, it keeps `184` treated events, removes `97`
   arrival-associated event-year bands, and leaves the mean own-band-excluded normalized post
   coefficient over `t=+1` to `t=+3` at `0.130`; the mean normalized pre coefficient over `t=-5`
-  to `t=-2` is `0.016`. That is the best live causal follow-on read, but it still needs country
-  and genre concentration checks before it can be treated as more than a sidecar.
+  to `t=-2` is `0.016`. The first robustness gate now exists in
+  `code/86_audit_external_arrival_robustness.py` and
+  `notes/34_external_arrival_robustness_verdict.md`. The result survives leave-country-out,
+  leave-genre-out, geography-clean, and minimum-control-count checks: the full post coefficient is
+  `0.130`, the weakest leave-country-out post read is `0.118`, the weakest leave-genre-out post
+  read is `0.088`, and the strict geography-clean `5+`-control sample keeps `98` events with post
+  `0.120`. This is the best live causal follow-on read, but the verdict is sidecar rather than
+  main-paper promotion because the largest event-level positives still include high pre-period
+  paths, event-year jumps, sparse controls, and some region-like treated or control labels.
   The empirical-motivation section has now also been tightened without changing the figure set.
   The long subgenre-by-subgenre walk-through has been cut back so the section now reads more like
   setup for the panel result and less like a second paper on genre taxonomy.
@@ -1512,12 +1519,13 @@
 
 ## Next 3 Tasks
 
-1. Run leave-country-out and leave-genre-out sensitivity checks on
-   `external_arrival_final_audit_event_study.csv`.
-2. Manually inspect the largest positive and negative strict arrival events to separate plausible
-   local arrivals from database artifacts.
-3. Decide whether the arrival branch remains a parked sidecar or becomes a separate follow-on
-   paper object; do not reopen the stabilized main draft unless the sensitivity checks hold up.
+1. Recompute leave-country-out and leave-genre-out tables inside the strict clean arrival stack:
+   no treated/control region-like labels and at least `5` matched controls.
+2. Manually audit the top `10` positive and top `10` negative events in that clean stack for
+   musician identity, city label quality, and database-artifact risk.
+3. In parallel, return to the main paper as a field-journal draft: run a rendered-PDF polish pass
+   and write a short journal-target memo rather than reopening the main paper around the arrival
+   sidecar.
 
 ## Open Decisions
 
