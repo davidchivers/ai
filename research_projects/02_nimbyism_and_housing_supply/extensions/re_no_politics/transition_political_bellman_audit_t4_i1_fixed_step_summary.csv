@@ -1,0 +1,2 @@
+iteration,guess_source,political_target,price_update_mode,political_update_rule,max_abs_vote,mean_vote,max_abs_gap,residual_norm,price_min,price_max,housing_anchor_min,housing_anchor_max,max_abs_political_step
+1,transition_re_no_politics_results.final_price_path_prefix,equal_weight_vote,political_only,fixed_step,0.970803997816276,-0.969317758744674,0.167700641333923,0.116890482706245,1.99033732030451,1.99078760007061,2,2.00044992543386,0.00968614360198972

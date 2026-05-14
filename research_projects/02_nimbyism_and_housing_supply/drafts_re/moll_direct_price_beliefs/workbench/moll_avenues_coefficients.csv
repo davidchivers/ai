@@ -1,0 +1,14 @@
+route_id,coefficient,value,note
+temporary_equilibrium_bounded_t40,best_outer,7,Ranked best outer for bound40_baby_rss_l4.
+restricted_perceptions_adaptive_anchor,lambda,0,Best grid value for adaptive extrapolation.
+restricted_perceptions_adaptive_anchor,anchor,0,Best grid value for pull back to benchmark.
+restricted_perceptions_adaptive_anchor,log_benchmark,2.19514371618,Mean log price over the first four periods.
+least_squares_learning_age_price,intercept,0.601645170038,Full-sample OLS coefficient used only as a smoke benchmark.
+least_squares_learning_age_price,rho_lag_log_price,0.725808215578,Full-sample OLS coefficient used only as a smoke benchmark.
+least_squares_learning_age_price,beta_age_signal,-1.39293028991e-05,Full-sample OLS coefficient used only as a smoke benchmark.
+price_only_aggregate_law_ar1,intercept,0.259702596669,Full-sample AR(1) coefficient used only as a smoke benchmark.
+price_only_aggregate_law_ar1,rho_lag_log_price,0.881570344441,Full-sample AR(1) coefficient used only as a smoke benchmark.
+existing_linear_age_price_rule,iteration_1_rmse,0.0431782539754,Existing no-politics template diagnostic.
+existing_linear_age_price_rule,iteration_1_stable_update,1,Existing no-politics template diagnostic.
+existing_linear_age_price_rule,iteration_2_rmse,6.86470118548,Existing no-politics template diagnostic.
+existing_linear_age_price_rule,iteration_2_stable_update,0,Existing no-politics template diagnostic.

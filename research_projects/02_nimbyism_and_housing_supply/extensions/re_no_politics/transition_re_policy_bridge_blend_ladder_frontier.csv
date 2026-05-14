@@ -1,0 +1,4 @@
+"case_name","policy_reference_blend_weight","max_stable_k","first_unstable_k","frontier_status","last_stable_max_abs_gap","last_stable_price_min","last_stable_price_max"
+"steady_state_blend_alpha_0","0","9","NaN","stable_through_max_k","0.000115925198619582","1.90808883498396","2.16815056675281"
+"steady_state_blend_alpha_0_01","0.01","9","NaN","stable_through_max_k","0.000115927004908478","1.90808883498396","2.16815056675281"
+"steady_state_blend_alpha_0_015","0.015","9","NaN","stable_through_max_k","0.000115777449531285","1.90808553202087","2.16815056675281"

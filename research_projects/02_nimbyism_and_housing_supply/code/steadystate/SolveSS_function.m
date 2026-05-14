@@ -41,6 +41,9 @@ zmin=min(z);
 zmax=max(z);
 K=size(z,2);
 Zlifecycle=z_lifecycle./z_lifecycle(1);
+if ~exist('initialdist','var') || isempty(initialdist)
+    initialdist = stationary_dist(transitionmatrix(:,:,1)');
+end
 
 
 %Housing
@@ -466,4 +469,11 @@ distance = 100*sum(dens4.*pref4,'all')^2 + sum(bbbb.*dens4,'all')^2 ;
 squeeze(sum(bbbb.*dens4,[1,2,3]))'
 squeeze(sum(aaaa.*dens4,[1,2,3]))'
 save SS_function
+end
+
+function stat = stationary_dist(z_transition)
+[vec, ~] = eigs(z_transition', 1, 'largestreal');
+stat = real(vec);
+stat = max(stat, 0);
+stat = stat ./ sum(stat);
 end

@@ -1,0 +1,2 @@
+re_weight,status,iterations_completed,converged,looks_stable,solved_price_t1,implied_price_t1,price_gap_t1,solved_year_t1,young_share_25_44_t1,pressure_index_t1,tail_price,price_min,price_max,elapsed_seconds
+1,converged,22,1,1,2.02974659522652,2.02974660237114,7.14462489170842e-09,2011,0.388216944957524,-0.00315461282974067,2,1.75,2.25,0.009906

@@ -1,0 +1,13 @@
+row_id,run_tag,family,terminal_anchor,tail_years,post_report_demographic_mode,pass_through,ttb_proxy_lag_years,seed_mode,no_re_tag,source_run_tag,source_outer,hybrid_switch_period,outer_iter,basis_dim,broyden_damping,broyden_step_cap,basis_step_cap,basis_tail_weight,notes
+1,re80ss_pt006_tail20_ttb0,re,terminal_fixed_point,20,return_to_steady_state,0.006,0,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,steady_return_baseline
+2,re80tail40_pt006_ttb0,re,terminal_fixed_point,40,return_to_steady_state,0.006,0,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,ghost_tail_40
+3,re80tail80_pt006_ttb0,re,terminal_fixed_point,80,return_to_steady_state,0.006,0,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,ghost_tail_80
+4,re80tail40_pt012_ttb0,re,terminal_fixed_point,40,return_to_steady_state,0.012,0,hybrid_shifted,nore80bv4_012,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,pass_through_012_tail40
+5,re80tail40_pt006_ttb1,re,terminal_fixed_point,40,return_to_steady_state,0.006,1,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,delivery_lag_proxy_1
+6,re80tail40_pt006_ttb2,re,terminal_fixed_point,40,return_to_steady_state,0.006,2,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,delivery_lag_proxy_2
+7,re80tail40_pt006_ttb4,re,terminal_fixed_point,40,return_to_steady_state,0.006,4,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,22,8,0.30,0.0030,0.00045,0.12,delivery_lag_proxy_4
+8,re80tail80_pt006_ttb2,re,terminal_fixed_point,80,return_to_steady_state,0.006,2,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,24,10,0.30,0.0030,0.00045,0.14,tail80_lag2_survivor_probe
+9,re80tail80_pt006_ttb4,re,terminal_fixed_point,80,return_to_steady_state,0.006,4,hybrid_shifted,nore80bv4_006,bv4p_r25_d14,14,40,24,10,0.30,0.0030,0.00045,0.14,tail80_lag4_survivor_probe
+10,re80tail40_pt012_ttb2,re,terminal_fixed_point,40,return_to_steady_state,0.012,2,hybrid_shifted,nore80bv4_012,bv4p_r25_d14,14,40,24,10,0.30,0.0030,0.00045,0.14,pt012_lag2_cross
+11,re80tail40_pt012_ttb4,re,terminal_fixed_point,40,return_to_steady_state,0.012,4,hybrid_shifted,nore80bv4_012,bv4p_r25_d14,14,40,24,10,0.30,0.0030,0.00045,0.14,pt012_lag4_cross
+12,re80tail40_pt006_ttb2_d18,re,terminal_fixed_point,40,return_to_steady_state,0.006,2,hybrid_shifted,nore80bv4_006,bv4p_r25_d18,6,40,24,10,0.30,0.0030,0.00045,0.14,source_sensitivity_d18_outer6

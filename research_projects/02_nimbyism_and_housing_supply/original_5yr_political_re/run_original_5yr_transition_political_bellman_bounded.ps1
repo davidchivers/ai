@@ -13,7 +13,10 @@ param(
     [double]$OuterLineSearchTol = [double]::NaN,
     [int]$MaxTargetedPeriods = 0,
     [int]$TargetBlockHalfWidth = -1,
-    [string]$TargetMaskMode = ""
+    [string]$TargetMaskMode = "",
+    [string]$PriceGuessCsvPath = "",
+    [string]$OuterStepNormalization = "",
+    [double]$OuterTargetLogStep = [double]::NaN
 )
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -42,9 +45,16 @@ $lineSearchTolExpr = if ([double]::IsNaN($OuterLineSearchTol)) {
 $maxTargetedPeriodsExpr = if ($MaxTargetedPeriods -gt 0) { [string]$MaxTargetedPeriods } else { "[]" }
 $targetBlockHalfWidthExpr = if ($TargetBlockHalfWidth -ge 0) { [string]$TargetBlockHalfWidth } else { "[]" }
 $targetMaskModeExpr = if ([string]::IsNullOrWhiteSpace($TargetMaskMode)) { "[]" } else { "'" + ($TargetMaskMode -replace "'", "''") + "'" }
+$priceGuessCsvPathExpr = if ([string]::IsNullOrWhiteSpace($PriceGuessCsvPath)) { "''" } else { "'" + ($PriceGuessCsvPath -replace "'", "''") + "'" }
+$outerStepNormalizationExpr = if ([string]::IsNullOrWhiteSpace($OuterStepNormalization)) { "[]" } else { "'" + ($OuterStepNormalization -replace "'", "''") + "'" }
+$outerTargetLogStepExpr = if ([double]::IsNaN($OuterTargetLogStep)) {
+    "[]"
+} else {
+    [string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0:R}", $OuterTargetLogStep)
+}
 $matlabCommand = @"
 addpath('$scriptDir');
-[summary, results] = run_original_5yr_transition_political_bellman_bounded($MaxK, $MaxIter, '$PriceUpdateMode', '$PoliticalTarget', $PoliticalUpdateWeight, $runTagExpr, '$PoliticalUpdateRule', $PriceGuessLevel, '$DemographicSourceMode', $lineSearchScalesExpr, $lineSearchTolExpr, $maxTargetedPeriodsExpr, $targetBlockHalfWidthExpr, $targetMaskModeExpr);
+[summary, results] = run_original_5yr_transition_political_bellman_bounded($MaxK, $MaxIter, '$PriceUpdateMode', '$PoliticalTarget', $PoliticalUpdateWeight, $runTagExpr, '$PoliticalUpdateRule', $PriceGuessLevel, '$DemographicSourceMode', $lineSearchScalesExpr, $lineSearchTolExpr, $maxTargetedPeriodsExpr, $targetBlockHalfWidthExpr, $targetMaskModeExpr, $priceGuessCsvPathExpr, $outerStepNormalizationExpr, $outerTargetLogStepExpr);
 disp(summary);
 exit;
 "@

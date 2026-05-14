@@ -1504,8 +1504,10 @@ This assumption also makes our model robust to other forms of altruistic giving.
 \end_layout
 
 \begin_layout Standard
-We assume that households are unable to forecast future changes in political support for additional housing supply and instead assume that the house prices follow a random walk.
- This ensures the dynamics of the model are solvable as it does not require the households to consider the possibility of strategic voting (i.e.
+Households are forward-looking, and expectations enter the model through the continuation values in their dynamic problem.
+ In the benchmark transition exercise we do not ask households to solve for a fully model-consistent future political equilibrium.
+ Instead, households are unable to forecast future changes in political support for additional housing supply and assume that house prices follow a random walk with respect to the demographic component.
+ This keeps the dynamics of the model tractable because households do not need to consider the possibility of strategic voting (i.e.
  voting to lower the house price today to ensure wider support for higher house prices in future periods).
  We also assume that households are unable to form coalitions when voting,
  nor bargain political support across time periods and vote solely based on their individual interest at time 
@@ -1676,9 +1678,10 @@ We drop the
 \end_inset
 
 .
- After calibrating the age distribution of households across the model we set the formation of new households to keep the demographic structure constant (in the absence of demographic shocks).
- Finally we assume households expectations of the future path of house prices follow a random walk and thus in expectation will remain at their current level - at least with respect to the demographic changes in the model.
- The distribution of households,
+After calibrating the age distribution of households across the model we set the formation of new households to keep the demographic structure constant (in the absence of demographic shocks).
+Finally, households' expectations of the future path of house prices enter through these continuation values.
+ In the benchmark specification we assume that house prices follow a random walk with respect to the demographic component, so that expected future house prices remain at their current level.
+The distribution of households,
  
 \begin_inset Formula $g\left(\mathbf{s};p^{h}\left(\Omega\right)\right)$
 \end_inset
@@ -2740,6 +2743,7 @@ Steady State
 
 \begin_layout Standard
 First we analyze how demographic changes affect the housing market in the model's steady state.
+ In this section, steady state refers to a sequence of stationary political-economic equilibria indexed by the age distribution of households, rather than to a transition path with changing demographic shares.
  We calculate the political-economic equilibrium using demographic data from the US over the period 1950-2020.
  During this time there was substantial variation in the demographic structure - driven by the generation born in the post-war spike and how it reverberated over time - as shown in figure 
 \begin_inset CommandInset ref
@@ -2761,8 +2765,9 @@ nolink "false"
 
 \begin_layout Standard
 To estimate the effect of the changing demographic composition for each year in this period,
- we solve for the equilibrium price which would result in the median voter being indifferent over an increase or decrease in housing supply.
- All other parameters are kept constant with the only change coming via variation in demographic structure.
+we solve for the equilibrium price which would result in the median voter being indifferent over an increase or decrease in housing supply.
+All other parameters are kept constant with the only change coming via variation in demographic structure.
+ Operationally, for each target age distribution we set household formation so that the demographic structure is constant in the absence of further shocks, and then solve for the associated stationary political-economic equilibrium house price.
 \end_layout
 
 \begin_layout Standard

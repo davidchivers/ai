@@ -1,0 +1,9 @@
+run_tag,family,pass_through,ttb_proxy_lag_years,status,source_job,notes
+nore80bv4_006,nore,0.006,0,complete,17074451,usable_four_year_no_re_T80
+nore80bv4_012,nore,0.012,0,complete,17074451,usable_four_year_no_re_T80
+nore80bv4lag_p006_l1,nore,0.006,1,complete,17078002,usable_four_year_no_re_lag_T80
+nore80bv4lag_p006_l2,nore,0.006,2,complete,17078002,usable_four_year_no_re_lag_T80
+nore80bv4lag_p006_l4,nore,0.006,4,complete,17078002,usable_four_year_no_re_lag_T80
+nore80bv4lag_p012_l1,nore,0.012,1,complete,17078002,usable_four_year_no_re_lag_T80
+nore80bv4lag_p012_l2,nore,0.012,2,complete,17078002,usable_four_year_no_re_lag_T80
+nore80bv4lag_p012_l4,nore,0.012,4,complete,17078002,usable_four_year_no_re_lag_T80

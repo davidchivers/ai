@@ -1,0 +1,4 @@
+case_name,guess_source,max_iter,looks_stable,converged,iterations_completed,residual_norm,max_abs_gap,final_price_4,implied_price_4,elapsed_seconds
+default_same_alpha_k3_iter50,alpha_0_15_k3_extended_with_anchor_period_4,50,1,0,50,0.005463,0.015105,2.757667,2.772772,852.18
+restart_from_failed_alpha_0_15_k4,alpha_0_15_k4_final_price_path,25,1,0,25,0.005463,0.015105,2.757667,2.772772,0.30
+restart_from_alpha_0_14_k6_prefix,alpha_0_14_k6_final_price_path_prefix,25,1,0,25,0.015514,0.042710,2.731805,2.774515,227.75

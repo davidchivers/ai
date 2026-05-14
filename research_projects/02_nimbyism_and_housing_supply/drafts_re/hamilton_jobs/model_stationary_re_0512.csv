@@ -1,0 +1,11 @@
+row_id,run_tag,age_case,pass_through,vote_scale,growth_rate,projection_year,terminal_iter,terminal_relaxation,notes
+1,ss_base_pt006,baseline,0.006,0.02,0,0,500,0.20,old_paper_baseline_age_distribution
+2,ss_young_g1_pt006,stationary_growth,0.006,0.02,0.010,0,500,0.20,permanently_younger_high_cohort_growth_one_percent
+3,ss_old_gm1_pt006,stationary_growth,0.006,0.02,-0.010,0,500,0.20,secular_ageing_low_cohort_growth_minus_one_percent
+4,ss_proj2050_pt006,official_projection_year,0.006,0.02,0,2050,500,0.20,official_age_projection_2050_distribution
+5,ss_proj2100_pt006,official_projection_year,0.006,0.02,0,2100,500,0.20,official_age_projection_2100_distribution
+6,ss_base_pt012,baseline,0.012,0.02,0,0,500,0.20,old_paper_baseline_age_distribution
+7,ss_young_g1_pt012,stationary_growth,0.012,0.02,0.010,0,500,0.20,permanently_younger_high_cohort_growth_one_percent
+8,ss_old_gm1_pt012,stationary_growth,0.012,0.02,-0.010,0,500,0.20,secular_ageing_low_cohort_growth_minus_one_percent
+9,ss_proj2050_pt012,official_projection_year,0.012,0.02,0,2050,500,0.20,official_age_projection_2050_distribution
+10,ss_proj2100_pt012,official_projection_year,0.012,0.02,0,2100,500,0.20,official_age_projection_2100_distribution

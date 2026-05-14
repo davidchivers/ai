@@ -1,0 +1,6 @@
+route,status,tractable,evidence_disciplined,belief_feedback,decision
+full_t80_re_search,live_formal_re_benchmark,no,not_replacement,yes_if_solved,keep_as_stress_test
+no_re_current_price,available_comparator,yes,weak,weak,comparator_only
+bound40_baby_rss_l4,usable_prototype,mostly,weak,weak,diagnostic_not_moll_route
+linear_age_price_rule,existing_template,yes,weak_to_medium,medium,adapt_pattern
+restricted_direct_price_beliefs,target_route,yes,must_be_added,yes,build_next

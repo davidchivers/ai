@@ -1,7 +1,7 @@
 param(
     [string]$LiveRoot = "",
     [string]$MatlabExe = "matlab",
-    [double]$MaxHours = 12,
+    [double]$MaxHours = 48,
     [double]$PriceGuessLevel = 0.34013605902777766
 )
 
@@ -55,6 +55,9 @@ function Get-ElapsedHours {
 
 function Ensure-TimeBudget {
     param([string]$NextStep)
+    if ($MaxHours -le 0) {
+        return
+    }
     if ((Get-ElapsedHours) -gt $MaxHours) {
         throw "Time budget reached before step $NextStep."
     }
@@ -179,6 +182,11 @@ function Get-StageSummaryPath {
     return Join-Path $scriptDir ((Get-StageBaseName -StageName $StageName) + "_summary.csv")
 }
 
+function Get-StageFinalPricePathCsv {
+    param([string]$StageName)
+    return Join-Path $scriptDir ((Get-StageBaseName -StageName $StageName) + "_final_price_path.csv")
+}
+
 function Find-MatlabRunProcesses {
     param([string]$RunTag)
     return @(
@@ -201,7 +209,10 @@ function Start-TransitionStageProcess {
         [double]$OuterLineSearchTol,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode
+        [string]$TargetMaskMode,
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     $runnerPath = Join-Path $scriptDir "run_original_5yr_transition_political_bellman_bounded.ps1"
@@ -211,6 +222,11 @@ function Start-TransitionStageProcess {
     $scaleText = [string]::Join(",", ($OuterLineSearchScales | ForEach-Object {
         [string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0:R}", $_)
     }))
+    $targetLogStepText = if ([double]::IsNaN($OuterTargetLogStep)) {
+        ""
+    } else {
+        [string]::Format([System.Globalization.CultureInfo]::InvariantCulture, "{0:R}", $OuterTargetLogStep)
+    }
 
     $argumentList = @(
         "-NoProfile",
@@ -234,6 +250,15 @@ function Start-TransitionStageProcess {
     if (-not [string]::IsNullOrWhiteSpace($TargetMaskMode)) {
         $argumentList += @("-TargetMaskMode", $TargetMaskMode)
     }
+    if (-not [string]::IsNullOrWhiteSpace($PriceGuessCsvPath)) {
+        $argumentList += @("-PriceGuessCsvPath", $PriceGuessCsvPath)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($OuterStepNormalization)) {
+        $argumentList += @("-OuterStepNormalization", $OuterStepNormalization)
+    }
+    if (-not [string]::IsNullOrWhiteSpace($targetLogStepText)) {
+        $argumentList += @("-OuterTargetLogStep", $targetLogStepText)
+    }
 
     return Start-Process powershell -ArgumentList $argumentList -PassThru -WindowStyle Hidden
 }
@@ -249,7 +274,10 @@ function Read-StageResult {
         [double]$OuterLineSearchTol,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode
+        [string]$TargetMaskMode,
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     $baseName = Get-StageBaseName -StageName $StageName
@@ -281,6 +309,9 @@ function Read-StageResult {
         max_targeted_periods = $MaxTargetedPeriods
         target_block_half_width = $TargetBlockHalfWidth
         target_mask_mode = $TargetMaskMode
+        price_guess_csv_path = $PriceGuessCsvPath
+        outer_step_normalization = $OuterStepNormalization
+        outer_target_log_step = $OuterTargetLogStep
         summary_path = $stageSummaryPath
         results_path = $stageResultsPath
         summary_rows = $summaryRows.Count
@@ -323,6 +354,9 @@ function New-FailedStageResult {
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
         [string]$TargetMaskMode,
+        [string]$PriceGuessCsvPath,
+        [string]$OuterStepNormalization,
+        [double]$OuterTargetLogStep,
         [string]$ErrorMessage
     )
 
@@ -338,6 +372,9 @@ function New-FailedStageResult {
         max_targeted_periods = $MaxTargetedPeriods
         target_block_half_width = $TargetBlockHalfWidth
         target_mask_mode = $TargetMaskMode
+        price_guess_csv_path = $PriceGuessCsvPath
+        outer_step_normalization = $OuterStepNormalization
+        outer_target_log_step = $OuterTargetLogStep
         error = $ErrorMessage
         line_search_improved = $false
         accepted_update_mask = ""
@@ -356,14 +393,17 @@ function Invoke-Or-Wait-For-Stage {
         [double]$OuterLineSearchTol,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode
+        [string]$TargetMaskMode,
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     Ensure-TimeBudget -NextStep $StageName
     $summaryCsv = Get-StageSummaryPath -StageName $StageName
     if (Test-Path $summaryCsv) {
         Write-Log "Stage $StageName already completed; reading existing summary."
-        return Read-StageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode
+        return Read-StageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -PriceGuessCsvPath $PriceGuessCsvPath -OuterStepNormalization $OuterStepNormalization -OuterTargetLogStep $OuterTargetLogStep
     }
 
     $runState = "started_new"
@@ -374,7 +414,7 @@ function Invoke-Or-Wait-For-Stage {
         $runState = "attached_existing"
         Write-Log "Attaching to existing MATLAB run for $StageName."
     } else {
-        $startedProc = Start-TransitionStageProcess -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode
+        $startedProc = Start-TransitionStageProcess -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -PriceGuessCsvPath $PriceGuessCsvPath -OuterStepNormalization $OuterStepNormalization -OuterTargetLogStep $OuterTargetLogStep
         $startedProcId = $startedProc.Id
         Write-Log "Started stage $StageName under powershell pid=$($startedProc.Id)."
     }
@@ -402,6 +442,9 @@ function Invoke-Or-Wait-For-Stage {
                 max_targeted_periods = $MaxTargetedPeriods
                 target_block_half_width = $TargetBlockHalfWidth
                 target_mask_mode = $TargetMaskMode
+                price_guess_csv_path = $PriceGuessCsvPath
+                outer_step_normalization = $OuterStepNormalization
+                outer_target_log_step = $OuterTargetLogStep
                 runner_pid = $startedProcId
                 runner_alive = $runnerAlive
                 current_pids = @($matchingProcs | Select-Object -ExpandProperty ProcessId)
@@ -426,7 +469,7 @@ function Invoke-Or-Wait-For-Stage {
     }
 
     Write-Log "Stage $StageName completed."
-    $stageResult = Read-StageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode
+    $stageResult = Read-StageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -PriceGuessCsvPath $PriceGuessCsvPath -OuterStepNormalization $OuterStepNormalization -OuterTargetLogStep $OuterTargetLogStep
     $stageResult.status = "completed"
     $stageResults.Add($stageResult)
     return $stageResult
@@ -443,14 +486,17 @@ function Invoke-Stage-With-Reflow {
         [double]$OuterLineSearchTol,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode
+        [string]$TargetMaskMode,
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     try {
-        return Invoke-Or-Wait-For-Stage -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode
+        return Invoke-Or-Wait-For-Stage -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -PriceGuessCsvPath $PriceGuessCsvPath -OuterStepNormalization $OuterStepNormalization -OuterTargetLogStep $OuterTargetLogStep
     }
     catch {
-        $failed = New-FailedStageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -ErrorMessage $_.Exception.Message
+        $failed = New-FailedStageResult -StageName $StageName -MaxK $MaxK -MaxIter $MaxIter -PoliticalUpdateWeight $PoliticalUpdateWeight -PoliticalUpdateRule $PoliticalUpdateRule -OuterLineSearchScales $OuterLineSearchScales -OuterLineSearchTol $OuterLineSearchTol -MaxTargetedPeriods $MaxTargetedPeriods -TargetBlockHalfWidth $TargetBlockHalfWidth -TargetMaskMode $TargetMaskMode -PriceGuessCsvPath $PriceGuessCsvPath -OuterStepNormalization $OuterStepNormalization -OuterTargetLogStep $OuterTargetLogStep -ErrorMessage $_.Exception.Message
         $stageResults.Add($failed)
         Write-Log "Stage $StageName failed but workflow will continue: $($_.Exception.Message)"
         return $failed
@@ -478,6 +524,7 @@ function Test-StageImproved {
     )
     if ($null -eq $StageResult) { return $false }
     if ($StageResult.status -ne "completed") { return $false }
+    if (-not ($StageResult.line_search_improved -or $StageResult.probe_accepted)) { return $false }
     return ($StageResult.max_abs_vote -lt ($ReferenceVote - 1e-6))
 }
 
@@ -490,7 +537,10 @@ function New-K6Candidate {
         [double[]]$OuterLineSearchScales,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode = "full_library"
+        [string]$TargetMaskMode = "full_library",
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     return [ordered]@{
@@ -504,6 +554,9 @@ function New-K6Candidate {
         MaxTargetedPeriods = $MaxTargetedPeriods
         TargetBlockHalfWidth = $TargetBlockHalfWidth
         TargetMaskMode = $TargetMaskMode
+        PriceGuessCsvPath = $PriceGuessCsvPath
+        OuterStepNormalization = $OuterStepNormalization
+        OuterTargetLogStep = $OuterTargetLogStep
     }
 }
 
@@ -517,7 +570,10 @@ function New-HorizonCandidate {
         [double[]]$OuterLineSearchScales,
         [int]$MaxTargetedPeriods,
         [int]$TargetBlockHalfWidth,
-        [string]$TargetMaskMode = "full_library"
+        [string]$TargetMaskMode = "full_library",
+        [string]$PriceGuessCsvPath = "",
+        [string]$OuterStepNormalization = "",
+        [double]$OuterTargetLogStep = [double]::NaN
     )
 
     return [ordered]@{
@@ -531,6 +587,9 @@ function New-HorizonCandidate {
         MaxTargetedPeriods = $MaxTargetedPeriods
         TargetBlockHalfWidth = $TargetBlockHalfWidth
         TargetMaskMode = $TargetMaskMode
+        PriceGuessCsvPath = $PriceGuessCsvPath
+        OuterStepNormalization = $OuterStepNormalization
+        OuterTargetLogStep = $OuterTargetLogStep
     }
 }
 
@@ -567,7 +626,10 @@ try {
             -OuterLineSearchTol $candidate.OuterLineSearchTol `
             -MaxTargetedPeriods $candidate.MaxTargetedPeriods `
             -TargetBlockHalfWidth $candidate.TargetBlockHalfWidth `
-            -TargetMaskMode $candidate.TargetMaskMode
+            -TargetMaskMode $candidate.TargetMaskMode `
+            -PriceGuessCsvPath $candidate.PriceGuessCsvPath `
+            -OuterStepNormalization $candidate.OuterStepNormalization `
+            -OuterTargetLogStep $candidate.OuterTargetLogStep
         $k6Attempts.Add($stageResult)
         $bestK6 = Compare-StageResult -Left $bestK6 -Right $stageResult
         if ($null -eq $k6Primary) {
@@ -579,18 +641,47 @@ try {
 
     $k14Targeted = $null
     $k14Attempts = New-Object System.Collections.Generic.List[object]
+    $continuationAttempts = New-Object System.Collections.Generic.List[object]
     $bestK14 = $null
     if (Test-StageImproved -StageResult $bestK6 -ReferenceVote $referenceK6SmokeVote) {
+        $classification = "horizon_continuation_started"
+        $nextStep = "search_horizon_continuation"
+        $continuationSeedCsv = Get-StageFinalPricePathCsv -StageName $bestK6.name
+        $continuationCandidates = @(
+            (New-HorizonCandidate -MaxK 8 -StageName "hist_k8_segmentunion_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "segment_union" -PriceGuessCsvPath $continuationSeedCsv),
+            (New-HorizonCandidate -MaxK 10 -StageName "hist_k10_segmentunion_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "segment_union" -PriceGuessCsvPath $continuationSeedCsv),
+            (New-HorizonCandidate -MaxK 12 -StageName "hist_k12_segmentunion_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "segment_union" -PriceGuessCsvPath $continuationSeedCsv)
+        )
+
+        foreach ($candidate in $continuationCandidates) {
+            $candidate.PriceGuessCsvPath = $continuationSeedCsv
+            $stageResult = Invoke-Stage-With-Reflow `
+                -StageName $candidate.StageName `
+                -MaxK $candidate.MaxK `
+                -MaxIter $candidate.MaxIter `
+                -PoliticalUpdateWeight $candidate.PoliticalUpdateWeight `
+                -PoliticalUpdateRule $candidate.PoliticalUpdateRule `
+                -OuterLineSearchScales $candidate.OuterLineSearchScales `
+                -OuterLineSearchTol $candidate.OuterLineSearchTol `
+                -MaxTargetedPeriods $candidate.MaxTargetedPeriods `
+                -TargetBlockHalfWidth $candidate.TargetBlockHalfWidth `
+                -TargetMaskMode $candidate.TargetMaskMode `
+                -PriceGuessCsvPath $candidate.PriceGuessCsvPath `
+                -OuterStepNormalization $candidate.OuterStepNormalization `
+                -OuterTargetLogStep $candidate.OuterTargetLogStep
+            $continuationAttempts.Add($stageResult)
+            if ($stageResult.status -eq "completed") {
+                $continuationSeedCsv = Get-StageFinalPricePathCsv -StageName $stageResult.name
+            }
+        }
+
         $classification = "k14_targeted_started"
         $nextStep = "search_k14_candidates"
         $k14Candidates = @(
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_targeted_from_best_k6_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule ([string]$bestK6.political_update_rule) -OuterLineSearchScales ([double[]]$bestK6.outer_line_search_scales) -MaxTargetedPeriods ([int]$bestK6.max_targeted_periods) -TargetBlockHalfWidth ([int]$bestK6.target_block_half_width) -TargetMaskMode ([string]$bestK6.target_mask_mode)),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_unionblock_scale1_i2" -PoliticalUpdateWeight 0.005 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "union_and_block"),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_signsplit_scale1_i2" -PoliticalUpdateWeight 0.005 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 0 -TargetMaskMode "sign_split"),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_activeclusters_scale1_i2" -PoliticalUpdateWeight 0.005 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "active_clusters"),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_halfsplit_scale1_i2" -PoliticalUpdateWeight 0.005 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 0 -TargetMaskMode "half_split"),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_signsplit_smallw_i2" -PoliticalUpdateWeight 0.0025 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 0 -TargetMaskMode "sign_split"),
-            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_activeclusters_smallw_i2" -PoliticalUpdateWeight 0.0025 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(1.0) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "active_clusters")
+            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_segmentunion_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "segment_union" -PriceGuessCsvPath $continuationSeedCsv),
+            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_activeclusters_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "active_clusters" -PriceGuessCsvPath $continuationSeedCsv),
+            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_unionblock_cont_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "union_and_block" -PriceGuessCsvPath $continuationSeedCsv),
+            (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_signsplit_smallw_cont_i2" -PoliticalUpdateWeight 0.0025 -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(8.0, 4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 0 -TargetMaskMode "sign_split" -PriceGuessCsvPath $continuationSeedCsv)
         )
 
         foreach ($candidate in $k14Candidates) {
@@ -608,9 +699,53 @@ try {
                 -OuterLineSearchTol $candidate.OuterLineSearchTol `
                 -MaxTargetedPeriods $candidate.MaxTargetedPeriods `
                 -TargetBlockHalfWidth $candidate.TargetBlockHalfWidth `
-                -TargetMaskMode $candidate.TargetMaskMode
+                -TargetMaskMode $candidate.TargetMaskMode `
+                -PriceGuessCsvPath $candidate.PriceGuessCsvPath `
+                -OuterStepNormalization $candidate.OuterStepNormalization `
+                -OuterTargetLogStep $candidate.OuterTargetLogStep
             $k14Attempts.Add($stageResult)
             $bestK14 = Compare-StageResult -Left $bestK14 -Right $stageResult
+        }
+
+        if (-not (Test-StageImproved -StageResult $bestK14 -ReferenceVote $referenceK14SmokeVote)) {
+            $classification = "k14_recovery_started"
+            $nextStep = "search_k14_recovery_candidates"
+            if ($null -ne $bestK14 -and $bestK14.status -eq "completed") {
+                $continuationSeedCsv = Get-StageFinalPricePathCsv -StageName $bestK14.name
+            }
+
+            $k14RecoveryCandidates = @(
+                (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_activeclusters_norm_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "active_clusters" -PriceGuessCsvPath $continuationSeedCsv -OuterStepNormalization "maxabs" -OuterTargetLogStep 0.001),
+                (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_unionblock_norm_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "union_and_block" -PriceGuessCsvPath $continuationSeedCsv -OuterStepNormalization "maxabs" -OuterTargetLogStep 0.001),
+                (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_segmentunion_norm_i2" -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(4.0, 2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "segment_union" -PriceGuessCsvPath $continuationSeedCsv -OuterStepNormalization "maxabs" -OuterTargetLogStep 0.001),
+                (New-HorizonCandidate -MaxK 14 -StageName "hist_k14_activeclusters_norm_i3" -MaxIter 3 -PoliticalUpdateWeight ([double]$bestK6.political_update_weight) -PoliticalUpdateRule "fixed_step_targeted_linesearch" -OuterLineSearchScales @(2.0, 1.0, 0.5) -MaxTargetedPeriods 3 -TargetBlockHalfWidth 1 -TargetMaskMode "active_clusters" -PriceGuessCsvPath $continuationSeedCsv -OuterStepNormalization "maxabs" -OuterTargetLogStep 0.001)
+            )
+
+            foreach ($candidate in $k14RecoveryCandidates) {
+                if (Test-StageImproved -StageResult $bestK14 -ReferenceVote $referenceK14SmokeVote) {
+                    break
+                }
+
+                $stageResult = Invoke-Stage-With-Reflow `
+                    -StageName $candidate.StageName `
+                    -MaxK $candidate.MaxK `
+                    -MaxIter $candidate.MaxIter `
+                    -PoliticalUpdateWeight $candidate.PoliticalUpdateWeight `
+                    -PoliticalUpdateRule $candidate.PoliticalUpdateRule `
+                    -OuterLineSearchScales $candidate.OuterLineSearchScales `
+                    -OuterLineSearchTol $candidate.OuterLineSearchTol `
+                    -MaxTargetedPeriods $candidate.MaxTargetedPeriods `
+                    -TargetBlockHalfWidth $candidate.TargetBlockHalfWidth `
+                    -TargetMaskMode $candidate.TargetMaskMode `
+                    -PriceGuessCsvPath $candidate.PriceGuessCsvPath `
+                    -OuterStepNormalization $candidate.OuterStepNormalization `
+                    -OuterTargetLogStep $candidate.OuterTargetLogStep
+                $k14Attempts.Add($stageResult)
+                $bestK14 = Compare-StageResult -Left $bestK14 -Right $stageResult
+                if ($stageResult.status -eq "completed") {
+                    $continuationSeedCsv = Get-StageFinalPricePathCsv -StageName $stageResult.name
+                }
+            }
         }
 
         $k14Targeted = $bestK14
@@ -638,6 +773,7 @@ try {
         k6_followup = $k6Followup
         k6_attempts = $k6Attempts.ToArray()
         best_k6 = $bestK6
+        continuation_attempts = $continuationAttempts.ToArray()
         k14_attempts = $k14Attempts.ToArray()
         best_k14 = $bestK14
         k14_targeted = $k14Targeted
@@ -661,6 +797,7 @@ try {
     if ($null -ne $k14Targeted) {
         $summaryLines += "- k14 targeted max |vote|: $($k14Targeted.max_abs_vote)"
         $summaryLines += "- k14 targeted improved: $($k14Targeted.line_search_improved)"
+        $summaryLines += "- k14 targeted probe accepted: $($k14Targeted.probe_accepted)"
         $summaryLines += "- Best k14 stage: $($k14Targeted.name)"
         $summaryLines += "- Best k14 mask mode: $($k14Targeted.target_mask_mode)"
         $summaryLines += "- Best k14 mask: $($k14Targeted.accepted_update_mask)"

@@ -27,6 +27,12 @@ if ~isfield(params, 'outer_line_search_tol'), params.outer_line_search_tol = 1e-
 if ~isfield(params, 'outer_gap_weight'), params.outer_gap_weight = 0.25; end
 if ~isfield(params, 'outer_vote_guard_abs'), params.outer_vote_guard_abs = 1e-4; end
 if ~isfield(params, 'outer_gap_guard_abs'), params.outer_gap_guard_abs = 1e-4; end
+if ~isfield(params, 'outer_vote_guard_frac'), params.outer_vote_guard_frac = 0.01; end
+if ~isfield(params, 'outer_gap_guard_frac'), params.outer_gap_guard_frac = 0.05; end
+if ~isfield(params, 'outer_step_normalization'), params.outer_step_normalization = 'none'; end
+if ~isfield(params, 'outer_target_log_step'), params.outer_target_log_step = params.political_update_weight; end
+if ~isfield(params, 'outer_active_threshold_frac'), params.outer_active_threshold_frac = 0.65; end
+if ~isfield(params, 'outer_active_neighbor_width'), params.outer_active_neighbor_width = 1; end
 if ~isfield(params, 'allow_probe_accept'), params.allow_probe_accept = true; end
 if ~isfield(params, 'pass_params') || isempty(params.pass_params), params.pass_params = struct(); end
 
@@ -44,6 +50,11 @@ validateattributes(params.outer_line_search_tol, {'double'}, {'scalar', 'finite'
 validateattributes(params.outer_gap_weight, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_gap_weight');
 validateattributes(params.outer_vote_guard_abs, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_vote_guard_abs');
 validateattributes(params.outer_gap_guard_abs, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_gap_guard_abs');
+validateattributes(params.outer_vote_guard_frac, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_vote_guard_frac');
+validateattributes(params.outer_gap_guard_frac, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_gap_guard_frac');
+validateattributes(params.outer_target_log_step, {'double'}, {'scalar', 'finite', 'real', '>=', 0}, mfilename, 'params.outer_target_log_step');
+validateattributes(params.outer_active_threshold_frac, {'double'}, {'scalar', 'finite', 'real', '>', 0, '<=', 1}, mfilename, 'params.outer_active_threshold_frac');
+validateattributes(params.outer_active_neighbor_width, {'double'}, {'scalar', 'finite', 'real', 'integer', '>=', 0}, mfilename, 'params.outer_active_neighbor_width');
 if params.price_cap <= params.price_floor
     error('params.price_cap must exceed params.price_floor.');
 end
@@ -88,10 +99,11 @@ for iter = 1:params.max_iter
     current_pass = solve_results.current_path_pass;
     [vote_path, political_target_label] = extract_political_target_local(current_pass, params.political_target);
     anchor_path = choose_anchor_path_local(current_price_path, solve_results.updated_price_path(:), params.price_update_mode);
-    current_metrics = summarize_metrics_local(current_pass, vote_path, params);
+    active_accept_mask = build_active_accept_mask_local(vote_path, params);
+    current_metrics = summarize_metrics_local(current_pass, vote_path, params, active_accept_mask);
     if uses_line_search_local(params.political_update_rule)
         [updated_price_path, update_meta] = choose_political_price_update_with_line_search_local( ...
-            anchor_path, current_price_path, vote_path, previous_price_path, previous_vote_path, params, demographic_path, current_metrics);
+            anchor_path, current_price_path, vote_path, previous_price_path, previous_vote_path, params, demographic_path, current_metrics, active_accept_mask);
     else
         [updated_price_path, update_meta] = build_political_price_update_local( ...
             anchor_path, current_price_path, vote_path, previous_price_path, previous_vote_path, params);
@@ -236,7 +248,8 @@ updated_price_path = min(max(updated_price_path, params.price_floor), params.pri
 end
 
 function [log_shift, meta] = build_log_shift_local(current_price_path, vote_path, previous_price_path, previous_vote_path, params, step_scale)
-fallback_shift = step_scale .* params.political_update_weight .* vote_path;
+[direction, base_step] = build_outer_direction_local(vote_path, params);
+fallback_shift = step_scale .* base_step .* direction;
 [secant_shift, valid_secant] = build_secant_shift_local(log(current_price_path), vote_path, ...
     log(previous_price_path), previous_vote_path, params);
 secant_shift = step_scale .* secant_shift;
@@ -280,7 +293,8 @@ meta = struct( ...
 end
 
 function [level_shift, meta] = build_level_shift_local(current_price_path, vote_path, previous_price_path, previous_vote_path, params, step_scale)
-fallback_shift = step_scale .* params.political_update_weight .* vote_path;
+[direction, base_step] = build_outer_direction_local(vote_path, params);
+fallback_shift = step_scale .* base_step .* direction;
 [secant_shift, valid_secant] = build_secant_shift_local(current_price_path, vote_path, previous_price_path, previous_vote_path, params);
 secant_shift = step_scale .* secant_shift;
 
@@ -346,7 +360,7 @@ secant_shift(valid_secant) = -params.secant_damping .* (vote_path(valid_secant) 
 valid_secant = valid_secant & isfinite(secant_shift);
 end
 
-function [updated_price_path, meta] = choose_political_price_update_with_line_search_local(anchor_path, current_price_path, vote_path, previous_price_path, previous_vote_path, params, demographic_path, current_metrics)
+function [updated_price_path, meta] = choose_political_price_update_with_line_search_local(anchor_path, current_price_path, vote_path, previous_price_path, previous_vote_path, params, demographic_path, current_metrics, active_accept_mask)
 scales = unique(params.outer_line_search_scales(:)', 'stable');
 if uses_targeted_line_search_local(params.political_update_rule)
     mask_specs = build_targeted_line_search_masks_local(vote_path, params.pass_params);
@@ -367,7 +381,6 @@ best_meta = struct( ...
 best_probe_metrics = [];
 best_probe_updated_price_path = current_price_path(:);
 best_probe_meta = best_meta;
-best_probe_step_norm = inf;
 
 for scale_idx = 1:numel(scales)
     step_scale = scales(scale_idx);
@@ -383,9 +396,8 @@ for scale_idx = 1:numel(scales)
         candidate_results = solve_transition_re_no_politics(candidate_price_path, demographic_path, pass_params);
         candidate_pass = candidate_results.current_path_pass;
         [candidate_vote_path, ~] = extract_political_target_local(candidate_pass, params.political_target);
-        candidate_metrics = summarize_metrics_local(candidate_pass, candidate_vote_path, params);
+        candidate_metrics = summarize_metrics_local(candidate_pass, candidate_vote_path, params, active_accept_mask);
         [accept_candidate, probe_ok] = evaluate_candidate_acceptance_local(candidate_metrics, current_metrics, params);
-        step_norm = max(abs(candidate_price_path - current_price_path(:)));
 
         if accept_candidate && is_candidate_metrics_better_local(candidate_metrics, best_metrics, params)
             best_metrics = candidate_metrics;
@@ -398,10 +410,7 @@ for scale_idx = 1:numel(scales)
             best_meta.line_search_improved = true;
             best_meta.probe_accepted = false;
         elseif probe_ok && ...
-                (isempty(best_probe_metrics) || ...
-                 step_norm < (best_probe_step_norm - 1e-12) || ...
-                 (abs(step_norm - best_probe_step_norm) <= 1e-12 && ...
-                  is_candidate_metrics_better_local(candidate_metrics, best_probe_metrics, params)))
+                (isempty(best_probe_metrics) || is_candidate_metrics_better_local(candidate_metrics, best_probe_metrics, params))
             best_probe_metrics = candidate_metrics;
             best_probe_updated_price_path = candidate_price_path;
             best_probe_meta = candidate_meta;
@@ -411,7 +420,6 @@ for scale_idx = 1:numel(scales)
             best_probe_meta.line_search_used = true;
             best_probe_meta.line_search_improved = false;
             best_probe_meta.probe_accepted = true;
-            best_probe_step_norm = step_norm;
         end
     end
 end
@@ -428,8 +436,16 @@ else
 end
 end
 
-function metrics = summarize_metrics_local(current_pass, vote_path, params)
+function metrics = summarize_metrics_local(current_pass, vote_path, params, active_accept_mask)
 vote_path = vote_path(:);
+if nargin < 4 || isempty(active_accept_mask)
+    active_accept_mask = true(size(vote_path));
+end
+active_accept_mask = logical(active_accept_mask(:));
+if ~any(active_accept_mask)
+    active_accept_mask = true(size(vote_path));
+end
+active_vote_path = vote_path(active_accept_mask);
 metrics = struct();
 metrics.max_abs_vote = max(abs(vote_path));
 metrics.vote_l2 = norm(vote_path, 2);
@@ -437,15 +453,18 @@ metrics.mean_abs_vote = mean(abs(vote_path));
 metrics.residual_norm = current_pass.residual_norm;
 metrics.max_abs_gap = current_pass.max_abs_gap;
 metrics.merit = metrics.vote_l2^2 + params.outer_gap_weight * metrics.max_abs_gap^2;
+metrics.active_max_abs_vote = max(abs(active_vote_path));
+metrics.active_vote_l2 = norm(active_vote_path, 2);
+metrics.active_merit = metrics.active_max_abs_vote + 0.25 * metrics.active_vote_l2 + 0.05 * metrics.max_abs_gap + 0.01 * metrics.residual_norm;
 end
 
 function [accept_candidate, probe_ok] = evaluate_candidate_acceptance_local(candidate_metrics, incumbent_metrics, params)
-vote_guard = max(params.outer_vote_guard_abs, 0.01 * incumbent_metrics.max_abs_vote);
-gap_guard = max(params.outer_gap_guard_abs, 0.01 * incumbent_metrics.max_abs_gap);
+vote_guard = max(params.outer_vote_guard_abs, params.outer_vote_guard_frac * incumbent_metrics.max_abs_vote);
+gap_guard = max(5 * params.outer_gap_guard_abs, params.outer_gap_guard_frac * incumbent_metrics.max_abs_gap);
 
 if incumbent_metrics.max_abs_vote > 5 * params.tol_vote
-    primary_current = incumbent_metrics.merit;
-    primary_candidate = candidate_metrics.merit;
+    primary_current = incumbent_metrics.active_merit;
+    primary_candidate = candidate_metrics.active_merit;
 else
     primary_current = incumbent_metrics.max_abs_vote;
     primary_candidate = candidate_metrics.max_abs_vote;
@@ -459,13 +478,13 @@ accept_candidate = ...
 probe_ok = params.allow_probe_accept && ...
     (candidate_metrics.max_abs_vote <= incumbent_metrics.max_abs_vote + vote_guard) && ...
     (candidate_metrics.max_abs_gap <= incumbent_metrics.max_abs_gap + gap_guard) && ...
-    (candidate_metrics.merit <= incumbent_metrics.merit + params.outer_line_search_tol);
+    (candidate_metrics.active_merit <= incumbent_metrics.active_merit + params.outer_line_search_tol);
 end
 
 function is_better = is_candidate_metrics_better_local(candidate_metrics, incumbent_metrics, params)
 if candidate_metrics.max_abs_vote > 5 * params.tol_vote || incumbent_metrics.max_abs_vote > 5 * params.tol_vote
-    candidate_primary = candidate_metrics.merit;
-    incumbent_primary = incumbent_metrics.merit;
+    candidate_primary = candidate_metrics.active_merit;
+    incumbent_primary = incumbent_metrics.active_merit;
 else
     candidate_primary = candidate_metrics.max_abs_vote;
     incumbent_primary = incumbent_metrics.max_abs_vote;
@@ -477,16 +496,16 @@ if candidate_primary < (incumbent_primary - params.outer_line_search_tol)
 end
 
 if abs(candidate_primary - incumbent_primary) <= params.outer_line_search_tol
-    if candidate_metrics.max_abs_vote < (incumbent_metrics.max_abs_vote - params.outer_line_search_tol)
+    if candidate_metrics.active_max_abs_vote < (incumbent_metrics.active_max_abs_vote - params.outer_line_search_tol)
         is_better = true;
         return;
     end
-    if abs(candidate_metrics.max_abs_vote - incumbent_metrics.max_abs_vote) <= params.outer_line_search_tol
-        if candidate_metrics.merit < (incumbent_metrics.merit - params.outer_line_search_tol)
+    if abs(candidate_metrics.active_max_abs_vote - incumbent_metrics.active_max_abs_vote) <= params.outer_line_search_tol
+        if candidate_metrics.active_merit < (incumbent_metrics.active_merit - params.outer_line_search_tol)
             is_better = true;
             return;
         end
-        if abs(candidate_metrics.merit - incumbent_metrics.merit) <= params.outer_line_search_tol
+        if abs(candidate_metrics.active_merit - incumbent_metrics.active_merit) <= params.outer_line_search_tol
             is_better = candidate_metrics.max_abs_gap < (incumbent_metrics.max_abs_gap - params.outer_line_search_tol);
             return;
         end
@@ -494,6 +513,40 @@ if abs(candidate_primary - incumbent_primary) <= params.outer_line_search_tol
 end
 
 is_better = false;
+end
+
+function active_mask = build_active_accept_mask_local(vote_path, params)
+vote_path = vote_path(:);
+threshold = params.outer_active_threshold_frac * max(abs(vote_path));
+active_mask = abs(vote_path) >= threshold;
+neighbor_width = params.outer_active_neighbor_width;
+if neighbor_width <= 0
+    return;
+end
+idx = find(active_mask);
+for j = idx(:)'
+    active_mask(max(1, j - neighbor_width):min(numel(vote_path), j + neighbor_width)) = true;
+end
+end
+
+function [direction, base_step] = build_outer_direction_local(vote_path, params)
+direction = vote_path(:);
+base_step = params.political_update_weight;
+
+switch lower(string(params.outer_step_normalization))
+    case "maxabs"
+        denom = max(max(abs(direction)), 1e-8);
+        direction = direction ./ denom;
+        base_step = params.outer_target_log_step;
+    case "l2"
+        denom = max(norm(direction, 2), 1e-8);
+        direction = direction ./ denom;
+        base_step = params.outer_target_log_step;
+    case {"none", ""}
+        % Keep the original raw-vote scaling.
+    otherwise
+        error('Unknown outer_step_normalization "%s".', params.outer_step_normalization);
+end
 end
 
 function tf = uses_line_search_local(rule_name)
@@ -592,6 +645,8 @@ switch target_mask_mode
         active_mask = abs(vote_path) >= active_threshold;
         in_cluster = false;
         cluster_start = 1;
+        cluster_union_mask = false(T, 1);
+        cluster_union_block_mask = false(T, 1);
         for idx = 1:T
             if active_mask(idx) && ~in_cluster
                 in_cluster = true;
@@ -605,14 +660,33 @@ switch target_mask_mode
                 end
                 cluster_mask = false(T, 1);
                 cluster_mask(cluster_start:cluster_end) = true;
+                cluster_union_mask = cluster_union_mask | cluster_mask;
+                cluster_union_block_mask(max(1, cluster_start - block_half_width):min(T, cluster_end + block_half_width)) = true;
                 mask_specs = append_mask_spec_local(mask_specs, "active_cluster_" + string(cluster_start) + "_" + string(cluster_end), cluster_mask);
                 in_cluster = false;
             end
         end
+        mask_specs = append_mask_spec_local(mask_specs, "active_clusters_union", cluster_union_mask);
+        mask_specs = append_mask_spec_local(mask_specs, "active_clusters_union_block", cluster_union_block_mask);
         mask_specs = append_mask_spec_local(mask_specs, "topk_union", joint_top_mask);
         if isempty(mask_specs)
             mask_specs = append_mask_spec_local(mask_specs, "topk_union_block", joint_block_mask);
         end
+        return;
+    case "segment_union"
+        sign_groups = sign(vote_path);
+        sign_groups(sign_groups == 0) = 1;
+        segment_ids = cumsum([1; diff(sign_groups) ~= 0]);
+        segment_union_mask = false(T, 1);
+        for seg = unique(segment_ids(:))'
+            segment_idx = find(segment_ids == seg);
+            [~, local_max_idx] = max(abs(vote_path(segment_idx)));
+            center_idx = segment_idx(local_max_idx);
+            left_idx = max(1, center_idx - block_half_width);
+            right_idx = min(T, center_idx + block_half_width);
+            segment_union_mask(left_idx:right_idx) = true;
+        end
+        mask_specs = append_mask_spec_local(mask_specs, "segment_union_block", segment_union_mask);
         return;
     case "full_library"
         mask_specs = append_mask_spec_local(mask_specs, "full_path", true(T, 1));

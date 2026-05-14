@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="460" viewBox="0 0 780 460">
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222}.axis{stroke:#333;stroke-width:1}.grid{stroke:#ddd;stroke-width:1}.nore{fill:none;stroke:#1f77b4;stroke-width:2.8}.bounded{fill:none;stroke:#d62728;stroke-width:2.8;stroke-dasharray:7 5}</style>
+<text x="76" y="28" font-size="18" font-weight="600">Baby-boom house-price transition: bounded expectations vs no RE</text>
+<line class="grid" x1="76" x2="754" y1="402.00" y2="402.00"/>
+<text x="66" y="406.00" font-size="12" text-anchor="end">-0.26</text>
+<line class="grid" x1="76" x2="754" y1="314.50" y2="314.50"/>
+<text x="66" y="318.50" font-size="12" text-anchor="end">-0.13</text>
+<line class="grid" x1="76" x2="754" y1="227.00" y2="227.00"/>
+<text x="66" y="231.00" font-size="12" text-anchor="end">0.01</text>
+<line class="grid" x1="76" x2="754" y1="139.50" y2="139.50"/>
+<text x="66" y="143.50" font-size="12" text-anchor="end">0.14</text>
+<line class="grid" x1="76" x2="754" y1="52.00" y2="52.00"/>
+<text x="66" y="56.00" font-size="12" text-anchor="end">0.27</text>
+<text x="76.00" y="424" font-size="12" text-anchor="middle">2001</text>
+<text x="245.50" y="424" font-size="12" text-anchor="middle">2011</text>
+<text x="415.00" y="424" font-size="12" text-anchor="middle">2020</text>
+<text x="584.50" y="424" font-size="12" text-anchor="middle">2030</text>
+<text x="754.00" y="424" font-size="12" text-anchor="middle">2040</text>
+<line x1="76" x2="754" y1="230.42" y2="230.42" stroke="#777" stroke-width="1"/>
+<line class="axis" x1="76" x2="76" y1="52" y2="402"/>
+<line class="axis" x1="76" x2="754" y1="402" y2="402"/>
+<polyline class="nore" points="76.00,230.42 93.38,230.42 110.77,230.42 128.15,230.42 145.54,155.64 162.92,155.64 180.31,155.64 197.69,155.64 215.08,82.94 232.46,82.94 249.85,82.94 267.23,82.94 284.62,81.17 302.00,81.17 319.38,81.17 336.77,81.17 354.15,103.79 371.54,103.79 388.92,103.79 406.31,103.79 423.69,169.11 441.08,169.11 458.46,169.11 475.85,169.11 493.23,253.74 510.62,253.74 528.00,253.74 545.38,253.74 562.77,329.87 580.15,329.87 597.54,329.87 614.92,329.87 632.31,362.72 649.69,362.72 667.08,362.72 684.46,362.72 701.85,372.83 719.23,372.83 736.62,372.83 754.00,372.83"/>
+<polyline class="bounded" points="76.00,230.42 93.38,230.46 110.77,230.49 128.15,230.53 145.54,230.56 162.92,230.60 180.31,230.63 197.69,230.67 215.08,230.71 232.46,230.74 249.85,230.78 267.23,230.81 284.62,230.85 302.00,230.88 319.38,233.67 336.77,236.45 354.15,239.23 371.54,242.01 388.92,244.80 406.31,247.58 423.69,250.36 441.08,253.14 458.46,255.93 475.85,258.71 493.23,261.49 510.62,264.27 528.00,267.05 545.38,269.84 562.77,272.62 580.15,275.40 597.54,278.18 614.92,280.96 632.31,283.74 649.69,286.52 667.08,289.30 684.46,292.09 701.85,294.87 719.23,297.65 736.62,300.43 754.00,303.21"/>
+<text x="76" y="446" font-size="13">Year</text>
+<text transform="translate(18 230.0) rotate(-90)" font-size="13">House price, percent deviation from period 1</text>
+<line x1="534" x2="569" y1="70" y2="70" class="nore"/><text x="578" y="74" font-size="13">No-RE comparator</text>
+<line x1="534" x2="569" y1="94" y2="94" class="bounded"/><text x="578" y="98" font-size="13">Bounded price expectations</text>
+</svg>

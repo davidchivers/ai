@@ -1,0 +1,138 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{xurl}
+\setlength{\emergencystretch}{3em}
+\usepackage{caption}
+\usepackage{float}
+\graphicspath{{figures/}{../re_extension_section/figures/}}
+
+\title{NIMBY and Housing Extensions: RE and Coalitions}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{Extension 1: rational expectations}
+
+The first extension asks whether the paper's demographic transition changes materially once
+households are assumed to form model-consistent expectations over the future path of house prices.
+The published benchmark keeps the political mechanism in place but assumes that households do not
+forecast future changes in political support and instead treat future prices using the original
+forecasting rule. The rational-expectations exercise therefore asks whether this shortcut is doing
+substantive economic work.
+
+The current implementation keeps the exercise deliberately narrow. It shuts down coalition politics
+and solves a no-politics transition problem from 2010 to 2018 under a guessed future price path.
+Given that path, households solve backward, the cross-sectional distribution is simulated forward,
+and the implied market-clearing future price path is recovered. A rational-expectations equilibrium
+requires the guessed path to coincide with the implied path. This turns the problem into a
+high-dimensional backward-forward fixed point over an entire sequence of prices.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{re_lambda_continuation.pdf}
+\caption{Rational-expectations continuation across demographic shock sizes. The left panel plots
+the final rational-expectations price path for $\lambda \in \{0,0.5,1\}$ as log deviations from
+the baseline price level. The right panel reports the residual norm and maximum pointwise pricing
+gap along the same continuation ladder. The key pattern is smoothness rather than a regime break.}
+\end{figure}
+
+Figure 1 summarizes the continuation exercise. As the full demographic transition is turned on, the
+full-shock rational-expectations solution reconnects smoothly to nearby easier problems. This is
+useful because it suggests that the extension is not hiding a qualitatively different
+rational-expectations branch. Instead, the same localized numerical bottleneck reappears as the
+full shock is restored. The hard region migrates back toward the third model period, but the path
+itself remains close to the benchmark control-like solution.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{re_vs_paper_benchmark.pdf}
+\caption{Heuristic comparison between the published benchmark and the rational-expectations
+extension over 2010--2018. The black line is digitized from the saved local benchmark figure in the
+original project workspace and normalized at 2010. The orange dashed line is the full-shock
+rational-expectations no-politics transition, also normalized at 2010. The comparison is
+directional rather than exact because the benchmark retains politics while the extension shuts it
+down.}
+\end{figure}
+
+Figure 2 is the practical comparison for the paper. Over the shared 2010--2018 window, the
+published benchmark rises materially while the current no-politics rational-expectations path is
+nearly flat. The present rational-expectations extension therefore does not appear to ``bring
+NIMBY forward.'' The more defensible interpretation is narrower: replacing the paper's expectations
+shortcut with a model-consistent future price path does not overturn the benchmark transition. For
+paper purposes, the extension is therefore best read as a robustness result. Rational expectations
+matter at the margin, but they do not appear to generate a fundamentally different housing-market
+transition under the current calibration.
+
+The computational difficulty is nevertheless informative. The full rational-expectations problem is
+hard not because the machine is slow, but because the equilibrium object is an entire future price
+path and each candidate path requires a full backward solution plus forward simulation. The
+selection diagnostics show a sharp local bottleneck around period 3, and the continuation exercise
+shows that this bottleneck returns as the full demographic transition is restored. The extension is
+therefore useful both as a robustness check and as a transparent explanation of why a fully solved
+transition-path rational-expectations benchmark is numerically demanding.
+
+\section{Extension 2: coalitions}
+
+The second extension is more tightly connected to the paper's core mechanism. Instead of changing
+the expectations rule, it changes the political aggregation rule. The goal is to ask whether the
+paper's anti-supply mechanism becomes stronger when politically aligned owner groups receive more
+effective political weight than under equal headcount voting.
+
+This is intentionally a reduced-form political amplification exercise rather than a full coalition
+formation game. The benchmark political model is nested exactly when all coalition weights are set
+to zero. From that benchmark, the extension reweights the voting influence of homeowners, older
+homeowners, leveraged owners, and large-housing-position owners one margin at a time, and then in a
+combined case. Because only the political weighting object changes, the comparison is clean: the
+extension asks whether stronger owner-side political influence shifts the steady-state political
+equilibrium in the expected direction.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{coalition_extension.pdf}
+\caption{Reduced-form coalition-power extension. The left panel reports the equilibrium price shift
+relative to the equal-weight benchmark for each one-margin case and the combined coalition case. The
+right panel plots the benchmark and combined coalition objective curves across the same house-price
+grid. Coalition weighting shifts the minimum toward a higher equilibrium price, with the strongest
+movement coming from owner-based political overweighting.}
+\end{figure}
+
+Figure 3 delivers the main coalition message. The equal-weight benchmark price is about 1.8138. The
+owner-only, old-owner-only, and combined coalition cases all raise the selected equilibrium price to
+about 1.8276, which is roughly a 0.76 percent increase on this grid. By contrast, the
+leveraged-owner-only and big-house-only cases move the weighted vote object without changing the
+selected price at this resolution. The practical implication is that the coalition force that seems
+to matter most is not ``owners'' in every possible sense, but specifically the groups most closely
+aligned with the paper's baseline mechanism: homeowners, especially older homeowners.
+
+This changes the paper more than the rational-expectations extension, but it changes it in a
+reinforcing way rather than an overturning way. The coalition-power exercise does not reverse the
+paper's lifecycle NIMBY mechanism. It sharpens it. A natural paper-level interpretation is that the
+benchmark mechanism may understate the anti-supply force if politically organized owner groups carry
+more influence than equal headcount would imply. That makes the extension worth including, but it
+should still be described honestly as a reduced-form coalition-power exercise rather than a full
+coalition game.
+
+A true coalition model would require substantially more structure: explicit group formation,
+bargaining over policy, and dynamic political negotiation over time. That is a much richer object
+than what is needed for the current paper. For present purposes, the reduced-form extension is
+useful precisely because it isolates the amplification channel cleanly and shows that stronger owner
+political power pushes the model in the same direction as the published benchmark.
+
+\section{Interpretation}
+
+Taken together, the two extensions push in different ways. The rational-expectations extension is a
+supporting robustness exercise: it suggests that the paper's lifecycle NIMBY mechanism is not
+primarily an artifact of the expectations shortcut. The coalition extension is more substantive: it
+shows that giving more effective political weight to owner groups strengthens the anti-supply
+equilibrium in the expected direction. If only one extension is emphasized in the paper, the
+coalition-power result is the one closer to the core economic mechanism. If both are included, the
+cleanest summary is that rational expectations leave the paper's message broadly intact, while
+political amplification through owner-side coalition power strengthens it.
+
+\end{document}

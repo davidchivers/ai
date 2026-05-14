@@ -5,6 +5,10 @@ this_file = mfilename('fullpath');
 this_dir = fileparts(this_file);
 project_root = fileparts(fileparts(this_dir));
 baseline_dir = fullfile(project_root, 'code', 'steadystate');
+summary_path = fullfile(this_dir, 'transition_re_tuning_summary.csv');
+results_path = fullfile(this_dir, 'transition_re_tuning_results.mat');
+live_summary_path = fullfile(this_dir, 'transition_re_tuning_summary_live.csv');
+live_results_path = fullfile(this_dir, 'transition_re_tuning_results_live.mat');
 
 addpath(baseline_dir);
 addpath(this_dir);
@@ -42,28 +46,30 @@ configs = {
 };
 
 num_configs = numel(configs);
-raw_results = repmat(struct( ...
-    'config_id', NaN, ...
-    'status', "", ...
-    'residual_norm', NaN, ...
-    'max_abs_gap', NaN, ...
-    'max_abs_update', NaN, ...
-    'accepted_update', "", ...
-    'worst_gap_period', NaN, ...
-    'worst_excess_demand_period', NaN, ...
-    'worst_excess_demand', NaN, ...
-    'price_min', NaN, ...
-    'price_max', NaN, ...
-    'damping', NaN, ...
-    'smoothing_weight', NaN, ...
-    'targeted_correction_weight', NaN, ...
-    'line_search_scales', "", ...
-    'elapsed_seconds', NaN), num_configs, 1);
+raw_results = initialize_raw_results(num_configs);
+
+if isfile(live_results_path)
+    resume_data = load(live_results_path, 'raw_results', 'configs');
+    if isfield(resume_data, 'raw_results') && isfield(resume_data, 'configs') && ...
+            numel(resume_data.raw_results) == num_configs && isequaln(resume_data.configs, configs)
+        raw_results = resume_data.raw_results;
+        completed_count = sum(arrayfun(@(s) string(s.status) ~= "pending", raw_results));
+        fprintf('Resuming from live checkpoint: %d / %d configs already have results.\n', completed_count, num_configs);
+    else
+        fprintf('Ignoring incompatible live checkpoint and starting fresh.\n');
+    end
+end
 
 fprintf('=== Transition RE Tuning Grid ===\n');
 fprintf('Configs: %d\n', num_configs);
 
 for i = 1:num_configs
+    if string(raw_results(i).status) ~= "pending"
+        fprintf('\nConfig %d / %d already completed with status %s, skipping.\n', ...
+            i, num_configs, string(raw_results(i).status));
+        continue;
+    end
+
     params = base_params;
     config = configs{i};
     fields = fieldnames(config);
@@ -101,14 +107,50 @@ for i = 1:num_configs
     raw_results(i).targeted_correction_weight = params.targeted_correction_weight;
     raw_results(i).line_search_scales = string(mat2str(params.line_search_scales));
     raw_results(i).elapsed_seconds = toc;
+
+    results_table = build_results_table(raw_results);
+    writetable(results_table, live_summary_path);
+    save(live_results_path, 'results_table', 'raw_results', 'configs');
 end
 
+results_table = build_results_table(raw_results);
+
+writetable(results_table, summary_path);
+save(results_path, 'results_table', 'raw_results', 'configs');
+
+if isfile(live_summary_path)
+    delete(live_summary_path);
+end
+if isfile(live_results_path)
+    delete(live_results_path);
+end
+
+fprintf('\nSaved %s\n', summary_path);
+fprintf('Saved %s\n', results_path);
+end
+
+function raw_results = initialize_raw_results(num_configs)
+raw_results = repmat(struct( ...
+    'config_id', NaN, ...
+    'status', "pending", ...
+    'residual_norm', NaN, ...
+    'max_abs_gap', NaN, ...
+    'max_abs_update', NaN, ...
+    'accepted_update', "", ...
+    'worst_gap_period', NaN, ...
+    'worst_excess_demand_period', NaN, ...
+    'worst_excess_demand', NaN, ...
+    'price_min', NaN, ...
+    'price_max', NaN, ...
+    'damping', NaN, ...
+    'smoothing_weight', NaN, ...
+    'targeted_correction_weight', NaN, ...
+    'line_search_scales', "", ...
+    'elapsed_seconds', NaN), num_configs, 1);
+end
+
+function results_table = build_results_table(raw_results)
 results_table = struct2table(raw_results);
-results_table = sortrows(results_table, {'status', 'residual_norm', 'max_abs_gap'}, {'ascend', 'ascend', 'ascend'});
-
-writetable(results_table, fullfile(this_dir, 'transition_re_tuning_summary.csv'));
-save(fullfile(this_dir, 'transition_re_tuning_results.mat'), 'results_table', 'raw_results', 'configs');
-
-fprintf('\nSaved %s\n', fullfile(this_dir, 'transition_re_tuning_summary.csv'));
-fprintf('Saved %s\n', fullfile(this_dir, 'transition_re_tuning_results.mat'));
+results_table = sortrows(results_table, {'status', 'residual_norm', 'max_abs_gap', 'config_id'}, ...
+    {'ascend', 'ascend', 'ascend', 'ascend'});
 end

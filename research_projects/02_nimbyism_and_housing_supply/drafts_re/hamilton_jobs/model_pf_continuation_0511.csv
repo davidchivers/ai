@@ -1,0 +1,7 @@
+row_id,run_tag,probe_type,horizon_t,tail_years,shock_amplitude,pass_through,ttb_proxy_lag_years,source_run_tag,source_outer,no_re_tag,hybrid_switch_period,outer_iter,basis_dim,broyden_damping,broyden_step_cap,basis_step_cap,basis_tail_weight,notes
+1,pfh20_tail80_pt006_ttb4,horizon,20,80,0.25,0.006,4,bv4p_r25_d14,14,nore80bv4_006,20,12,8,0.30,0.0030,0.00045,0.14,horizon_continuation_T20_best_family
+2,pfh40_tail80_pt006_ttb4,horizon,40,80,0.25,0.006,4,bv4p_r25_d14,14,nore80bv4_006,40,14,8,0.30,0.0030,0.00045,0.14,horizon_continuation_T40_best_family
+3,pfh60_tail80_pt006_ttb4,horizon,60,80,0.25,0.006,4,bv4p_r25_d14,14,nore80bv4_006,40,16,10,0.30,0.0030,0.00045,0.14,horizon_continuation_T60_best_family
+4,pfa80_tail80_pt006_ttb4_a010,amplitude,80,80,0.10,0.006,4,bv4p_r25_d14,14,nore80bv4_006,40,12,10,0.30,0.0030,0.00045,0.14,shock_amplitude_continuation_a010
+5,pfa80_tail80_pt006_ttb4_a015,amplitude,80,80,0.15,0.006,4,bv4p_r25_d14,14,nore80bv4_006,40,14,10,0.30,0.0030,0.00045,0.14,shock_amplitude_continuation_a015
+6,pfa80_tail80_pt006_ttb4_a020,amplitude,80,80,0.20,0.006,4,bv4p_r25_d14,14,nore80bv4_006,40,16,10,0.30,0.0030,0.00045,0.14,shock_amplitude_continuation_a020

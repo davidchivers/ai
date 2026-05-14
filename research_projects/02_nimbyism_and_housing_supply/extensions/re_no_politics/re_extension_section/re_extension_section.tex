@@ -1,0 +1,153 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{microtype}
+\usepackage{xurl}
+\setlength{\emergencystretch}{3em}
+\usepackage{caption}
+\usepackage{float}
+
+\title{RE Extension}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{RE Extension}
+
+This section studies a rational-expectations extension of the demographic transition experiment in
+\textit{NIMBYism and the Housing Supply}. The benchmark quantitative exercises in the paper treat
+future house prices using the model's original forecasting rule. The natural extension is to ask
+whether the main housing-market transition changes materially when households instead form
+expectations over an internally consistent future price path. We keep the exercise deliberately
+narrow. In particular, we abstract from coalition formation and bargaining and focus only on the
+no-politics transition problem, so that the expectations channel can be isolated from the political
+aggregation channel.
+
+The extension solves a finite-horizon transition problem on the observed U.S. demographic path from
+2010 to 2018. Given a guessed future price path, households solve their dynamic problem backward,
+the cross-sectional distribution is simulated forward, and the implied market-clearing future price
+path is recovered from housing demand and supply. A rational-expectations equilibrium requires the
+guessed path to coincide with the implied path. This turns the problem into a high-dimensional
+backward-forward fixed point in which the object to be solved is an entire future sequence of house
+prices rather than a scalar steady state.
+
+\subsection*{Continuation design}
+
+Because the full rational-expectations transition is numerically demanding, we evaluate the
+extension through a coarse continuation design. Let $\lambda \in [0,1]$ scale the demographic
+transition around the 2010 baseline age structure. At $\lambda = 0$, every period uses the
+baseline demographic profile. At $\lambda = 1$, the model uses the full 2010--2018 demographic
+path. Intermediate values interpolate linearly between these two objects. Each step in the ladder
+is warm-started from the previous step's final price path. The continuation ladder therefore asks
+whether the full-shock case is connected smoothly to nearby easier problems or whether rational
+expectations reveal a distinct transition branch.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/re_lambda_continuation.pdf}
+\caption{Rational-expectations continuation across demographic shock sizes. The left panel plots the
+final rational-expectations price path for $\lambda \in \{0,0.5,1\}$ as log deviations from the
+baseline price level. The right panel reports the residual norm and the maximum pointwise pricing
+gap along the same continuation ladder. The key pattern is smoothness: as the full demographic
+transition is turned on, the rational-expectations solution moves gradually rather than jumping to a
+qualitatively different branch.}
+\end{figure}
+
+Figure 1 delivers the main message of the continuation exercise. The full-shock
+rational-expectations path is not dramatically different from the paths obtained under smaller
+demographic shifts. The continuation statistics also improve monotonically in residual norm as
+$\lambda$ rises, while the largest pointwise pricing error returns to the familiar difficult region
+near the full-shock case. At low values of $\lambda$, the hardest period sits late in the path. As
+the full demographic transition is restored, the bottleneck shifts back toward the third model
+period. This is useful evidence for interpretation. It suggests that the extension is not hiding a
+large, economically distinct rational-expectations equilibrium; rather, the same localized
+bottleneck becomes harder to clear as the full demographic transition is switched on.
+
+\subsection*{Benchmark and challenger RE solutions}
+
+Within the rational-expectations extension itself, we compare two full-shock solutions. The
+benchmark solution uses the most stable global-control update rule. The challenger relaxes the
+candidate-selection rule so that the solver is more willing to trade average residual fit against
+local worst-gap performance. This comparison is informative because it shows whether the economic
+transition path is sensitive to the numerical details of the update rule.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.98\textwidth]{figures/re_solver_comparison.pdf}
+\caption{Benchmark and challenger rational-expectations solutions under the full demographic
+transition. The left panel plots the final price paths implied by the benchmark control rule and the
+best relaxed challenger. The right panel plots the corresponding raw log-price residuals. The
+challenger slightly improves average residual fit, but the two price paths remain close and the
+largest residual remains concentrated in a narrow set of periods.}
+\end{figure}
+
+Figure 2 shows that the economic path is much more stable than the raw numerical diagnostics might
+suggest. The relaxed challenger slightly lowers the overall residual norm and keeps nontrivial
+updates alive for one additional iteration, but it does so by worsening the largest local pricing
+gap. The two final price paths are nevertheless very similar. The differences are concentrated in a
+small set of later periods rather than spread across the whole transition. This reinforces the
+interpretation from the continuation exercise: rational expectations appear to matter at the margin,
+but the extension does not reveal a qualitatively different transition in this calibration.
+
+\subsection*{Heuristic comparison to the paper benchmark}
+
+The question for the paper is not only whether the rational-expectations solver converges cleanly,
+but also whether allowing households to internalize the future price path seems to bring the NIMBY
+mechanism forward in time relative to the published benchmark. The clean apples-to-apples comparison
+is not available from a shared export file, because the published benchmark retains the political
+aggregation channel while the present extension shuts politics down to isolate expectations.
+Nevertheless, the saved benchmark figure used in the original project is informative enough to
+construct a directional comparison over the overlapping 2010--2018 window. Figure 3 therefore
+normalizes both series at 2010 and overlays the full-shock rational-expectations path on a
+digitized version of the local benchmark figure.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth]{figures/re_vs_paper_benchmark.pdf}
+\caption{Heuristic comparison between the published benchmark and the rational-expectations
+extension over 2010--2018. The black line is digitized from the local saved benchmark figure
+\texttt{Baseline.jpg} in the original project workspace and normalized at 2010. The orange dashed
+line is the full-shock rational-expectations no-politics transition, also normalized at 2010. The
+comparison is intentionally directional rather than exact because the two environments differ in the
+presence of coalition politics. The main pattern is that the benchmark rises steadily through the
+window, while the rational-expectations extension remains nearly flat.}
+\end{figure}
+
+Figure 3 sharpens the interpretation. The current rational-expectations extension does not by
+itself appear to ``bring NIMBY forward.'' Over the shared 2010--2018 window, the benchmark path
+rises materially while the no-politics rational-expectations path barely moves relative to its 2010
+level. The most reasonable reading is therefore not that rational expectations generate an earlier
+version of the benchmark transition. Instead, the benchmark's stronger short-run appreciation seems
+to be tied to the broader political benchmark environment rather than to model-consistent price
+expectations alone.
+
+\subsection*{Why the full RE transition is computationally hard}
+
+The computational difficulty in this extension is structural rather than a matter of insufficient
+hardware. First, the equilibrium object is an entire future price path. Second, each candidate
+price path requires a full backward solution of household decisions and a forward simulation of the
+distribution. Third, the pricing errors are not uniform across periods: they are sharply localized.
+The continuation exercise shows that the hard region returns to the third model period once the full
+demographic transition is restored. Finally, alternative update rules reveal a real ranking
+problem. A candidate can improve the overall residual norm while worsening the largest pointwise
+pricing error. That is why a brute-force increase in computation is not enough by itself. The main
+limitation is the algorithmic difficulty of moving the entire path while respecting the localized
+equilibrium condition in the difficult periods.
+
+\subsection*{Interpretation}
+
+Taken together, the extension points to a cautious but economically useful conclusion. Allowing for
+rational expectations along the demographic transition does not overturn the benchmark message of
+the paper. Instead, it generates modest and localized adjustments to the housing price path. The
+full-shock rational-expectations case reconnects smoothly to nearby easier continuation problems,
+and the benchmark and challenger rational-expectations paths remain close even when the numerical
+ranking criteria differ. For the purposes of the paper, this is enough to justify a qualitative
+reading of the extension: rational expectations do not appear to create a fundamentally different
+housing-market transition under the present calibration, although they do sharpen the numerical
+fixed-point problem in a small set of periods.
+
+\end{document}

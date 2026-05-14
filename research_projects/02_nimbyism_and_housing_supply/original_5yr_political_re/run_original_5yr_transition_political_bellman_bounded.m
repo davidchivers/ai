@@ -1,5 +1,5 @@
 function [summary, results] = run_original_5yr_transition_political_bellman_bounded( ...
-    max_k, max_iter, price_update_mode, political_target, political_update_weight, run_tag, political_update_rule, price_guess_level, demographic_source_mode, outer_line_search_scales, outer_line_search_tol, max_targeted_periods, target_block_half_width, target_mask_mode)
+    max_k, max_iter, price_update_mode, political_target, political_update_weight, run_tag, political_update_rule, price_guess_level, demographic_source_mode, outer_line_search_scales, outer_line_search_tol, max_targeted_periods, target_block_half_width, target_mask_mode, price_guess_csv_path, outer_step_normalization, outer_target_log_step)
 % Run the first bounded political Bellman wrapper on the original 5-year timing.
 
 if nargin < 1 || isempty(max_k)
@@ -44,6 +44,15 @@ end
 if nargin < 14
     target_mask_mode = [];
 end
+if nargin < 15 || isempty(price_guess_csv_path)
+    price_guess_csv_path = '';
+end
+if nargin < 16
+    outer_step_normalization = [];
+end
+if nargin < 17
+    outer_target_log_step = [];
+end
 
 this_file = mfilename('fullpath');
 this_dir = fileparts(this_file);
@@ -60,8 +69,8 @@ T_full = numel(demographic_path_full.periods);
 max_k = min(max(1, round(max_k)), T_full);
 demographic_path = truncate_demographic_path_local(demographic_path_full, max_k);
 
-price_path_guess = price_guess_level .* ones(max_k, 1);
-guess_source = sprintf('flat_original_ss_root_%0.12f', price_guess_level);
+price_path_guess = build_price_guess_local(price_guess_level, price_guess_csv_path, max_k);
+guess_source = describe_guess_source_local(price_guess_level, price_guess_csv_path, price_path_guess);
 run_tag = make_run_tag_local(run_tag, max_k, max_iter, price_update_mode, political_target, political_update_weight, political_update_rule);
 
 params = default_params_local(max_iter, price_update_mode, political_target, political_update_weight, political_update_rule);
@@ -80,6 +89,12 @@ end
 if ~isempty(target_mask_mode)
     params.pass_params.target_mask_mode = string(target_mask_mode);
 end
+if ~isempty(outer_step_normalization)
+    params.outer_step_normalization = char(string(outer_step_normalization));
+end
+if ~isempty(outer_target_log_step)
+    params.outer_target_log_step = outer_target_log_step;
+end
 
 fprintf('=== Original 5-year bounded political Bellman wrapper ===\n');
 fprintf('Periods: %d\n', max_k);
@@ -87,6 +102,12 @@ fprintf('Iterations: %d\n', max_iter);
 fprintf('Target: %s\n', params.political_target);
 fprintf('Update mode: %s\n', params.price_update_mode);
 fprintf('Update rule: %s\n', params.political_update_rule);
+if isfield(params, 'outer_step_normalization')
+    fprintf('Outer step normalization: %s\n', params.outer_step_normalization);
+end
+if isfield(params, 'outer_target_log_step')
+    fprintf('Outer target log step: %.6g\n', params.outer_target_log_step);
+end
 fprintf('Run tag: %s\n', run_tag);
 fprintf('Guess source: %s\n', guess_source);
 fprintf('Demographic source mode: %s\n', demographic_source_mode);
@@ -136,6 +157,43 @@ writematrix(results.final_price_path(:), final_price_path_csv);
 writematrix(results.final_vote_path(:), final_vote_path_csv);
 writematrix(results.final_anchor_path(:), final_anchor_path_csv);
 save(results_path, 'summary', 'results', 'demographic_path', 'price_path_guess');
+end
+
+function price_path_guess = build_price_guess_local(price_guess_level, price_guess_csv_path, max_k)
+if ~isempty(price_guess_csv_path)
+    price_path_guess = readmatrix(price_guess_csv_path);
+elseif isnumeric(price_guess_level)
+    price_path_guess = price_guess_level;
+else
+    error('price_guess_level must be numeric when price_guess_csv_path is empty.');
+end
+
+price_path_guess = price_path_guess(:);
+if isempty(price_path_guess)
+    error('Price-path guess is empty.');
+end
+if any(~isfinite(price_path_guess)) || any(price_path_guess <= 0)
+    error('Price-path guess must contain finite positive values only.');
+end
+
+if isscalar(price_path_guess)
+    price_path_guess = price_path_guess .* ones(max_k, 1);
+elseif numel(price_path_guess) < max_k
+    price_path_guess = [price_path_guess; price_path_guess(end) .* ones(max_k - numel(price_path_guess), 1)];
+elseif numel(price_path_guess) > max_k
+    price_path_guess = price_path_guess(1:max_k);
+end
+end
+
+function guess_source = describe_guess_source_local(price_guess_level, price_guess_csv_path, price_path_guess)
+if ~isempty(price_guess_csv_path)
+    [~, guess_name, guess_ext] = fileparts(price_guess_csv_path);
+    guess_source = sprintf('path_seed_%s%s_len%d', guess_name, guess_ext, numel(price_path_guess));
+elseif isscalar(price_guess_level)
+    guess_source = sprintf('flat_original_ss_root_%0.12f', price_guess_level);
+else
+    guess_source = sprintf('inline_path_seed_len%d', numel(price_path_guess));
+end
 end
 
 function demographic_path_full = build_demographic_path_local(project_root, demographic_source_mode)

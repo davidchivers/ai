@@ -1,0 +1,7 @@
+build/
+truth/*
+!truth/.gitkeep
+SS_no_politics_iter.mat
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
