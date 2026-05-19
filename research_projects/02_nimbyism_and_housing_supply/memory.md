@@ -4,6 +4,927 @@ Most recent session first.
 
 ---
 
+### Session: 2026-05-18 (paper cohort-output packet)
+- 2026-05-19 post-agent audit fixes: reviewed the four local audit reports
+  (`qa_language_style_0519.md`, `qa_math_notation_0519.md`,
+  `qa_layout_figures_refs_0519.md`, and `qa_citations_refs_0519.md`) and
+  applied only low-risk changes. Removed `\enlargethispage{4\baselineskip}`
+  near Figure 6, which had caused the page number on PDF page 20 to collide
+  with body text. Moved the Table 3 discussion before the table. Fixed
+  citation/reference consistency for Fischel's zoning article and homevoter
+  book, Gyourko and Molloy, Kogan et al., Diaz and Luengo-Prado, Bunten,
+  Frieden, Li, Mumtaz-Sustek, Turner et al., and the LTV Greenwald source.
+  Also corrected "Housing services depend" and "bequeath". Recompiled TeX,
+  regenerated LyX with `tex2lyx`, exported PDF through LyX, visually checked
+  pages 18, 20, 23, and 24, and synced the refreshed TeX/LyX/PDF to both
+  Dropbox May-submission folders and the project root. Deliberately did not
+  change the user's retained `impact` wording or replace Figures 7, 9, and 10
+  before Hamilton delivers final verified rows.
+- 2026-05-19 12:56 BST Hamilton monitor: checked active rows after the local
+  audit fixes. Figure 7 long-run has one completed paper-matched candidate
+  (lambda 20%, gap `0.000212989429024831`) and two running near-partials
+  (lambda 5% and 10%, both about `0.00025`). No-tail immigration has 4/12
+  complete and 4 partial; the replacement no-tail job `17224966` is running
+  rows `2`, `3`, `6`, and `9`, with `10`--`12` pending. Tail40 immigration is
+  still live. Permanent aggregate-demand tail40 completed 4/4 but remains
+  useful only for the fixed-belief +10% row; positive-lambda gaps are
+  diagnostic (`0.0033`--`0.0046`). Low-fertility tail40 now has 4/12 complete
+  and 2 partial, including three paper-matched candidates.
+- 2026-05-19 intro Figure 1/2 layout: user asked to show Figures 1 and 2
+  side-by-side. Combined the two intro figures into one side-by-side float,
+  while keeping their separate figure numbers and labels so references remain
+  stable. Shortened the captions to fit the half-width layout. Recompiled TeX,
+  regenerated LyX, exported through LyX, visually checked the rendered page,
+  and synced TeX/LyX/PDF to both Dropbox May-submission folders and the project
+  root.
+- 2026-05-19 conclusion policy paragraph: user approved adding a short policy
+  implication. Added a restrained paragraph at the end of the conclusion:
+  demographic change can increase the political weight of households with an
+  interest in preserving scarcity, so supply reforms may need complements that
+  reduce private capital losses from new construction or broaden local
+  participation. Recompiled TeX, regenerated LyX, exported through LyX, checked
+  the conclusion/reference break on pages 24-25, and synced TeX/LyX/PDF to both
+  Dropbox May-submission folders and the project root.
+- 2026-05-19 introduction roadmap: user approved adding a conventional roadmap
+  at the end of the introduction. Inserted a compact paragraph after Figure 3
+  and before Related Literature. The first version orphaned its final line at
+  the top of page 6, so shortened it; the final PDF keeps the roadmap together
+  on page 5 and starts Section 2 cleanly on page 6. Recompiled TeX,
+  regenerated LyX, exported through LyX, visually checked pages 5-6, and synced
+  TeX/LyX/PDF to both Dropbox May-submission folders and the project root.
+- 2026-05-19 credibility typo/reference pass: applied the approved low-risk
+  copy-editing pass to the May submission source. Fixes included the corrupted
+  title acknowledgement, Sahn/Kulka citation-year/link mismatches, Mast quote
+  marks, the orphan `20` in the income-process paragraph, duplicate
+  Duranton-Kerr reference, the broken introduction sentence about the boom
+  cohort exerting political pressure, and several small typo/reference
+  capitalisation issues. Recompiled TeX, regenerated LyX, exported through LyX,
+  checked the PDF text for the flagged strings, visually checked affected
+  pages, and synced TeX/LyX/PDF to both Dropbox May-submission folders and the
+  project root.
+- 2026-05-19 representative-locality caveat: after the referee-style local-to-
+  aggregate critique, added a limited clarification to the housing-supply
+  section that national demographic changes are interpreted as common changes
+  in representative local housing markets, abstracting from spatial sorting and
+  local concentration of particular demographic groups. The projection
+  paragraph now calls the immigration projection paths representative-locality
+  demographic paths. Recompiled the May submission TeX, regenerated LyX,
+  exported through LyX, visually checked the affected rendered pages, and
+  synced TeX/LyX/PDF to both Dropbox May-submission folders and the project
+  root.
+- 2026-05-19 color cleanup: user asked to turn the blue and green revision
+  text black. Changed the manuscript display macros `\rev`, `\revmath`, and
+  `\zac` so they pass content through in black, and removed the remaining
+  explicit blue color command on the historical accounting table. The source
+  still preserves the markup commands, but the compiled PDF reads as normal
+  black text. Recompiled the May submission TeX cleanly, regenerated LyX, and
+  exported through LyX before syncing the TeX/LyX/PDF to both Dropbox
+  May-submission folders and the project root.
+- 2026-05-19 causal-language softening: user agreed that the 15 percent result
+  should be less causal but not structurally reframed. Replaced "responsible
+  for" in the abstract with "can account for" and "has led to" in the
+  introduction with "implies". The user preferred to keep the existing "impact"
+  phrasing, so restored it in the abstract, introduction, and projection
+  paragraph. Recompiled TeX, regenerated LyX, exported through LyX, and synced
+  the May submission TeX/LyX/PDF to both Dropbox folders and the project root.
+- 2026-05-19 immigration continuation: user asked to keep the Hamilton
+  immigration rows going if possible. Original no-tail job `17216897`
+  (`bb80mif18`) had timed out rows `2`, `3`, and `6` near convergence under the
+  old 12-hour limit; row `7` was still running. Submitted replacement no-tail
+  job `17224966` (`bb80mifc19`) for rows `2`, `3`, `6`, and `9`-`12` using the
+  updated 24-hour script, then cancelled old pending no-tail rows `9`-`12` to
+  avoid duplicate output. Immigration tail40 job `17217726` remains live and
+  should continue as the 24-hour backup.
+- 2026-05-19 median-voter wording revert: after the referee-style audit was
+  judged too fine-grained, reverted the visible "local majority" framing back
+  to the paper's median-voter language while keeping a short footnote caveat
+  about the theorem's standard single-peaked-preference condition. Section 3.4
+  still uses only the aggregate vote share, the individual vote indicator, and
+  the median-voter condition \(S_t(p^h)=1/2\). The May submission TeX compiled
+  cleanly; the LyX file was regenerated from the corrected TeX and exported to
+  PDF through LyX; the corrected TeX/LyX/PDF were synced to both Dropbox
+  May-submission folders and the project root.
+- 2026-05-19 Zac LyX handoff: inspected the new Dropbox file
+  `Gross and Chivers (2025) NIMBYism and the Housing Supply Gross Edits.lyx`.
+  The "reduced-form housing-market block" phrasing was ours from recent
+  model/equilibrium edits. Replaced it in green with the clearer market-clearing
+  formulation: political voting determines permitted housing and, conditional
+  on that permitted supply, the house price clears the local housing market.
+  Also applied Zac's minor fixes in green (abstract quotation marks, `periods`,
+  `non-negative`, `transition path`, and British `-ise` spellings). Refreshed
+  the May submission TeX/LyX/PDF in Dropbox, mirrored it to the `_NIMBY RE 2026`
+  submission folder and project root, and verified that the LyX file exports a
+  PDF using the bundled relative-path `Figures/` folder.
+- 2026-05-19 06:04 BST Hamilton monitor: original aggregate-demand pressure
+  job `17210353` finalized all 15/15 rows. Fixed-belief rows are exact, but
+  positive-lambda aggregate-demand rows remain diagnostic rather than
+  graph-ready, with completed gaps from about `0.00134` to `0.00498`.
+  Replacement permanent-demand tail40 job `17220340` remains 1/4 complete and
+  3 partial; learning-row gaps are still large (`0.00432`, `0.00775`,
+  `0.01225`). Figure 7 long-run continues to improve but has not finalized
+  (`0.000345`, `0.000526`, `0.000519` for lambda 0.05, 0.10, 0.20).
+- 2026-05-19 04:34 BST Hamilton monitor: replacement permanent aggregate-demand
+  tail40 job `17220340` is now running cleanly with 1/4 rows complete. The
+  fixed-belief `+10%` row is exact (`2.22e-16`), but positive-lambda rows are
+  only rough running partials (`0.00478`, `0.00957`, `0.01532`), so no
+  graph-ready permanent-demand tail figure is available yet. Figure 7 long-run
+  has improved after six iterations (`0.0003825`, `0.0005838`, `0.0006484` for
+  lambda 0.05, 0.10, 0.20), but still has 0/3 completed rows.
+- 2026-05-19 overnight packet repair: the permanent aggregate-demand tail40
+  packet failure was mechanical, not an economics result. The tail40 CSV had
+  unquoted commas in the notes field, so MATLAB misread the grid and the runner
+  could not find `row_id`. Fixed the local CSV, removed the stale `SourceMat`
+  override from the tail40 Slurm file, uploaded both to Hamilton, validated the
+  remote CSV at 44 columns for all four rows, and resubmitted the replacement
+  job as `17220340` (`bb80madt18`). It was initially pending by scheduler
+  priority with closeout 0/4 complete and 0 partial.
+- 2026-05-19 live user update: current Hamilton check shows progress but no
+  graph-ready replacement yet. Figure 7 long-run `17216875` is still 0/3
+  complete with 3 partial rows after three iterations (`0.000446059947012894`,
+  `0.000800725244895961`, `0.00126551915639001` for lambda 0.05, 0.10, 0.20).
+  Immigration no-tail remains 2/12 complete with 6 partial; low lambda 0.10
+  improved to `0.000804071705821312` and low lambda 0.20 to
+  `0.00127076432427359`. Immigration tail40 remains 2/12 complete and now has
+  4 partial. Low-fertility tail40 remains 2/12 complete and now has 4 partial,
+  including 25% lambda 0.05 at `0.000498616698983767`. Aggregate-demand
+  original final row improved to `0.0187206033558995` but remains far from
+  usable.
+- 2026-05-19 02:34 BST Hamilton monitor: priority rows are moving but still
+  not final enough for graph replacement. Figure 7 long-run `17216875` is
+  still 0/3 complete with 3 partial rows after three iterations: lambda `0.05`
+  gap `0.000446059947012894`, lambda `0.10` gap
+  `0.000800725244895961`, lambda `0.20` gap `0.00126551915639001`.
+  Immigration no-tail `17216897` is 2/12 complete and 6 partial; the
+  low/medium fixed-belief rows are exact and the positive-lambda partials are
+  in the `0.000448`--`0.001589` range. Immigration tail40 `17217726` is now
+  2/12 complete and 3 partial, with low and medium fixed-belief rows exact.
+  Low-fertility tail40 `17217736` is now 2/12 complete and 3 partial; 10% and
+  25% fixed-belief rows are exact, while 10% positive-lambda partials are
+  `0.000472880515885899`, `0.00089598879101338`, and
+  `0.00159288173904395`. Aggregate-demand original final row `17210353_15`
+  remains running; partial gap improved to `0.0233959611709528` but remains
+  far from graph-useful.
+- 2026-05-19 01:04 BST Hamilton monitor: priority figure queue has started
+  materially. Figure 7 long-run job `17216875` has all three rows running with
+  one partial iteration each: lambda `0.05` gap `0.000494216430469796`,
+  lambda `0.10` gap `0.000988432860939597`, and lambda `0.20` gap
+  `0.0019768657218786`. Immigration no-tail `17216897` has 2/12 complete and
+  4 partial; low and medium fixed-belief rows are exact and positive-lambda
+  partials are around `0.000496` to `0.001985`. Immigration tail40 `17217726`
+  has 1/12 complete and 2 partial. Low-fertility tail40 `17217736` has the
+  10 percent fixed-belief row complete and exact, plus three positive-lambda
+  partial rows. Permanent aggregate-demand tail40 `17217730` failed all four
+  rows quickly with exit `1:0`, so it is no longer a live figure source unless
+  investigated. Aggregate-demand original `17210353` row 15 is now running
+  but its early partial gap is large (`0.0365421877703488`) for `+20%`,
+  lambda `0.20`.
+- 2026-05-18 overnight referee workflow continuation: continued the
+  no-main-TeX referee/evidence workflow. Added
+  `referee/REFEREE_RESPONSE_PLAN_MAY2026_POINT_BY_POINT.md` keyed to the actual
+  IER referee comments; added
+  `referee/green_external_discipline_snippets_may2026.tex` with review-only
+  green LaTeX paragraphs and a candidate external-validation table; and added
+  `referee/MANUSCRIPT_RISK_CHECKLIST_MAY2026.md` summarizing local audit-agent
+  concerns. Extracted the downloaded Pew zoning-survey toplines, Hall-Yoder
+  homeownership-turnout paper, and Census HVS press release to text on `D:`.
+  Built a cleaned evidence CSV at
+  `D:\AI_storage\spillover\nimby_external_discipline_0518\external_discipline_candidate_moments_clean_0518.csv`.
+  Strongest usable external moments: HVS homeownership rises from 37.9 percent
+  under age 35 to 79.0 percent for ages 65+; SIPP home-equity holding rises
+  from 31.8 percent under age 35 to 79.5 percent at ages 70--74; Pew reports
+  58 percent support for small multi-unit buildings on residential lots and
+  49 percent support for smaller yards/closer building; Hall-Yoder estimates a
+  2.7--5.1 percentage-point homeownership effect on local general-election
+  turnout and an additional roughly 4 percentage points when zoning is on the
+  ballot. The main recommended paper move is a compact external-validation
+  appendix, not a new structural exercise. Tried Oracle browser mode for the
+  requested outside audit, but it failed before submission because the browser
+  session was not logged in / no ChatGPT cookies were applied and the model
+  selector could not be located. Rendered the exact manual-paste bundle instead:
+  `D:\AI_storage\spillover\nimby_external_discipline_0518\oracle_nimby_referee_audit_bundle_0518.md`.
+- 2026-05-18 22:03 BST Hamilton monitor: checked `squeue`, `sacct`, and all
+  priority closeouts. Jobs `17216898` (`bb80mav18`, corrected alternative
+  voting) and `17216899` (`bb80mpr18`, corrected non-financial preferences)
+  were cancelled before starting (`CANCELLED by 25334`), so the heartbeat
+  monitor was updated to stop reporting their empty closeouts unless the user
+  asks to resubmit or investigate. Remaining active/pending jobs are Figure 7
+  long-run `17216875`, immigration no-tail `17216897`, immigration tail40
+  `17217726`, low-fertility tail40 `17217736`, permanent-demand tail40
+  `17217730`, and the final pending row of original aggregate-demand
+  `17210353`. Original aggregate-demand closeout is 14/15 complete: fixed
+  belief rows are exact; positive-lambda rows are diagnostic-level gaps. The
+  permanent composition/replacement-ratio packet `17206110` is 5/9 complete
+  with four partial/timeouts and remains a composition diagnostic, not a pure
+  aggregate-demand graph.
+- 2026-05-18 overnight referee workflow: user asked for no edits to the main
+  LaTeX source and for a point-by-point referee report from the empirical
+  credibility issue onward. Created
+  `referee/INTERNAL_REFEREE_REPORT_MAY2026_POINT_BY_POINT.md`. It updates the
+  referee-risk report after the recent math/model changes, maps the official
+  empirical-credibility concerns into action items, and marks any insertable
+  draft language as `\textcolor{green}{...}` for later review. Also downloaded
+  Census HVS Q4 2025 Table 7 material to
+  `D:\AI_storage\spillover\nimby_external_discipline_0518` and built
+  `external_discipline_candidate_moments_0518.csv` using HVS homeownership
+  rates plus the local SIPP 2017 wealth workbook. Main recommendation: add a
+  compact external-validation appendix table, then a short main-text paragraph
+  tying age-homeownership, home-equity exposure, and local political
+  participation evidence to the model's political channel.
+- 2026-05-18 Dropbox submission handoff: refreshed
+  `C:\Users\Dave_\Dropbox\Zac and David\2026_May_Submission` and mirrored the
+  same files to
+  `C:\Users\Dave_\Dropbox\Zac and David\_NIMBY RE 2026\Paper\2026_May_Submission`.
+  Each folder now contains the current manuscript PDF, current TeX, regenerated
+  LyX, the previous LyX source saved as
+  `Gross and Chivers (2025) NIMBYism and the Housing Supply.previous-working-source.lyx`,
+  and the 10 PDF figures referenced by the TeX. The regenerated LyX was
+  checked by direct LyX PDF export and by exporting from LyX to LaTeX and
+  compiling the exported TeX twice; the check produced a valid 30-page PDF
+  without unresolved references or overfull hbox warnings.
+- 2026-05-18 immigration transition tail backup: created
+  `drafts_re/hamilton_jobs/model_moll_immigration_oldseed_tail40_0518.csv`,
+  `bb80moll_immigration_oldseed_tail40_0518.slurm`, and
+  `workflow_moll_immigration_oldseed_tail40_0518.md`; uploaded them to
+  Hamilton and submitted job `17217726` (`bb80mift18`). This is the backup for
+  the corrected low/medium/high immigration transition figure in case the
+  no-tail `T=80` packet `17216897` shows endpoint contamination. It keeps the
+  plotted horizon at 80 years and adds a hidden 40-year continuation tail with
+  the terminal projection held fixed.
+- 2026-05-18 permanent-demand tail backup: created
+  `drafts_re/hamilton_jobs/model_moll_aggregate_demand_tail40_0518.csv`,
+  `bb80moll_aggregate_demand_tail40_0518.slurm`, and
+  `workflow_moll_aggregate_demand_tail40_0518.md`; uploaded them to Hamilton
+  and submitted job `17217730` (`bb80madt18`). It is intentionally small:
+  reduced-form permanent `+10%` aggregate-demand price pressure only, with
+  `lambda = 0`, `5%`, `10%`, and `20%`, a reported `T=80` horizon, and a
+  hidden 40-year continuation tail. Also made
+  `closeout_moll_aggregate_demand_0517.py` accept `--output-root` so tail
+  backup outputs close out separately from the original aggregate-demand run.
+- 2026-05-18 low-fertility transition appendix packet: created
+  `drafts_re/hamilton_jobs/model_moll_fertility_collapse_tail40_0518.csv`,
+  `bb80moll_fertility_collapse_tail40_0518.slurm`, and
+  `workflow_moll_fertility_collapse_tail40_0518.md`; uploaded them to
+  Hamilton and submitted job `17217736` (`bb80mfc18`). It tests permanent
+  reductions in entrant household flow of 10%, 25%, and 35%, each with
+  `lambda = 0`, `5%`, `10%`, and `20%`, a reported `T=80` horizon, and a
+  hidden 40-year continuation tail. This should be described as a low-fertility
+  or cohort-replacement transition, not as an immigration projection.
+- 2026-05-18 appendix expectation cleanup: replaced the appendix's repeated
+  explanation of the forecast-rule/RE distinction with a shorter numerical
+  algorithm for transition paths. The model/equilibrium section remains the
+  place where the expectation object is defined; the appendix now describes
+  implementation steps only. Compiled and visually checked appendix pages
+  29-30.
+- 2026-05-18 Figure 5/6 insertion: converted the original EPS exports for the
+  steady-state house-price/rent figure and the steady-state immigration
+  projection figure to small PDFs and inserted those PDFs into the manuscript.
+  This keeps Figures 5 and 6 as the original steady-state objects, rather than
+  using the rejected Python reconstruction or any pending Hamilton
+  bounded-learning output. The canonical PDF was compiled twice and pages
+  20-21 were rendered to
+  `D:\AI_storage\spillover\nimby_unified_figures_0518\pdf_qa_fig5_fig6`.
+- 2026-05-18 manuscript integration: copied the small PDF figure assets
+  `figure7_temporary_babyboom_forecast_rules.pdf` and
+  `figure8_boom_cohort_forecast_rules.pdf` into the project `Figures/` folder
+  and inserted them into the manuscript. Figure 7 is explicitly described as
+  forecast price paths because the currently inserted graph is based on
+  perceived price paths in `belief_paths_latest.csv`; the final long-run
+  Figure 7 Hamilton packet `17216875` remains pending and should replace this
+  provisional asset when it completes. Figure 8 uses the completed cohort
+  export to compare boom-cohort net worth and consumption under
+  `lambda = 0`, `5%`, `10%`, and `20%`. The permanent-shock text was moved
+  into Robustness as a placeholder and now distinguishes the intended
+  permanent demand-pressure robustness from the normalized young-share
+  composition diagnostic. The canonical PDF was compiled twice after closing
+  Sumatra's file lock and reopened in Sumatra; pages 20-23 were rendered to
+  `D:\AI_storage\spillover\nimby_paper_figures_redo_0518\pdf_qa_pages` for
+  visual QA.
+- 2026-05-18 figure formatting correction: user noted that the inserted
+  figures did not match the surrounding MATLAB-style figures. Added
+  `drafts_re/figure_redo_0518/build_matlab_style_inserted_figures_0518.py` and
+  regenerated the inserted Figure 7 and Figure 8 PDFs with no grid, boxed axes,
+  smaller labels, and narrower manuscript widths. The PDF was recompiled and
+  pages 20-22 were visually checked. Keep using this script style when the
+  pending Hamilton Figure 7 long-run and corrected robustness packets are
+  ready.
+- 2026-05-18 unified figure-redo pass: created
+  `drafts_re/figure_redo_0518/figure_redo_manifest_0518.md` and a shared
+  Python figure pipeline in
+  `drafts_re/figure_redo_0518/unified_pipeline/`. Source-backed candidate
+  rebuilds for Figures 1-3 are in
+  `D:\AI_storage\spillover\nimby_unified_figures_0518\descriptive`. Candidate
+  reconstructions for Figures 4-5 are in
+  `D:\AI_storage\spillover\nimby_unified_figures_0518\model_mechanism`; do not
+  insert Figure 4 without checking it against the old four-panel definitions,
+  and treat Figure 5's calendar alignment as reconstructed unless the original
+  plotting workspace is found. Hamilton-backed aggregate-demand +5%/+10%
+  robustness candidates are in
+  `D:\AI_storage\spillover\nimby_unified_figures_0518\hamilton_corrected`.
+  The corrected old-paper-seeded Figure 6, Figure 7 long-run, Figure 11, and
+  Figure 12 rows were still pending on Hamilton when checked.
+- 2026-05-18 figure-redo continuation: confirmed C: is below the 20 GB
+  guardrail (about 12.2 GB free), so all bulky graph material stayed on
+  `D:\AI_storage\spillover`. Rechecked Hamilton: the corrected old-paper-seed
+  robustness packets `17216897`/`17216898`/`17216899` and Figure 7 long-run
+  packet `17216875` remain pending on scheduler priority, while aggregate
+  demand `17210353` is still running. Created reproducible graph builder
+  `drafts_re/figure_redo_0518/build_paper_figure_candidates_0518.py`, which
+  writes PNG/PDF/CSV candidates to
+  `D:\AI_storage\spillover\nimby_paper_figures_redo_0518\figures`.
+- 2026-05-18 figure outputs now available on D: Figure 7 provisional forecast
+  graph with `lambda = 0, 5%, 10%, 20%`;
+  permanent-young-share diagnostic graphs split between forecast paths and
+  generated prices; aggregate-demand pressure graphs split between forecast
+  paths and generated prices, including model-path-normalized versions so the
+  permanent level shift is not mechanically divided out; and two Figure 8
+  cohort candidates. The Figure 8 candidates use the completed cohort export
+  and age-specific normalization: one preserves the original cohort
+  decomposition for `lambda=0`, and one compares the boom cohort across
+  `lambda = 0, 5%, 10%, 20%`. None of these candidates has been inserted into
+  the manuscript yet.
+- 2026-05-18 cohort job `17216701` (`bb80mcoh18`) completed 5/5 rows. Copied
+  `belief_paths_latest.csv` and `age_paths_latest.csv` for all five rows into
+  `D:\AI_storage\spillover\nimby_paper_figures_redo_0518\remote_verified_0518\moll_cohort_export_0518`.
+  The heartbeat monitor was updated so it no longer treats routine cohort
+  completion as an active alert.
+- 2026-05-18 11:46 BST: filled the remaining paper-version output gap for
+  the cohort-decomposition figure. Created and uploaded
+  `model_moll_cohort_export_0518.csv`,
+  `prepare_moll_cohort_export_0518.py`,
+  `closeout_moll_cohort_export_0518.py`,
+  `bb80moll_cohort_export_0518.slurm`, and
+  `workflow_moll_cohort_export_0518.md`. Submitted Hamilton job `17216701`
+  (`bb80mcoh18`, array `1-5%5`, 8-hour wall). The rows evaluate the same full
+  `T80`, no-tail temporary baby-boom price paths used for the learning graph
+  as fixed perceived paths and collect age/cohort outputs under
+  `truth/moll_cohort_export_0518`: current-price `lambda = 0`, `3.5%`, `5%`,
+  warm-start `10%`, and clean high-speed `20%`. The seed-preparation script
+  wrote all four bounded-learning seed paths on Hamilton, and all five array
+  tasks started immediately. Closeout:
+  `python3 closeout_moll_cohort_export_0518.py --annual-dir .`.
+
+### Session: 2026-05-17 (Hamilton live closeout and threshold framing)
+- 2026-05-17 20:02 BST: user asked to keep the monitor open until convergence
+  and to set up a 12-hour final tests/robustness workflow. Created private
+  aggregate-demand pressure runner
+  `run_annual_political_full_re_price_path_aggdemand_0517.m`, wrapper
+  `run_moll_aggregate_demand_0517.m`, closeout
+  `closeout_moll_aggregate_demand_0517.py`, grid
+  `model_moll_aggregate_demand_0517.csv`, Slurm file
+  `bb80moll_aggregate_demand_0517.slurm`, and workflow note
+  `workflow_moll_aggregate_demand_0517.md`. Submitted Hamilton job `17210353`
+  (`bb80mad17`, array `1-15%5`, 12-hour wall). It is a reduced-form permanent
+  aggregate-demand price-pressure check, not full RE or structural market
+  clearing: fixed age shares, permanent log shifts `log(1.05)`, `log(1.10)`,
+  and `log(1.20)`, each with fixed beliefs plus age-price learning at `3.5%`,
+  `5%`, `10%`, and `20%`. Closeout:
+  `python3 closeout_moll_aggregate_demand_0517.py --annual-dir .`.
+- 2026-05-17 17:16 BST: explicit permanent-baby-boom `lambda = 0` comparator
+  job `17207857` (`bb80mpb017`) completed. It is full `T80`, no tail,
+  current-period timing, permanent 10 percent entrant increase, route
+  `temporary_fixed_path`, `path_learning_relaxation = 0`; closeout metric is
+  `2.22e-16`. Rebuilt the provisional graph using actual generated house-price
+  paths from the completed lambda-zero row and the current learning
+  checkpoints:
+  `D:\AI_storage\spillover\nimby_moll_graphs_0517_live_perm\permanent_babyboom_clean_lambda0_generated_prices_0517.png`.
+- 2026-05-17 12:32 BST: after user flagged that the full figure-redo audit had
+  not been done, checked every figure slot in the current manuscript and wrote
+  `drafts_re/figure_redo_audit_0517.md`. Figures 1-5 do not require a
+  bounded-learning Hamilton redo; Figure 4 is a visual/mechanism rebuild rather
+  than new compute. Figure 6 is covered by immigration job `17206265`, the
+  corrected permanent baby-boom subsection is covered by job `17206110`, and
+  Figure 12 is covered by alternative-voting job `17206348`. The missing compute
+  gap was Figure 11, the old non-financial voting-preference robustness. Created
+  and submitted Hamilton job `17206428` (`bb80mpr17`, array `1-15%4`, 12-hour
+  wall). It runs full `T80`, no tail, published baby-boom demographics,
+  current-period timing, vote shifts `-0.1`, `0`, and `+0.1`, and the same
+  lambda family: fixed-belief lambda zero plus age-price bounded learning at
+  `3.5%`, `5%`, `10%`, and `20%`. Closeout:
+  `python3 closeout_moll_pref_robust_0517.py --annual-dir .`.
+- 2026-05-17 11:15 BST: user noted that the old paper also has forecasts
+  under different immigration assumptions. Confirmed that the old static
+  low/medium/high immigration forecast figure exists, but the dynamic
+  bounded-learning analogue had not been run. Created, uploaded, and submitted
+  Hamilton job `17206265` (`bb80mif17`, array `1-15%5`, 12-hour wall). The
+  grid is full `T80`, no tail, and uses the old paper's `forecast_lower`,
+  `forecast_median`, and `forecast_upper` arrays. The merged Hamilton source
+  `old_paper_source_forecasts_0517.mat` was verified to contain all three
+  forecast matrices as `56 x 81`. Rows cover fixed-belief lambda zero and
+  age-price bounded learning at `3.5%`, `5%`, `10%`, and `20%` for each
+  immigration forecast. Closeout:
+  `python3 closeout_moll_immigration_forecasts_0517.py --annual-dir .`.
+- 2026-05-17 11:27 BST: user correctly flagged the alternative voting-weight
+  robustness as another missing paper-comparable object. Created a private
+  annual routine `run_annual_political_full_re_price_path_altvote_0517.m` and
+  bounded-learning wrapper `run_moll_alt_voting_0517.m`. Submitted Hamilton
+  job `17206348` (`bb80mav17`, array `1-15%4`, 12-hour wall). The packet is
+  full `T80`, no tail, current-period timing, published baby-boom
+  demographics, and compares one-person-one-vote, turnout-weighted voting,
+  and log-net-worth-weighted voting. Each voting weight has fixed-belief
+  lambda zero plus age-price bounded learning at `3.5%`, `5%`, `10%`, and
+  `20%`. Closeout:
+  `python3 closeout_moll_alt_voting_0517.py --annual-dir .`.
+- 2026-05-17 10:50 BST: corrected the permanent-shock workflow definition.
+  The object needed for the paper comparison is a permanent version of the
+  temporary baby boom, not the old negative permanent-shock figure. Cancelled
+  old permanent-decline job `17192939` (`bb80mps16`). Uploaded and submitted
+  permanent-baby-boom job `17206110` (`bb80mpbi17`, array `1-9%9`, 12-hour
+  wall). The grid uses full `T80`, no tail, current-period timing, permanent
+  10 percent entrant increase, and the same lambda family as the temporary
+  baby-boom graph: current-price lambda zero plus age-price and
+  piecewise-pressure learning at 3.5, 5, 10, and 20 percent. Closeout:
+  `python3 closeout_moll_permanent_babyboom_0517.py --annual-dir .`.
+- 2026-05-17 10:44 BST: user clarified permanent shock is the paper priority,
+  not lumpy-permit RE. Cancelled lumpy jobs `17194225`, `17205233`, and
+  `17189632`; they should be treated as diagnostics only. Raised permanent
+  shock job `17192939` array throttle to 16, which immediately started rows
+  19-22. Rows 11-22 are now running. Reduced lower-priority background
+  throttles: high-speed `17185206` to `%2` and full-T80 timing `17189441` to
+  `%1`. Future monitoring should prioritize permanent-shock closeouts and graph
+  readiness.
+- 2026-05-17 10:35 BST live update: early-switch lumpy-permit RE zoom job
+  `17205233` has started; rows 1-4 are running and rows 5-32 are pending behind
+  the `%4` array limit. No completed early-zoom row yet. Original fine
+  lumpy-permit RE scan `17194225` is 64/120 complete; exact fixed points are
+  still flat-type only, and the best non-flat rows remain at `changed=7`.
+  Full-T80 timing job `17189441` is now 7/24 complete after two more useful
+  3.5 percent rows completed: `mft_piece_r035_block4lag4`
+  (`0.000238134635212272`) and `mft_piece_r035_annual`
+  (`0.000242318596271759`). Permanent shock remains 5/22 complete; the first
+  age 3.5 percent four-year lag row is partial at `0.000336953044289514`.
+  High-speed and paper fail-safe closeouts are unchanged. C: free space is
+  about `21.41 GB`.
+- 2026-05-17 07:27 BST graph/test audit: the manuscript still has placeholders
+  for the temporary-shock IRF figure and the cohort-decomposition figure, and a
+  TODO for the permanent-shock figure. The temporary-shock and cohort graphs do
+  not need more compute: the needed `paths_all.csv` and `age_paths_all.csv`
+  files exist for current-price and bounded-learning rows. Permanent-shock
+  graphing should wait for the still-running packet `17192939` to finish more
+  rows. The only additional compute gap was non-flat lumpy-permit RE. Submitted
+  targeted Hamilton job `17205233` (`bb80lpz17`, array `1-32%4`, 8-hour wall)
+  using `model_lumpy_permit_re_earlyzoom_0517.csv`. It tests early switches at
+  periods 2, 4, and 6 and a small pulse subset in the finite permit-policy RE
+  setup. Closeout:
+  `python3 closeout_lumpy_permit_re_fine_0516.py --annual-dir . --grid model_lumpy_permit_re_earlyzoom_0517.csv`.
+- 2026-05-17 06:55 BST: ran live Hamilton closeouts after the old monitoring
+  deadline. The cluster has not drained: fine lumpy-permit RE, permanent
+  shock, high-speed one-assumption learning, full-T80 timing, lumpy-permit
+  learning, and some fail-safe rows are still running or pending under array
+  throttles. C: has about `21.64 GB` free, just above the 20 GB guardrail.
+- High-speed one-assumption job `17185206` now has two 20 percent learning
+  rows with very small max log gaps when the single additional assumption is
+  bounded/logit political-pressure mapping:
+  `mhs_press_logit_piece_r200` (`0.000241019066691221`) and
+  `mhs_press_logit_age_r200` (`0.000241260073919806`). Clean 20 percent rows
+  are close in the same diagnostic:
+  `mhs_clean_age_r200` (`0.000266074729394605`) and
+  `mhs_clean_piece_r200` (`0.000266086575531362`). Clean 15 percent rows are
+  also close (`0.000344` range).
+- Full-T80 timing job `17189441` has five 3.5 percent timing rows with max log
+  gaps from `0.000238526590630287` to `0.000249898318221319`:
+  `mft_age_r035_block4lag4`, `mft_piece_r035_block4nolag`,
+  `mft_age_r035_block4nolag`, `mft_age_r035_finite4`, and
+  `mft_piece_r035_finite4`. The current-period and annual 3.5 percent rows
+  are still running at `0.000251` to `0.000260`.
+- Permanent-shock job `17192939` has three bounded-learning rows with max log
+  gaps from `0.000214021560903467` to `0.000244024735080889`:
+  `mps_age_r200_current` (`0.000214021560903467`),
+  `mps_piece_r035_current` (`0.000244024511329456`), and
+  `mps_age_r035_current` (`0.000244024735080889`). Current-price comparator
+  rows completed with large diagnostic gaps around `0.082`.
+- Coarse lumpy-permit RE job `17189714` completed all 110 rows. Exact
+  fixed points remain only flat high-permit current-period rows. Non-flat
+  switch rows did not become fixed points; the best coarse switch rows still
+  changed 11 periods. Fine lumpy-permit RE job `17194225` is 58/120 complete:
+  fixed/near rows are still flat-type, while the best early non-flat switch
+  rows have `changed=7`.
+- Paper-writing correction from this closeout: report max absolute log
+  discrepancies directly. The `0.00025` and `0.00035` cutoffs were set by the
+  assistant as provisional monitoring screens. They were not chosen or
+  endorsed by the user and are not standards from the macro literature.
+
+### Session: 2026-05-15 (all remaining routes wave)
+- 2026-05-16 18:49 BST: user correctly noted that the permanent-shock
+  transition had not been regenerated. Created a separate permanent-shock
+  packet with private annual-function copies so it does not alter the live
+  baby-boom jobs. Submitted Hamilton job `17192939` (`bb80mps16`, array
+  `1-22%8`, 12-hour wall). The grid is full `T80`, no tail, and applies a
+  permanent 10 percent decline in entrant household formation. It includes
+  current-price comparator rows and bounded-learning rows at `3.5%`, `5%`,
+  `10%`, `15%`, and `20%` learning speeds, plus four-year timing checks.
+  Closeout: `python3 closeout_moll_permanent_shock_0516.py --annual-dir .`.
+- 2026-05-16 14:44 BST live closeout: lumpy-permit learning job `17189632`
+  produced its first formal graph candidate. Row
+  `mlp_age_r035_five_block4lag4` completed after one iteration with final
+  update `0.000243940197004893`, below the `0.00025` threshold. It is a full
+  `T80`, no-tail, old-paper-seeded bounded-learning row with five-level
+  lumpy permit release and four-year vote block plus four-year delivery lag.
+  The current-period small/five lumpy rows are near but not formal
+  (`0.000315` to `0.000326`). Full-T80 timing job `17189441` improved but
+  remains just above formal pass: best 3.5% rows are `0.000258` to
+  `0.000276`. Finite lumpy-permit RE scan `17189714` is 25/110 complete;
+  it still has the three exact flat high-permit fixed points plus new
+  partial-support rows, including one-switch current-period
+  `lpre_sw_small3_current_p0_p1_t12` with `changed=11`.
+- 2026-05-16 13:20 BST live closeout: lumpy-permit learning job `17189632`
+  produced early near-candidates. Best rows:
+  `mlp_age_r035_three_current` and `mlp_age_r035_five_current` at
+  `0.000338337919771021` after two iterations; `mlp_age_r035_three_block4lag4`
+  at `0.000347271150723307` after one iteration. Full-T80 timing job
+  `17189441` now has 3.5% current-period and annual rows at
+  `0.000333866437884797` after two iterations; 3.5% four-year finite/block
+  rows remain near at about `0.000269` to `0.000288`. No new formal pass
+  below `0.00025` yet. Finite lumpy-permit RE scan `17189714` is at 12/110
+  complete and still has the same three exact flat high-permit fixed points.
+- 2026-05-16 12:28 BST live closeout: finite lumpy-permit full-RE scan
+  `17189714` is running and has completed 11/110 rows. Three flat
+  high-permit rows are exact fixed points in the discrete permit-policy
+  space: `lpre_flat_small3_current_p1`, `lpre_flat_large3_current_p1`, and
+  `lpre_flat_five_current_p1`, each with `changed=0`, `max_gap=0`, and
+  `price_gap=0`. Interpretation: this is a positive full-RE result over the
+  lumpy permit-policy grid, not a solution to the original continuous-price
+  full-RE problem. Full-T80 timing job `17189441` has eight partial rows; the
+  3.5% finite-response/block timing rows are near-candidates after one
+  iteration (`0.000269` to `0.000288`), with no completed formal pass yet.
+  Paper fail-safe job `17177451` still has the six confirmed formal graph
+  candidates; 5% logit rows remain close but above target.
+- 2026-05-16 11:06 BST: user asked whether the lumpy-permit idea could also
+  be made full RE over lumpy permits. Created a separate finite policy-space
+  RE scan and submitted Hamilton job `17189714` (`bb80lpre16`, array
+  `1-110%12`, 8-hour wall). Initial state was pending by scheduler priority.
+  This is not the Moll-learning loop: each row takes a candidate permit path,
+  computes the implied price path, solves household voting under that price
+  forecast, and checks whether the desired permit path equals the candidate
+  path. The grid is full `T80`, no tail, published baby boom. It covers flat
+  permit regimes, one-switch regimes, temporary permit pulses, current-period
+  timing, four-year vote block plus four-year delivery lag, and
+  small/large/five-step permit packages. Files:
+  `model_lumpy_permit_re_scan_0516.csv`,
+  `bb80lumpy_permit_re_scan_0516.slurm`,
+  `run_lumpy_permit_re_scan_0516.m`,
+  `run_annual_lumpy_permit_re_scan_0516.m`,
+  `closeout_lumpy_permit_re_scan_0516.py`, and
+  `workflow_lumpy_permit_re_scan_0516.md`.
+- 2026-05-16 10:54 BST: user asked to try a lumpy housing-permits route,
+  closer to real politics than Zac's price-grid discretisation. Created a
+  separate lumpy-permit annual function so this diagnostic does not overwrite
+  the shared annual solver used by other running jobs. Submitted Hamilton job
+  `17189632` (`bb80mlp16`, array `1-36%8`, 12-hour wall), with rows `1-8`
+  running immediately. The grid is full `T80`, no tail, old-paper seed,
+  published baby boom. It tests small/large/very-large three-package permit
+  releases, five-package releases, current-period timing, four-year vote block
+  plus four-year delivery lag, learning speeds `3.5%` and `5%`, and a small
+  `10%` screen. Files:
+  `model_moll_lumpy_permits_0516.csv`,
+  `bb80moll_lumpy_permits_0516.slurm`,
+  `run_moll_lumpy_permits_0516.m`,
+  `run_annual_political_lumpy_permits_0516.m`,
+  `closeout_moll_lumpy_permits_0516.py`, and
+  `workflow_moll_lumpy_permits_0516.md`.
+- 2026-05-16 10:23 BST: user wanted full `T80` robustness if possible.
+  Fixed the full-T80 timing grid builder, generated the 24-row grid, uploaded
+  the packet to Hamilton, and submitted job `17189441` (`bb80mft16`, array
+  `1-24%8`, 12-hour wall). This packet stays on the paper-facing object:
+  published baby-boom, full `T80`, no tail, old-paper seed, terminal
+  fixed-point anchor, and smooth-logit voting. It tests `3.5%` and `5%`
+  learning across current-period, annual block-one, four-year block with
+  four-year lag, four-year block without lag, and finite four-year voting
+  response timing, plus a small `10%` current/four-year-lag timing
+  continuation check. Files:
+  `model_moll_full_t80_timing_0516.csv`,
+  `bb80moll_full_t80_timing_0516.slurm`,
+  `closeout_moll_full_t80_timing_0516.py`, and
+  `workflow_moll_full_t80_timing_0516.md`. Initial queue state moved to rows
+  `1-8` running immediately under the array throttle, with rows `9-24`
+  pending.
+- 2026-05-16 09:42 BST update: fail-safe job `17177451` strengthened. It now
+  has six formal candidates below `0.00025`. New passes: both `3.5%`
+  old-paper-seeded rows, `mpfs_age_oldpaper_r035`
+  (`0.000242321379820673`) and `mpfs_piece_oldpaper_r035`
+  (`0.000242318596271759`), and the warm-started `10%` row
+  `mpfs_age_warm_r100_i24` (`0.000241164585181739`). The `5%` logit rows are
+  close at `0.0002524` and `0.0002658`; plain `5%` old-paper rows are near at
+  about `0.000296`. High-speed one-assumption job `17185206` has first
+  partial outputs, but clean `7.5%`, `10%`, `15%`, and `20%` rows are still
+  far above target in early iterations. Robustness job `17166066` is
+  `115/121` complete.
+- 2026-05-16 07:25 BST: generated graph artifacts in
+  `D:\AI_storage\spillover\nimby_moll_graphs_0516`. Main figures compare the
+  published no-RE benchmark (`old_paper_price_path_0515.csv`) with successful
+  Moll fail-safe rows `mpfs_age_oldpaper_r025`,
+  `mpfs_piece_oldpaper_r025`, and `mpfs_age_warm_r050_i24`. Output files:
+  `moll_success_vs_published_nore_zoom40_0516.png`,
+  `moll_success_vs_published_nore_full80_0516.png`, plus `.pdf`, `.svg`, and
+  `moll_success_vs_published_nore_0516.csv`. Also created a separate current
+  no-RE comparator version using `nore80bv4_006`.
+- 2026-05-16 07:16 BST: user asked for a new robustness upload to see whether
+  learning speed can be pushed above `5%` with one defensible extra assumption,
+  without committing only to bounded pressure mapping. Created and submitted
+  Hamilton job `17185206` (`bb80mhs16`, array `1-47%10`, 12-hour wall). First
+  10 rows started immediately. Files:
+  `model_moll_highspeed_oneassumption_0516.csv`,
+  `bb80moll_highspeed_oneassumption_0516.slurm`,
+  `closeout_moll_highspeed_oneassumption_0516.py`, and
+  `workflow_moll_highspeed_oneassumption_0516.md`. The 47 rows hold the clean
+  paper object fixed where possible (published baby-boom, T80 no-tail,
+  old-paper seed, current-period timing) and test speeds `7.5%`, `10%`, `15%`,
+  and `20%` across clean baselines, bounded pressure mapping, lower political
+  pass-through, slower coefficient learning, soft long-run anchoring, and
+  warm-start continuation from `mpfs_age_warm_r050_i24`. Remote seed file
+  `mpfs_age_warm_r050_latest_price_seed_0516.csv` was created from the
+  confirmed `5%` candidate's latest `price_guess` path. Closeout:
+  `python3 closeout_moll_highspeed_oneassumption_0516.py --annual-dir .`.
+- 2026-05-16 07:04 BST live fail-safe check: job `17177451` now has three
+  formal paper-matched candidates below the `0.00025` target. New material
+  result: `mpfs_age_warm_r050_i24`, the warm-started `5%` learning row,
+  completed after eight iterations with final update `0.000241133684769175`.
+  The two `2.5%` old-paper-seeded rows remain formal candidates. The `3.5%`
+  old-paper-seeded rows are still running just above target at about
+  `0.0002511`; plain extended `5%` old-paper-seeded rows are around
+  `0.000312` to `0.000328`; logit `5%` rows are around `0.000280` to
+  `0.000294`. Paper-matched job `17166531` finished all `14/14` rows with
+  three near-candidates and no formal candidate from that packet. Wide
+  robustness job `17166066` is at `110/121` complete, with `108` completed
+  rows below target and two near-candidates.
+- 2026-05-16 02:28 BST live fail-safe check: paper-matched fail-safe job
+  `17177451` produced two formal clean graph candidates below the `0.00025`
+  target. `mpfs_piece_oldpaper_r025` completed after one iteration with final
+  update `0.000247027544016212`; `mpfs_age_oldpaper_r025` completed after one
+  iteration with final update `0.000247108215234886`. Both are old-paper-seeded
+  T80 no-tail current-period rows at `2.5%` learning. The `3.5%` rows are
+  running close to the threshold at about `0.000300`; warm-started `5%` age is
+  running at `0.000295974930134822`; plain extended `5%` rows remain around
+  `0.000403`. Paper-matched job `17166531` added `mpm_age_flat_r010` as a
+  near-candidate at `0.000280989475357703`. Wide robustness job `17166066`
+  reached `82/121` complete rows, all 82 below target. Zac small-grid
+  diagnostic now has T80 finite-grid fixed rows on the `0.10%` grid, still
+  only a side diagnostic.
+- 2026-05-15 21:32 BST live graph-route check: paper-matched job `17166531`
+  now has both old-paper-seeded clean `5%` T80 no-tail current-period rows
+  complete as near-candidates: `mpm_age_oldpaper_r005` at
+  `0.000345211154135422` and `mpm_piece_oldpaper_r005` at
+  `0.00034521291087356`. The wide robustness job `17166066` now has `58/121`
+  rows complete, and all 58 completed rows are below the `0.00025` target,
+  including no-tail, no-lag, current-period, block-one, logit/softnorm
+  pressure, and hard-sign pressure variants. Fail-safe job `17177451` is still
+  early with rows `1-10` running and no row output yet.
+- 2026-05-15 21:03 BST: user requested a 12-hour Hamilton fail-safe for the
+  paper-matched Moll route. Created and submitted job `17177451`
+  (`bb80mpfs15`, array `1-24%10`, 12-hour wall). First 10 rows started
+  immediately. Files in `drafts_re/hamilton_jobs/`:
+  `model_moll_paper_failsafe_0515.csv`,
+  `bb80moll_paper_failsafe_0515.slurm`,
+  `closeout_moll_paper_failsafe_0515.py`, and
+  `workflow_moll_paper_failsafe_0515.md`. The packet covers low-gain graph
+  insurance at `2.5%` and `3.5%`, extended/warm-started `5%` rows, and
+  minimal robustness-supported variants for `5%` and `10%` updating. Remote
+  seed file `mpm_age_oldpaper_r005_latest_price_seed_0515.csv` was created
+  from the completed near-candidate's latest `price_guess` path. Closeout:
+  `python3 closeout_moll_paper_failsafe_0515.py --annual-dir .`.
+- 2026-05-15 11:50 BST: after Zac suggested that the earlier three-price grid
+  may simply have been too wide, created and submitted a small-grid Zac side
+  diagnostic on Hamilton: job `17167724` (`bb80dsg15`, array `1-12%6`, 8-hour
+  wall). Files in `drafts_re/hamilton_jobs/` are
+  `model_discrete_price_smallgrid_0515.csv`,
+  `bb80disc_smallgrid_0515.slurm`, and
+  `workflow_discrete_price_smallgrid_0515.md`. The grid tests three-price
+  steady-state +/- `0.25%` and +/- `0.10%` rows plus five-price checks over the
+  same spans, for both T40-plus-tail and T80 no-tail versions. Closeout:
+  `python3 closeout_discrete_price_re_0514.py --annual-dir . --grid
+  model_discrete_price_smallgrid_0515.csv`. Treat this only as a finite-grid
+  diagnostic for Zac's grid-width concern, not as the main Moll graph route.
+- 2026-05-15 10:17 BST: Moll stabilization job `17163502` fully closed:
+  `16/16` rows complete and all below the `0.00025` belief-update target. Best
+  rows include `mollS_piece_r005_g25` (`8.98588856851817e-05`),
+  `mollS_routeB_r005_g25` (`9.15002368307076e-05`), `mollS_piece_pt004`
+  (`0.000140217300333374`), `mollS_pt004_r010`
+  (`0.000153440882988624`), and `mollS_piece_t30`
+  (`0.000172047062410643`). This is a positive bounded/direct-belief
+  diagnostic, but not yet the preferred paper graph because the plotted
+  stabilized row is visually blocky.
+- 2026-05-15 10:08 BST: user clarified that the desired paper graph is not the
+  visibly blocky stabilized Moll row, but a cleaner "published baby-boom
+  experiment with Moll learning" object. Created and uploaded the paper-matched
+  Moll packet and submitted Hamilton job `17166531` (`bb80mpm15`, array
+  `1-14%7`, 24-hour wall). New files in `drafts_re/hamilton_jobs/` are
+  `model_moll_paper_matched_0515.csv`,
+  `bb80moll_paper_matched_0515.slurm`,
+  `closeout_moll_paper_matched_0515.py`, and
+  `workflow_moll_paper_matched_0515.md`. The packet also patches
+  `run_moll_robust_wide_0515.m` so it can use an `OutputRootName` and an
+  old-paper price seed. Remote seed file:
+  `old_paper_price_path_0515.csv`. Closeout from the remote annual directory:
+  `python3 closeout_moll_paper_matched_0515.py --annual-dir .`. The priority
+  readout is any `paper_matched_candidate` T80 no-tail current-period/no-block
+  row. These remain bounded/direct belief learning diagnostics, not full
+  continuous RE.
+- User asked to try all remaining plausible routes after Zac high-switch and
+  first Moll Route B diagnostics looked weak. Created
+  `drafts_re/hamilton_jobs/workflow_all_remaining_routes_0515.md`.
+- Created and submitted Moll stabilization/piecewise job `17163502`
+  (`bb80molls15`, array `1-16%8`, 24-hour wall). New files:
+  `run_moll_stabilized_0515.m`, `model_moll_stabilized_0515.csv`,
+  `bb80moll_stabilized_0515.slurm`, and
+  `closeout_moll_stabilized_0515.py`. Rows test lower relaxation/gain,
+  smaller shock amplitudes, smaller political pass-through, and a piecewise
+  pressure-regime direct belief law.
+- Created and submitted Zac low/ballot-proxy job `17163503` (`bb80zlow15`,
+  array `1-17%9`, six-hour wall). New files:
+  `model_zac_low_ballot_scan_0515.csv`, `bb80zlow_0515.slurm`, and
+  `analyze_zac_low_ballot_scan_0515.py`. Rows test low-after-switch paths and
+  constant low/steady/high ballot-proxy rows. The ballot-proxy rows use the
+  existing temporary-equilibrium evaluator and are not literal household
+  welfare ballots.
+- Initial queue check at 2026-05-15 04:22 BST: Moll stabilized rows `1-8`
+  running and `9-16` pending by throttle; Zac low/ballot rows `1-9` running
+  and `10-17` pending by throttle. Automation `nimby-moll-direct-monitor` now
+  watches old Moll wide job `17157470`, Moll stabilized job `17163502`, and Zac
+  low/ballot job `17163503`.
+- 2026-05-15 06:04 BST: Moll stabilization job `17163502` produced the first
+  stabilized Route B candidates. Rows `mollS_routeB_r005_g25`,
+  `mollS_routeB_r010_g25`, and `mollS_routeB_r010_g10` completed at one
+  iteration below the belief-update target; final updates were
+  `9.15002368307076e-05`, `0.000183000473661591`, and
+  `0.000183000473661591`. Row `mollS_routeB_r015_g25` is a near-candidate at
+  update `0.000274500710493076`. These are low-relaxation direct-belief
+  diagnostics, not full continuous RE. Zac low/ballot job `17163503` had seven
+  rows with outputs and no full target-state support, but two low-switch rows
+  had partial low-state support: `zlow_t40_s005_sw12` generated the low state
+  in `16/29` target periods, and `zlow_t40_s005_sw32` generated it in `1/9`
+  target periods. Old Moll wide job `17157470` still had the two long T40
+  tail40 rows running, with `mollB_t40_tail40_relax25` at update
+  `0.000414571300485418`.
+- 2026-05-15 06:55 BST: old Moll wide job `17157470` completed all nine rows
+  and is negative relative to the `0.00025` belief-update target. The last two
+  Route B rows closed at `0.000424655189697563`
+  (`mollB_t40_tail40_relax25`) and `0.00072736476902943`
+  (`mollB_t40_tail40_relax40`). Moll stabilization job `17163502` now has
+  seven completed rows below target: the three Route B low-relaxation rows and
+  four smaller-shock rows. Row `mollS_routeB_r015_g25` remains a near-candidate
+  while running at update `0.000274500710493076`. Zac low/ballot job
+  `17163503` has nine rows with outputs, no fully supported target state, and
+  the same two partial low-state support rows as the 06:04 check.
+- 2026-05-15 08:17 BST: Moll stabilization job `17163502` strengthened
+  substantially. Fourteen of sixteen rows are complete and all fourteen
+  completed rows are `converged_candidate` under the closeout script's
+  `0.00025` belief-update target. Best updates include
+  `mollS_piece_r005_g25` at `8.98588856851817e-05`,
+  `mollS_routeB_r005_g25` at `9.15002368307076e-05`, `mollS_piece_pt004` at
+  `0.000140217300333374`, and `mollS_pt004_r010` at
+  `0.000153440882988624`. `mollS_routeB_r015_g25` completed after two
+  iterations at `0.000206064870037165`. Remaining rows are
+  `mollS_piece_r015_g25`, a running near-candidate at
+  `0.000269576657056442`, and `mollS_piece_t30`, still pending/running.
+- 2026-05-15 09:25 BST: user asked for a very wide Hamilton robustness dump to
+  see whether the Moll graph survives relaxed assumptions. Created and
+  submitted job `17166066` (`bb80mrob15`, array `1-121%16`, 24-hour wall).
+  Files in `drafts_re/hamilton_jobs/`: `build_moll_robust_wide_grid_0515.py`,
+  `model_moll_robust_wide_0515.csv`, `run_moll_robust_wide_0515.m`,
+  `closeout_moll_robust_wide_0515.py`, `bb80moll_robust_wide_0515.slurm`, and
+  `workflow_moll_robust_wide_0515.md`. The grid covers 121 rows across belief
+  law, learning speed, vote smoothing, pressure mode, household vote rule,
+  political lag/timing, block length, demographic tail closure, horizon/tail,
+  terminal anchor, shock size, and pass-through. Closeout from remote annual
+  directory: `python3 closeout_moll_robust_wide_0515.py --annual-dir .`.
+
+---
+
+### Session: 2026-05-14 (Zac v2 switch-time scan)
+- User asked to try the closer version of Zac's email after the refined
+  iterative grid search failed. Implemented a one-evaluation-per-candidate
+  switch-time scan rather than another iterative snap-to-grid fixed-point
+  search.
+- Created `model_zac_switch_scan_0514.csv`, `bb80zswitch_0514.slurm`,
+  `analyze_zac_switch_scan_0514.py`, and `workflow_zac_switch_scan_0514.md`.
+  The scan tests T40+tail and T80 paths that stay at steady state until switch
+  dates `8`, `12`, `16`, `20`, `24`, and `32` on a +/-1 percent three-price
+  grid, plus switch dates `12`, `20`, and `32` on a +/-0.5 percent grid.
+- Submitted Hamilton job `17161588` (`bb80zsw14`, array `1-18%9`, six-hour
+  wall) from the remote annual directory. Initial state: pending.
+- Updated automation `nimby-moll-direct-monitor` to monitor both the remaining
+  Moll wide job `17157470` and this Zac switch-time scan.
+- Live monitor check at 2026-05-15 01:32 BST: Zac switch scan has 17 of 18 rows
+  with outputs and one row still running. None of the 17 completed rows supports
+  the high-after-switch story; all completed rows have `generated_high=0` after
+  the candidate switch date and are classified `no_high_switch_support`. The
+  least-bad switch rows are the late T40 switch-date-32 cases with `9` changed
+  report periods.
+- Final closeout at 2026-05-15 03:02 BST: Zac switch scan has all 18 rows
+  complete. No row supports the high-after-switch story; every row has
+  `generated_high=0` after the candidate switch date and is classified
+  `no_high_switch_support`. The least-bad rows remain the late T40 switch-date-
+  32 candidates with `9` changed report periods, but they still generate no
+  high-price periods.
+
+---
+
+### Session: 2026-05-14 (24-hour Zac/Moll fail-safe)
+- User wanted a wide, efficient 24-hour workflow rather than a single narrow
+  rerun. Created `drafts_re/hamilton_jobs/workflow_24h_zac_moll_failsafe_0514.md`.
+- Created and uploaded the wide checkpointed Moll packet:
+  `run_moll_wide_checkpoint_0514.m`, `model_moll_wide_checkpoint_0514.csv`,
+  `bb80moll_wide_0514.slurm`, and `closeout_moll_wide_checkpoint_0514.py`.
+  Submitted Hamilton job `17157470` (`bb80mollw14`, array `1-9`, 24-hour wall).
+  Rows `1-6` are Route B variants across T20/T30/T40, tail length, and learning
+  speed; rows `7-9` are Route C/D controls. First queue check: rows `1-3`
+  running, rows `4-9` pending.
+- Added `analyze_discrete_price_bins_0514.py` and ran it on the first-wave Zac
+  grid outputs. The fixed coarse rows are not near their own grid cutoffs: min
+  log cutoff margin is `0.0228711151764` for the three-price rows and
+  `0.0103606828569` for the five-price row, with `0` report periods within
+  `0.002` of a cutoff. Interpretation: the coarse fixed result is internally
+  stable on the coarse grid, but the grid is wide, so the refined-grid job is
+  still decisive.
+- Updated heartbeat automation `nimby-moll-direct-monitor` to monitor Zac
+  refined job `17154258` and Moll wide job `17157470` every 90 minutes through
+  the 24-hour window, without submitting more full continuous-RE compute.
+- Live check at 2026-05-14 18:24 BST: Zac refined job `17154258` still has all
+  eight rows running and no final rows. All eight have partial outputs; best
+  changed-period counts are `16`, `20`, `24`, `24`, `24`, `28`, `40`, and
+  `44`, with quantized gaps around `0.0020`. Moll wide job `17157470` has all
+  nine rows running and all nine now have checkpoint outputs. Best Route B
+  checkpoint so far is `mollB_t40_tail40_relax25`: one iteration, RMSE log
+  forecast error `0.000845708732668586`, belief update
+  `0.000457501184154905`. No Moll row is complete yet.
+- Live check at 2026-05-14 19:39 BST: Zac refined job still has no final rows.
+  Moll wide job has all nine rows running and all nine rows now have two
+  checkpointed iterations. Best Route B checkpoint remains
+  `mollB_t40_tail40_relax25`: best RMSE log forecast error
+  `0.000845708732668586`, latest belief update `0.000337200616866751`. No Moll
+  row is complete yet.
+- Live check at 2026-05-14 20:50 BST: Zac refined job `17154258` is no longer
+  live. Rows `5`, `7`, and `8` completed at `max_iter_reached`, while rows
+  `1-4` and `6` timed out with nonfixed partials. No refined-grid row found a
+  fixed sequence; best changed-period counts were `16`, `20`, `24`, `24`,
+  `24`, `24`, `40`, and `44`. Interpretation: the coarse three-/five-price
+  fixed result did not survive this refined-grid wave. Moll wide job is still
+  running all nine rows. Best Route B remains `mollB_t40_tail40_relax25`, now
+  at three checkpointed iterations with latest belief update
+  `0.000326205413802745`.
+- Live monitor check at 2026-05-15 01:32 BST: two Moll control rows completed:
+  `mollD_ar1_t30_tail30` and `mollC_adapt_t30_tail30`. No main Route B row is
+  complete. Best Route B remains `mollB_t40_tail40_relax25`, now at five
+  checkpointed iterations with latest belief update `0.000352698625315749`,
+  above the `0.00025` convergence target.
+- Live monitor check at 2026-05-15 03:02 BST: Moll wide job has seven of nine
+  rows complete and two Route B T40 tail40 rows still running. Completed Route
+  B rows did not converge: final updates are `0.00157333028612875` for
+  `mollB_t40_tail40_relax60`, `0.000765136682381223` for
+  `mollB_t40_tail20_relax40`, `0.000765290052104975` for
+  `mollB_t30_tail30_relax40`, and `0.000432635325363128` for
+  `mollB_t20_tail20_relax40`. Best remaining Route B row is
+  `mollB_t40_tail40_relax25`, at six checkpointed iterations with latest
+  update `0.000363134075334893`, still above the `0.00025` target.
+
+---
+
+### Session: 2026-05-14 (Zac discrete-price RE route)
+- Interpreted Zac's suggestion as a genuinely different route from the failed
+  continuous full-T80 search: restrict the price path to a small finite grid and
+  search for a fixed sequence rather than an 80-dimensional continuous vector.
+- Implemented the first feasible version under `drafts_re/hamilton_jobs/`:
+  `run_discrete_price_re_0514.m`, `model_discrete_price_re_0514.csv`,
+  `bb80disc_0514.slurm`, `workflow_discrete_price_re_0514.md`, and
+  `closeout_discrete_price_re_0514.py`.
+- The discrete runner solves the annual transition for a grid price sequence,
+  snaps the generated continuous price path back to the grid, and iterates
+  until the grid sequence is fixed or a cycle is detected. This is not yet a
+  literal multinomial vote among grid-price alternatives, but it tests the core
+  finite-price-state simplification safely.
+- Submitted Hamilton job `17152451` (`bb80disc14`, array `1-5`, eight-hour wall)
+  from `/nobackup/hfnt93/nimby_annual_runs/reT80PB_04301346/annual`. Rows:
+  three-price T40 flat seed, three-price T80 flat seed, three-price T80
+  bounded-path seed, three-price T80 high-after-period-12 seed, and five-price
+  T40 bounded-path seed. Initial state: pending.
+- Final first-wave closeout at 2026-05-14 13:33 BST: all five rows are final
+  and all five found fixed grid sequences. `disc3_t40_flat`, `disc3_t80_flat`,
+  `disc3_t80_source`, and `disc5_t40_source` fixed at discrete iteration `1`;
+  `disc3_t80_high12` fixed at discrete iteration `2`. Every row has `0`
+  changed report periods and `0` quantized grid gap. Interpretation: on these
+  coarse three- or five-price grids, the generated continuous price path stays
+  in the same grid bins as the conjectured sequence. This is a discrete-grid RE
+  fixed point, not a continuous full-RE fixed point.
+- Refinement wave at 2026-05-14 12:47 BST: submitted Hamilton job `17154258`
+  (`bb80discr14`, array `1-8`, eight-hour wall). New files are
+  `model_discrete_price_refine_0514.csv`, `bb80disc_refine_0514.slurm`, and
+  `workflow_discrete_price_refine_0514.md`. The wave tests 11-, 21-, and
+  41-price grids over +/-1 percent and 21-price grids over +/-0.5 percent, at
+  T40 and T80, to see whether the first-wave fixed grid sequences survive
+  finer bins. The 2026-05-14 13:33 BST check still had all eight rows running
+  with no final or partial outputs.
+- Refined-grid partial closeout at 2026-05-14 14:41 BST: all eight rows are
+  still running, all have partial outputs, and none is currently fixed. Best
+  partial diagnostics range from `16` to `68` changed report periods, with max
+  quantized grid gaps around `0.0020`. This suggests the first-wave fixed
+  sequences may partly reflect coarse bins, but it is not yet a final refined
+  verdict.
+- Closeout command after completion:
+  `python3 closeout_discrete_price_re_0514.py --annual-dir .`.
+- Refinement closeout command:
+  `python3 closeout_discrete_price_re_0514.py --annual-dir . --grid model_discrete_price_refine_0514.csv`.
+
+---
+
 ### Session: 2026-05-14 (Moll direct price-beliefs implementation)
 - Built `drafts_re/moll_direct_price_beliefs/workbench/` to compare the main
   Moll-consistent avenues using available small outputs. The workbench confirms
@@ -26,6 +947,18 @@ Most recent session first.
   restricted-perceptions heuristics, and Route D price-only AR(1). Early check:
   all five rows were running; early logs showed only the known missing
   projection-variable warnings from `old_paper_source_min.mat`.
+- Live closeout at 2026-05-14 13:33 BST: Route A
+  (`mollA_temp_bound40_rss`) is complete with RMSE log price
+  `0.000845708732668586`; Routes B-D are still running.
+- Final job-state check at 2026-05-14 14:41 BST: Routes B-D timed out at the
+  six-hour wall without completed rows visible to the closeout script. Route A
+  remains the only complete row and is only a temporary-equilibrium baseline,
+  not the Moll route.
+- Log tails show the timed-out Moll rows were making progress rather than
+  crashing. At iteration `3`, Route B had RMSE `0.00166004` and belief update
+  `0.000607796`; Route C static had RMSE `0.00238727` and update
+  `0.00168671`; Route C adaptive-anchor had RMSE `0.00286687` and update
+  `0.00387583`; Route D AR(1) had RMSE `0.00183` and update `0.000829822`.
 - Closeout command after completion:
   `python3 closeout_moll_direct_0514.py --annual-dir .`. Treat these outputs as
   direct price-belief diagnostics, not full rational-expectations rows.
@@ -3471,3 +4404,40 @@ Any fix found here that affects the model structure should be:
   no-RE/small-shock initial paths. Automation `nimby-wide-t80-re-monitor`
   checks every 30 minutes; do not submit another chain without a user
   checkpoint.
+- 2026-05-16 overnight lumpy-permit RE zoom: submitted Hamilton job `17194225`
+  (`bb80lpf16`, array `1-120%8`, 8-hour wall time). This is a fine finite
+  lumpy-permit full-RE scan, not Moll learning and not continuous-price full
+  RE. It focuses on early non-flat switch paths and four-year block/lag rows
+  that were closest in the coarse lumpy-permit scan. Monitor with
+  `python3 closeout_lumpy_permit_re_fine_0516.py --annual-dir .`; report a
+  non-flat fixed point, `near_support`, finalization, failure, or timeout.
+- 2026-05-17 clear comparison graph pack: created
+  `D:\AI_storage\spillover\nimby_moll_graphs_0517_clear` after the user
+  emphasized that comparisons must be clean. Main learning-speed figures now
+  hold assumptions fixed and compare current-price, clean 3.5%, clean 5%, and
+  clean 20% paths. The logit/smooth political-response assumption is shown in a
+  separate figure against the clean 20% path, so it is not mixed into the
+  learning-speed comparison.
+- 2026-05-18 figure-redo correction: do not use the earlier regenerated
+  immigration, alternative-voting, or non-financial preference robustness
+  figures from `D:\AI_storage\spillover\nimby_regenerated_paper_figures_0518`
+  as paper figures. Their Hamilton grids used the flat `6.29` seed rather than
+  the old-paper price path, which explains the nonsensical and nearly identical
+  plots. Corrected old-paper-seeded packets were submitted as `17216897`
+  (`bb80mif18`), `17216898` (`bb80mav18`), and `17216899` (`bb80mpr18`), using
+  lambda `0`, `5%`, `10%`, and `20%`. A corrected long-run Figure 7 packet was
+  submitted as `17216875` (`bb80fig718`) for `5%`, `10%`, and `20%`.
+  Current clean local figure-redo folder:
+  `D:\AI_storage\spillover\nimby_paper_figures_redo_0518`. It contains only
+  provisional renders until the corrected Hamilton rows finish.
+- 2026-05-18 Hamilton prioritization: cancelled remaining tasks in high-speed
+  robustness job `17185206` (`bb80mhs16`) after the figure-redo chain shifted
+  to the corrected Figure 7 long-run and old-paper-seeded robustness packets.
+  This freed scheduler slots without deleting any completed high-speed outputs.
+- 2026-05-19 May submission polish: completed a UK-English/AI-phrasing pass on
+  the Dropbox submission manuscript, rebuilt TeX/LyX/PDF, and confirmed a
+  clean-copy LyX PDF export from
+  `D:\AI_storage\spillover\nimby_clean_dropbox_compile_0519_strict`. The
+  Dropbox folder `C:\Users\Dave_\Dropbox\Zac and David\2026_May_Submission`
+  remains the co-author handoff folder; it contains the current TeX, LyX, PDF,
+  `Figures/`, and `README_SUBMISSION.md`.
