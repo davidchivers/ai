@@ -1,221 +1,52 @@
 ---
 name: academic-paper-writer
-description: Draft economics papers with proper structure and academic style
-workflow_stage: writing
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - LaTeX
-  - academic-writing
-  - papers
-  - economics
+description: Draft, restructure, and revise economics papers in the repository's academic voice. Use for whole-paper architecture or section work, including titles, abstracts, introductions, literature reviews, data and design, results, discussion, and conclusions, after reading the current manuscript and verified evidence.
 ---
 
 # Academic Paper Writer
 
-## Purpose
+## Load the paper before writing
 
-This skill helps economists draft, structure, and polish academic papers with proper conventions for economics journals. It provides templates for different paper types and guidance on academic writing style.
+1. Identify the authoritative manuscript and the exact requested scope. Read enough surrounding text to understand the argument, notation, evidence, and promises made elsewhere.
+2. Read `_shared/memory/RESEARCH_STYLE.md` and `_shared/memory/academic_voice.md`. Treat the user's strongest prior papers and the current manuscript as the closest style references.
+3. Read the live project status and the evidence, tables, figures, code outputs, referee material, and verified literature relevant to the requested section. For Word sources, include comments, footnotes, and tracked changes.
+4. Ask only about an unresolved choice that would materially change the paper. Do not fill gaps in the design, evidence, or contribution with plausible prose.
 
-## When to Use
+## Establish the section contract
 
-- Starting a new research paper from scratch
-- Restructuring an existing draft
-- Writing specific sections (introduction, literature review, conclusion)
-- Preparing papers for journal submission
+Before drafting, write down the section's job, the claims it may support, the evidence available for each claim, and any unresolved items. Use these section-specific contracts:
 
-## Instructions
+| Section | Required content |
+|---|---|
+| Title and abstract | The actual question, setting, design, main result, and scope, at the strength supported by the paper |
+| Introduction | The paper-specific problem, question and answer, credible design or model, precise contribution relative to verified nearby work, and material limits |
+| Literature review | An organizing comparison or mechanism, verified citations, and the exact difference between this paper and the closest work |
+| Data and design | Unit and sample, construction of key variables, estimand, identifying variation, assumptions, inference, and diagnostics |
+| Results | Substantive claim, estimate and units, uncertainty, comparison case, specification and sample, and evidential limits |
+| Discussion or mechanisms | What the evidence establishes, what is interpretation, plausible alternatives, and tests that discriminate among them |
+| Conclusion | The answer and contribution already established, honest scope and limitations, and implications warranted by the analysis; no new results |
 
-### Step 1: Identify Paper Type
+Adapt this structure to theoretical, quantitative, or mixed papers. Do not impose a generic section sequence on a manuscript with a stronger existing architecture.
 
-Ask the user:
-1. Is this empirical or theoretical?
-2. What is the target journal/audience?
-3. What stage is the paper at? (outline, first draft, revision)
-4. What sections need help?
+## Draft from evidence
 
-### Step 2: Follow the IMRAD Structure
+- Build the argument around verified claims, not around a prose template. Carry exact magnitudes, units, samples, comparison groups, and uncertainty from their sources.
+- Mark unresolved citations or facts explicitly. Never invent a reference, result, robustness check, mechanism test, or policy implication.
+- Distinguish descriptive association, model implication, interpretation, and causal evidence. Gate causal language on the identification design and its diagnostics.
+- Explain why each result matters instead of narrating every table column. Discuss null and contradictory evidence when it bears on the claim.
+- Preserve established terminology, notation, LaTeX commands, labels, citations, and requested layout unless changing them is part of the task.
 
-For empirical papers, use:
-1. **Introduction** - Motivation, research question, contribution
-2. **Literature Review** - Related work and positioning
-3. **Data & Methods** - Sources, sample, empirical strategy
-4. **Results** - Main findings with tables/figures
-5. **Discussion** - Interpretation, mechanisms, limitations
-6. **Conclusion** - Summary and implications
+## Apply the house voice
 
-### Step 3: Apply Economics Writing Conventions
+- Open paragraphs with the phenomenon, comparison, result, or mechanism under discussion.
+- Keep one causal or inferential step per sentence. Use direct verbs and proportionate claims.
+- Define jargon on first use and connect estimates to concrete magnitudes or scope.
+- Remove throat-clearing, novelty inflation, empty roadmaps, synonym cycling, canned contribution language, and generic future-work endings.
+- Do not use em dashes in academic prose.
 
-- **First paragraph** should state the research question and main finding
-- **Use present tense** for established facts, past tense for your findings
-- **Be precise** with causal language (effect vs. association)
-- **Cite heavily** in the literature review
-- **Lead with results** in the results section
+## Integrate and verify
 
-## Example Output: Introduction Template
-
-```latex
-\section{Introduction}
-
-% Hook - Why does this matter?
-[TOPIC] is a fundamental question in economics, with implications for 
-[POLICY AREA] and [BROADER RELEVANCE]. Despite extensive research, 
-we still lack clear evidence on [SPECIFIC GAP].
-
-% Research question
-This paper asks: [RESEARCH QUESTION IN PLAIN LANGUAGE]? 
-Specifically, we examine whether [PRECISE FORMULATION OF THE QUESTION].
-
-% Preview of answer
-We find that [MAIN RESULT IN ONE SENTENCE]. This effect is 
-[economically significant / modest / heterogeneous], with 
-[QUANTITATIVE SUMMARY: e.g., "a one standard deviation increase 
-in X associated with a Y percent increase in Z"].
-
-% Methodology (brief)
-To identify this effect, we exploit [IDENTIFICATION STRATEGY: 
-natural experiment / RCT / instrumental variable / RDD]. 
-Our data come from [DATA SOURCE], covering [TIME PERIOD] 
-and [SAMPLE SIZE] observations.
-
-% Contribution / Related literature
-Our paper contributes to several strands of literature. 
-First, we extend the work of \citet{Author2020} by [EXTENSION]. 
-Second, we provide new evidence on [MECHANISM/CHANNEL] that 
-complements \citet{OtherAuthor2019}. Finally, our findings 
-have implications for [POLICY/FUTURE RESEARCH].
-
-% Roadmap
-The remainder of the paper is organized as follows. 
-Section~\ref{sec:background} provides background and reviews 
-related literature. Section~\ref{sec:data} describes our data 
-and empirical strategy. Section~\ref{sec:results} presents our 
-main findings. Section~\ref{sec:robustness} discusses robustness 
-checks. Section~\ref{sec:conclusion} concludes.
-```
-
-## Example Output: Results Section Template
-
-```latex
-\section{Results}
-\label{sec:results}
-
-% Lead with the main finding
-Table~\ref{tab:main} presents our main results. Column (1) shows 
-the baseline OLS specification without controls. The coefficient 
-on [TREATMENT VARIABLE] is [POINT ESTIMATE] (s.e. = [SE]), 
-statistically significant at the [1/5/10] percent level.
-
-% Add controls incrementally
-In column (2), we add [CONTROL SET 1]. The point estimate 
-[increases/decreases slightly/remains stable] to [ESTIMATE]. 
-Column (3) includes [CONTROL SET 2] and adds [FIXED EFFECTS]. 
-Our preferred specification in column (4) includes [FULL CONTROLS] 
-and yields [FINAL ESTIMATE].
-
-% Interpret magnitude
-To gauge economic significance, note that [INTERPRETATION]. 
-A one standard deviation increase in [X] is associated with 
-a [Y] percent [increase/decrease] in [OUTCOME], or roughly 
-[COMPARISON TO MEAN/OTHER BENCHMARK].
-
-% Brief mention of mechanisms/heterogeneity if relevant
-Table~\ref{tab:hetero} explores heterogeneity by [DIMENSION]. 
-We find that the effect is [larger/concentrated among] 
-[SUBGROUP], suggesting that [INTERPRETATION].
-
-\begin{table}[htbp]
-\centering
-\caption{Main Results: Effect of X on Y}
-\label{tab:main}
-\begin{tabular}{lcccc}
-\hline\hline
- & (1) & (2) & (3) & (4) \\
- & OLS & + Controls & + FE & Preferred \\
-\hline
-Treatment & 0.052*** & 0.048*** & 0.041** & 0.039** \\
-          & (0.012)  & (0.011)  & (0.015) & (0.016) \\
-\\
-Controls       & No  & Yes & Yes & Yes \\
-Fixed Effects  & No  & No  & Yes & Yes \\
-Cluster SE     & No  & No  & No  & Yes \\
-\\
-Observations   & 10,000 & 9,850 & 9,850 & 9,850 \\
-R-squared      & 0.05   & 0.12  & 0.35  & 0.35  \\
-\hline\hline
-\multicolumn{5}{l}{\footnotesize Notes: * p<0.10, ** p<0.05, *** p<0.01.} \\
-\multicolumn{5}{l}{\footnotesize Standard errors in parentheses.} \\
-\end{tabular}
-\end{table}
-```
-
-## Example Output: Conclusion Template
-
-```latex
-\section{Conclusion}
-\label{sec:conclusion}
-
-% Restate question and answer
-This paper examined [RESEARCH QUESTION]. Using [METHOD/DATA], 
-we found that [MAIN FINDING]. This result is robust to 
-[ROBUSTNESS CHECKS].
-
-% Implications
-Our findings have several implications. For policy, they suggest 
-that [POLICY IMPLICATION]. For theory, they provide support for 
-[THEORETICAL MECHANISM] and challenge [ALTERNATIVE VIEW].
-
-% Limitations (brief, honest)
-Several limitations warrant mention. First, [LIMITATION 1: 
-e.g., external validity]. Second, [LIMITATION 2: e.g., 
-data constraints]. Future research could address these by 
-[SUGGESTION].
-
-% Future directions
-This paper opens several avenues for future work. 
-[DIRECTION 1]. [DIRECTION 2]. We hope our findings 
-stimulate further research on [BROADER TOPIC].
-```
-
-## Writing Tips
-
-### For Introductions
-- **First sentence should grab attention** - not "This paper examines..."
-- **State your contribution clearly** - what's new about this paper?
-- **Be specific about magnitudes** - don't just say "large effect"
-- **Acknowledge limitations** preemptively in the last paragraph
-
-### For Results
-- **Lead with numbers** - put the coefficient in the first sentence
-- **Interpret economically** - what does a 0.05 coefficient mean?
-- **Guide the reader** through tables column by column
-- **Don't oversell** - distinguish statistical from economic significance
-
-### For Conclusions
-- **Don't introduce new results** - synthesize what you've shown
-- **Be honest about limitations** - reviewers will find them anyway
-- **End on the contribution** - remind readers why this matters
-
-## Common Pitfalls
-
-- ❌ Burying the main result in the middle of the paper
-- ❌ Using "significant" without specifying statistical or economic
-- ❌ Over-claiming causality without proper identification
-- ❌ Literature review that's just a list of papers
-- ❌ Conclusion that's just a summary
-
-## References
-
-- [Cochrane (2005) Writing Tips for PhD Students](https://www.johnhcochrane.com/research-all/writing-tips-for-phd-studentsnbsp)
-- [Shapiro (2019) How to Give an Applied Micro Talk](https://www.brown.edu/Research/Shapiro/pdfs/applied_micro_slides.pdf)
-- [Thomson (2011) A Guide for the Young Economist](https://mitpress.mit.edu/books/guide-young-economist)
-
-## Changelog
-
-### v1.0.0
-- Initial release with introduction, results, and conclusion templates
+1. Check the revision against the full paper for repeated material, broken promises, inconsistent notation, and contradictions in sample, timing, or results.
+2. Trace every number and citation to a verified source. State what remains unverified rather than smoothing over it.
+3. If editing source, preserve the canonical format and compile or render when practical. Use the layout-specific skill for PDF placement and visual defects.
+4. Return the revised text or source, followed by a brief change summary and a separate list of evidence gaps or decisions that still need the user.

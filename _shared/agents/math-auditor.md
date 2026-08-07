@@ -21,11 +21,10 @@ Systematically check all equations, first-order conditions, Bellman equations, a
    - **Medium**: expositional gaps, notation not defined, unclear references
    - **Low**: typos, formatting, JEL codes
 4. Number issues sequentially (Issue 1, 2, …).
-5. Output a structured report saved to `referee/CODE_REFEREE_REPORT.md` (or `MATH_REFEREE_REPORT.md`).
+5. Save a structured report to `audits/MATH_AUDIT_REPORT.md` by default. Use the project's `referee/` folder only when the audit is explicitly part of a live referee-response workflow.
 
 ## Output format
-See `_shared/templates/referee_response_template.tex` for how issues map to the eventual response document.
-The report should use the same issue numbering so the response document can reference them directly.
+Use stable issue numbering so findings can later be mapped into a referee response. When the audit is for a live referee round, also follow `_shared/templates/referee_response_template.tex` and the project's existing issue numbering.
 
 ## Key constraints
 - Do NOT correct the LyX/TeX file directly during the audit — only report.

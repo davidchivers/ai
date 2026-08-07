@@ -1,4 +1,6 @@
-# User Preferences
+# Claude client notes
+
+Repository policy and workflow rules live in `AGENTS.md`. Inspect live Git state rather than relying on branch names recorded here.
 
 ## Open Stata
 When the user says "open Stata", run:

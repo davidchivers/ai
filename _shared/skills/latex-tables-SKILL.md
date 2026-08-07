@@ -1,127 +1,45 @@
 ---
 name: latex-tables
-description: Generate publication-ready regression tables in LaTeX.
-workflow_stage: writing
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - latex
-  - tables
-  - regression
-  - booktabs
+description: Generate and revise publication-ready regression, summary-statistics, balance, calibration, and results tables in LaTeX. Use when estimates and uncertainty must be traced to Stata, R, Python, or other source output and table structure, notes, model labels, multi-column headers, numeric alignment, width, or manuscript integration must be handled consistently.
 ---
 
 # LaTeX Tables
 
-## Purpose
+## Establish the table contract
 
-This skill creates clean, publication-ready tables in LaTeX for regression results and summary statistics, using standard academic formatting.
+Read the source output or generation code, the surrounding manuscript discussion, nearby tables, and the project's established LaTeX style. Infer the table's purpose, comparison, audience, destination, and canonical source. Ask only about an unresolved choice that changes the reported evidence or layout.
 
-## When to Use
+Record:
 
-- Converting model output into LaTeX tables
-- Standardizing table style across a paper
-- Adding notes, significance stars, and labels
+- the rows and columns required and their intended comparison;
+- estimate type, units, transformation, and uncertainty measure;
+- sample, weights, fixed effects, controls, clustering or other inference details;
+- model order, panel structure, precision, significance convention, caption, label, and notes;
+- the script or output file from which each value comes.
 
-## Instructions
+Never invent estimates, standard errors, confidence intervals, stars, sample sizes, diagnostics, model features, or notes. Use visibly marked placeholders only when the user explicitly requests a template.
 
-Follow these steps to complete the task:
+## Structure the evidence
 
-### Step 1: Understand the Context
+- Make the main comparison legible from the column and row hierarchy. Group columns with multicolumn headings only when the grouping carries substantive meaning.
+- Report uncertainty in the form produced or required by the analysis and name it in the notes. Apply significance markers only when requested, calculated from the correct inference, and paired with exact cutoffs.
+- Include the sample, fixed effects, controls, weights, clustering level, observation count, cluster count, and fit or diagnostic statistics that readers need to interpret the specifications.
+- Distinguish zero, no, not applicable, suppressed, and unavailable values. Do not encode all of them as a blank cell.
+- Keep captions informative but concise. Put definitions, inference, sample restrictions, and non-obvious transformations in notes rather than hiding them in prose elsewhere.
 
-Before generating any code, ask the user:
+## Fit the manuscript without obscuring it
 
-- What type of table is needed (regression, summary stats, balance)?
-- What software produced the results (Stata, R, Python)?
-- Which formatting style is required (journal-specific, AEA, etc.)?
+Reuse nearby table environments, rules, type size, decimal precision, labels, and note style. Use `booktabs`, `threeparttable`, `siunitx`, or other packages only when the manuscript already supports them or the scoped change adds them deliberately.
 
-### Step 2: Generate the Output
+Align numbers by decimal point when feasible. Prefer shortening labels, reducing precision, reorganizing panels, or splitting an overloaded table before shrinking it. Do not use `\resizebox` as the default response to excess width; use landscape or rotated layouts only when they improve readability and fit the established document design.
 
-Based on the context, generate LaTeX code that:
+## Keep values reproducible
 
-1. **Uses `booktabs`** for clean horizontal rules
-2. **Includes labels and captions** for referencing in the paper
-3. **Adds notes** for standard errors and significance
-4. **Aligns numeric columns** for readability
+Generate tables from the analysis workflow when practical rather than transcribing results by hand. Preserve the generation script and make formatting transformations explicit. If manual integration is unavoidable, compare every cell with the authoritative output and record the source snapshot.
 
-### Step 3: Verify and Explain
+## Verify before handoff
 
-After generating output:
-
-- Explain how to compile the table
-- Highlight any assumptions in the formatting
-- Suggest refinements for journal submission
-
-## Example Prompts
-
-- "Create a regression table with three models in LaTeX"
-- "Format summary statistics with mean and sd columns"
-- "Add significance stars and standard error notes"
-
-## Example Output
-
-```latex
-% ============================================
-% Regression Table
-% ============================================
-\begin{table}[htbp]\centering
-\caption{Effect of Treatment on Outcome}
-\label{tab:main_results}
-\begin{tabular}{lccc}
-\toprule
- & (1) & (2) & (3) \\
-\midrule
-Treatment & 0.125*** & 0.118*** & 0.102** \\
- & (0.041) & (0.039) & (0.046) \\
-Controls & No & Yes & Yes \\
-Fixed Effects & No & Yes & Yes \\
-\midrule
-Observations & 2,145 & 2,145 & 2,145 \\
-R-squared & 0.18 & 0.24 & 0.31 \\
-\bottomrule
-\end{tabular}
-\begin{tablenotes}
-\small
-\item Notes: Standard errors in parentheses. * p<0.10, ** p<0.05, *** p<0.01.
-\end{tablenotes}
-\end{table}
-```
-
-## Requirements
-
-### Software
-
-- LaTeX distribution (TeX Live or MikTeX)
-
-### Packages
-
-- `booktabs`
-- `threeparttable` (optional for notes)
-
-## Best Practices
-
-1. **Keep tables compact** and readable
-2. **Use consistent notation** for standard errors and stars
-3. **Provide clear captions and labels**
-
-## Common Pitfalls
-
-- Overly wide tables that do not fit the page
-- Missing notes for standard errors
-- Inconsistent labeling across tables
-
-## References
-
-- [LaTeX booktabs documentation](https://ctan.org/pkg/booktabs)
-- [AEA Author Guidelines](https://www.aeaweb.org/journals/policies/author-instructions)
-
-## Changelog
-
-### v1.0.0
-
-- Initial release
+1. Check row and model order, signs, decimal places, uncertainty, confidence levels, stars, sample counts, cluster counts, fixed effects, controls, weights, and units against the source.
+2. Check that the manuscript's table references and prose describe the same specifications and magnitudes.
+3. Compile the canonical document and inspect width, page breaks, repeated headers, notes, alignment, font size, clipping, and cross-references at final page size.
+4. Return the canonical table source and generation source, the checks performed, and any unresolved provenance or layout issue.

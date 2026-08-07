@@ -1,15 +1,15 @@
 # Notes phase standard
 
-This standard governs brainstorming and pre-paper planning when active work is in `research_projects/<name>/notes/`.
+This standard governs brainstorming and pre-paper planning when active work is in a research project's or research idea's `notes/` folder.
 
 ## Scope
 
 - Applies to pre-paper work only.
-- Does not govern `Paper/` writing-phase structure.
+- Does not govern paper-phase structure; use `paper_project_structure_standard.md` for that.
 
 ## Required `notes/` layout
 
-Use a flat Markdown layout in `notes/` (no subfolders for active docs):
+Use a flat Markdown layout in `notes/` for active documents. Generated outputs may live in `notes/build/`, and superseded material may live in `notes/old/`; the organizer must not flatten either folder.
 
 - `notes/01_project_overview.md`
 - `notes/02_literature_and_synthesis.md`
@@ -32,6 +32,93 @@ Use a flat Markdown layout in `notes/` (no subfolders for active docs):
 - In literature notes, use real and searchable references only.
 - In model notes, map each model to estimable objects.
 - In empirical notes, include dataset/provider, identification design, baseline equation, key threats, and feasibility.
+- Use the shared note templates in `_shared/templates/notes/` when creating a new notes file from scratch.
+
+## Recommended section order by file
+
+The exact prose should vary by project, but the house style should be recognizable across idea
+notes.
+
+For research ideas intended as economics projects, `01_project_overview.md` should include a blunt
+`## Journal fit and ambition` section. The point is not to pretend we know the final outlet. The
+point is to force an honest current-tier read such as:
+
+- `top 5: no / maybe / plausible only with major redesign`
+- `top general-interest field: no / maybe`
+- `strong field journal: yes / maybe`
+- `best interdisciplinary fit`
+
+That section should distinguish between:
+
+- the current read for the idea as it stands now
+- what would have to improve to move the idea up a tier
+
+### `01_project_overview.md`
+
+Use this order unless the user requests something different:
+
+- `Last updated`
+- `Status`
+- `## Project intention`
+- `## Motivating intuition`
+- `## Central research question`
+- `## What the project is really about`
+- `## Journal fit and ambition`
+- `## Scope`
+- `## Working hypotheses`
+- `## Contribution framing`
+- `## Main risks`
+- `## Design lock questions`
+- `## Near-term roadmap`
+
+### `02_literature_and_synthesis.md`
+
+Use this order unless the user requests something different:
+
+- `Last updated`
+- `## Current rule`
+- `## Benchmark strand ...`
+- `## What remains missing`
+- `## Working synthesis`
+- `## Verified anchor references`
+- `## Open verification tasks`
+
+### `03_model_notes.md`
+
+Use the shared model block template. Each model should be a separate top-level heading:
+
+- `# Model N: [name]`
+- `**Model type:**`
+- `**Literature.**`
+- `**How this applies to the question.**`
+- `**References.**`
+
+### `04_empirical_notes.md`
+
+Use the shared empirical strategy block template. Each strategy should be a separate top-level
+heading:
+
+- `# Strategy N: [name]`
+- `**Strategy type:**`
+- `**Literature.**`
+- `**How this applies to the question.**`
+- `**References.**`
+
+### `05_research_plan.md`
+
+Use this order unless the user requests something different:
+
+- `Last updated`
+- `Status`
+- `## Chosen question and estimand`
+- `## Chosen models`
+- `## Chosen empirical strategies`
+- `## Data access and fallback`
+- `## Decision log`
+- `## Design lock criteria`
+- `## Next 3 tasks`
+
+Each task in `## Next 3 tasks` should name an owner and a concrete deliverable.
 
 ## Model notes format (required)
 
@@ -114,15 +201,14 @@ Use the shared organizer script:
 &_shared/scripts/organize_notes.ps1 -AllProjects
 ```
 
-Strict enforcement mode (fails when violations remain):
+After reviewing the audit, apply the migration to named projects rather than the entire repository:
+
+```powershell
+&_shared/scripts/organize_notes.ps1 -ProjectPaths research_ideas/learning_by_viewing,research_ideas/accents_and_dialects -Apply
+```
+
+Strict read-only enforcement mode (fails when violations remain):
 
 ```powershell
 &_shared/scripts/organize_notes.ps1 -AllProjects -FailOnViolations
 ```
-
-Or target specific projects:
-
-```powershell
-&_shared/scripts/organize_notes.ps1 -ProjectPaths research_ideas/learning_by_viewing,research_ideas/accents_and_dialects
-```
-

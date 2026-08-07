@@ -2,6 +2,7 @@ param(
     [string[]]$ProjectPaths,
     [string]$ProjectsRoot = "research_projects",
     [switch]$AllProjects,
+    [switch]$Apply,
     [switch]$FailOnViolations
 )
 
@@ -28,6 +29,7 @@ $baseMappings = @(
 )
 
 $legacyCategoryDirs = @("overview", "model", "empirical", "literature")
+$allowedNoteDirs = @("old", "build")
 $textExtensions = @(".md", ".tex", ".txt", ".qmd")
 $managedExtensions = @(".md", ".tex", ".txt", ".qmd")
 
@@ -55,6 +57,25 @@ function Get-TemplateContent {
         [string]$FileName,
         [string]$ProjectName
     )
+
+    $templateMap = @{
+        "01_project_overview.md" = "01_project_overview_template.md"
+        "02_literature_and_synthesis.md" = "02_literature_and_synthesis_template.md"
+        "03_model_notes.md" = "03_model_notes_template.md"
+        "04_empirical_notes.md" = "04_empirical_notes_template.md"
+        "05_research_plan.md" = "05_research_plan_template.md"
+    }
+
+    if ($templateMap.ContainsKey($FileName)) {
+        $sharedRoot = Split-Path $PSScriptRoot -Parent
+        $templatePath = Join-Path $sharedRoot ("templates\notes\" + $templateMap[$FileName])
+        if (Test-Path $templatePath) {
+            $template = Get-Content -Raw $templatePath
+            $template = $template.Replace("{{DATE}}", (Get-Date -Format "yyyy-MM-dd"))
+            $template = $template.Replace("{{PROJECT_NAME}}", $ProjectName)
+            return $template
+        }
+    }
 
     switch ($FileName) {
         "01_project_overview.md" {
@@ -170,6 +191,19 @@ function Get-UniqueDestinationPath {
     return $candidate
 }
 
+function Assert-ChildPath {
+    param(
+        [string]$ParentPath,
+        [string]$CandidatePath
+    )
+
+    $resolvedParent = (Resolve-Path -LiteralPath $ParentPath).Path.TrimEnd("\") + "\"
+    $resolvedCandidate = (Resolve-Path -LiteralPath $CandidatePath).Path.TrimEnd("\") + "\"
+    if (-not $resolvedCandidate.StartsWith($resolvedParent, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Refusing to modify a path outside the intended notes folder: $resolvedCandidate"
+    }
+}
+
 function Migrate-LegacySubfolderFiles {
     param([string]$NotesPath)
 
@@ -233,7 +267,8 @@ function Remove-EmptyLegacyCategoryDirs {
 
         $items = Get-ChildItem -Path $dirPath -Force -ErrorAction SilentlyContinue
         if ($null -eq $items -or $items.Count -eq 0) {
-            cmd /c "rd /s /q `"$dirPath`"" > $null 2>&1
+            Assert-ChildPath -ParentPath $NotesPath -CandidatePath $dirPath
+            Remove-Item -LiteralPath $dirPath -Force
         }
     }
 }
@@ -242,7 +277,7 @@ function Flatten-UnexpectedSubfolders {
     param([string]$NotesPath)
 
     $unexpectedDirs = Get-ChildItem -Path $NotesPath -Directory -ErrorAction SilentlyContinue | Where-Object {
-        $_.Name -notin @("old")
+        $_.Name -notin $allowedNoteDirs
     }
 
     foreach ($dir in $unexpectedDirs) {
@@ -254,7 +289,8 @@ function Flatten-UnexpectedSubfolders {
             Move-Item -LiteralPath $file.FullName -Destination $dest -Force
         }
 
-        cmd /c "rd /s /q `"$($dir.FullName)`"" > $null 2>&1
+        Assert-ChildPath -ParentPath $NotesPath -CandidatePath $dir.FullName
+        Remove-Item -LiteralPath $dir.FullName -Recurse -Force
     }
 }
 
@@ -330,21 +366,25 @@ function Normalize-TopHeadings {
     param([string]$NotesPath)
 
     $expectedTopHeadings = @{
-        "01_project_overview.md" = "# 01 Project overview"
-        "02_literature_and_synthesis.md" = "# 02 Literature review and synthesis"
-        "03_model_notes.md" = "# 03 Model notes"
-        "04_empirical_notes.md" = "# 04 Empirical notes"
-        "05_research_plan.md" = "# 05 Research plan"
+        "01_project_overview.md" = @("# 01 Project overview")
+        "02_literature_and_synthesis.md" = @(
+            "# 02 Literature and synthesis",
+            "# 02 Literature review and synthesis"
+        )
+        "03_model_notes.md" = @("# 03 Model notes")
+        "04_empirical_notes.md" = @("# 04 Empirical notes")
+        "05_research_plan.md" = @("# 05 Research plan")
     }
 
     foreach ($kv in $expectedTopHeadings.GetEnumerator()) {
         $path = Join-Path $NotesPath $kv.Key
         if (-not (Test-Path $path)) { continue }
+        $canonicalHeading = $kv.Value[0]
         $lines = Get-Content $path
         if ($lines.Count -eq 0) {
-            $lines = @($kv.Value)
-        } elseif ($lines[0] -cne $kv.Value) {
-            $lines[0] = $kv.Value
+            $lines = @($canonicalHeading)
+        } elseif ($kv.Value -notcontains $lines[0]) {
+            $lines[0] = $canonicalHeading
         } else {
             continue
         }
@@ -369,26 +409,29 @@ function Test-NotesCompliance {
     }
 
     $unexpectedDirs = Get-ChildItem -Path $NotesPath -Directory -ErrorAction SilentlyContinue | Where-Object {
-        $_.Name -notin @("old")
+        $_.Name -notin $allowedNoteDirs
     }
     foreach ($dir in $unexpectedDirs) {
         $violations.Add("Unexpected subfolder in notes/: $($dir.Name)") | Out-Null
     }
 
     $expectedTopHeadings = @{
-        "01_project_overview.md" = "# 01 Project overview"
-        "02_literature_and_synthesis.md" = "# 02 Literature review and synthesis"
-        "03_model_notes.md" = "# 03 Model notes"
-        "04_empirical_notes.md" = "# 04 Empirical notes"
-        "05_research_plan.md" = "# 05 Research plan"
+        "01_project_overview.md" = @("# 01 Project overview")
+        "02_literature_and_synthesis.md" = @(
+            "# 02 Literature and synthesis",
+            "# 02 Literature review and synthesis"
+        )
+        "03_model_notes.md" = @("# 03 Model notes")
+        "04_empirical_notes.md" = @("# 04 Empirical notes")
+        "05_research_plan.md" = @("# 05 Research plan")
     }
 
     foreach ($kv in $expectedTopHeadings.GetEnumerator()) {
         $path = Join-Path $NotesPath $kv.Key
         if (-not (Test-Path $path)) { continue }
         $firstLine = (Get-Content -TotalCount 1 $path)
-        if ($firstLine -cne $kv.Value) {
-            $warnings.Add("Heading style mismatch in notes/$($kv.Key): expected '$($kv.Value)'") | Out-Null
+        if ($kv.Value -notcontains $firstLine) {
+            $warnings.Add("Heading style mismatch in notes/$($kv.Key): expected '$($kv.Value[0])'") | Out-Null
         }
     }
 
@@ -449,6 +492,37 @@ function Organize-ProjectNotes {
     return $compliance
 }
 
+function Test-ProjectNotes {
+    param([string]$ProjectPath)
+
+    $resolvedProject = (Resolve-Path -LiteralPath $ProjectPath).Path
+    $projectName = Split-Path -Leaf $resolvedProject
+    $notesPath = Join-Path $resolvedProject "notes"
+    if (-not (Test-Path -LiteralPath $notesPath -PathType Container)) {
+        $legacyNotesPath = Join-Path $resolvedProject "Notes"
+        if (Test-Path -LiteralPath $legacyNotesPath -PathType Container) {
+            $notesPath = $legacyNotesPath
+        }
+    }
+    if (-not (Test-Path -LiteralPath $notesPath -PathType Container)) {
+        Write-Host "[skip] $projectName (no notes folder)"
+        return [PSCustomObject]@{ Violations = @(); Warnings = @() }
+    }
+
+    $compliance = Test-NotesCompliance -NotesPath $notesPath -ProjectName $projectName
+    foreach ($w in $compliance.Warnings) {
+        Write-Host "[warn] $projectName - $w"
+    }
+    foreach ($v in $compliance.Violations) {
+        Write-Host "[violation] $projectName - $v"
+    }
+    if ($compliance.Violations.Count -eq 0 -and $compliance.Warnings.Count -eq 0) {
+        Write-Host "[ok] $projectName (notes format passes the read-only audit)"
+    }
+
+    return $compliance
+}
+
 if ($AllProjects) {
     $projects = Get-ChildItem -Path $ProjectsRoot -Directory | Where-Object {
         (Test-Path (Join-Path $_.FullName "notes")) -or (Test-Path (Join-Path $_.FullName "Notes"))
@@ -462,7 +536,11 @@ if ($AllProjects) {
 $allViolations = New-Object System.Collections.Generic.List[string]
 
 foreach ($project in $projects) {
-    $result = Organize-ProjectNotes -ProjectPath $project
+    $result = if ($Apply) {
+        Organize-ProjectNotes -ProjectPath $project
+    } else {
+        Test-ProjectNotes -ProjectPath $project
+    }
     foreach ($v in $result.Violations) {
         $allViolations.Add($v) | Out-Null
     }
@@ -471,4 +549,3 @@ foreach ($project in $projects) {
 if ($FailOnViolations -and $allViolations.Count -gt 0) {
     throw "Notes-phase violations detected: $($allViolations.Count)."
 }
-

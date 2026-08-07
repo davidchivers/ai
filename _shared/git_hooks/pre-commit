@@ -1,0 +1,4 @@
+#!/bin/sh
+repo_root="$(git rev-parse --show-toplevel)"
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$repo_root/_shared/scripts/git_size_guard.ps1" -RepoRoot "$repo_root"
+exit $?

@@ -1,135 +1,82 @@
 ---
 name: python-panel-data
-description: Panel data analysis with Python using linearmodels and pandas.
-workflow_stage: analysis
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - python
-  - pandas
-  - linearmodels
-  - panel-data
+description: Run reproducible panel-data analysis in Python with pandas and linearmodels. Use for preparing panel indexes, estimating fixed- or random-effects models, selecting clustered covariance estimators, diagnosing panel structure and absorption, interpreting estimates, and exporting results for tables or figures.
 ---
 
 # Python Panel Data
 
-## Purpose
+Start from the panel structure and estimand, not from a model formula. Read the data documentation, current scripts, and project environment before changing the analysis.
 
-This skill helps economists run panel data models in Python using `pandas`, `statsmodels`, and `linearmodels`, with correct fixed effects, clustering, and diagnostics.
+## Define the analysis contract
 
-## When to Use
+Record:
 
-- Estimating fixed effects or random effects models
-- Running difference-in-differences on panel data
-- Creating regression tables and plots in Python
+| Field | Required content |
+|---|---|
+| Panel keys | Entity identifier, time identifier, and expected uniqueness |
+| Estimand | Population, outcome, treatment or regressor contrast, and units |
+| Variation | Between, within-entity, within-time, or treatment-timing variation |
+| Specification | Controls, fixed effects, trends, weights, lags, and restrictions |
+| Inference | Dependence structure, cluster variables, and cluster counts |
+| Output | Stored estimates, table or figure format, and canonical paths |
 
-## Instructions
+Infer fields from live project material. Ask only when a missing choice would change the estimator or interpretation.
 
-Follow these steps to complete the task:
+## Validate the panel
 
-### Step 1: Understand the Context
+Before estimation:
 
-Before generating any code, ask the user:
+1. assert uniqueness of the entity-time key and investigate duplicates rather than dropping them automatically;
+2. normalize time to a sortable, documented type and verify gaps, frequency, and coverage;
+3. describe balance, entry, exit, attrition, and entity-level observation counts;
+4. audit missingness and sample loss for every model variable;
+5. check treatment timing, reversals, anticipation, and support where relevant;
+6. verify meaningful within variation after restrictions and fixed effects;
+7. confirm merge cardinality and weight semantics.
 
-- What is the unit of observation and panel identifiers?
-- Which outcomes and regressors are required?
-- What fixed effects or time effects are needed?
-- How should standard errors be clustered?
+Create the panel index only after these checks. Preserve an explicit analysis-sample flag or equivalent reproducible rule.
 
-### Step 2: Generate the Output
+## Select the estimator
 
-Based on the context, generate Python code that:
+Choose pooled, fixed-effects, first-difference, between, or random-effects estimation from the estimand and assumptions. Do not select random effects merely because it is more efficient; state the orthogonality assumption it adds. Do not add entity or time fixed effects without explaining which confounding variation they remove and which regressors they absorb.
 
-1. **Loads and cleans the data** with `pandas`
-2. **Sets a MultiIndex** for panel structure
-3. **Fits the model** using `linearmodels.PanelOLS` or `RandomEffects`
-4. **Outputs results** in a readable table and optional LaTeX
+A generic two-way fixed-effects regression is not a sufficient default for staggered treatment with heterogeneous effects. Map adoption cohorts and comparison groups first, then use a design-appropriate estimator or explain why the simpler specification identifies the requested contrast.
 
-### Step 3: Verify and Explain
+Treat dynamic panels, lagged dependent variables, endogenous regressors, and short-$T$ settings as distinct designs requiring their own assumptions and estimators.
 
-After generating output:
+## Implement in Python
 
-- Interpret key coefficients
-- Note assumptions (strict exogeneity, parallel trends, etc.)
-- Suggest robustness checks (alternative clustering, placebo tests)
+Follow the existing environment and dependency files. Use current `pandas`, `linearmodels`, or project-specific APIs as appropriate, but do not add installation commands unless the user asks to change the environment.
 
-## Example Prompts
+Keep code auditable:
 
-- "Run a two-way fixed effects model with firm and year effects"
-- "Estimate a DiD using state and year fixed effects"
-- "Export panel regression results to LaTeX"
+1. load derived data and configuration without overwriting raw inputs;
+2. assert schema, keys, ordering, treatment construction, and sample restrictions;
+3. build model matrices from named variables or documented formulas;
+4. fit models on explicitly comparable samples where comparisons require them;
+5. store model metadata beside estimates;
+6. export tables, figures, and machine-readable coefficient data reproducibly.
 
-## Example Output
+Avoid silent row deletion, automatic duplicate removal, and broad exception handling. Surface rank, absorption, convergence, and covariance warnings.
 
-```python
-# ============================================
-# Panel Data Analysis in Python
-# ============================================
-import pandas as pd
-from linearmodels.panel import PanelOLS
+## Specify uncertainty
 
-# Load data
-df = pd.read_csv("panel_data.csv")
+Match the covariance estimator to assignment and residual dependence. Distinguish entity clustering, time clustering, multiway clustering, and kernel or spatial dependence rather than treating them as interchangeable robustness options. Report the number of clusters and consider few-cluster corrections where conventional asymptotics are weak.
 
-# Set panel index
-df = df.set_index(["firm_id", "year"])
+Keep weights, fixed effects, and clustering separate in both code and explanation.
 
-# Create treatment indicator
-df["treat_post"] = df["treated"] * df["post"]
+## Diagnose and verify
 
-# Two-way fixed effects model
-model = PanelOLS.from_formula(
-    "outcome ~ 1 + treat_post + EntityEffects + TimeEffects",
-    data=df
-)
-results = model.fit(cov_type="clustered", cluster_entity=True)
+Check and report:
 
-print(results.summary)
-```
+- observations, entities, periods, and clusters in each fitted sample;
+- singleton handling and observations removed by missingness or absorption;
+- collinearity, rank, absorbed variables, and remaining within variation;
+- coefficient orientation, units, reference categories, and transformation back to natural units;
+- residual or influence diagnostics appropriate to the model;
+- sensitivity tied to specific design or measurement concerns;
+- consistency between fitted objects, exported tables, and plotted values.
 
-## Requirements
+Run code when execution is in scope. If data or dependencies are unavailable, provide clearly labeled unexecuted code and state what remains unverified.
 
-### Software
-
-- Python 3.10+
-
-### Packages
-
-- `pandas`
-- `linearmodels`
-- `statsmodels`
-
-Install with:
-
-```bash
-pip install pandas linearmodels statsmodels
-```
-
-## Best Practices
-
-1. **Always verify panel identifiers** and balanced vs unbalanced panels
-2. **Cluster standard errors** at the appropriate level
-3. **Check for missing data** before estimation
-
-## Common Pitfalls
-
-- Failing to set a proper panel index
-- Using pooled OLS when fixed effects are required
-- Misinterpreting coefficients without accounting for fixed effects
-
-## References
-
-- [linearmodels documentation](https://bashtage.github.io/linearmodels/)
-- [statsmodels documentation](https://www.statsmodels.org/)
-- [Wooldridge (2010) Econometric Analysis of Cross Section and Panel Data](https://mitpress.mit.edu/9780262232586/)
-
-## Changelog
-
-### v1.0.0
-
-- Initial release
+Interpret estimates conditional on the design assumptions. Report supportive, null, and contradictory results; do not turn fixed effects or clustered standard errors into a causal claim. Never invent estimates, sample sizes, package output, or references.
