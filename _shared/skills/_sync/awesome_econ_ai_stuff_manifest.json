@@ -1,0 +1,84 @@
+{
+    "source":  {
+                   "repo":  "meleantonio/awesome-econ-ai-stuff",
+                   "repo_url":  "https://github.com/meleantonio/awesome-econ-ai-stuff",
+                   "git_url":  "https://github.com/meleantonio/awesome-econ-ai-stuff.git",
+                   "ref":  "main"
+               },
+    "last_sync_utc":  "2026-03-10T09:46:28.7955966Z",
+    "last_commit":  "3dbe0f1c0344a32309d7d0015445784884b9ce7d",
+    "skills":  [
+                   {
+                       "name":  "python-panel-data",
+                       "source_path":  "_skills/analysis/python-panel-data/SKILL.md",
+                       "destination":  "python-panel-data-SKILL.md",
+                       "last_synced_upstream_hash":  "A8B1EE679993264D4B21056176727D73DCC58171DB1FA5A869E127BEBC93AC71"
+                   },
+                   {
+                       "name":  "r-econometrics",
+                       "source_path":  "_skills/analysis/r-econometrics/SKILL.md",
+                       "destination":  "r-econometrics-SKILL.md",
+                       "last_synced_upstream_hash":  "03C90CE124E97B86928F4DD6C2AC5C761A35A8700AF810F58153183ADF00D4B9"
+                   },
+                   {
+                       "name":  "stata-regression",
+                       "source_path":  "_skills/analysis/stata-regression/SKILL.md",
+                       "destination":  "stata-regression-SKILL.md",
+                       "last_synced_upstream_hash":  "11D419036082F7E2C21774C0AE7D672C60A347296DC1E648F2D0AB19D01E29C0"
+                   },
+                   {
+                       "name":  "beamer-presentation",
+                       "source_path":  "_skills/communication/beamer-presentation/SKILL.md",
+                       "destination":  "beamer-presentation-SKILL.md",
+                       "last_synced_upstream_hash":  "85E5566B90AFF14DD7E17F2291B656830F4292C53491A38310962BF7C6C00F06"
+                   },
+                   {
+                       "name":  "econ-visualization",
+                       "source_path":  "_skills/communication/econ-visualization/SKILL.md",
+                       "destination":  "econ-visualization-SKILL.md",
+                       "last_synced_upstream_hash":  "6E2FD4CA4FC06BEB225723E2EE63C36C633FC406F6767FADA14E442A25E73106"
+                   },
+                   {
+                       "name":  "api-data-fetcher",
+                       "source_path":  "_skills/data/api-data-fetcher/SKILL.md",
+                       "destination":  "api-data-fetcher-SKILL.md",
+                       "last_synced_upstream_hash":  "6B22CC3C8F2D69735A1E6C7C4130B3FD4A613D4DA215D8516CE656E76D45E3A2"
+                   },
+                   {
+                       "name":  "stata-data-cleaning",
+                       "source_path":  "_skills/data/stata-data-cleaning/SKILL.md",
+                       "destination":  "stata-data-cleaning/SKILL.md",
+                       "last_synced_upstream_hash":  "027051E37FA17315E09B238F9C1AF681D968142D08C9BA3EC6CF08DBB2A37ED3"
+                   },
+                   {
+                       "name":  "research-ideation",
+                       "source_path":  "_skills/ideation/research-ideation/SKILL.md",
+                       "destination":  "research-ideation-SKILL.md",
+                       "last_synced_upstream_hash":  "BC0760B358DA46320CB1EF3A5A2CD93FB921D5B5EF43858E3845A73E3797292F"
+                   },
+                   {
+                       "name":  "general-equilibrium-model-builder",
+                       "source_path":  "_skills/theory/general-equilibrium-model-builder/SKILL.md",
+                       "destination":  "general-equilibrium-model-builder-SKILL.md",
+                       "last_synced_upstream_hash":  "818658D130B9B9C6671D4BE5CD3FABB12DBCEDB4F9B3452840D5FAC15FA9DAE6"
+                   },
+                   {
+                       "name":  "latex-econ-model",
+                       "source_path":  "_skills/theory/latex-econ-model/SKILL.md",
+                       "destination":  "latex-econ-model-SKILL.md",
+                       "last_synced_upstream_hash":  "55611306781B46E5B1B268F2CA54A1AE45469238FD022E552957AF7439BCE8BC"
+                   },
+                   {
+                       "name":  "academic-paper-writer",
+                       "source_path":  "_skills/writing/academic-paper-writer/SKILL.md",
+                       "destination":  "academic-paper-writer-SKILL.md",
+                       "last_synced_upstream_hash":  "CBACF1772061DB74224E644F52FB362B3E32BB011284D9E9C5C00804BCBC39D2"
+                   },
+                   {
+                       "name":  "latex-tables",
+                       "source_path":  "_skills/writing/latex-tables/SKILL.md",
+                       "destination":  "latex-tables-SKILL.md",
+                       "last_synced_upstream_hash":  null
+                   }
+               ]
+}

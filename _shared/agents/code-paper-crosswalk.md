@@ -24,7 +24,7 @@ Identify discrepancies that could affect results, and flag items needing an auth
    - **Confirmed match** — code and paper agree
    - **Discrepancy** — code differs from paper; state both; flag impact on results
    - **Labelling difference only** — different variable names but same math (low risk)
-5. Save output to `referee/CODE_REFEREE_REPORT.md` (or append to an existing report).
+5. Save output to `audits/CODE_PAPER_CROSSWALK.md` by default. Use or append to a file in `referee/` only when the crosswalk is explicitly part of a live referee-response workflow.
 
 ## Output format
 ```

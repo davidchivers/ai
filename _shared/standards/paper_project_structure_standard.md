@@ -4,30 +4,34 @@ Use this structure for paper-phase projects.
 
 Folder naming rule: use `lowercase_with_underscores` for all folders in the project tree.
 
-## Required top-level folders
+## Standard top-level folders
 
-- `drafts/`: latest visible paper files (`.lyx`, `.pdf`).
-- `slides/`: latest visible slide files (`.lyx`, `.pdf`).
+Create the applicable folders when the project needs them; do not add empty placeholders merely to satisfy the layout.
+
+- `drafts/`: latest visible paper source and PDF.
+- `slides/`: latest visible slide source and PDF.
 - `literature/`: reference PDFs and checklist files.
-- `referee/`: referee response files, audits, and issue trackers.
+- `referee/`: response files, issue trackers, and audits tied to a live referee round.
+- `audits/`: reusable code-paper, math, evidence, and replication audits that are not tied to a live referee round; create lazily.
 - `calibration/`: model-calibration code and run assets.
 - `notes/`: pre-paper and supporting notes (design memos, experiment notes, verification notes).
 
 ## Canonical latest files
 
 - In `drafts/` (no version suffix):
-  - `<paper_title_slug>.lyx`
+  - one authoritative editable source: `<paper_title_slug>.lyx` or `<paper_title_slug>.tex`
   - `<paper_title_slug>.pdf`
 - In `slides/` (no version suffix):
-  - `<paper_title_slug>_slides.lyx`
+  - one authoritative editable source: `<paper_title_slug>_slides.lyx` or `<paper_title_slug>_slides.tex`
   - `<paper_title_slug>_slides.pdf`
+- Record the authoritative format in `README.md` or `memory.md`. Do not maintain two competing editable sources.
 
-## Technical TeX location
+## Generated TeX and build-artifact locations
 
-- Keep TeX exports out of the visible root draft/slide folders.
-- Store TeX files in:
+- If LyX is authoritative, keep generated TeX exports out of the visible draft/slide folders. Store them in:
   - `drafts/old_drafts/source_tex/`
   - `slides/old_slides/source_tex/`
+- If TeX is authoritative, keep the canonical `.tex` file beside the canonical PDF in `drafts/` or `slides/`.
 - Keep build artifacts in:
   - `drafts/old_drafts/build_artifacts/`
   - `slides/old_slides/build_artifacts/`

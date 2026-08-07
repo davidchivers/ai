@@ -32,6 +32,7 @@ Thumbs.db
 # Codex/Claude local metadata
 .claude/
 .codex/
+.agents/skills/
 
 # Large binary data files
 *.mat

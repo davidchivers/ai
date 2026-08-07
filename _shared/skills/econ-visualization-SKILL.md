@@ -1,126 +1,48 @@
 ---
 name: econ-visualization
-description: Create publication-quality charts and graphs for economics papers.
-workflow_stage: communication
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - visualization
-  - ggplot2
-  - charts
-  - publication
+description: Create and revise publication-quality economic charts and analytical graphics. Use for time series, distributions, coefficient plots, event studies, maps, and multi-panel figures when the comparison task, uncertainty, units, accessibility, reproducible data transformations, export formats, or journal-ready styling matter.
 ---
 
 # Econ Visualization
 
-## Purpose
+## Write the figure contract
 
-This skill creates publication-quality figures for economics papers, using clean styling, consistent scales, and export-ready formats.
+Infer the figure's substantive claim, comparison task, audience, data source, surrounding visual style, destination, dimensions, and required formats from the project. Read the actual plotting data or its reproducible construction code before choosing the chart. Ask only about an unresolved choice that changes interpretation or layout.
 
-## When to Use
+Record:
 
-- Building figures for empirical results and descriptive analysis
-- Standardizing chart style across a paper or presentation
-- Exporting figures to PDF or PNG at journal quality
+- the unit of observation and plotted variables;
+- filters, transformations, weights, normalization, and missing-value treatment;
+- the comparison the reader must make;
+- the uncertainty or sampling information available;
+- the required panel order, scale, caption, notes, and export paths.
 
-## Instructions
+Do not substitute a convenient dataset, silently aggregate, or infer missing values from an image.
 
-Follow these steps to complete the task:
+## Match the encoding to the comparison
 
-### Step 1: Understand the Context
+- Use position on a common scale for precise comparisons. Keep scales comparable across panels unless a different scale is necessary and clearly signposted.
+- Show time with an ordered axis and honest intervals. Mark breaks, policy dates, or incomplete periods explicitly.
+- Show estimates with their uncertainty and a visible reference value. For event studies, identify the omitted period and preserve the estimator's actual confidence intervals.
+- Show distributions when averages conceal relevant heterogeneity. State whether curves, bins, or weights change the apparent mass.
+- Use bars for discrete quantities whose baseline matters, not as a default for every category. Use maps only when spatial location is substantively part of the comparison.
+- Use log scales, smoothing, dual axes, or truncated axes only for a defensible analytical reason. Label the transformation and prevent it from implying a comparison the data do not support.
 
-Before generating any code, ask the user:
+## Make the figure legible and faithful
 
-- What is the dataset and key variables?
-- What chart type is needed (line, bar, scatter, event study)?
-- What output format and size are required?
+Use concise titles, direct axis labels with units, readable annotation, and a legend only when direct labeling is insufficient. Use a colorblind-safe palette, adequate contrast, distinguishable line types or markers, and a design that remains intelligible in grayscale when publication requires it. Reserve visual emphasis for the focal comparison.
 
-### Step 2: Generate the Output
+Carry causal, descriptive, modeled, and projected quantities with distinct labels. Do not decorate uncertainty away, hide outliers without documenting the rule, or add precision beyond the source data.
 
-Based on the context, generate code that:
+## Keep generation reproducible
 
-1. **Uses a consistent theme** for academic styling
-2. **Labels axes and legends clearly**
-3. **Exports figures** at high resolution
-4. **Includes reproducible steps** for data preparation
+Implement data preparation and plotting in the project's existing R, Python, Stata, or other workflow. Reuse nearby themes and naming conventions. Parameterize repeated dimensions or labels when it makes updates safer, and write the canonical output to the expected figure folder.
 
-### Step 3: Verify and Explain
+Export a vector format for papers or scalable documents and a raster preview at the dimensions needed for visual inspection. Use fonts and embedded assets that survive the target compilation or publication workflow.
 
-After generating output:
+## Verify mechanically and visually
 
-- Explain how to regenerate or update the plot
-- Suggest alternatives (log scales, faceting, smoothing)
-- Note any data transformations used
-
-## Example Prompts
-
-- "Create an event study plot with confidence intervals"
-- "Plot GDP per capita over time for three countries"
-- "Build a scatter plot with fitted regression line"
-
-## Example Output
-
-```r
-# ============================================
-# Publication-Quality Figure in R
-# ============================================
-library(tidyverse)
-
-df <- read_csv("data.csv")
-
-ggplot(df, aes(x = year, y = gdp_per_capita, color = country)) +
-  geom_line(size = 1) +
-  scale_y_continuous(labels = scales::comma) +
-  labs(
-    title = "GDP per Capita Over Time",
-    x = "Year",
-    y = "GDP per Capita (USD)",
-    color = "Country"
-  ) +
-  theme_minimal(base_size = 12) +
-  theme(
-    legend.position = "bottom",
-    panel.grid.minor = element_blank()
-  )
-
-ggsave("figures/gdp_per_capita.pdf", width = 7, height = 4, dpi = 300)
-```
-
-## Requirements
-
-### Software
-
-- R 4.0+ or Python 3.10+
-
-### Packages
-
-- For R: `ggplot2`, `scales`, `dplyr`
-- For Python: `matplotlib`, `seaborn` (optional alternative)
-
-## Best Practices
-
-1. **Use vector formats** (PDF, SVG) for publication
-2. **Keep labels concise** and readable
-3. **Document data filters** used in the figure
-
-## Common Pitfalls
-
-- Overcrowded plots without clear labeling
-- Inconsistent scales across figures
-- Exporting low-resolution images
-
-## References
-
-- [ggplot2 documentation](https://ggplot2.tidyverse.org/)
-- [Tufte (2001) The Visual Display of Quantitative Information](https://www.edwardtufte.com/tufte/books_vdqi)
-
-## Changelog
-
-### v1.0.0
-
-- Initial release
+1. Check plotted row counts, group ordering, dates, units, filters, weights, reference periods, confidence levels, and panel scales against the source data.
+2. Render the final output at its intended size. Inspect labels, legends, clipping, overlap, contrast, line weight, whitespace, and small-multiple comparability.
+3. Compare the visual claim with the underlying values, including null, contradictory, and extreme observations. Revise any encoding that overstates the evidence.
+4. Return the plotting source and canonical outputs, plus a concise note on transformations, uncertainty, regeneration, and any unresolved data issue.

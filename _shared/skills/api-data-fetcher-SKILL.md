@@ -1,359 +1,85 @@
 ---
 name: api-data-fetcher
-description: Fetch economic data from FRED, World Bank, and other APIs
-workflow_stage: data
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - Python
-  - API
-  - FRED
-  - World-Bank
-  - data-collection
+description: Fetch economic and social-science data reproducibly from FRED, the World Bank, and similar APIs. Use when a task requires locating series, authenticating where necessary, handling pagination or rate limits, validating metadata and coverage, and saving documented raw data for later analysis.
 ---
 
-# API Data Fetcher
+# API data fetcher
 
-## Purpose
+Use this workflow to acquire documented source data, not merely to make an API request succeed.
 
-This skill helps economists fetch data from major economic data APIs including FRED (Federal Reserve Economic Data), World Bank, IMF, BLS, and OECD. It generates clean, documented Python code with proper error handling.
+## Establish the request
 
-## When to Use
+Inspect the project context and existing data policy first. Infer the requested concept, geography, period, frequency, unit, output format, and downstream use. Ask only about unresolved choices that materially change the dataset.
 
-- Downloading macroeconomic indicators
-- Building custom datasets from multiple sources
-- Automating data updates for ongoing projects
-- Fetching cross-country panel data
+Before coding:
 
-## Instructions
+- verify access and authentication requirements;
+- confirm the provider's series or indicator definition, units, seasonal adjustment, frequency, revision policy, and geographic coverage;
+- distinguish current-release data from vintages or real-time releases;
+- estimate output size and choose a storage location consistent with the project policy;
+- identify the raw-data preservation and refresh strategy.
 
-### Step 1: Identify Data Requirements
+Do not claim data access from documentation alone. Test a small request before planning a bulk pull.
 
-Ask the user:
-1. What data do you need? (GDP, unemployment, inflation, etc.)
-2. What time period and frequency?
-3. What countries/regions?
-4. Preferred output format? (CSV, DataFrame, etc.)
+## Select and verify the provider
 
-### Step 2: Select Appropriate API
+Likely starting points include:
 
-| Data Type | Best Source | Package |
-|-----------|------------|---------|
-| US macro | FRED | `fredapi` |
-| Global development | World Bank | `wbdata` |
-| Labor statistics | BLS | `bls` |
-| Cross-country | OECD | `pandasdmx` |
-| Financial | Yahoo Finance | `yfinance` |
+| Need | Likely provider |
+|---|---|
+| US macroeconomic time series | FRED or ALFRED |
+| Cross-country development indicators | World Bank |
+| US labour statistics | BLS |
+| OECD harmonised indicators | OECD |
+| IMF macroeconomic series | IMF |
 
-### Step 3: Generate Clean Code
+Treat this as routing guidance, not a fixed package recommendation. Check the provider's current official API documentation before implementing the client, parameters, pagination, or rate-limit handling.
 
-Include:
-- API key handling (environment variables)
-- Error handling for API failures
-- Data cleaning and formatting
-- Documentation of series definitions
+## Implement reproducibly
 
-## Example Output
+1. Reuse an existing project or bundled runtime. Ask before installing a package.
+2. Keep credentials in session environment variables or approved secret storage. Never print, log, or commit them.
+3. In PowerShell, a session-only variable uses syntax such as `$env:FRED_API_KEY = '...'`; do not put a real key in a tracked script.
+4. Separate acquisition from transformation. Save the provider response or lossless raw extract immutably before producing analysis-ready data.
+5. Handle pagination, rate limits, transient failures, and provider error payloads explicitly. Use bounded retries rather than unending loops.
+6. Record the request parameters, retrieval time, endpoint, series metadata, software/runtime, and any provider revision or vintage identifier.
+7. Use stable filenames unless the project explicitly needs dated or vintage-specific snapshots.
+8. For large results, stream, batch, aggregate, or sample deliberately instead of loading the full response into memory by default.
 
-```python
-"""
-Economic Data Fetcher
-=====================
-Downloads macroeconomic data from FRED and World Bank APIs.
-Requires: fredapi, wbdata, pandas
+## Validate before handoff
 
-Setup: Set FRED_API_KEY environment variable
-Get a free key from: https://fred.stlouisfed.org/docs/api/api_key.html
-"""
+Check:
 
-import os
-import pandas as pd
-from datetime import datetime, timedelta
-from typing import List, Optional, Dict
+- expected row count, date range, frequency, geography, units, and missingness;
+- duplicates and unexpected gaps;
+- joins across providers or frequencies;
+- plausibility against provider metadata or a small manual spot-check;
+- whether revisions or suppression rules affect interpretation;
+- whether the saved raw file can reproduce the processed output.
 
-# ============================================
-# FRED Data Fetcher
-# ============================================
+Never silently interpolate, rescale, seasonally adjust, or combine series. Document each transformation and preserve the original units.
 
-def fetch_fred_series(
-    series_ids: List[str],
-    start_date: str = "2000-01-01",
-    end_date: Optional[str] = None,
-    api_key: Optional[str] = None
-) -> pd.DataFrame:
-    """
-    Fetch time series data from FRED.
-    
-    Parameters
-    ----------
-    series_ids : list of str
-        FRED series IDs (e.g., ['GDP', 'UNRATE', 'CPIAUCSL'])
-    start_date : str
-        Start date in YYYY-MM-DD format
-    end_date : str, optional
-        End date (defaults to today)
-    api_key : str, optional
-        FRED API key (defaults to FRED_API_KEY env var)
-    
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame with date index and series as columns
-    
-    Example
-    -------
-    >>> df = fetch_fred_series(['GDP', 'UNRATE'], '2010-01-01')
-    """
-    try:
-        from fredapi import Fred
-    except ImportError:
-        raise ImportError("Install fredapi: pip install fredapi")
-    
-    # Get API key
-    api_key = api_key or os.environ.get('FRED_API_KEY')
-    if not api_key:
-        raise ValueError(
-            "FRED API key required. Set FRED_API_KEY environment variable "
-            "or pass api_key parameter. Get a key at: "
-            "https://fred.stlouisfed.org/docs/api/api_key.html"
-        )
-    
-    fred = Fred(api_key=api_key)
-    end_date = end_date or datetime.now().strftime('%Y-%m-%d')
-    
-    # Fetch each series
-    data = {}
-    for series_id in series_ids:
-        try:
-            series = fred.get_series(
-                series_id,
-                observation_start=start_date,
-                observation_end=end_date
-            )
-            data[series_id] = series
-            print(f"✓ Downloaded {series_id}")
-        except Exception as e:
-            print(f"✗ Failed to download {series_id}: {e}")
-    
-    # Combine into DataFrame
-    df = pd.DataFrame(data)
-    df.index.name = 'date'
-    
-    return df
+## Output contract
 
+Return:
 
-# Common FRED series for economists
-FRED_SERIES = {
-    # GDP and Output
-    'GDP': 'Gross Domestic Product',
-    'GDPC1': 'Real GDP',
-    'GDPPOT': 'Real Potential GDP',
-    
-    # Labor Market
-    'UNRATE': 'Unemployment Rate',
-    'PAYEMS': 'Total Nonfarm Payrolls',
-    'CIVPART': 'Labor Force Participation Rate',
-    
-    # Prices
-    'CPIAUCSL': 'Consumer Price Index',
-    'PCEPI': 'PCE Price Index',
-    'CPILFESL': 'Core CPI',
-    
-    # Interest Rates
-    'FEDFUNDS': 'Federal Funds Rate',
-    'DGS10': '10-Year Treasury Rate',
-    'T10Y2Y': '10Y-2Y Treasury Spread',
-    
-    # Money and Credit
-    'M2SL': 'M2 Money Stock',
-    'TOTRESNS': 'Total Reserves',
-}
+- the verified provider and series or indicator identifiers;
+- the reproducible retrieval script;
+- the immutable raw-data location and processed-data location;
+- a metadata or README file describing definitions, coverage, retrieval, and transformations;
+- a short validation report, including unresolved access or quality limitations.
 
+## Common failure modes
 
-# ============================================
-# World Bank Data Fetcher
-# ============================================
+- Hard-coded credentials.
+- A valid response for the wrong concept or units.
+- Ignored pagination, rate limits, revisions, or vintages.
+- Unchecked frequency conversion or geographic joins.
+- Treating a synthetic or sample response as proof that the full dataset is available.
+- Saving large rebuildable outputs on `C:` when the repository policy routes them to `D:`.
 
-def fetch_world_bank_data(
-    indicators: Dict[str, str],
-    countries: List[str] = ['USA', 'GBR', 'DEU', 'FRA', 'JPN'],
-    start_year: int = 2000,
-    end_year: Optional[int] = None
-) -> pd.DataFrame:
-    """
-    Fetch indicator data from World Bank.
-    
-    Parameters
-    ----------
-    indicators : dict
-        Dict mapping indicator codes to names
-        e.g., {'NY.GDP.PCAP.CD': 'gdp_per_capita'}
-    countries : list of str
-        ISO 3-letter country codes
-    start_year : int
-        Start year
-    end_year : int, optional
-        End year (defaults to current year)
-    
-    Returns
-    -------
-    pd.DataFrame
-        Panel data with country and year
-    
-    Example
-    -------
-    >>> indicators = {
-    ...     'NY.GDP.PCAP.CD': 'gdp_per_capita',
-    ...     'SP.POP.TOTL': 'population'
-    ... }
-    >>> df = fetch_world_bank_data(indicators, ['USA', 'GBR'])
-    """
-    try:
-        import wbdata
-    except ImportError:
-        raise ImportError("Install wbdata: pip install wbdata")
-    
-    end_year = end_year or datetime.now().year
-    
-    all_data = []
-    
-    for indicator_code, indicator_name in indicators.items():
-        try:
-            # Fetch data
-            data = wbdata.get_dataframe(
-                {indicator_code: indicator_name},
-                country=countries,
-            )
-            data = data.reset_index()
-            all_data.append(data)
-            print(f"✓ Downloaded {indicator_name}")
-            
-        except Exception as e:
-            print(f"✗ Failed to download {indicator_name}: {e}")
-    
-    # Merge all indicators
-    if all_data:
-        df = all_data[0]
-        for other_df in all_data[1:]:
-            df = df.merge(other_df, on=['country', 'date'], how='outer')
-        
-        # Filter years
-        df['year'] = pd.to_datetime(df['date']).dt.year
-        df = df[(df['year'] >= start_year) & (df['year'] <= end_year)]
-        
-        return df
-    
-    return pd.DataFrame()
+## Primary documentation
 
-
-# Common World Bank indicators
-WORLD_BANK_INDICATORS = {
-    # Income and Growth
-    'NY.GDP.PCAP.CD': 'GDP per capita (current US$)',
-    'NY.GDP.PCAP.KD.ZG': 'GDP per capita growth (%)',
-    'NY.GDP.MKTP.KD.ZG': 'GDP growth (%)',
-    
-    # Population
-    'SP.POP.TOTL': 'Population, total',
-    'SP.URB.TOTL.IN.ZS': 'Urban population (%)',
-    
-    # Trade
-    'NE.TRD.GNFS.ZS': 'Trade (% of GDP)',
-    'BX.KLT.DINV.WD.GD.ZS': 'FDI, net inflows (% of GDP)',
-    
-    # Human Capital
-    'SE.XPD.TOTL.GD.ZS': 'Education expenditure (% of GDP)',
-    'SH.XPD.CHEX.GD.ZS': 'Health expenditure (% of GDP)',
-    
-    # Inequality
-    'SI.POV.GINI': 'Gini index',
-    'SI.POV.DDAY': 'Poverty headcount ratio ($1.90/day)',
-}
-
-
-# ============================================
-# Usage Example
-# ============================================
-
-if __name__ == "__main__":
-    # Example 1: Fetch US macro data from FRED
-    us_macro = fetch_fred_series(
-        series_ids=['GDP', 'UNRATE', 'CPIAUCSL', 'FEDFUNDS'],
-        start_date='2010-01-01'
-    )
-    
-    print("\nUS Macro Data (FRED):")
-    print(us_macro.tail())
-    
-    # Save to CSV
-    us_macro.to_csv('data/us_macro_fred.csv')
-    print("\nSaved to data/us_macro_fred.csv")
-    
-    # Example 2: Fetch cross-country data from World Bank
-    indicators = {
-        'NY.GDP.PCAP.CD': 'gdp_per_capita',
-        'SP.POP.TOTL': 'population',
-        'NY.GDP.MKTP.KD.ZG': 'gdp_growth'
-    }
-    
-    cross_country = fetch_world_bank_data(
-        indicators=indicators,
-        countries=['USA', 'GBR', 'DEU', 'FRA', 'JPN', 'CHN', 'IND', 'BRA'],
-        start_year=2000
-    )
-    
-    print("\nCross-Country Data (World Bank):")
-    print(cross_country.head(10))
-    
-    # Save to CSV
-    cross_country.to_csv('data/cross_country_wb.csv', index=False)
-    print("\nSaved to data/cross_country_wb.csv")
-```
-
-## Requirements
-
-### Python Packages
-```bash
-pip install fredapi wbdata pandas
-```
-
-### API Keys
-- **FRED**: Free key from https://fred.stlouisfed.org/docs/api/api_key.html
-- **World Bank**: No key required
-- **BLS**: Free key from https://www.bls.gov/developers/
-
-Set environment variables:
-```bash
-export FRED_API_KEY="your_key_here"
-```
-
-## Best Practices
-
-1. **Store API keys in environment variables** - never hardcode
-2. **Add rate limiting** for bulk downloads
-3. **Cache data locally** to avoid repeated API calls
-4. **Document series definitions** from the source
-5. **Check for revisions** in real-time data
-
-## Common Pitfalls
-
-- ❌ Hardcoding API keys in scripts
-- ❌ Not handling API rate limits
-- ❌ Ignoring data vintages/revisions
-- ❌ Mixing data frequencies without proper handling
-
-## References
-
-- [FRED API Documentation](https://fred.stlouisfed.org/docs/api/)
-- [World Bank Data API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589)
-- [QuantEcon: Python Data Sources](https://python-programming.quantecon.org/)
-
-## Changelog
-
-### v1.0.0
-- Initial release with FRED and World Bank support
+- [FRED API](https://fred.stlouisfed.org/docs/api/)
+- [World Bank Indicators API](https://datahelpdesk.worldbank.org/knowledgebase/topics/125589)
+- [BLS public data API](https://www.bls.gov/developers/)

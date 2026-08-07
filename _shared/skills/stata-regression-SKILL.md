@@ -1,132 +1,79 @@
 ---
 name: stata-regression
-description: Run regression analyses in Stata with publication-ready output tables.
-workflow_stage: analysis
-compatibility:
-  - claude-code
-  - cursor
-  - codex
-  - gemini-cli
-author: Awesome Econ AI Community
-version: 1.0.0
-tags:
-  - stata
-  - regression
-  - esttab
-  - econometrics
+description: Run, diagnose, and report regression analyses in Stata with publication-ready tables. Use when specifying fixed effects, interactions, weights, clustered standard errors, stored estimates, robustness checks, marginal effects, or esttab and estout exports for empirical economics work.
 ---
 
 # Stata Regression
 
-## Purpose
+Build the regression from the research design and live data construction. Read the current master do-file, variable definitions, existing estimates, and project dependencies before editing code. Preserve established paths, macros, and output conventions unless a verified problem requires a scoped change.
 
-This skill produces reproducible regression analysis workflows in Stata, including model diagnostics and publication-ready tables using `esttab` or `outreg2`.
+## Define the specification contract
 
-## When to Use
+Record:
 
-- Estimating linear or nonlinear regression models in Stata
-- Producing tables for academic papers and reports
-- Running robustness checks and alternative specifications
+| Field | Required content |
+|---|---|
+| Estimand | Population, outcome, key contrast, horizon, and units |
+| Sample | Inclusion rules, time span, missingness policy, and analysis-sample identifier |
+| Regressors | Treatment, controls, interactions, transformations, and reference categories |
+| Structure | Panel or repeated cross-section keys, fixed effects, trends, and weights |
+| Inference | Dependence or assignment level, cluster variable, and cluster count |
+| Output | Model order, labels, statistics, notes, and canonical table path |
 
-## Instructions
+Infer known choices from the repository. Ask only about an unresolved choice that materially changes specification, inference, or reporting.
 
-Follow these steps to complete the task:
+## Validate data and sample
 
-### Step 1: Understand the Context
+Before estimation:
 
-Before generating any code, ask the user:
+1. confirm variable storage types, labels, units, ranges, missing codes, and transformations;
+2. assert observation or panel keys and investigate duplicates explicitly;
+3. verify merge results and treatment construction;
+4. tabulate sample loss and preserve a reproducible indicator for each reported sample;
+5. inspect treatment support and variation after restrictions and fixed effects;
+6. confirm the meaning of probability, frequency, analytic, or importance weights before using them.
 
-- What is the dependent variable and key regressors?
-- What controls and fixed effects are required?
-- How should standard errors be clustered?
-- What output format is needed (LaTeX, Word, or CSV)?
+Do not clean data opportunistically inside a regression block. Route reusable construction changes to the canonical cleaning workflow.
 
-### Step 2: Generate the Output
+## Estimate deliberately
 
-Based on the context, generate Stata code that:
+Select `regress`, panel estimators, high-dimensional fixed-effects commands, nonlinear estimators, or design-specific commands from the estimand and data structure. Do not substitute a convenient command without checking that its absorbed effects, weights, degrees-of-freedom corrections, and reported sample match the intended model.
 
-1. **Loads and checks the data** - Handle missing values and verify variable types
-2. **Runs the requested specification** - Use `regress`, `reghdfe`, or `xtreg` as appropriate
-3. **Adds robust or clustered standard errors** - Match the study design
-4. **Exports tables** - Use `esttab` or `outreg2` with clear labels
+For interactions, set and report reference categories and use factor-variable notation where appropriate. For nonlinear models, distinguish coefficients from marginal effects and calculate the quantity the user actually needs. For fixed effects, explain the identifying within variation and record variables dropped through absorption or collinearity.
 
-### Step 3: Verify and Explain
+Match standard errors to the dependence and assignment structure. Report the number and distribution of clusters. Address few-cluster settings with an appropriate correction or alternative inference method rather than relying on conventional clustered asymptotics.
 
-After generating output:
+Use packages already declared by the project. Do not place dependency-installation or other environment-changing commands in analysis do-files unless the user explicitly requests dependency management.
 
-- Explain what each model estimates
-- Highlight assumptions and diagnostics
-- Suggest robustness checks or alternative models
+## Organize reproducible code
 
-## Example Prompts
+Use the project's master script and path macros. Keep stages explicit:
 
-- "Run OLS with firm and year fixed effects, clustering by firm"
-- "Estimate a logit model and export results to LaTeX"
-- "Create a regression table with three specifications"
+1. load configuration and the canonical derived dataset;
+2. assert schema, sample rules, keys, and model inputs;
+3. clear only the stored estimates created by this analysis;
+4. estimate named specifications in the intended table order;
+5. attach sample, fixed-effect, cluster, weight, and unit metadata to stored results;
+6. run design-motivated diagnostics and robustness checks;
+7. export the table and any coefficient dataset to canonical output paths.
 
-## Example Output
+Avoid specification dumping. Every added column should answer a stated measurement, functional-form, confounding, sample, or inference concern.
 
-```stata
-* ============================================
-* Regression Analysis with Stata
-* ============================================
+## Verify fitted models
 
-* Load data
-use "data.dta", clear
+For each reported model, check:
 
-* Summary stats
-summarize y x1 x2 x3
+- observation, group, period, and cluster counts;
+- sample comparability across columns and the reason for any difference;
+- singleton removal, absorbed variables, collinearity, and convergence warnings;
+- coefficient orientation, scaling, base categories, and transformed-variable interpretation;
+- weight behavior and the effective identifying variation;
+- consistency of stored estimates with exported cells and notes.
 
-* Main regression with clustered SEs
-regress y x1 x2 x3, vce(cluster firm_id)
-eststo model1
+Run the do-file or a bounded relevant section when execution is authorized. Treat a zero return code as necessary but not sufficient: inspect logs, warnings, output existence, and table contents.
 
-* Alternative specification with fixed effects
-reghdfe y x1 x2 x3, absorb(firm_id year) vce(cluster firm_id)
-eststo model2
+## Report results
 
-* Export table
-esttab model1 model2 using "results/regression_table.tex", replace se label
-```
+Use `esttab`, `estout`, or the project's existing exporter only after storing verified models. Give columns meaningful model labels; report uncertainty, fixed effects, weights, samples, and clustering in notes. Do not invent significance stars, estimates, sample sizes, or diagnostics.
 
-## Requirements
-
-### Software
-
-- Stata 17+
-
-### Packages
-
-- `estout` (for `esttab`)
-- `reghdfe` (optional, for high-dimensional fixed effects)
-
-Install with:
-
-```stata
-ssc install estout
-ssc install reghdfe
-```
-
-## Best Practices
-
-1. **Match standard errors to the design** (cluster where treatment varies)
-2. **Report all model variants** used in the analysis
-3. **Document variable definitions** and transformations
-
-## Common Pitfalls
-
-- Not clustering standard errors at the correct level
-- Omitting fixed effects when required by the design
-- Exporting tables without clear labels and notes
-
-## References
-
-- [Stata Regression Reference Manual](https://www.stata.com/manuals/rregress.pdf)
-- [reghdfe documentation](https://github.com/sergiocorreia/reghdfe)
-- [estout documentation](https://repec.sowi.unibe.ch/stata/estout/)
-
-## Changelog
-
-### v1.0.0
-
-- Initial release
+Interpret the coefficient in its actual units and conditional sample. Separate evidence from causal interpretation, present null or contradictory findings, and state the assumptions or unresolved diagnostics that limit the claim.
