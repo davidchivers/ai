@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DEST=Path(r'\\?\D:\AI_storage\backups\ai_work_versions')
-ROOTS=[Path(r'\\?\E:\AI'),Path(r'\\?\E:\AI_worktrees')]
+ROOTS=[Path(r'\\?\E:\AI'),Path(r'\\?\E:\AI_worktrees'),Path(r'\\?\E:\AI_tasks')]
 SKIP_DIRS={'node_modules','.venv','venv','__pycache__','.pytest_cache','.mypy_cache'}
 SKIP_GIT={'logs'}
 def ordinary(p):return not p.is_symlink() and not os.path.isjunction(p)

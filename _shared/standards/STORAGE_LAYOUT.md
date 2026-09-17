@@ -7,6 +7,7 @@ Current working layout following the September 2026 SSD migration:
 | C: | Windows, installed applications and required Windows user/application state |
 | E:\AI | Shared working checkout, including the live Book |
 | E:\AI_worktrees | Separate project branches; consult _shared/workspaces/WORKTREE_MAP.md |
+| E:\AI_tasks | Standalone Codex task files; the Documents/Codex folder is an application access link |
 | E:\AI_storage\spillover | Active runs, scratch work, package caches and temporary outputs |
 | E:\research_data and E:\AI_data | Locally permitted research inputs outside Git |
 | E:\AI_tools | Portable AI compiler and document toolchains after verification |
@@ -38,7 +39,7 @@ a copy is complete. Switch a consumer only after its copy receipt passes.
 
 The canonical backup script is _shared/scripts/backup_ai_work.py.
 
-It saves ordinary files from E:\AI and E:\AI_worktrees in versioned,
+It saves ordinary files from E:\AI, E:\AI_worktrees and E:\AI_tasks in versioned,
 content-addressed snapshots under D:\AI_storage\backups\ai_work_versions.
 This includes uncommitted, untracked and ignored working files. Dependency
 environments and junction targets are excluded. Git metadata and objects are
