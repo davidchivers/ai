@@ -32,6 +32,17 @@ Read this file at the start of every session.
 
 ---
 
+## Local storage after the SSD migration
+
+- C: is for Windows, installed applications and required application/user state.
+- E:\AI is the shared working checkout; E:\AI_worktrees holds separate branches.
+- Use E:\AI_storage\spillover for active bulky working files, and E:\research_data / E:\AI_data for locally permitted non-Git inputs.
+- D: holds selected versioned backups and retained archives. Historical reports keep their original paths.
+- Read _shared/standards/STORAGE_LAYOUT.md for the layout and backup scope. Local migration receipts live under other/storage_migration and must stay out of Git.
+- Preserve uncommitted, untracked and ignored work. Verify path/size/hash and the consuming workflow before retiring a source.
+- Do not use a cross-volume directory move on a tree containing junctions. Preserve target contents, copy links deliberately, and verify the resulting access paths.
+- Check C: free space for substantial work; route bulky outputs to E:. Warn below 20 GiB. Stop and investigate below 10 GiB or after a drop exceeding 2 GiB during a session.
+
 ## Cleanliness rules (critical)
 
 - **No clutter in root.** Root should only contain the canonical workspace structure and governance files: `research_projects/`, `research_ideas/`, `teaching/`, `book/`, `other/`, `_shared/`, `_playground/`, `AGENTS.md`, `CLAUDE.md`, `README.md`, `.gitignore`, `.git/`, `.claude/`, `.vscode/`.

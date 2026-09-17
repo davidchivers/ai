@@ -56,3 +56,11 @@ book/resources/literature/*.pdf
 
 # Nested repo (kept separate)
 daaf/
+
+# Local migration inventories, copy receipts and rollback details
+other/storage_migration/audit_*/
+other/storage_migration/cutover_*/
+other/storage_migration/*receipt*.json
+other/storage_migration/*inventory*.csv
+other/storage_migration/*references*.csv
+other/storage_migration/*references*.txt
