@@ -25,6 +25,8 @@ a copy is complete. Switch a consumer only after its copy receipt passes.
 - Keep raw data, local credentials, dependency caches and migration backups out
   of Git. Storage location does not change a dataset's licence or sharing rules.
 - Preserve existing uncommitted, untracked and ignored work during migration.
+- Create project virtual environments inside the E: project checkout. Keep
+  model weights and bulky package/download caches in E: spillover storage.
 - Never use a cross-volume directory move on a tree containing junctions.
   Verify files and target contents, then retarget the link deliberately.
 - The C: cache paths required by applications may be junctions to E:.
@@ -39,8 +41,9 @@ The canonical backup script is _shared/scripts/backup_ai_work.py.
 It saves ordinary files from E:\AI and E:\AI_worktrees in versioned,
 content-addressed snapshots under D:\AI_storage\backups\ai_work_versions.
 This includes uncommitted, untracked and ignored working files. Dependency
-environments and junction targets are excluded; Git history is stored in
-verified bundles. File versions are never automatically deleted.
+environments and junction targets are excluded. Git metadata and objects are
+included for nested repositories and staged versions; the two main repositories
+also have verified portable bundles. File versions are never automatically deleted.
 
 The backup does not version the external E: research-data and spillover trees.
 Their verified D: cutover copies are retained. New external inputs or expensive

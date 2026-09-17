@@ -6,7 +6,7 @@ from pathlib import Path
 DEST=Path(r'\\?\D:\AI_storage\backups\ai_work_versions')
 ROOTS=[Path(r'\\?\E:\AI'),Path(r'\\?\E:\AI_worktrees')]
 SKIP_DIRS={'node_modules','.venv','venv','__pycache__','.pytest_cache','.mypy_cache'}
-SKIP_GIT={'objects','logs'}
+SKIP_GIT={'logs'}
 def ordinary(p):return not p.is_symlink() and not os.path.isjunction(p)
 def sha(p):
  h=hashlib.sha256()
@@ -95,7 +95,7 @@ def backup():
   manifest={'snapshot':run,'started_utc':started,'completed_utc':datetime.now(timezone.utc).isoformat(),
    'roots':[str(p).removeprefix('\\\\?\\') for p in ROOTS],'files':records,'links':links,
    'bundles':bundles,'errors':errors,'passed':not errors,'new_objects':new_objects,'bytes_read':bytes_read,
-   'scope':'Ordinary workspace files, including untracked/ignored work. Junction targets, dependency environments and Git objects/logs are omitted; committed objects are in verified Git bundles. External E data and spillover retain their D cutover copies and are not versioned by this job.'}
+   'scope':'Ordinary workspace files, including untracked/ignored work and Git metadata/objects for every nested repository. Junction targets, dependency environments and Git logs are omitted. The two main repositories also have verified portable Git bundles. External E data and spillover retain their D cutover copies and are not versioned by this job.'}
   write_json(snap/'manifest.json',manifest)
   if not errors:write_json(latest,{'snapshot':run,'completed_utc':manifest['completed_utc']})
   print(json.dumps({'snapshot':run,'passed':not errors,'files':len(records),'links':len(links),'errors':len(errors),'new_objects':new_objects,'GiB_read':round(bytes_read/2**30,2)}),flush=True)
