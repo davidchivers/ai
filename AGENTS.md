@@ -27,6 +27,7 @@ Read this file at the start of every session.
 ## Per-session startup
 
 1. Read `_shared/memory/RESEARCH_STYLE.md`.
+   For any personal-website publishing task, also read `_shared/memory/WEBSITE_PUBLISHING.md` and the website repository's `AGENTS.md` and `SITE_MAP.md`. Only `davidchivers/davidchivers.co.uk`, branch `main`, publishes `davidchivers.co.uk`. The ownership transfer is complete; old mirror instructions and old hosting blockers are superseded.
 2. If working on a specific research paper project, read `research_projects/<name>/STATUS.md`, `research_projects/<name>/README.md`, and `research_projects/<name>/memory.md`.
 3. Check `research_projects/<name>/STATUS.md` for the "Next 3 Tasks" before proposing a plan.
 

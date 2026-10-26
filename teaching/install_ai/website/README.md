@@ -71,3 +71,13 @@ You can use:
 Use this on download pages/docs:
 
 `This is a starter pack, not a locked system. You can use it as-is, copy only parts of it, or start a brand-new folder anytime.`
+
+## Publishing the installer
+
+The March 2026 deployment note is superseded by the verified domain transfer on 26 October 2026.
+
+- The only publishing repository is `davidchivers/davidchivers.co.uk`, branch `main`; installer files publish from its `ai_install/` directory.
+- This folder is a source snapshot, not a separate publishing destination. Compare it with the current website files before copying changes so that newer content is preserved.
+- Read `_shared/memory/WEBSITE_PUBLISHING.md` and the website repository's `AGENTS.md` and `SITE_MAP.md` before publication. Do not use the retired mirror repository or the unrelated `davidchivers/davidchivers` repository.
+- Use a scoped feature branch and pull request. After merging, require the public-domain verification to pass for that exact `main` commit and inspect `https://davidchivers.co.uk/ai_install/` and any changed assets.
+- The laptop website checkout is `C:\Users\Dave_\AI\other\davidchivers_website`; the desktop checkout is `E:\AI\other\davidchivers_site`. Check the actual Git remote and preserve existing changes before editing.
